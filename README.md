@@ -1,31 +1,24 @@
-# AUTOMA Chem 2026 - Presentation
+# AUTOMA Chem 2026 — Opening panel
 
-This repository contains a lightweight visual presentation for the AUTOMA Chem 2026 opening panel.
+Eduardo Sopalda. Berlin, 26 October 2026.
 
-## Overview
+This repository is the opening title card: **People, Data and AI**, from Brasília to the plant floor.
 
-The presentation is built as a single-page, modern HTML/CSS/JS experience that can be opened locally in a browser and shared as a simple internal or public deck.
+## Present
 
-## Open locally
+Open `index.html`, or serve the folder and press F for fullscreen.
 
-Open `index.html` in a browser, or serve the folder with a simple static server:
+- Space pauses and resumes
+- Click plays the fade again
 
-```bash
-python3 -m http.server 8000
+The drawing is two layers. `layers/search.png` is the sketch. `layers/field.png` is the plan. Type and the dsm-firmenich logo sit on top of the drawing, so they stay readable.
+
+## Files
+
 ```
-
-Then visit `http://localhost:8000`.
-
-## Content
-
-The deck includes:
-
-- Opening panel hero
-- Company and mission framing
-- Core value pillars
-- Why now / timeline
-- Closing message
-
-## Website
-
-- https://automachem.com
+index.html          the slide
+fonts/              Source Serif 4 and Source Sans 3, so it works offline
+layers/search.png   the sketch
+layers/field.png    the plan
+layers/logo.svg     dsm-firmenich
+```
