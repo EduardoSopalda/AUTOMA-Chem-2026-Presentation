@@ -259,6 +259,27 @@ Two external art direction reviews were considered. Edu directs the show; these 
 
 ---
 
+## 5c. Decisions after Phase 1 (25 September)
+
+Edu's answers to the Phase 1 questions. They override anything earlier in this file.
+
+**Script length.** About a third of the script goes, to roughly 1,300 words. Edu makes the cut himself and brings the cut script. A phone recording will set his real speaking pace. The storyboard goes ahead now, and timings are slotted in when the cut script arrives. These lines are sacred and never cut:
+* "I am an architect. Not as a metaphor."
+* "Built by people who could not afford to live in it."
+* "You cannot report what you cannot trace."
+* "We have simply built another Brasília."
+* "Agents do not own risk. Humans do. Always."
+
+**The coda for 3 October.** The version for 3 October shows the question alone on paper. The stage build is fully offline, with no exceptions. The live layer is built after 5 October, and only if the organisers accept an update. When it is built, every answer lands in a queue and Edu approves it on his phone before the talk. No free text ever goes straight to the screen.
+
+**The human figure.** Redraw it as a clean SVG from the cover artwork (the 1536 by 864 image embedded on page 1 of the brand PDF), in the same pose and proportions. That SVG is the master figure for every act.
+
+**The Congresso Nacional drawing.** Edu uploads it to `assets/architecture/`.
+
+**Wall section and photograph.** Edu is looking for the originals. If they cannot be found, trace the column from the screenshot, and in Act 9 show the photograph small, like a print pinned to the board. Never full width.
+
+---
+
 ## 6. Media: code first, generation second
 
 * **Default:** everything is drawn in code as SVG linework with animation. It stays sharp on a 4K projector and fits the architectural language.
