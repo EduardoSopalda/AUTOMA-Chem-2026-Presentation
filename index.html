@@ -24,169 +24,92 @@
       font-display: block;
     }
 
+    @property --reveal {
+      syntax: "<percentage>";
+      inherits: false;
+      initial-value: 0%;
+    }
+
     :root {
-      --paper: #f3eadc;
-      --paper-deep: #e8d7bc;
-      --ink: #1b1612;
-      --ink-soft: #3a322c;
-      --muted: #6d6258;
-      --copper: #8a4324;
-      --copper-line: #9a5a32;
-      --rule: rgba(27, 22, 18, 0.32);
-      --display: "Source Serif 4", "Source Serif Pro", Georgia, serif;
-      --ui: "Source Sans 3", "Source Sans Pro", "Segoe UI", sans-serif;
+      --paper: #F2DEBF;
+      --ink: #171513;
+      --copper: #823F18;
+      --copper-light: #C47A3A;
+      --blueprint: #6F9DBF;
+      --blueprint-pale: #B9CBD5;
+      --warm-grey: #A99C8F;
+      --display: "Source Serif 4", Georgia, serif;
+      --ui: "Source Sans 3", "Segoe UI", sans-serif;
     }
 
     * { box-sizing: border-box; }
     html, body {
       margin: 0;
       height: 100%;
-      background: #c9b79a;
+      background: #171513;
       color: var(--ink);
       font-family: var(--ui);
     }
     body {
       min-height: 100dvh;
       display: grid;
-      place-items: start center;
+      place-items: center;
     }
 
     .frame {
       width: min(100vw, calc(100dvh * 16 / 9));
       aspect-ratio: 16 / 9;
       container-type: size;
-      background:
-        radial-gradient(120% 80% at 50% 38%, #f7f0e4 0%, var(--paper) 55%, var(--paper-deep) 100%);
-      color: var(--ink);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 18px 60px rgba(40, 24, 8, 0.22);
+      background-color: var(--paper);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='.28'/%3E%3C/svg%3E");
+      background-size: 240px 240px;
     }
 
-    .frame::before {
-      content: "";
+    .mast {
       position: absolute;
-      inset: 1.35cqw;
-      border: 1.5px solid var(--rule);
-      pointer-events: none;
-      z-index: 8;
-    }
-
-    .plate {
-      position: relative;
-      z-index: 2;
-      height: 100%;
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr) auto;
-      padding: 3.2cqh 3.6cqw 2.4cqh;
-      gap: 0.2%;
-    }
-
-    .top, .bottom {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 2.15fr) minmax(0, 1fr);
-      column-gap: 2.4%;
-      align-items: start;
-    }
-    .bottom { align-items: end; }
-
-    .side { min-width: 0; }
-    .side.right { text-align: right; }
-
-    .kicker {
-      margin: 0;
-      font-size: 1.55cqh;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--copper);
-    }
-    .kicker::after {
-      content: "";
-      display: inline-block;
-      width: 2.1em;
-      height: 1.5px;
-      margin-left: 0.7em;
-      margin-bottom: 0.28em;
-      background: var(--copper-line);
-      vertical-align: middle;
-    }
-    .side.right .kicker::after {
-      margin-left: 0;
-      margin-right: 0.7em;
-    }
-
-    .side h2 {
-      margin: 0.7em 0 0.4em;
-      font-family: var(--display);
-      font-size: 1.85cqh;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-    }
-
-    .side p {
-      margin: 0;
-      max-width: 16ch;
-      font-family: var(--display);
-      font-size: 1.85cqh;
-      font-weight: 400;
-      font-style: italic;
-      line-height: 1.35;
-      color: var(--ink-soft);
-    }
-    .side.right p { margin-left: auto; }
-
-    .act-ii {
-      opacity: 0.28;
-      transition: opacity 700ms ease;
-    }
-    .frame.is-act-2 .act-ii,
-    .frame.is-end .act-ii { opacity: 1; }
-
-    .titleblock {
+      z-index: 4;
+      top: 4.2cqh;
+      left: 50%;
+      width: min(72cqw, 90%);
+      transform: translateX(-50%);
       text-align: center;
-      padding-top: 0;
+      pointer-events: none;
     }
-    .titleblock h1 {
+    .mast h1 {
       margin: 0;
       font-family: var(--display);
       font-optical-sizing: auto;
-      font-size: 5.6cqh;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 0.98;
-      color: var(--ink);
-    }
-    .titleblock .theme {
-      margin: 0.22em 0 0;
-      font-family: var(--display);
-      font-size: 3.15cqh;
+      font-size: 5.8cqh;
       font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.1;
+      letter-spacing: -0.024em;
+      line-height: 0.96;
+    }
+    .mast .theme {
+      margin: 0.28em 0 0;
+      font-family: var(--display);
+      font-size: 2.55cqh;
+      font-weight: 500;
       color: var(--copper);
+      letter-spacing: -0.01em;
     }
-    .rule {
-      width: 2.4rem;
-      height: 1.5px;
-      margin: 0.7em auto 0.55em;
-      background: var(--copper-line);
-    }
-    .talk {
-      margin: 0;
-      font-size: 1.7cqh;
-      font-weight: 650;
-      letter-spacing: 0.28em;
+    .mast .talk {
+      margin: 0.85em 0 0;
+      font-size: 1.55cqh;
+      font-weight: 600;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--ink);
     }
 
     .stage {
-      position: relative;
-      min-height: 0;
-      margin: 0.2% 0 0;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 17cqh;
+      bottom: 12cqh;
+      z-index: 2;
     }
     .stage img {
       position: absolute;
@@ -194,156 +117,102 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      object-position: center 46%;
+      object-position: center 44%;
       pointer-events: none;
       user-select: none;
+      --reveal: 0%;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent calc(50% - var(--reveal)), #000 calc(50% - var(--reveal) + 2.2%), #000 calc(50% + var(--reveal) - 2.2%), transparent calc(50% + var(--reveal)), transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, transparent calc(50% - var(--reveal)), #000 calc(50% - var(--reveal) + 2.2%), #000 calc(50% + var(--reveal) - 2.2%), transparent calc(50% + var(--reveal)), transparent 100%);
     }
+    #search { z-index: 1; }
+    #field { z-index: 2; }
 
-    #search {
-      opacity: 0;
-      z-index: 1;
+    .foot {
+      position: absolute;
+      z-index: 4;
+      left: 4cqw;
+      right: 4cqw;
+      bottom: 3.2cqh;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
     }
-    #field {
-      opacity: 0;
-      z-index: 2;
-      clip-path: inset(0 0 0 48%);
-      -webkit-clip-path: inset(0 0 0 48%);
-    }
-
     .who .name {
       margin: 0;
-      padding-top: 0.55em;
-      border-top: 1.5px solid var(--copper-line);
-      width: max-content;
-      font-size: 1.7cqh;
-      font-weight: 650;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      font-family: var(--display);
+      font-size: 1.85cqh;
+      font-weight: 600;
     }
     .who .role {
-      margin: 0.28em 0 0.55em;
-      font-size: 1.45cqh;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      color: var(--muted);
+      margin: 0.2em 0 0.5em;
+      font-size: 1.35cqh;
+      color: var(--warm-grey);
     }
     .logo {
       display: block;
-      width: min(15cqw, 200px);
+      width: min(14cqw, 180px);
       height: auto;
     }
-
-    .values {
-      text-align: center;
-      padding-bottom: 0.1em;
-    }
-    .values .ppp {
-      margin: 0;
-      font-size: 1.7cqh;
-      font-weight: 650;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--copper);
-    }
-    .values .ppp span {
-      display: inline-block;
-      margin: 0 0.45em;
-      font-weight: 400;
-      opacity: 0.45;
-    }
-    .values .tag {
-      margin: 0.4em 0 0;
-      font-size: 1.25cqh;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
     .event { text-align: right; }
     .event .conf {
       margin: 0;
-      font-size: 1.7cqh;
+      font-size: 1.55cqh;
       font-weight: 650;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
     .event .meta {
-      margin: 0.3em 0 0;
-      font-size: 1.35cqh;
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
+      margin: 0.25em 0 0;
+      font-size: 1.3cqh;
+      color: var(--warm-grey);
     }
 
     .hint {
       position: absolute;
-      right: 2.2cqw;
-      bottom: 1.15cqh;
-      z-index: 12;
+      right: 4cqw;
+      bottom: 1.1cqh;
+      z-index: 6;
       margin: 0;
-      font-size: 1.2cqh;
+      font-size: 1.1cqh;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0.65;
-      transition: opacity 400ms ease;
+      color: var(--warm-grey);
+      opacity: 0.7;
     }
-    .frame.is-live .hint { opacity: 0; pointer-events: none; }
+    .frame.is-playing .hint,
+    .frame.is-complete .hint { opacity: 0; }
 
     @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
-      #search, #field { opacity: 1 !important; clip-path: none !important; }
-      .act-ii { opacity: 1 !important; }
+      * { animation: none !important; }
+      #search, #field { --reveal: 52% !important; }
     }
   </style>
 </head>
 <body>
-  <main class="frame" id="stage" aria-label="Opening title card">
-    <div class="plate">
-      <header class="top">
-        <div class="side">
-          <p class="kicker">Act I</p>
-          <h2>The idea</h2>
-          <p>You can draw amazing things on paper…</p>
-        </div>
-        <div class="titleblock">
-          <h1>People, Data and AI</h1>
-          <p class="theme">in Sustainable Digital Transformation</p>
-          <div class="rule" aria-hidden="true"></div>
-          <p class="talk">From Brasília to the plant floor</p>
-        </div>
-        <div class="side right act-ii">
-          <p class="kicker">Act II</p>
-          <h2>Reality</h2>
-          <p>…and then the real world shows up.</p>
-        </div>
-      </header>
+  <main class="frame is-ready" id="stage" aria-label="Opening title card">
+    <header class="mast">
+      <h1>People, Data and AI</h1>
+      <p class="theme">in Sustainable Digital Transformation</p>
+      <p class="talk">From Brasília to the plant floor</p>
+    </header>
 
-      <div class="stage" aria-hidden="true">
-        <img id="search" src="layers/search.png" alt="" width="1430" height="537" />
-        <img id="field" src="layers/field.png" alt="" width="1430" height="537" />
-      </div>
-
-      <footer class="bottom">
-        <div class="who">
-          <p class="name">Eduardo Sopalda</p>
-          <p class="role">D&T · Global Data Governance Lead</p>
-          <img class="logo" src="layers/logo.svg" alt="dsm-firmenich" />
-        </div>
-        <div class="values">
-          <p class="ppp">People <span>|</span> Planet <span>|</span> Progress</p>
-          <p class="tag">We bring progress to life</p>
-        </div>
-        <div class="event">
-          <p class="conf">AUTOMA Chem 2026</p>
-          <p class="meta">Berlin · 26 October 2026</p>
-          <p class="meta">Opening panel</p>
-        </div>
-      </footer>
+    <div class="stage" aria-hidden="true">
+      <img id="search" src="layers/search.png" alt="" width="1430" height="537" />
+      <img id="field" src="layers/field.png" alt="" width="1430" height="537" />
     </div>
-    <p class="hint" id="hint">Space next act · F fullscreen · R reset</p>
+
+    <footer class="foot">
+      <div class="who">
+        <p class="name">Eduardo Sopalda</p>
+        <p class="role">D&T · Global Data Governance Lead</p>
+        <img class="logo" src="layers/logo.svg" alt="dsm-firmenich" />
+      </div>
+      <div class="event">
+        <p class="conf">AUTOMA Chem 2026</p>
+        <p class="meta">Berlin · 26 October 2026</p>
+      </div>
+    </footer>
+    <p class="hint" id="hint">Space play · F fullscreen · R reset</p>
   </main>
 
   <script>
@@ -351,63 +220,66 @@
     const search = document.getElementById("search");
     const field = document.getElementById("field");
     const params = new URLSearchParams(location.search);
-    const editMode = params.has("edit") || params.has("end");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hold = { fill: "forwards" };
 
-    const hold = { fill: "forwards", easing: "cubic-bezier(0.22, 1, 0.36, 1)", composite: "replace" };
-    let act = 0;
+    let mode = "ready";
+    let running = [];
 
-    function cancelMine(el) {
-      el.getAnimations().forEach((a) => a.cancel());
+    function stop() {
+      running.forEach((a) => a.cancel());
+      running = [];
     }
 
-    function setEnd() {
-      cancelMine(search);
-      cancelMine(field);
-      search.style.opacity = "1";
-      field.style.opacity = "1";
-      field.style.clipPath = "inset(0 0 0 0)";
-      stage.classList.add("is-end", "is-act-2", "is-live");
-      act = 2;
-    }
-
-    function setAct0() {
-      cancelMine(search);
-      cancelMine(field);
-      search.style.opacity = "0";
-      field.style.opacity = "0";
-      field.style.clipPath = "inset(0 0 0 48%)";
-      stage.classList.remove("is-end", "is-act-2", "is-live");
-      act = 0;
-    }
-
-    function playAct1() {
-      cancelMine(search);
-      search.animate(
-        [{ opacity: 0 }, { opacity: 1 }],
-        { ...hold, duration: 1600 }
-      );
-      stage.classList.add("is-live");
-      act = 1;
-    }
-
-    function playAct2() {
-      cancelMine(field);
-      field.animate(
+    function reveal(el, duration, delay) {
+      return el.animate(
         [
-          { opacity: 0.15, clipPath: "inset(0 0 0 48%)" },
-          { opacity: 1, clipPath: "inset(0 0 0 0)" }
+          { "--reveal": "0%" },
+          { "--reveal": "52%" }
         ],
-        { ...hold, duration: 2200 }
+        { ...hold, duration, delay, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }
       );
-      stage.classList.add("is-act-2", "is-live");
-      act = 2;
     }
 
-    function nextAct() {
-      if (reduced) { setEnd(); return; }
-      if (act === 0) playAct1();
-      else if (act === 1) playAct2();
+    function setReveal(el, value) {
+      el.style.setProperty("--reveal", value);
+    }
+
+    function ready() {
+      stop();
+      mode = "ready";
+      setReveal(search, "0%");
+      setReveal(field, "0%");
+      stage.className = "frame is-ready";
+    }
+
+    function complete() {
+      stop();
+      mode = "complete";
+      setReveal(search, "52%");
+      setReveal(field, "52%");
+      stage.className = "frame is-complete";
+    }
+
+    function play() {
+      if (mode !== "ready") return;
+      if (reduced) { complete(); return; }
+      stop();
+      mode = "playing";
+      stage.className = "frame is-playing";
+      setReveal(search, "0%");
+      setReveal(field, "0%");
+      running = [
+        reveal(search, 6500, 1000),
+        reveal(field, 7000, 11000)
+      ];
+      running[1].addEventListener("finish", () => {
+        if (mode === "playing") {
+          window.setTimeout(() => {
+            if (mode === "playing") complete();
+          }, 3500);
+        }
+      });
     }
 
     function toggleFullscreen() {
@@ -418,33 +290,31 @@
       }
     }
 
-    window.addEventListener("click", (event) => {
-      if (event.target.closest("a")) return;
-      nextAct();
-    });
+    function onGo(event) {
+      if (event.target && event.target.closest && event.target.closest("a")) return;
+      if (mode === "ready") play();
+    }
 
+    window.addEventListener("click", onGo);
     window.addEventListener("keydown", (event) => {
       const key = event.key;
-      if (key === " " || key === "ArrowRight" || key === "Enter") {
+      if (key === " " || key === "Enter") {
         event.preventDefault();
-        nextAct();
-      } else if (key === "ArrowLeft" || key === "r" || key === "R") {
+        onGo(event);
+      } else if (key === "r" || key === "R") {
         event.preventDefault();
-        setAct0();
+        ready();
       } else if (key === "f" || key === "F") {
         event.preventDefault();
         toggleFullscreen();
       } else if (key === "e" || key === "E") {
         event.preventDefault();
-        setEnd();
+        complete();
       }
     });
 
-    if (editMode || reduced) setEnd();
-    else {
-      setAct0();
-      requestAnimationFrame(() => playAct1());
-    }
+    if (params.has("end") || reduced) complete();
+    else ready();
   </script>
 </body>
 </html>
