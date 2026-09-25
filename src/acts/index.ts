@@ -3,6 +3,8 @@
 import { BEATS } from "../beats";
 import { cover, architect } from "./cover";
 import { ACT2 } from "./act2";
+import { ACT5 } from "./act5";
+import { ACT8 } from "./act8";
 import { ACT9 } from "./act9";
 import { gsap, clearPrevious, ghost, type Build } from "./common";
 import { setTitleBlock } from "../sheet";
@@ -43,6 +45,8 @@ const BUILDS: Record<number, Build> = {
   },
   ...ACT2,
   9: placeholderClearingPlans,
+  ...ACT5,
+  ...ACT8,
   ...ACT9,
 };
 

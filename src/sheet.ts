@@ -89,7 +89,7 @@ export function svg<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<
   return el;
 }
 
-export interface TextOpts { size?: number; family?: "serif" | "sans"; weight?: number; fill?: string; anchor?: "start" | "middle" | "end"; italic?: boolean; spacing?: number }
+export interface TextOpts { size?: number; family?: "serif" | "sans"; weight?: number; fill?: string; anchor?: "start" | "middle" | "end"; italic?: boolean; spacing?: number; halo?: boolean; rotate?: number }
 
 /** Type on the drawing. Never animated except for opacity. */
 export function label(parent: Element, x: number, y: number, text: string, o: TextOpts = {}) {
@@ -97,6 +97,9 @@ export function label(parent: Element, x: number, y: number, text: string, o: Te
     x, y, "font-family": o.family === "serif" ? "var(--serif)" : "var(--sans)", "font-size": o.size ?? 44,
     "font-weight": o.weight ?? (o.family === "serif" ? 500 : 500), fill: o.fill ?? "var(--ink)", "text-anchor": o.anchor ?? "start",
     "letter-spacing": o.spacing ?? 0, ...(o.italic ? { "font-style": "italic" } : {}),
+    // A paper halo breaks the linework under the words, as a draughtsman breaks a line around its text
+    ...(o.halo ? { stroke: "var(--paper)", "stroke-width": 10, "stroke-linejoin": "round", "paint-order": "stroke" } : {}),
+    ...(o.rotate ? { transform: `rotate(${o.rotate} ${x} ${y})` } : {}),
   }, parent);
   t.textContent = text;
   return t;
