@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>From Brasília to the Plant Floor — AUTOMA Chem 2026</title>
+  <style>
+    @font-face {
+      font-family: "Source Serif 4";
+      src: url("../fonts/SourceSerif4.ttf") format("truetype");
+      font-weight: 200 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Source Sans 3";
+      src: url("../fonts/SourceSans3.ttf") format("truetype");
+      font-weight: 200 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --paper: #f5e6d0;
+      --paper-deep: #edd8b8;
+      --ink: #1b1612;
+      --ink-soft: #3a322c;
+      --muted: #6d6258;
+      --copper: #8a4324;
+      --copper-line: #b16a3d;
+      --rule: rgba(27, 22, 18, 0.18);
+      --display: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+      --ui: "Source Sans 3", "Source Sans Pro", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #d7c4a6;
+      color: var(--ink);
+      font-family: var(--ui);
+    }
+    body {
+      min-height: 100dvh;
+      display: grid;
+      place-items: start center;
+    }
+
+    .frame {
+      width: min(100vw, calc(100dvh * 16 / 9));
+      aspect-ratio: 16 / 9;
+      container-type: size;
+      background:
+        radial-gradient(120% 80% at 50% 40%, #f8edd9 0%, var(--paper) 55%, #e7d3b3 100%);
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 60px rgba(40, 24, 8, 0.22);
+    }
+
+    .frame::before {
+      content: "";
+      position: absolute;
+      inset: 1.5cqw;
+      border: 1px solid var(--rule);
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .plate {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      padding: 3.6cqh 4cqw 2.8cqh;
+      gap: 0.4%;
+    }
+
+    .top, .bottom {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr) minmax(0, 1fr);
+      column-gap: 3.2%;
+      align-items: start;
+    }
+    .bottom { align-items: end; }
+
+    .side {
+      min-width: 0;
+    }
+    .side.right { text-align: right; }
+
+    .kicker {
+      margin: 0;
+      font-size: 1.9cqh;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--copper);
+    }
+    .kicker::after {
+      content: "";
+      display: block;
+      width: 2.4em;
+      height: 1px;
+      margin-top: 0.45em;
+      background: var(--copper-line);
+    }
+    .side.right .kicker::after { margin-left: auto; }
+
+    .side h2 {
+      margin: 0.55em 0 0.35em;
+      font-family: var(--display);
+      font-size: 2.6cqh;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .side p {
+      margin: 0;
+      max-width: 22ch;
+      font-family: var(--display);
+      font-size: 2.1cqh;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink-soft);
+    }
+    .side.right p { margin-left: auto; }
+
+    .titleblock {
+      text-align: center;
+      padding-top: 0.15em;
+    }
+    .titleblock h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-optical-sizing: auto;
+      font-size: 6cqh;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+      line-height: 1.02;
+      color: var(--ink);
+    }
+    .titleblock .theme {
+      margin: 0.35em 0 0;
+      font-family: var(--display);
+      font-size: 2.3cqh;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      line-height: 1.25;
+      color: var(--copper);
+    }
+    .rule {
+      width: 3.2rem;
+      height: 1px;
+      margin: 0.7em auto 0.55em;
+      background: var(--copper-line);
+    }
+    .talk {
+      margin: 0;
+      font-size: 2cqh;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .stage {
+      position: relative;
+      min-height: 0;
+      margin: 0.6% 1% 0.2%;
+    }
+    .stage img, .stage svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center 42%;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .who .name {
+      margin: 0;
+      font-size: 2.1cqh;
+      font-weight: 650;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .who .role {
+      margin: 0.28em 0 0.7em;
+      font-size: 1.7cqh;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+    .logo {
+      display: block;
+      width: 18cqw;
+      height: auto;
+    }
+
+    .values {
+      text-align: center;
+      padding-bottom: 0.15em;
+    }
+    .values .ppp {
+      margin: 0;
+      font-size: 2cqh;
+      font-weight: 650;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--copper);
+    }
+    .values .ppp span {
+      display: inline-block;
+      margin: 0 0.35em;
+      font-weight: 400;
+      opacity: 0.45;
+    }
+    .values .ppp b {
+      font-weight: 650;
+      box-shadow: inset 0 -1px 0 var(--copper-line);
+    }
+    .values .tag {
+      margin: 0.45em 0 0;
+      font-size: 1.5cqh;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .event {
+      text-align: right;
+    }
+    .event .conf {
+      margin: 0;
+      font-size: 2.1cqh;
+      font-weight: 650;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .event .meta {
+      margin: 0.35em 0 0;
+      font-size: 1.7cqh;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hint { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="frame" id="stage" aria-label="Opening title card">
+    <div class="plate">
+      <header class="top">
+        <div class="side">
+          <p class="kicker">Act I</p>
+          <h2>The idea</h2>
+          <p>You can draw amazing things on paper…</p>
+        </div>
+        <div class="titleblock">
+          <h1>People, Data and AI</h1>
+          <p class="theme">in Sustainable Digital Transformation</p>
+          <div class="rule" aria-hidden="true"></div>
+          <p class="talk">From Brasília to the plant floor</p>
+        </div>
+        <div class="side right">
+          <p class="kicker">Act II</p>
+          <h2>Reality</h2>
+          <p>…and then the real world shows up.</p>
+        </div>
+      </header>
+
+      <div class="stage" aria-hidden="true">
+        <img id="search" src="../layers/search.png?v=match" alt="" />
+        <img id="field" src="../layers/field.png" alt="" />
+      </div>
+
+      <footer class="bottom">
+        <div class="who">
+          <p class="name">Eduardo Sopalda</p>
+          <p class="role">D&T · Global Data Governance Lead</p>
+          <img class="logo" src="../layers/logo.svg" alt="dsm-firmenich" />
+        </div>
+        <div class="values">
+          <p class="ppp">People <span>|</span> Planet <span>|</span> <b>Progress</b></p>
+          <p class="tag">We bring progress to life</p>
+        </div>
+        <div class="event">
+          <p class="conf">AUTOMA Chem 2026</p>
+          <p class="meta">Berlin · 26 October 2026</p>
+          <p class="meta">Opening panel</p>
+        </div>
+      </footer>
+    </div>
+    <p class="hint" hidden>Space pauses</p>
+  </main>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const search = document.getElementById("search");
+    const field = document.getElementById("field");
+
+    const hold = { fill: "forwards", composite: "replace" };
+    let playing = false;
+    let mine = [];
+    let holdEnd = true;
+
+    function run() {
+      mine.forEach((a) => a.cancel());
+      mine = [
+        search.animate(
+          [{ opacity: 0 }, { opacity: 1 }],
+          { ...hold, delay: 2400, duration: 16000, easing: "ease-in-out" }
+        ),
+        field.animate(
+          [{ opacity: 0 }, { opacity: 1 }],
+          { ...hold, delay: 16000, duration: 18000, easing: "ease-in-out" }
+        ),
+      ];
+      if (holdEnd) {
+        mine.forEach((a) => {
+          const t = a.effect.getTiming();
+          a.pause();
+          a.currentTime = (t.delay || 0) + (t.duration || 0);
+        });
+        holdEnd = false;
+        playing = false;
+        return;
+      }
+      playing = true;
+    }
+
+    function list() {
+      return stage.getAnimations({ subtree: true });
+    }
+
+    window.addEventListener("click", () => run());
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key !== " ") return;
+      event.preventDefault();
+      if (playing) {
+        list().forEach((a) => a.pause());
+        playing = false;
+      } else {
+        list().forEach((a) => a.play());
+        playing = true;
+      }
+    });
+
+    run();
+  </script>
+</body>
+</html>

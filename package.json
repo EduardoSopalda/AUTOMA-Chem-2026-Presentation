@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "frames": "node tools/frames.mjs"
+    "build": "tsc -p . && vite build",
+    "frames": "node tools/frames.mjs",
+    "stagetest": "npm run build && node tools/stagetest.mjs"
   },
   "devDependencies": {
     "playwright": "^1.63.0",

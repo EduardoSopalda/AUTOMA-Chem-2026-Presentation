@@ -2,6 +2,15 @@
 
 Newest first. A two minute read.
 
+## 26 September 2026 (night)
+
+* **Phase 4 engine** built: Vite, TypeScript and GSAP. One continuous sheet, 43 clicks plus the cover. Forward animates, and back or jump rebuilds exactly.
+* **Stage proof:** `dist/index.html` is one self contained file that opens with a double click. The `?check` preflight passed: fonts, images, first scene in 77 ms, all beats rebuild, no network calls.
+* **Presenter window** (P): now, next, cue list, and timers against the ten minute and per act budgets. It forwards the clicker to the deck.
+* **Protected silences** enforced in the engine for "You cannot report what you cannot trace.", the unfinished twin, and "Humans do. Always."
+* **Cover** moved onto the brand palette, bottom row clears the frame rule, figure added, question placed small at the bottom right.
+* The acts are placeholders showing their on screen words, so timing can be rehearsed now. Phase 5 replaces them with the drawings.
+
 ## 26 September 2026
 
 * **Phase 3 style frames** in `frames/out/`: the cover, Act 5 and Act 8, each normal and under projector simulation, plus a contact sheet. Rebuild them with `npm run frames`.
