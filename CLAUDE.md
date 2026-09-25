@@ -280,6 +280,10 @@ Edu's answers to the Phase 1 questions. They override anything earlier in this f
 
 **Cover layers.** Re-export at 3840 wide if a source that large exists. Edu's name is removed from `layers/field.png`.
 
+**The figure on stage never moves (26 September).** No head animation on stage. The figure stays still, exactly as on the cover, arms at his sides. `assets/figure/figure-looks-up.mp4` and its 2.25 second trim `figure-looks-up-trim.mp4` (1.50 to 3.75 s) are for the web version only, as its opening moment, where the figure can be shown larger. Build that after 5 October. When it is built, lay it on the deck's own static paper (remove the video's paper by dividing out a fitted paper surface, then multiply the figure onto our paper), never the video's own shimmering paper. At stage size the lift is about one pixel, which is why it stays off stage.
+
+**Type pairing locked:** Source Serif 4 and DM Sans, as in section 5b.
+
 **Nursery school credit, web version only:** "Llar d'Infants, Torredembarra, 2007. Villasís i Associats, Arquitectes. Project work: Eduardo Sopalda."
 
 **The Congresso Nacional drawing.** Edu uploads it to `assets/architecture/`.
