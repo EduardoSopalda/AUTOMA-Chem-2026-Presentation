@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 800" role="img" aria-label="A man seen from behind, standing still">
+  <!-- Master figure. Traced from the cover artwork: back view, arms at his sides. Never animate. -->
+  <!-- ground shadow: short, at his feet -->
+  <ellipse cx="236" cy="750" rx="118" ry="8" fill="#0F0F11" fill-opacity="0.18"/>
+  <!-- trousers, legs slightly apart -->
+  <path d="M178 430 L322 430 L330 490 L322 718 L274 718 L262 520 L250 492 L238 520 L228 718 L180 718 L172 490 Z" fill="#B49A76"/>
+  <path d="M206 540 L204 712 M294 540 L296 712" fill="none" stroke="#0F0F11" stroke-width="2" stroke-opacity="0.25"/>
+  <!-- shoes -->
+  <path d="M184 714 L234 714 L238 740 Q204 746 170 742 Q170 726 184 714 Z" fill="#3B2A20"/>
+  <path d="M270 714 L318 714 Q334 728 332 742 Q300 746 266 740 Z" fill="#3B2A20"/>
+  <!-- jacket: shoulders taper to the waist, hem just below the hips -->
+  <path d="M166 172 C200 156 300 156 334 172 L340 232 L328 320 L332 438 L168 438 L172 320 L160 232 Z" fill="#6B625A"/>
+  <path d="M250 180 L250 438" fill="none" stroke="#0F0F11" stroke-width="2" stroke-opacity="0.35"/>
+  <path d="M176 330 Q250 338 324 330" fill="none" stroke="#0F0F11" stroke-width="2" stroke-opacity="0.2"/>
+  <!-- arms, hanging free of the body: light shows at the elbows -->
+  <path d="M166 172 C140 184 128 226 124 290 C122 334 134 380 150 418 L174 420 C164 380 160 334 162 290 C164 246 166 208 166 172 Z" fill="#5F5750"/>
+  <path d="M334 172 C360 184 372 226 376 290 C378 334 366 380 350 418 L326 420 C336 380 340 334 338 290 C336 246 334 208 334 172 Z" fill="#5F5750"/>
+  <!-- hands near the hips -->
+  <ellipse cx="162" cy="426" rx="12" ry="16" fill="#9C7E62"/>
+  <ellipse cx="338" cy="426" rx="12" ry="16" fill="#9C7E62"/>
+  <!-- neck and collar -->
+  <path d="M234 134 L266 134 L268 164 L232 164 Z" fill="#9C7E62"/>
+  <path d="M224 160 Q250 172 276 160 L272 172 Q250 180 228 172 Z" fill="#5F5750"/>
+  <!-- head from behind: short dark hair, ears just showing -->
+  <ellipse cx="216" cy="102" rx="5" ry="10" fill="#9C7E62"/>
+  <ellipse cx="284" cy="102" rx="5" ry="10" fill="#9C7E62"/>
+  <ellipse cx="250" cy="96" rx="35" ry="44" fill="#2A2522"/>
+</svg>

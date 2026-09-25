@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Style frames</title>
+<!-- Phase 3 style frames. Stills only: ?f=act5 or ?f=act8, add &proj for the projector simulation. -->
+<style>
+  @font-face { font-family: "Source Serif 4"; src: url("../fonts/SourceSerif4.ttf") format("truetype"); font-weight: 200 900; }
+  @font-face { font-family: "DM Sans"; src: url("../fonts/DMSans-400.woff2") format("woff2"); font-weight: 400; }
+  @font-face { font-family: "DM Sans"; src: url("../fonts/DMSans-500.woff2") format("woff2"); font-weight: 500; }
+  @font-face { font-family: "DM Sans"; src: url("../fonts/DMSans-600.woff2") format("woff2"); font-weight: 600; }
+
+  :root {
+    --paper: #F3DDC0; --paper-light: #F1E4D1;
+    --copper: #762F0B; --copper-light: #D89C67;
+    --blueprint: #5F92B8; --blue-pale: #8DB5D2; --blue-text: #365F7C;
+    --ink: #0F0F11; --grey: #48565F;
+    --serif: "Source Serif 4", Lora, Georgia, serif;
+    --sans: "DM Sans", system-ui, sans-serif;
+  }
+  html, body { margin: 0; background: var(--paper); }
+  .sheet { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); }
+  .grain { position: absolute; inset: 0; opacity: 0.35; mix-blend-mode: multiply; pointer-events: none; }
+  svg.draw { position: absolute; inset: 0; }
+
+  /* The one line, held in silence */
+  .line { position: absolute; left: 96px; right: 96px; margin: 0; text-align: center;
+          font-family: var(--serif); font-weight: 500; font-size: 72px; line-height: 1.1; letter-spacing: -0.01em; }
+
+  /* The living title block, bottom right */
+  .tb { position: absolute; right: 96px; bottom: 54px; width: 456px; font-family: var(--sans);
+        border: 1px solid var(--ink); display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .tb > div { padding: 8px 12px 9px; border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+  .tb > div:nth-child(-n+1) { border-top: 0; }
+  .tb .wide { grid-column: 1 / -1; border-left: 0; }
+  .tb .first { border-left: 0; }
+  .tb .k { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
+  .tb .v { display: block; margin-top: 2px; font-size: 16px; font-weight: 500; color: var(--ink); }
+  .tb .note { font-size: 14px; line-height: 1.35; color: var(--blue-text); font-weight: 500; }
+
+  .figure { position: absolute; left: 885px; top: 815px; height: 120px; }
+
+  /* Projector simulation: lifted blacks, saturation down 20%, mild warm flare */
+  .proj .sheet { filter: contrast(0.82) brightness(1.05) saturate(0.8); }
+  .proj .sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 55% at 50% 45%, rgba(255, 236, 205, 0.28), rgba(255, 236, 205, 0) 70%); mix-blend-mode: screen; }
+</style>
+</head>
+<body>
+<div class="sheet" id="sheet">
+  <svg class="grain" viewBox="0 0 1920 1080" aria-hidden="true">
+    <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 0.45  0 0 0 0 0.36  0 0 0 0 0.25  0 0 0 0.12 0"/></filter>
+    <rect width="1920" height="1080" filter="url(#g)"/>
+  </svg>
+
+  <svg class="draw" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <!-- One hand: a single noise seed for every copper line in the talk -->
+      <filter id="hand" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2"/>
+      </filter>
+    </defs>
+
+    <!-- Ghost dimension line between plan and figure: about 12% ink, label empty -->
+    <g id="ghost" stroke="var(--ink)" stroke-opacity="0.12" stroke-width="1.5" fill="none">
+      <line x1="862" y1="150" x2="862" y2="930"/>
+      <line x1="850" y1="162" x2="874" y2="138"/><line x1="850" y1="942" x2="874" y2="918"/>
+      <line x1="842" y1="150" x2="882" y2="150"/><line x1="842" y1="930" x2="882" y2="930"/>
+    </g>
+
+    <!-- Act 5 remnants: the structure under the number, quietened -->
+    <g id="act5" style="display:none">
+      <g filter="url(#hand)" stroke="var(--copper)" fill="none" stroke-width="2" opacity="0.14">
+        <path d="M560 290 L1360 290"/><path d="M560 290 L960 220 L1360 290"/>
+      </g>
+      <g stroke="var(--blueprint)" fill="none" stroke-width="1.5" opacity="0.16">
+        <path d="M600 290 V760 M740 290 V760 M1040 290 V760 M1160 290 V760 M1260 290 V760 M1330 290 V760"/>
+      </g>
+      <g stroke="var(--ink)" stroke-width="1.5" fill="none" opacity="0.14" stroke-dasharray="28 8 3 8">
+        <path d="M800 200 V800"/>
+      </g>
+    </g>
+  </svg>
+
+  <p class="line" id="line"></p>
+  <img class="figure" src="../assets/figure/figure.svg" alt="" />
+
+  <div class="tb" id="tb"></div>
+</div>
+
+<script>
+  const q = new URLSearchParams(location.search);
+  const f = q.get("f") || "act5";
+  if (q.has("proj")) document.documentElement.classList.add("proj");
+
+  const frames = {
+    act5: {
+      line: "You cannot report what you cannot trace.", top: 430, show: "act5",
+      act: "05", title: "The carbon number", sheet: "Section", scale: "1 : 1", rev: "C",
+      note: "Scope 1, 2 and 3, 2025: 11,002 kt CO2e. Source: dsm-firmenich Integrated Annual Report 2025."
+    },
+    act8: {
+      line: "Humans do. Always.", top: 560, show: null,
+      act: "08", title: "Back at ground level", sheet: "Elevation", scale: "1 : 1", rev: "C", note: ""
+    }
+  };
+  const d = frames[f];
+  const line = document.getElementById("line");
+  line.textContent = d.line; line.style.top = d.top + "px";
+  if (d.show) document.getElementById(d.show).style.display = "";
+
+  document.getElementById("tb").innerHTML = `
+    <div class="wide"><span class="k">Project</span><span class="v">From Brasília to the Plant Floor</span></div>
+    <div class="wide"><span class="k">Act ${d.act}</span><span class="v">${d.title}</span></div>
+    <div class="first"><span class="k">Drawing</span><span class="v">${d.sheet}</span></div>
+    <div><span class="k">Scale</span><span class="v">${d.scale}</span></div>
+    <div><span class="k">Rev</span><span class="v">${d.rev}</span></div>
+    ${d.note ? `<div class="wide"><span class="note">${d.note}</span></div>` : ""}`;
+</script>
+</body>
+</html>
