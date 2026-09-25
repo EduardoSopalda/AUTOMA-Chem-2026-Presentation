@@ -23,7 +23,7 @@ await page.screenshot({ path: out("engine-cover-end.png") });
 
 // Clicker: Page Down through Act 1 into Act 5's silence
 for (let k = 0; k < 23; k++) { await page.keyboard.press("PageDown"); await page.waitForTimeout(170); }
-await page.waitForTimeout(1500);
+await page.waitForTimeout(3500);   // the line lands in about 2.6 s, then the hold engages
 console.log("hash after 23 PageDown:", new URL(page.url()).hash, "hold class:", await page.$eval("#sheet", (e) => e.classList.contains("hold")));
 await page.screenshot({ path: out("engine-act5-hold.png") });
 
