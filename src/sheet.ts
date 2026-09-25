@@ -1,8 +1,6 @@
 // The one sheet of paper. Everything the audience sees lives in here.
 // reset() rebuilds it from nothing, so any beat's state can be reproduced exactly.
 
-import sketchUrl from "../layers/search.png";
-import planUrl from "../layers/field.png";
 import logoUrl from "../layers/logo.svg";
 import figureUrl from "../assets/figure/figure.svg";
 import { ACTS, type BeatInfo } from "./beats";
@@ -12,8 +10,6 @@ export const SVGNS = "http://www.w3.org/2000/svg";
 export interface Sheet {
   root: HTMLElement;
   cover: HTMLElement;
-  sketch: HTMLImageElement;
-  plan: HTMLImageElement;
   draw: SVGSVGElement;      // linework for the acts
   words: HTMLElement;       // type that belongs to the drawing
   figure: HTMLImageElement; // never moves, never changes
@@ -35,10 +31,7 @@ const coverHtml = `
       </div>
       <div class="side right"><p class="kicker">Act II</p><h2>Reality</h2><p>…and then the real world shows up.</p></div>
     </header>
-    <div class="art" aria-hidden="true">
-      <img class="sketch" src="${sketchUrl}" alt="" />
-      <img class="plan" src="${planUrl}" alt="" />
-    </div>
+    <div class="art" aria-hidden="true"></div>
     <footer class="bottom">
       <div class="who">
         <p class="name">Eduardo Sopalda</p>
@@ -68,8 +61,6 @@ export function createSheet(root: HTMLElement): Sheet {
   return {
     root,
     cover: root.querySelector(".cover")!,
-    sketch: root.querySelector(".cover .sketch")!,
-    plan: root.querySelector(".cover .plan")!,
     draw: root.querySelector("svg.draw")!,
     words: root.querySelector(".words")!,
     figure: root.querySelector(".figure")!,
@@ -96,4 +87,17 @@ export function svg<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<
   for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
   parent?.appendChild(el);
   return el;
+}
+
+export interface TextOpts { size?: number; family?: "serif" | "sans"; weight?: number; fill?: string; anchor?: "start" | "middle" | "end"; italic?: boolean; spacing?: number }
+
+/** Type on the drawing. Never animated except for opacity. */
+export function label(parent: Element, x: number, y: number, text: string, o: TextOpts = {}) {
+  const t = svg("text", {
+    x, y, "font-family": o.family === "serif" ? "var(--serif)" : "var(--sans)", "font-size": o.size ?? 44,
+    "font-weight": o.weight ?? (o.family === "serif" ? 500 : 500), fill: o.fill ?? "var(--ink)", "text-anchor": o.anchor ?? "start",
+    "letter-spacing": o.spacing ?? 0, ...(o.italic ? { "font-style": "italic" } : {}),
+  }, parent);
+  t.textContent = text;
+  return t;
 }

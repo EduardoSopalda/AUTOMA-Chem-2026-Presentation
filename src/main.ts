@@ -78,6 +78,12 @@ function startDeck() {
     idle = window.setTimeout(() => document.body.classList.add("idle"), 1500);
   });
 
+  // A typed or bookmarked #n jumps straight to that click.
+  addEventListener("hashchange", () => {
+    const n = Number(location.hash.slice(1));
+    if (Number.isInteger(n) && n >= 0 && n < BEATS.length && n !== engine.i) engine.goto(n, false);
+  });
+
   const start = Number(location.hash.slice(1)) || 0;
   engine.boot(start > 0 && start < BEATS.length ? start : 0);
 

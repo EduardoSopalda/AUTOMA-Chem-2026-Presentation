@@ -3,7 +3,7 @@
 
 import { gsap } from "gsap";
 import { BEATS } from "./beats";
-import { buildFor } from "./acts";
+import { buildFor } from "./acts/index";
 import { createSheet, type Sheet } from "./sheet";
 
 export type Listener = (i: number) => void;

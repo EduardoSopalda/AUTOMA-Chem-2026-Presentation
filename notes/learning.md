@@ -15,3 +15,9 @@
 **What I'll apply.** Beats are pure functions of the sheet: they read what earlier beats left behind, and return one timeline. Going back or jumping resets the sheet and fast forwards. Only a single step forward animates. Protected holds complete every running tween and stop ambient motion, so nothing moves.
 
 **Patterns drawn on (from prior knowledge, not re-read this session):** step based scrollytelling engines (a state machine with a replayable state), the reveal.js speaker view (a second window synced by postMessage, keys forwarded), and museum kiosk practice (recovery after a reload, a hidden cursor, no network). I'll read the current docs before Phase 5 uses DrawSVG and MorphSVG in earnest.
+
+## Phase 5: drawing (26 September)
+
+**DrawSVG (docs read 26 September).** It supports path, line, polyline, polygon, rect and ellipse. It works by setting `stroke-dasharray` and `stroke-dashoffset`, so **it can't reveal a line that is already dashed**. The desire paths, the dashed twin and the dash dot property line are revealed with a mask instead. It also draws paths with several separate parts poorly, so each line is its own element.
+
+**The hand wobble** is baked into the geometry, not applied as a live filter. Lines are resampled every 6 px and nudged along their normal by smooth value noise from one seed (7). An SVG `feDisplacementMap` over a large group costs a lot on an integrated graphics chip, and it would change the wobble as the drawing moves. Baked geometry is free at runtime and identical on every run.

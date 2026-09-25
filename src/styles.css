@@ -50,7 +50,6 @@ body.idle { cursor: none; }
 .cover .rule { width: 51px; height: 1px; margin: 0.7em auto 0.55em; background: var(--copper-light); }
 .cover .talk { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
 .cover .art { position: relative; min-height: 0; margin: 6px 19px 2px; }
-.cover .art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center 42%; opacity: 0; }
 .cover .who .name { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 .cover .who .role { margin: 0.28em 0 0.6em; font-size: 18px; color: var(--grey); }
 .cover .logo { display: block; width: 300px; height: auto; }
@@ -62,7 +61,7 @@ body.idle { cursor: none; }
 .cover .event { text-align: right; }
 .cover .conf { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 .cover .meta { margin: 0.35em 0 0; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); }
-.cover .question { position: absolute; right: 77px; bottom: 190px; margin: 0; max-width: 26ch; text-align: right; font-family: var(--serif); font-style: italic; font-size: 21px; line-height: 1.35; color: var(--ink); }
+.cover .question { position: absolute; right: 77px; bottom: 182px; margin: 0; width: 430px; text-align: right; font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 44px; line-height: 1.2; color: var(--grey); }
 
 /* ---------- Always on the sheet ---------- */
 .figure { position: absolute; left: 894px; top: 812px; height: 120px; pointer-events: none; }
@@ -82,11 +81,15 @@ body.idle { cursor: none; }
 /* ---------- Placeholder beats (Phase 4 only; Phase 5 replaces them with drawings) ---------- */
 .ph { position: absolute; left: 96px; right: 96px; top: 330px; text-align: center; }
 .ph .lead { margin: 0 auto; max-width: 1400px; font-family: var(--serif); font-weight: 500; font-size: 64px; line-height: 1.12; letter-spacing: -0.01em; }
-.ph .labels { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: center;
-              font-size: 22px; font-weight: 500; letter-spacing: 0.04em; color: var(--blue-text); }
+.ph .labels { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px 36px; justify-content: center;
+              font-size: 44px; font-weight: 500; letter-spacing: 0.04em; color: var(--blue-text); }
 .ph .tag { position: absolute; left: 0; top: -250px; font-size: 14px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--copper); text-align: left; }
 
 /* ---------- ?check overlay ---------- */
 .check { position: fixed; left: 24px; top: 24px; z-index: 200; font: 500 15px/1.5 var(--sans); background: var(--paper-light);
          border: 1px solid var(--ink); padding: 14px 18px; min-width: 360px; }
 .check b { font-weight: 600; } .check .bad { color: var(--copper); } .check .ok { color: var(--blue-text); }
+
+/* The coda: the question alone on paper, at reading size from the back row */
+.coda { position: absolute; left: 50%; top: 250px; transform: translateX(-50%); width: 1400px; margin: 0; text-align: center;
+        font-family: var(--serif); font-weight: 500; font-size: 64px; line-height: 1.18; letter-spacing: -0.005em; color: var(--ink); }
