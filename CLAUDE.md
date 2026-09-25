@@ -272,7 +272,15 @@ Edu's answers to the Phase 1 questions. They override anything earlier in this f
 
 **The coda for 3 October.** The version for 3 October shows the question alone on paper. The stage build is fully offline, with no exceptions. The live layer is built after 5 October, and only if the organisers accept an update. When it is built, every answer lands in a queue and Edu approves it on his phone before the talk. No free text ever goes straight to the screen.
 
-**The human figure.** Redraw it as a clean SVG from the cover artwork (the 1536 by 864 image embedded on page 1 of the brand PDF), in the same pose and proportions. That SVG is the master figure for every act.
+**The human figure.** Redraw it as a clean SVG from the cover artwork (the 1536 by 864 image embedded on page 1 of the brand PDF). Keep him exactly as he is on the cover, with his arms at his sides. `assets/figure/figure-reference.jpg` is a larger drawing to use for proportions only, because its pose differs (hands in pockets). That SVG is the master figure for every act.
+
+**The venue.** Edu is confirming with the organisers. Build for his own laptop with a presenter screen, but the deck must also work on one screen.
+
+**Grouping clicks.** Claude groups the beats into clicks, and Edu reviews them in `STORYBOARD.md`.
+
+**Cover layers.** Re-export at 3840 wide if a source that large exists. Edu's name is removed from `layers/field.png`.
+
+**Nursery school credit, web version only:** "Llar d'Infants, Torredembarra, 2007. Villasís i Associats, Arquitectes. Project work: Eduardo Sopalda."
 
 **The Congresso Nacional drawing.** Edu uploads it to `assets/architecture/`.
 
