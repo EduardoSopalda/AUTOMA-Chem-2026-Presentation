@@ -21,10 +21,8 @@ This follows the approved acts in CLAUDE.md sections 5, 5b and 5c. Nothing new h
 
 | # | Cue | The drawing | On screen text | Archetype | s |
 |---|---|---|---|---|---|
-| 0 | Before you speak | The title card exactly as it is today, plus the figure from the cover artwork at the foot of the axis. It plays its sketch then plan build once on load, then holds in the end frame. | The existing title card text. The question sits small in the title block. | Statement | 0 |
-| | "There's a question on the screen…" | Nothing moves. | | | 10 |
-
-Two things to decide are listed at the end: the cover now plays its build by itself, and the question has no QR code on 3 October.
+| 0 | Before you speak | The title card exactly as it is today, plus the figure from the cover artwork at the foot of the axis. It plays its sketch then plan build once on load, then holds in the end frame. Space starts Act 1. | The existing title card text. The question sits small in the title block. No QR code on 3 October. | Statement | 0 |
+| | "There's a question on the screen. Keep it in mind. I'll come back to it at the end." | Nothing moves. | | | 8 |
 
 ## Act 1. The Architect · budget 55 s · 4 clicks
 
@@ -76,11 +74,11 @@ All figures are verified in the report. See `notes/sources.md`.
 |---|---|---|---|---|---|
 | 19 | "A carbon number looks like chemistry." | Chain: the structure converges to a point, which opens into one large serif number with the label beside it. On "It is not", a copper revision cloud circles the label, and it changes. | 11,002 kt CO2e · Chemistry → Data product | Evidence | 10 |
 | 20 | "Behind one apparently simple number…" | Chain: the number becomes the roof of a structure on six foundation piles. A dash dot property line cuts through, leaving most piles outside it, drawn in slightly mismatched line styles. | Supplier declarations. Energy meters. Batch records. Transport. Allocation rules. Assumptions. · 93% outside our walls | Drawing | 16 |
-| 21 | "The challenge is being able to explain that number." | Scope 2 splits in two. | 140 kt by contract · 464 kt by grid · Same electricity. Two correct answers. | Contrast | 12 |
+| 21 | "The challenge is being able to explain that number." | Scope 2 splits in two. | 140 kt market based · 464 kt location based · Same electricity. Two correct answers. | Contrast | 12 |
 | 22 | "Someone has to know which source is right." | The Act 1 callouts return, rewritten. The lineage lines turn solid blue, each with an owner. | Know. Understand. Challenge. Explain. | Bridge | 10 |
 | 23 | "You cannot report what you cannot trace." | Everything quietens. One serif line. **Protected silence.** | You cannot report what you cannot trace. | Statement | 12 |
 
-Title block source note: "Scope 1, 2 and 3, 2025. dsm-firmenich Integrated Annual Report 2025. 93% calculated from the report." For click 21, the methods are named in full in the title block (market based, location based), so the labels on the drawing can stay plain.
+Title block source note: "Scope 1, 2 and 3, 2025. dsm-firmenich Integrated Annual Report 2025. 93% calculated from the report."
 
 ## Act 6. Why don't we just use AI? · budget 55 s · 4 clicks
 
@@ -137,11 +135,11 @@ On 3 October, the question stays alone on paper (section 5c).
 
 ## Timing table
 
-The budgets add up to 9:50, leaving 10 seconds of slack. Word budgets are (seconds minus the protected holds) at 140 words a minute. When your recording gives your real pace, only the words column changes.
+The budgets add up to 9:48, leaving 12 seconds of slack. Word budgets are (seconds minus the protected holds) at 140 words a minute. When your recording gives your real pace, only the words column changes.
 
 | Act | Clicks | Budget | Holds and laughs | Word budget | Words now | To cut |
 |---|---|---|---|---|---|---|
-| Opening line | 0 | 0:10 | 0 s | 23 | 24 | 1 |
+| Opening line | 0 | 0:08 | 0 s | 18 | 18 | 0 |
 | 1 The Architect | 4 | 0:55 | 3 s | 121 | 214 | 93 |
 | 2 Brasília | 4 | 1:10 | 6 s | 149 | 224 | 75 |
 | 3 The drawing meets the ground | 6 | 1:10 | 6 s | 149 | 177 | 28 |
@@ -152,7 +150,7 @@ The budgets add up to 9:50, leaving 10 seconds of slack. Word budgets are (secon
 | 8 Ground level | 6 | 1:35 | 10 s | 198 | 345 | 147 |
 | 9 Back to Brasília | 4 | 0:45 | 3 s | 98 | 202 | 104 |
 | Coda | 1 | 0:20 | 4 s | 37 | 54 | 17 |
-| **Total** | **43** | **9:50** | **46 s** | **1,267** | **2,004** | **737** |
+| **Total** | **43** | **9:48** | **46 s** | **1,262** | **1,998** | **736** |
 
 The "words now" column counts the current script, v2 REVISED. Your target of about 1,300 words lines up with this table.
 
@@ -178,13 +176,16 @@ Numbers 5, 6 and 9 would each put a line you care about on a timer. I would not 
 
 ---
 
-## Open items for Edu
+## Decided on 26 September
 
-1. **The cover now plays by itself.** Today, pressing Space on the title card starts its 34 second build. In the deck, Space has to start Act 1. So the build plays once by itself on load, during the changeover, then holds in the end frame. It looks the same, but it's triggered differently. OK?
-2. **The figure on the cover.** The current title card has no figure. You want him "exactly as on the cover", so he's added to scene 0 at the foot of the axis. This is the one visible change to the title card.
-3. **The question on 3 October.** With no live layer, there's no QR code, and "Answer it now… you'll see the answers at the end" isn't true that day. You could cut that sentence for the 3 October version, or keep the question on the cover as something to think about ("Keep this in mind. I'll come back to it."). The words are yours.
-4. **"A–A" and "B–B".** These are dashes on screen. I recommend keeping them as drawing notation, since engineers read them as symbols. Your call.
-5. **Scope 2 labels.** "Market based" can't carry a hyphen on screen, so I've proposed "140 kt by contract" and "464 kt by grid". The full method names go in the title block.
-6. **Cover layers at 3840.** I can't make a true 3840 export. The largest source I have is the 1536 wide cover artwork. Your name was not visible in `field.png`: it sat in the hidden colour data of fully transparent pixels. I've cleared it. On paper, the layer is pixel for pixel identical.
-7. **Words I proposed.** The brief doesn't give the text for the glossary entry (click 27) or the short labels in click 15, so I've written them and marked them "proposed". Please approve or rewrite.
-8. **The Congresso drawing** is still to come, for clicks 5, 32 and 33.
+1. The cover plays its build once on load, then holds. Space starts Act 1.
+2. The figure is added to the title card.
+3. The opening line for 3 October: "There's a question on the screen. Keep it in mind. I'll come back to it at the end." No QR code.
+4. "A–A" and "B–B" stay.
+5. The Scope 2 labels are "140 kt market based" and "464 kt location based". 464.3 is verified in the report's own table (see `notes/sources.md`), so the beat stays.
+
+## Still open
+
+1. **Words I proposed.** The brief doesn't give the text for the glossary entry (click 27) or the short labels in click 15, so I've written them and marked them "proposed". Please approve or rewrite.
+2. **The Congresso drawing** is still to come, for clicks 5, 32 and 33.
+3. **The cut script and the phone recording**, which will turn these budgets into real timings.
