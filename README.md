@@ -2,32 +2,20 @@
 
 Eduardo Sopalda. Berlin, 26 October 2026.
 
-This repository is the opening title card: **People, Data and AI**, from Brasília to the plant floor.
+Opening title card: **People, Data and AI**, from Brasília to the plant floor.
 
 ## Present
 
-Open `index.html`, or serve the folder and press F for fullscreen.
+Open `index.html` locally (keep `fonts/` and `layers/` beside it).
 
-- Space or click advances the act (sketch → plan)
-- R resets to paper
-- F toggles fullscreen
-- Add `?end` to the URL for the locked end frame
+States: **READY → PLAY → COMPLETE**
 
-The drawing is two layers. `layers/search.png` is the sketch. `layers/field.png` is the plan. Type and the dsm-firmenich logo sit on top of the drawing, so they stay readable.
+- Space or click starts the sequence once
+- It does not replay on a second click
+- R resets to READY (rehearsal only)
+- F fullscreen
+- `?end` jumps to the locked final frame
 
-## Supporting files
+Timing is about 23 seconds. The croquis reveals from the central axis, then the plan grows out of the same hinge. The original PNGs are not redrawn.
 
-- [Branding PDF](assets/brand/AUTOMA-Chem-2026-Art-Branding.pdf)
-- [Presentation text PDF](docs/AUTOMA-Chem-2026-Presentation-Text.pdf)
-
-## Files
-
-```text
-index.html          the slide
-fonts/              Source Serif 4 and Source Sans 3, so it works offline
-layers/search.png   the sketch
-layers/field.png    the plan
-layers/logo.svg     dsm-firmenich
-assets/brand/       branding reference material
-docs/               presentation text and supporting documents
-```
+`layers/search.png` is the sketch. `layers/field.png` is the plan.
