@@ -61,10 +61,13 @@ The web gives us drawing that animates, real typography, interactivity and a lif
 
 These files are in `assets/brand/` and `docs/` (see section 0). Read all of them before proposing anything.
 
-* `script.pdf`: the approved speaking script. **This is the spine. Do not rewrite it.** You may suggest cuts to fit ten minutes, but Edu approves every word.
-* `art-direction.pdf`: the visual identity and art direction system. **This is law.** Palette, type, grid, motion rules and slide archetypes all come from here.
-* `automachem-brochure.pdf`: the event context and programme.
-* `cover-artwork.png`: the supplied cover illustration. Copper idea on the left, blueprint reality on the right, one small human figure in the middle.
+* `docs/AUTOMA-Chem-2026-Presentation-Text.pdf`: the approved speaking script. **This is the spine. Do not rewrite it.** You may suggest cuts to fit ten minutes, but Edu approves every word.
+* `assets/brand/AUTOMA-Chem-2026-Art-Branding.pdf`: the visual identity and art direction system. **This is law.** Palette, type, grid, motion rules and slide archetypes all come from here.
+* `docs/AUTOMA-Chem-2026-Brochure.pdf`: the event context and programme.
+* `assets/architecture/nursery-plan-a1.pdf`: Edu's nursery school plan for 72 children. Vector. Use its real lines. Reserved for Act 9.
+* `assets/architecture/wall-section-elevation-photo.jpeg`: Edu's wall section and elevation. Reserved for Act 1 and Act 9.
+* `assets/architecture/congresso-nacional.svg` or `.png`: Edu's Congresso Nacional drawing for Act 2. Not uploaded yet.
+* The cover illustration is the title card itself: `layers/search.png` (the sketch) and `layers/field.png` (the plan).
 
 ### The non negotiables from the art direction
 
@@ -290,7 +293,7 @@ Two external art direction reviews were considered. Edu directs the show; these 
 
 Work in phases. **Stop at the end of each phase and wait for Edu's approval.**
 
-1. **Read and question.** Read every file in `/brief`. Summarise the argument in five lines. List anything unclear or contradictory, and ask up to five questions.
+1. **Read and question.** Read every file listed in section 4. Summarise the argument in five lines. List anything unclear or contradictory, and ask up to five questions.
 2. **Storyboard.** Write `STORYBOARD.md` with one entry per scene: the visual, the on screen text, each step on click, estimated seconds, and the art direction archetype it uses. Add a timing table that proves the whole piece fits ten minutes.
 3. **Style frames.** Build three still frames only: the cover, Act 5 ("You cannot report what you cannot trace.") and Act 8 ("Humans do. Always."). Show each in normal and projector simulation views. Screenshot them with Playwright at 1920 by 1080 and send them to Edu. Lock the type and colour here before building anything else.
 4. **Engine.** Build the scene engine, the controls, the presenter view and the scaling.
