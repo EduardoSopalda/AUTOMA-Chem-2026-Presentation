@@ -61,12 +61,13 @@ The web gives us drawing that animates, real typography, interactivity and a lif
 
 These files are in `assets/brand/` and `docs/` (see section 0). Read all of them before proposing anything.
 
-* `docs/AUTOMA-Chem-2026-Presentation-Text.pdf`: the approved speaking script. **This is the spine. Do not rewrite it.** You may suggest cuts to fit ten minutes, but Edu approves every word.
+* `docs/AUTOMA-Chem-2026-Script-CUT.md`: **the script of record** (26 September), cut by Edu to about 1,300 words with all five sacred lines. **This is the spine. Do not rewrite it.** Timing, cues and the presenter view come from it.
+* `docs/AUTOMA-Chem-2026-Presentation-Text.pdf`: the earlier v2 script, kept for reference only.
 * `assets/brand/AUTOMA-Chem-2026-Art-Branding.pdf`: the visual identity and art direction system. **This is law.** Palette, type, grid, motion rules and slide archetypes all come from here.
 * `docs/AUTOMA-Chem-2026-Brochure.pdf`: the event context and programme.
 * `assets/architecture/nursery-plan-a1.pdf`: Edu's nursery school plan for 72 children. Vector. Use its real lines. Reserved for Act 9.
 * `assets/architecture/wall-section-elevation-photo.jpeg`: Edu's wall section and elevation. Reserved for Act 1 and Act 9.
-* `assets/architecture/congresso-nacional.svg` or `.png`: Edu's Congresso Nacional drawing for Act 2. Not uploaded yet.
+* `assets/architecture/congresso-nacional.svg`: Edu's Congresso Nacional drawing (Acts 2 and 7, and the Act 7 to 8 handoff). Used through `src/draw/congresso.ts`, with duplicated plinth lines removed.
 * The cover illustration is the title card itself: `layers/search.png` (the sketch) and `layers/field.png` (the plan).
 
 ### The non negotiables from the art direction
@@ -286,7 +287,7 @@ Edu's answers to the Phase 1 questions. They override anything earlier in this f
 
 **Nursery school credit, web version only:** "Llar d'Infants, Torredembarra, 2007. Villasís i Associats, Arquitectes. Project work: Eduardo Sopalda."
 
-**The Congresso Nacional drawing.** Edu uploads it to `assets/architecture/`.
+**The Congresso Nacional drawing** is in `assets/architecture/congresso-nacional.svg` (26 September).
 
 **Wall section and photograph.** Edu is looking for the originals. If they cannot be found, trace the column from the screenshot, and in Act 9 show the photograph small, like a print pinned to the board. Never full width.
 
@@ -366,3 +367,5 @@ The web deck must be as reliable as a file on a USB stick.
 * Someone in the third row remembers one image and one line a week later.
 * It runs offline, from a clicker, in under ten minutes, with nothing that can fail on stage.
 * Edu looks forward to pressing the first key.
+
+**Act budgets from the cut script (26 September):** Opening 0:10, Act 1 1:10, Act 2 1:10, Act 3 1:10, Act 4 1:05, Act 5 0:55, Act 6 1:00, Act 7 0:40, Act 8 1:35, Act 9 0:35, Coda 0:25. Total 9:55. Timings inside each click wait for Edu's recording.

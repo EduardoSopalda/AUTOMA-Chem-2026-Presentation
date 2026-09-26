@@ -24,7 +24,7 @@ function column(x: number, w: number): Pt[][] {
 const twins: Build = (s, beat) => {
   const tl = gsap.timeline();
   // Handoff from Act 7: the Congresso's twin towers straighten into two process columns.
-  const towers = Array.from(s.draw.querySelectorAll(".congresso path")).slice(2, 4) as SVGPathElement[];
+  const towers = Array.from(s.draw.querySelectorAll(".congresso .tower")) as SVGPathElement[];
   const keep = towers.length === 2 ? [towers[0].closest(".congresso")!] : [];
   clearPrevious(s, tl, 0, keep);
   if (keep.length) {

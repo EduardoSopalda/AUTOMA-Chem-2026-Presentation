@@ -68,13 +68,12 @@ const plan: Build = (s, beat) => {
 
   // The homage: the Congresso rises from the horizon of the plan, holds, and lies back down.
   const hz = 420, cx = 960;
-  const { g: cg, horizon, slab, towers, dome, bowl } = congresso(s.draw, cx, hz, "cn");
+  const { g: cg, horizon, plinth, towers, joint, dome, bowl } = congresso(s.draw, cx, hz, "cn", 1.15);
   t(cg);
-  gsap.set([horizon, slab, ...towers, dome, bowl], { drawSVG: "0%" });
-  drawIn(tl, horizon, 6.2, 0.8);
-  drawIn(tl, slab, 6.6, 0.6);
-  drawIn(tl, towers, 7, 1.2, 0.15);
-  drawIn(tl, [dome, bowl], 8, 1.2);
+  gsap.set([horizon, ...plinth, ...towers, ...joint, dome, ...bowl], { drawSVG: "0%" });
+  drawIn(tl, [horizon, ...plinth], 6.2, 0.8);                // the horizon first
+  drawIn(tl, [...towers, ...joint], 7, 1.2, 0.1);            // then the towers
+  drawIn(tl, [dome, ...bowl], 8, 1.2);                       // then the dome and the bowl together
   tl.to(cg, { scaleY: 0, svgOrigin: `${cx} ${hz}`, duration: 1.4, ease: "power2.in" }, 11.2)   // hold 2 s, then it lies down
     .set(cg, { display: "none" }, 12.6);
 

@@ -3,6 +3,7 @@
 // Clicker keys pressed while this window has focus are forwarded to the deck.
 
 import { ACTS, BEATS, TALK_BUDGET } from "./beats";
+import { PASSAGES, WORDS } from "./script";
 
 export const NAV_KEYS = new Set(["ArrowRight", "PageDown", " ", "Enter", "ArrowLeft", "PageUp", "Home", "End", "b", "B", ".",
   "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
@@ -27,6 +28,7 @@ export function startPresenter(root: HTMLElement) {
       .pv h2 { margin: 0 0 6px; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #D89C67; font-weight: 600; }
       .pv .now { grid-column: 1; } .pv .next { grid-column: 2; opacity: 0.75; }
       .pv .cue { font-family: var(--serif); font-size: 34px; line-height: 1.2; margin: 0; }
+      .pv .passage { font-family: var(--serif); font-size: 21px; line-height: 1.45; color: #e7dccb; margin: 12px 0 0; max-width: 60ch; }
       .pv .next .cue { font-size: 24px; }
       .pv .words { margin-top: 10px; font-size: 17px; color: #8DB5D2; }
       .pv .meta { font-size: 15px; color: #bdb3a6; margin-top: 8px; }
@@ -40,7 +42,7 @@ export function startPresenter(root: HTMLElement) {
       .pv .lost { color: #D89C67; font-size: 15px; }
     </style>
     <div class="pv">
-      <section class="now"><h2>Now</h2><p class="cue"></p><div class="words"></div><div class="meta"></div><div class="holdtag"></div></section>
+      <section class="now"><h2>Now</h2><p class="cue"></p><p class="passage"></p><div class="words"></div><div class="meta"></div><div class="holdtag"></div></section>
       <section class="next"><h2>Next</h2><p class="cue"></p><div class="words"></div></section>
       <section class="list"></section>
       <section class="clocks">
@@ -62,8 +64,9 @@ export function startPresenter(root: HTMLElement) {
     const b = BEATS[i], n = BEATS[i + 1];
     if (!b) return;
     $(".now .cue").textContent = b.cue;
-    $(".now .words").textContent = b.text.join("  ·  ");
-    $(".now .meta").textContent = `${b.act === 0 ? "Cover" : b.act === 10 ? "Coda" : "Act " + b.act} · ${ACTS[b.act].title} · click ${b.n} of ${BEATS.length - 1} · budget ${b.secs} s`;
+    $(".now .passage").textContent = PASSAGES[i];
+    $(".now .words").textContent = b.text.length ? "On screen: " + b.text.join("  ·  ") : "";
+    $(".now .meta").textContent = `${b.act === 0 ? "Cover" : b.act === 10 ? "Coda" : "Act " + b.act} · ${ACTS[b.act].title} · click ${b.n} of ${BEATS.length - 1} · ${WORDS[i]} words · budget ${b.secs} s`;
     $(".now .holdtag").innerHTML = b.hold ? `<span class="hold">HOLD · SILENCE</span>` : "";
     $(".next .cue").textContent = n ? n.cue : "End. Sit down.";
     $(".next .words").textContent = n ? n.text.join("  ·  ") : "";

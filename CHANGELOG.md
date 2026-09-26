@@ -2,6 +2,13 @@
 
 Newest first. A two minute read.
 
+## 26 September 2026 (the cut and the Congresso)
+
+* **Your Congresso drawing** replaces the placeholder in Acts 2 and 7, and feeds the Act 7 to 8 handoff. Five duplicated plinth lines and a doubled tower top were removed. The tower outline is split into two towers for the handoff. It is anchored on the joint line, so Brasília's monumental axis runs straight up between the towers.
+* **The cut script is the script of record** (`docs/AUTOMA-Chem-2026-Script-CUT.md`, 1,302 spoken words by my count, all five sacred lines). Every click is anchored to its exact words. The presenter view shows the passage to speak, its word count and its budget.
+* **New act budgets,** totalling 9:55. Each click has its share by word count, until the recording arrives.
+* **Three clicks where the speech and the drawing don't line up yet** are listed in the storyboard for your decision.
+
 ## 26 September 2026 (later): Edu's review
 
 * Act 6 glossary now reads "batch: one production run, from charge to discharge."

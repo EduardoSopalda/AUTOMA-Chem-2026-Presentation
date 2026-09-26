@@ -139,11 +139,11 @@ const another: Build = (s) => {
     .to(s.draw.querySelectorAll(".dest"), { opacity: 0, duration: 1 }, 0);
   const c = congresso(s.draw, HILL.x, CITY_HZ, "cn7", 1.1);
   t(c.g);
-  const parts = [c.horizon, c.slab, ...c.towers, c.dome, c.bowl];
+  const parts = [c.horizon, ...c.plinth, ...c.towers, ...c.joint, c.dome, ...c.bowl];
   gsap.set(parts, { drawSVG: "0%" });
-  drawIn(tl, [c.horizon, c.slab], 0.8, 0.8);
-  drawIn(tl, c.towers, 1.4, 1.1, 0.12);
-  drawIn(tl, [c.dome, c.bowl], 2.2, 1.1);
+  drawIn(tl, [c.horizon, ...c.plinth], 0.8, 0.8);
+  drawIn(tl, [...c.towers, ...c.joint], 1.4, 1.1, 0.1);
+  drawIn(tl, [c.dome, ...c.bowl], 2.2, 1.1);
   if (sky) tl.call(() => sky.remove(), [], 3.4);
   return tl;
 };

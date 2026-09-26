@@ -135,26 +135,27 @@ On 3 October, the question stays alone on paper (section 5c).
 
 ## Timing table
 
-The budgets add up to 9:48, leaving 12 seconds of slack. Word budgets are (seconds minus the protected holds) at 140 words a minute. When your recording gives your real pace, only the words column changes.
+From the cut script (`docs/AUTOMA-Chem-2026-Script-CUT.md`, 1,302 spoken words) and Edu's act budgets of 26 September. Within each act, every click gets a share of the budget by its word count, after reserving the silences and laughs. The presenter view shows each click's passage, word count and budget. The recording will replace these estimates.
 
-| Act | Clicks | Budget | Holds and laughs | Word budget | Words now | To cut |
-|---|---|---|---|---|---|---|
-| Opening line | 0 | 0:08 | 0 s | 18 | 18 | 0 |
-| 1 The Architect | 4 | 0:55 | 3 s | 121 | 214 | 93 |
-| 2 Brasília | 4 | 1:10 | 6 s | 149 | 224 | 75 |
-| 3 The drawing meets the ground | 6 | 1:10 | 6 s | 149 | 177 | 28 |
-| 4 Sustainability | 4 | 1:00 | 2 s | 135 | 200 | 65 |
-| 5 The carbon number | 5 | 1:00 | 5 s | 128 | 168 | 40 |
-| 6 Why not just AI | 4 | 0:55 | 2 s | 124 | 209 | 85 |
-| 7 The shiny city | 5 | 0:50 | 5 s | 105 | 187 | 82 |
-| 8 Ground level | 6 | 1:35 | 10 s | 198 | 345 | 147 |
-| 9 Back to Brasília | 4 | 0:45 | 3 s | 98 | 202 | 104 |
-| Coda | 1 | 0:20 | 4 s | 37 | 54 | 17 |
-| **Total** | **43** | **9:48** | **46 s** | **1,262** | **1,998** | **736** |
+| Act | Clicks | Budget | Words | Implied pace (words a minute) |
+|---|---|---|---|---|
+| Opening line | 0 | 0:10 | 18 | 108 |
+| 1 The Architect | 4 | 1:10 | 158 | 135 |
+| 2 Brasília | 4 | 1:10 | 153 | 131 |
+| 3 The drawing meets the ground | 6 | 1:10 | 153 | 131 |
+| 4 Sustainability | 4 | 1:05 | 148 | 137 |
+| 5 The carbon number | 5 | 0:55 | 119 | 130 |
+| 6 Why not just AI | 4 | 1:00 | 141 | 141 |
+| 7 The shiny city | 5 | 0:40 | 89 | 134 |
+| 8 Ground level | 6 | 1:35 | 201 | 127 |
+| 9 Back to Brasília | 4 | 0:35 | 72 | 123 |
+| Coda | 1 | 0:25 | 50 | 120 |
+| **Total** | **43** | **9:55** | **1,302** | **131** |
 
-The "words now" column counts the current script, v2 REVISED. Your target of about 1,300 words lines up with this table.
-
----
+**Three places where the speech and the drawing don't line up yet** (for Edu to decide):
+1. **Click 6** is 36 s long, but its chain shows the scale notations about 7 s in, while "The point is scale" comes about 25 s in. Proposal: a second click on "The point is scale."
+2. **Click 36** is 35 s long, but "1 : 1" is timed at 6.6 s, and "designed at human scale" comes much later. Proposal: a second click on "That is why governance has to be designed at human scale."
+3. **Act 9, clicks 40 and 41,** have 5 s of speech against about 12 s of drawing. Proposal: let the payoff breathe with a few seconds of silence, which means Act 9 runs over its 35 s. Or speed the drawing up.
 
 ## Where I disagree with the brief
 
@@ -194,6 +195,6 @@ Numbers 5, 6 and 9 would each put a line you care about on a timer. I would not 
 
 ## Still open
 
-1. **The Congresso drawing:** Edu uploads it. The placeholder is one file, `src/draw/congresso.ts`.
+1. **The Congresso drawing** arrived on 26 September and is in use.
 2. **Originals** of the wall section, elevation and photograph: Edu is looking for them. The left elevation is used, since it matches the photograph (26 September).
-3. **The cut script and the phone recording**, which will turn the budgets into real timings.
+3. **The phone recording**, which will turn the budgets into real timings. The cut script arrived on 26 September.
