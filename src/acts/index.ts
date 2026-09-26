@@ -4,6 +4,7 @@ import { BEATS } from "../beats";
 import { cover, architect } from "./cover";
 import { ACT1 } from "./act1";
 import { ACT2 } from "./act2";
+import { ACT3 } from "./act3";
 import { ACT5 } from "./act5";
 import { ACT8 } from "./act8";
 import { ACT9 } from "./act9";
@@ -28,20 +29,12 @@ const placeholder: Build = (s, beat) => {
   return tl;
 };
 
-// Until Act 3 exists, a placeholder must not leave the Act 2 plan behind.
-const placeholderClearingPlans: Build = (s, beat) => {
-  const tl = placeholder(s, beat);
-  const plans = s.draw.querySelectorAll("#plan2");
-  if (plans.length) tl.to(plans, { opacity: 0, duration: 0.8, onComplete: () => plans.forEach((p) => p.remove()) }, 0);
-  return tl;
-};
-
 const BUILDS: Record<number, Build> = {
   0: cover,
   1: architect,
   ...ACT1,
   ...ACT2,
-  9: placeholderClearingPlans,
+  ...ACT3,
   ...ACT5,
   ...ACT8,
   ...ACT9,
