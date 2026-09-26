@@ -27,7 +27,7 @@ const building: Build = (s) => {
   const box = { x: 346, y: 486, w: 262, h: 230 };          // the left elevation: it matches the photograph
   const elev = t(svg("image", { href: elevationUrl, x: box.x, y: box.y, width: box.w, height: box.h, filter: "url(#to-copper)", preserveAspectRatio: "xMidYMid meet" }, s.draw)) as SVGImageElement;
   const w = wipe(s, elev, box, "bottom");
-  tl.to(w.rect, { ...w.to, duration: 2.6, ease: "power1.inOut" }, 0.2);
+  tl.to(w.rect, { ...w.to, duration: 1.7, ease: "power1.inOut" }, 0.1);
 
   // The only photograph in the talk: small, like a print pinned to the board, toned toward the paper.
   const pw = 300, ph = 185, px = 327, py = 510;
@@ -36,8 +36,8 @@ const building: Build = (s) => {
     style: "filter: sepia(0.35) saturate(0.7) contrast(0.92); mix-blend-mode: multiply" }, print);
   svg("rect", { x: px, y: py, width: pw, height: ph, fill: "none", stroke: "var(--ink)", "stroke-width": 1 }, print);
   svg("circle", { cx: px + pw / 2, cy: py + 9, r: 4.5, fill: "var(--copper)" }, print);
-  tl.to(print, { opacity: 1, duration: 1.6, ease: "sine.inOut" }, 3.8)
-    .to(elev, { opacity: 0, duration: 1.6, ease: "sine.inOut" }, 3.8);
+  tl.to(print, { opacity: 1, duration: 1.3, ease: "sine.inOut" }, 2.3)
+    .to(elev, { opacity: 0, duration: 1.3, ease: "sine.inOut" }, 2.3);                // about 3.6 s in all
   return tl;
 };
 
@@ -57,15 +57,15 @@ const nursery: Build = (s) => {
   const holder = t(svg("g", {}, s.draw));
   holder.appendChild(g);
   const w = wipe(s, holder, { x: NURSERY.x, y: NURSERY.y, w: NURSERY.w * NURSERY.s, h: NURSERY.h * NURSERY.s }, "left");
-  tl.to(w.rect, { ...w.to, duration: 2.8, ease: "power1.inOut" }, 0.2);
+  tl.to(w.rect, { ...w.to, duration: 1.7, ease: "power1.inOut" }, 0.1);
 
   const dots = t(svg("g", { class: "gather" }, s.draw));
   for (let i = 0; i < 16; i++) {
     const a = (i / 16) * Math.PI * 2 + (i % 3) * 0.3, rr = 0.35 + ((i * 37) % 10) / 16;
     const sx = NURSERY.x - 30 - (i % 5) * 16, sy = 640 + Math.floor(i / 5) * 40;       // from the street on the left
     const d = svg("circle", { cx: sx, cy: sy, r: 4.5, fill: "var(--ink)", opacity: 0 }, dots);
-    tl.to(d, { opacity: 1, duration: 0.4 }, 3 + i * 0.05)
-      .to(d, { attr: { cx: PLACA.x + Math.cos(a) * PLACA.rx * rr, cy: PLACA.y + Math.sin(a) * PLACA.ry * rr }, duration: 3.4, ease: "sine.inOut" }, 3.3 + i * 0.09);
+    tl.to(d, { opacity: 1, duration: 0.3 }, 1.2 + i * 0.03)
+      .to(d, { attr: { cx: PLACA.x + Math.cos(a) * PLACA.rx * rr, cy: PLACA.y + Math.sin(a) * PLACA.ry * rr }, duration: 2.4, ease: "sine.inOut" }, 1.4 + i * 0.03);  // done by about 4.3 s, then Edu's 3 s of silence
   }
   return tl;
 };
@@ -110,4 +110,4 @@ const coda: Build = (s, beat) => {
   return tl;
 };
 
-export const ACT9: Record<number, Build> = { 39: back, 40: building, 41: nursery, 42: meets, 43: coda };
+export const ACT9: Record<string, Build> = { 39: back, 40: building, 41: nursery, 42: meets, 43: coda };

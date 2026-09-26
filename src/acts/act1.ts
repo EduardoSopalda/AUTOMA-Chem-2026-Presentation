@@ -81,4 +81,4 @@ const callouts: Build = (s) => {
   return tl;
 };
 
-export const ACT1: Record<number, Build> = { 2: section, 3: above, 4: callouts };
+export const ACT1: Record<string, Build> = { 2: section, 3: above, 4: callouts };

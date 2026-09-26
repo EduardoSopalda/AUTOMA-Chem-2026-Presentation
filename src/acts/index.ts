@@ -32,7 +32,7 @@ const placeholder: Build = (s, beat) => {
   return tl;
 };
 
-const BUILDS: Record<number, Build> = {
+const BUILDS: Record<string, Build> = {
   0: cover,
   1: architect,
   ...ACT1,
@@ -47,5 +47,5 @@ const BUILDS: Record<number, Build> = {
 };
 
 export function buildFor(i: number): Build {
-  return BUILDS[BEATS[i].n] ?? placeholder;
+  return BUILDS[BEATS[i].key] ?? placeholder;
 }

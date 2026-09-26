@@ -130,9 +130,15 @@ const trust: Build = (s: Sheet) => {
       .to(ys[1], { fill: "var(--ink)", duration: 0.6 }, 4.6);
   }
   const acc = t(label(s.draw, FIG.x, 748, "Accountable", { size: 40, anchor: "middle", fill: "var(--copper)" }));
-  const one = t(label(s.draw, GHOST_X - 20, 905, "1 : 1", { size: 44, anchor: "end" }));
   fadeIn(tl, acc, 5.4, 0.8);
-  fadeIn(tl, one, 6.6, 0.8);
+  return tl;
+};
+
+// Click 36b. "That is why governance has to be designed at human scale." The 1 : 1 from Act 2 returns.
+const humanScale: Build = (s) => {
+  const tl = gsap.timeline();
+  const one = t(label(s.draw, GHOST_X - 20, 905, "1 : 1", { size: 44, anchor: "end" }));
+  fadeIn(tl, one, 0.2, 0.8);
   return tl;
 };
 
@@ -152,4 +158,4 @@ const humans: Build = (s) => {
   return tl;
 };
 
-export const ACT8: Record<number, Build> = { 33: twins, 34: notes, 35: falter, 36: trust, 37: fade, 38: humans };
+export const ACT8: Record<string, Build> = { 33: twins, 34: notes, 35: falter, 36: trust, "36b": humanScale, 37: fade, 38: humans };

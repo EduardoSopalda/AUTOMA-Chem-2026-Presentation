@@ -138,4 +138,4 @@ const trace: Build = (s: Sheet) => {
   return tl;
 };
 
-export const ACT5: Record<number, Build> = { 19: number, 20: piles, 21: scope2, 22: owners, 23: trace };
+export const ACT5: Record<string, Build> = { 19: number, 20: piles, 21: scope2, 22: owners, 23: trace };

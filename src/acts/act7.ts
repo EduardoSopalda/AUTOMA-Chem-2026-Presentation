@@ -148,4 +148,4 @@ const another: Build = (s) => {
   return tl;
 };
 
-export const ACT7: Record<number, Build> = { 28: city, 29: teleport, 30: paved, 31: cracks, 32: another };
+export const ACT7: Record<string, Build> = { 28: city, 29: teleport, 30: paved, 31: cracks, 32: another };

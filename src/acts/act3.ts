@@ -194,4 +194,4 @@ const used: Build = (s) => {
   return tl;
 };
 
-export const ACT3: Record<number, Build> = { 9: masterplan, 10: sight, 11: cut, 12: section, 13: around, 14: used };
+export const ACT3: Record<string, Build> = { 9: masterplan, 10: sight, 11: cut, 12: section, 13: around, 14: used };

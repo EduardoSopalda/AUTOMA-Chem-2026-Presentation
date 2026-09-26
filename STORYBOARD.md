@@ -38,7 +38,8 @@ This follows the approved acts in CLAUDE.md sections 5, 5b and 5c. Nothing new h
 | # | Cue | The drawing | On screen text | Archetype | s |
 |---|---|---|---|---|---|
 | 5 | "Let me take you to Brasília." | Chain: the plan at the top re-forms into the aerial plan, drawn in copper, the axis first and then the curved wings. The title block fills in. On Niemeyer's name, the Congresso rises from the horizon (horizon, then towers, then dome and bowl), holds 2 s and lies back down. A thin warm glow runs once along the axis. | Urban plan: Lúcio Costa, 1957. Buildings: Oscar Niemeyer. (title block) | Drawing | 24 |
-| 6 | "Jan Gehl later coined a name…" | Chain: the sheet gets its title in serif. A dashed footpath leaves the figure and crosses slowly toward the centre, and never arrives. When the path stops, the two scale notations appear. | The Brasília Syndrome. · 1 : 50 000 · 1 : 1 | Contrast | 22 |
+| 6 | "Jan Gehl gave a name…" | Chain: the sheet gets its title in serif. A dashed footpath leaves the figure and crosses slowly toward the centre, and never arrives. | The Brasília Syndrome. | Contrast | 24 |
+| 6b | "The point is scale." | The two scale notations appear. No other words. | 1 : 50 000 · 1 : 1 | Contrast | 12 |
 | 7 | "Many of the people who built Brasília…" | Small ink dots gather at the edges of the frame, the satellite towns, and travel inward in lines. | none | Drawing | 10 |
 | 8 | "The city was finished." | The dots flow back out. The plan stays perfect and empty. One line appears. **Hold.** | Built by people who could not afford to live in it. | Statement | 14 |
 
@@ -110,7 +111,8 @@ One of the two acts that carry the argument, so it keeps its extra beats.
 | 33 | "Take digital twins." | Chain: the twin towers straighten into two process columns, the real plant in solid copper and its twin in dashed blue. Feed lines run from the plant to the twin. Then, on "whether anyone believes it", nothing moves. **Protected silence**, with the twin unfinished. | Sensors. Equipment. Lab results. Maintenance. Energy. | Contrast | 18 |
 | 34 | "AI can help build, enrich and operate…" | Chain: blue margin notes beside the twin. Three warm points glow on the real plant. | pattern found · behaviour predicted (margin notes) · Energy. Material loss. Emissions. | Bridge | 17 |
 | 35 | "If the equipment data is incomplete…" | One feed line breaks halfway. "Yield" splits into copper and blue. The energy line connects to the wrong node. The twin stays dashed. | Yield · Yield | Drawing | 14 |
-| 36 | "…when the operator on the night shift trusts…" | Chain: the paper dims very slightly toward evening, and a label appears beside the figure. The twin turns solid, clause by clause. "Yield" collapses into one. "Accountable" returns beside the figure, and then the "1 : 1" notation. | Night shift, 03:10. · Accountable · 1 : 1 | Bridge | 28 |
+| 36 | "It becomes sustainable, in both senses…" | Chain: the paper dims very slightly toward evening, and a label appears above the figure. The twin turns solid, clause by clause. "Yield" collapses into one. "Accountable" returns above the figure. | Night shift, 03:10. · Accountable | Bridge | 16 |
+| 36b | "That is why governance has to be designed at human scale." | The "1 : 1" notation from Act 2 returns next to the figure. | 1 : 1 | Bridge | 19 |
 | 37 | "Agents do not own risk." | Everything fades except the figure. | none | Statement | 6 |
 | 38 | "Humans do. Always." | The three words appear in serif. **Protected silence, 5 s.** | Humans do. Always. | Statement | 12 |
 
@@ -120,7 +122,7 @@ One of the two acts that carry the argument, so it keeps its extra beats.
 |---|---|---|---|---|---|
 | 39 | "So let me take you back to Brasília." | The aerial plan returns above the figure, identical to Act 2 and built from the same SVG. The ghost dimension line darkens, still without a label. | none | Contrast | 10 |
 | 40 | "I think we can." | Chain: your elevation draws in copper, then becomes the photograph of the same building today, small, like a print pinned to the board, toned toward the paper. | none | Drawing | 10 |
-| 41 | "And I think it is worth doing." | The nursery school plan. The dots that walked around the plaza in Act 3 walk into the plaça d'accés and gather there. | none (the credit line appears on the web only) | Drawing | 10 |
+| 41 | "And I think it is worth doing." Then **pause 3 s** before the next click. | The nursery school plan. The dots that walked around the plaza in Act 3 walk into the plaça d'accés and gather there. | none (the credit line appears on the web only) | Drawing | 10 |
 | 42 | "Frameworks are necessary." | Chain: the plan slowly lowers until it meets the figure. The dimension line shrinks with it and finally gets its label. | Useful. Trusted. Sustainable in practice. | Bridge | 15 |
 
 ## Coda. The question · budget 20 s · 1 click
@@ -141,21 +143,18 @@ From the cut script (`docs/AUTOMA-Chem-2026-Script-CUT.md`, 1,302 spoken words) 
 |---|---|---|---|---|
 | Opening line | 0 | 0:10 | 18 | 108 |
 | 1 The Architect | 4 | 1:10 | 158 | 135 |
-| 2 Brasília | 4 | 1:10 | 153 | 131 |
+| 2 Brasília | 5 | 1:10 | 153 | 131 |
 | 3 The drawing meets the ground | 6 | 1:10 | 153 | 131 |
 | 4 Sustainability | 4 | 1:05 | 148 | 137 |
 | 5 The carbon number | 5 | 0:55 | 119 | 130 |
 | 6 Why not just AI | 4 | 1:00 | 141 | 141 |
 | 7 The shiny city | 5 | 0:40 | 89 | 134 |
-| 8 Ground level | 6 | 1:35 | 201 | 127 |
+| 8 Ground level | 7 | 1:35 | 201 | 127 |
 | 9 Back to Brasília | 4 | 0:35 | 72 | 123 |
 | Coda | 1 | 0:25 | 50 | 120 |
-| **Total** | **43** | **9:55** | **1,302** | **131** |
+| **Total** | **45** | **9:55** | **1,302** | **131** |
 
-**Three places where the speech and the drawing don't line up yet** (for Edu to decide):
-1. **Click 6** is 36 s long, but its chain shows the scale notations about 7 s in, while "The point is scale" comes about 25 s in. Proposal: a second click on "The point is scale."
-2. **Click 36** is 35 s long, but "1 : 1" is timed at 6.6 s, and "designed at human scale" comes much later. Proposal: a second click on "That is why governance has to be designed at human scale."
-3. **Act 9, clicks 40 and 41,** have 5 s of speech against about 12 s of drawing. Proposal: let the payoff breathe with a few seconds of silence, which means Act 9 runs over its 35 s. Or speed the drawing up.
+**Decided 26 September:** click 6b on "The point is scale.", click 36b on "designed at human scale.", and Act 9's drawing tightened to about 8 s across clicks 40 and 41, followed by a 3 s silence before "Frameworks are necessary." The talk now has 45 clicks. Keys like "6b" are stable, so the presenter shows both its running number and its storyboard key.
 
 ## Where I disagree with the brief
 

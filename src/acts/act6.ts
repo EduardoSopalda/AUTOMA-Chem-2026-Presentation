@@ -108,4 +108,4 @@ const filter: Build = (s) => {
   return tl;
 };
 
-export const ACT6: Record<number, Build> = { 24: note, 25: fan, 26: documents, 27: filter };
+export const ACT6: Record<string, Build> = { 24: note, 25: fan, 26: documents, 27: filter };

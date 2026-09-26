@@ -130,4 +130,4 @@ const checklist: Build = (s) => {
   return tl;
 };
 
-export const ACT4: Record<number, Build> = { 15: target, 16: evidence, 17: network, 18: checklist };
+export const ACT4: Record<string, Build> = { 15: target, 16: evidence, 17: network, 18: checklist };

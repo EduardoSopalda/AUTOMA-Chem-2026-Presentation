@@ -99,9 +99,15 @@ const syndrome: Build = (s) => {
   const w = wipe(s, path, { x: 900, y: 540, w: 200, h: 400 }, "bottom");
   tl.to(w.rect, { ...w.to, duration: 6, ease: "sine.inOut" }, 1.2);
 
+  return tl;
+};
+
+// Click 6b. "The point is scale." Two notations, no other words.
+const scale: Build = (s) => {
+  const tl = gsap.timeline();
   const big = t(label(s.draw, 1420, 400, "1 : 50 000", { size: 44 }));
   const one = t(label(s.draw, GHOST_X - 20, 905, "1 : 1", { size: 44, anchor: "end" }));
-  fadeIn(tl, [big, one], 7.4, 0.8, 0.6);
+  fadeIn(tl, [big, one], 0.2, 0.8, 0.6);
   return tl;
 };
 
@@ -143,4 +149,4 @@ const finished: Build = (s) => {
   return tl;
 };
 
-export const ACT2: Record<number, Build> = { 5: plan, 6: syndrome, 7: builders, 8: finished };
+export const ACT2: Record<string, Build> = { 5: plan, 6: syndrome, "6b": scale, 7: builders, 8: finished };

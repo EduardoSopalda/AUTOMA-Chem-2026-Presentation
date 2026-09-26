@@ -66,8 +66,9 @@ export function startPresenter(root: HTMLElement) {
     $(".now .cue").textContent = b.cue;
     $(".now .passage").textContent = PASSAGES[i];
     $(".now .words").textContent = b.text.length ? "On screen: " + b.text.join("  ·  ") : "";
-    $(".now .meta").textContent = `${b.act === 0 ? "Cover" : b.act === 10 ? "Coda" : "Act " + b.act} · ${ACTS[b.act].title} · click ${b.n} of ${BEATS.length - 1} · ${WORDS[i]} words · budget ${b.secs} s`;
-    $(".now .holdtag").innerHTML = b.hold ? `<span class="hold">HOLD · SILENCE</span>` : "";
+    $(".now .meta").textContent = `${b.act === 0 ? "Cover" : b.act === 10 ? "Coda" : "Act " + b.act} · ${ACTS[b.act].title} · click ${b.n} of ${BEATS.length - 1} (storyboard ${b.key}) · ${WORDS[i]} words · budget ${b.secs} s`;
+    $(".now .holdtag").innerHTML = b.hold ? `<span class="hold">HOLD · SILENCE</span>`
+      : b.pause ? `<span class="hold">PAUSE ${b.pause} S, THEN CLICK</span>` : "";
     $(".next .cue").textContent = n ? n.cue : "End. Sit down.";
     $(".next .words").textContent = n ? n.text.join("  ·  ") : "";
     $(".list").innerHTML = BEATS.filter((x) => x.act === b.act)

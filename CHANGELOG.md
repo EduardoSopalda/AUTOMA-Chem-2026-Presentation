@@ -2,6 +2,12 @@
 
 Newest first. A two minute read.
 
+## 26 September 2026 (timing decisions)
+
+* **Two new clicks:** 6b on "The point is scale." (the scale notations) and 36b on "designed at human scale." (1 : 1 returns). The talk has 45 clicks. Builds are looked up by stable storyboard keys, so inserting a click renumbers nothing.
+* **Act 9 tightened:** the elevation, photograph, nursery and dots take about 8 s in all. The presenter view then shows "PAUSE 3 S, THEN CLICK" before "Frameworks are necessary."
+* Budgets rebalanced within Acts 2, 8 and 9. The total is still 9:55.
+
 ## 26 September 2026 (the cut and the Congresso)
 
 * **Your Congresso drawing** replaces the placeholder in Acts 2 and 7, and feeds the Act 7 to 8 handoff. Five duplicated plinth lines and a doubled tower top were removed. The tower outline is split into two towers for the handoff. It is anchored on the joint line, so Brasília's monumental axis runs straight up between the towers.
