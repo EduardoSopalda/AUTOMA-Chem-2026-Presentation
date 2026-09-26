@@ -20,10 +20,13 @@
   body{font-family:Arial,Helvetica,sans-serif}
 
   /* One fixed stage, scaled to fit the window */
-  .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden}
+  .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:#ebd7bd}
 
   /* The opening film sits underneath. It is hidden until the click. */
-  .film{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover}
+  .film{position:absolute;left:0;top:95px;width:1920px;height:1080px;object-fit:cover}   /* shifted down with the man */
+
+  /* The film starts 95 px down; this blends its top edge into the paper above it */
+  .seam{position:absolute;left:0;top:0;width:1920px;height:175px;pointer-events:none;background:linear-gradient(#ebd7bd 0,#ebd7bd 95px,rgba(235,215,189,0) 175px)}
 
   /* Edu's paper, exactly as in his file, on its own layer so it can give way to the film */
   .paper{
@@ -46,7 +49,7 @@
   .chem::after{content:"";position:absolute;width:180px;height:90px;border:1px solid rgba(105,74,42,.16);border-radius:42%;left:30px;top:-18px;transform:rotate(27deg)}
 
   /* The man: a multiply layer (white is transparent), placed on the video's own man */
-  .man{position:absolute;left:743px;top:655px;width:257px;height:184px;mix-blend-mode:multiply;pointer-events:none}
+  .man{position:absolute;left:743px;top:750px;width:257px;height:184px;mix-blend-mode:multiply;pointer-events:none}
 
   /* ---------- Type: Edu's values, converted from vw to the 1920 stage ---------- */
   .type{position:absolute;inset:0}
@@ -54,29 +57,29 @@
   .serif{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.055em;line-height:.88}
   .rust{color:var(--rust)} .dark{color:var(--ink)}
 
-  .rule-left{position:absolute;left:173px;top:216px;height:464px;border-left:1px solid rgba(132,59,24,.78)}
-  .rule-right{position:absolute;left:1455px;top:556px;height:218px;border-left:1px solid rgba(132,59,24,.75)}
+  .rule-left{position:absolute;left:77px;top:175px;height:520px;border-left:1px solid rgba(132,59,24,.78)}
+  .rule-right{position:absolute;left:1560px;top:556px;height:218px;border-left:1px solid rgba(132,59,24,.75)}
 
   /* BEFORE: Edu's layout */
-  .d-data   {left:211px;top:194px;font-size:61px}
-  .d-andai  {left:211px;top:248px;font-size:61px}
-  .d-in     {left:211px;top:352px;font-size:49px;font-style:italic}
-  .d-sust   {left:260px;top:322px;font-size:101px}
-  .d-dig    {left:260px;top:411px;font-size:101px}
-  .d-trans  {left:260px;top:500px;font-size:101px}
-  .d-sub    {left:215px;top:630px;font:italic 28px Georgia,"Times New Roman",serif}
+  .d-data   {left:120px;top:150px;font-size:68px}
+  .d-andai  {left:120px;top:210px;font-size:68px}
+  .d-in     {left:120px;top:327px;font-size:55px;font-style:italic}
+  .d-sust   {left:175px;top:293px;font-size:113px}
+  .d-dig    {left:175px;top:392px;font-size:113px}
+  .d-trans  {left:175px;top:492px;font-size:113px}
+  .d-sub    {left:124px;top:635px;font:italic 31px Georgia,"Times New Roman",serif}
 
-  .n-first  {left:1520px;top:556px;font:39px/.98 Georgia,"Times New Roman",serif}
-  .n-last   {left:1520px;top:594px;font:39px/.98 Georgia,"Times New Roman",serif}
+  .n-first  {left:1610px;top:556px;font:39px/.98 Georgia,"Times New Roman",serif}
+  .n-last   {left:1610px;top:594px;font:39px/.98 Georgia,"Times New Roman",serif}
   .role     {font:15px/1.65 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
-  .r-1      {left:1520px;top:645px}
-  .r-2      {left:1520px;top:670px}
-  .company  {left:1520px;top:724px;font:bold 27px Arial,Helvetica,sans-serif;letter-spacing:-.05em;color:var(--ink)}
+  .r-1      {left:1610px;top:645px}
+  .r-2      {left:1610px;top:670px}
+  .company  {left:1610px;top:724px;font:bold 27px Arial,Helvetica,sans-serif;letter-spacing:-.05em;color:var(--ink)}
   .dots{display:inline-flex;gap:3px;margin-left:4px;vertical-align:middle}
   .dots i{width:11px;height:11px;border-radius:50%;background:#111;display:block}
 
-  .people{left:960px;top:899px;transform:translateX(-50%);color:var(--rust);font:700 22px Arial,Helvetica,sans-serif;letter-spacing:.30em}
-  .event {left:960px;top:944px;transform:translateX(-50%);color:var(--blue);font:15.7px Arial,Helvetica,sans-serif;letter-spacing:.20em}
+  .people{left:960px;top:958px;transform:translateX(-50%);color:var(--rust);font:700 22px Arial,Helvetica,sans-serif;letter-spacing:.30em}
+  .event {left:960px;top:1003px;transform:translateX(-50%);color:var(--blue);font:15.7px Arial,Helvetica,sans-serif;letter-spacing:.20em}
 
   /* AFTER: the title in the bottom left corner, the name top right (as in Edu's "after" image) */
   .after .rule-left{left:84px;top:742px;height:256px}
@@ -95,13 +98,14 @@
   .after .r-2    {left:1290px;top:127px;font-size:13.5px}
   .after .company{left:1622px;top:72px}
 
-  .after .people{top:950px} .after .event{top:995px}
+  
   .hint{position:absolute;right:14px;bottom:10px;font:12px Arial;color:rgba(69,109,139,.45);letter-spacing:.1em}
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
   <video class="film" id="film" src="opening.mp4" muted playsinline preload="auto" style="opacity:0"></video>
+  <div class="seam"></div>
 
   <div class="paper" id="paper"><div class="grid"></div><div class="chem">H₂C　O　109.24</div></div>
 
@@ -156,7 +160,7 @@
     Flip.from(state, { duration: 2.4, ease: "power3.inOut", scale: true, stagger: 0.03 });
     const to = new Map(title.map((el) => [el, { left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }]));
     // Phase 1 (1.8 s): the whole block scales by k about the sheet origin and glides to the corner, as one piece.
-    const k = 0.574, tx = 163 - k * 260, ty = 830 - k * 322;           // "Sustainable" lands exactly on its final place
+    const k = 58 / 113, tx = 163 - k * 175, ty = 830 - k * 293;           // "Sustainable" lands exactly on its final place
     const q = new Map(from.map((f) => [f.el, { left: tx + k * f.left, top: ty + k * f.top, size: f.size * k, h: f.h * k }]));
     const tl2 = gsap.timeline();
     from.forEach((f) => {
