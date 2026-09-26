@@ -2,6 +2,15 @@
 
 Newest first. A two minute read.
 
+## 26 September 2026 (late night): Phase 5 first pass
+
+* **All nine acts and the coda are drawn.** No placeholders are left. The run through is in `frames/out/run-through.png`, with the projector version beside it.
+* **The cover** is now SVG, built from the same geometry as the Brasília plan in Acts 2 and 9. It draws itself (copper, then blueprint) and un-draws line by line.
+* **Real material:** your wall section (Act 1), your elevation and photograph (Act 9), and your nursery school plan taken from the vector PDF's own lines (Act 9).
+* **Performance:** a steady 60 frames a second on this Mac, including the 10,000 points. To repeat on the venue laptop.
+* **Still placeholder:** the Congresso geometry, until your drawing arrives. Timings inside each click are budgets until the cut script and recording arrive.
+* **Tools:** `node tools/shots.mjs <clicks>`, `node tools/film.mjs <click>`, `node tools/perf.mjs`, `npm run stagetest`.
+
 ## 26 September 2026 (night)
 
 * **Phase 4 engine** built: Vite, TypeScript and GSAP. One continuous sheet, 43 clicks plus the cover. Forward animates, and back or jump rebuilds exactly.
