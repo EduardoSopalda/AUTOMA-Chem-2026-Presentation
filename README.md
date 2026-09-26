@@ -28,7 +28,7 @@ The cover plays its build once on load and then holds. The first click starts Ac
 
 If the browser reloads mid talk, it comes back to the same click. The click number is kept in the address.
 
-In the presenter window, clicker keys are passed to the deck, and R resets the timers.
+In the presenter window, clicker keys are passed to the deck, and R resets the timers. On stage it shows one number, such as "24 of 45". K switches to rehearsal mode, which adds the storyboard key, the word count and the budget for each click. Opening it as `?presenter&rehearsal` starts in rehearsal mode.
 
 ## Check before going on stage
 

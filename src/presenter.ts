@@ -56,6 +56,8 @@ export function startPresenter(root: HTMLElement) {
 
   const $ = (q: string) => root.querySelector(q) as HTMLElement;
   let i = -1, talkStart = 0, actStart = 0, curAct = -1, lastSeen = 0;
+  // Stage mode shows one number. Rehearsal mode (K, or ?presenter&rehearsal) adds the storyboard key, words and budget.
+  let rehearsal = new URLSearchParams(location.search).has("rehearsal");
 
   const deck = () => window.opener as Window | null;
   const send = (m: Msg) => deck()?.postMessage(m, "*");
@@ -66,7 +68,10 @@ export function startPresenter(root: HTMLElement) {
     $(".now .cue").textContent = b.cue;
     $(".now .passage").textContent = PASSAGES[i];
     $(".now .words").textContent = b.text.length ? "On screen: " + b.text.join("  ·  ") : "";
-    $(".now .meta").textContent = `${b.act === 0 ? "Cover" : b.act === 10 ? "Coda" : "Act " + b.act} · ${ACTS[b.act].title} · click ${b.n} of ${BEATS.length - 1} (storyboard ${b.key}) · ${WORDS[i]} words · budget ${b.secs} s`;
+    const where = `${b.act === 0 ? "Cover" : b.act === 10 ? "Coda" : "Act " + b.act} · ${ACTS[b.act].title} · ${b.n} of ${BEATS.length - 1}`;
+    $(".now .meta").textContent = rehearsal
+      ? `${where} · REHEARSAL · storyboard ${b.key} · ${WORDS[i]} words · budget ${b.secs} s`
+      : where;
     $(".now .holdtag").innerHTML = b.hold ? `<span class="hold">HOLD · SILENCE</span>`
       : b.pause ? `<span class="hold">PAUSE ${b.pause} S, THEN CLICK</span>` : "";
     $(".next .cue").textContent = n ? n.cue : "End. Sit down.";
@@ -106,6 +111,7 @@ export function startPresenter(root: HTMLElement) {
 
   window.addEventListener("keydown", (e) => {
     if (e.key === "r" || e.key === "R") { talkStart = actStart = 0; return; }   // reset timers
+    if (e.key === "k" || e.key === "K") { rehearsal = !rehearsal; render(); return; }
     if (!NAV_KEYS.has(e.key) || e.repeat) return;
     e.preventDefault();
     send({ type: "key", key: e.key });
