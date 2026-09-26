@@ -3,9 +3,9 @@
 import elevationUrl from "../../assets/architecture/crops/elevation.png";
 import photoUrl from "../../assets/architecture/crops/photo.jpg";
 import nurserySvg from "../../assets/architecture/nursery-plan-lines.svg?raw";
-import { label, setTitleBlock, svg, type Sheet } from "../sheet";
+import { label, setTitleBlock, svg } from "../sheet";
 import { drawPlan } from "./act2";
-import { gsap, t, clearPrevious, fadeIn, unDraw, wipe, FIG, GHOST_X, GHOST_TOP, type Build } from "./common";
+import { gsap, t, clearPrevious, fadeIn, unDraw, wipe, copperFilter, FIG, GHOST_X, GHOST_TOP, type Build } from "./common";
 import { ABOVE } from "../draw/brasilia";
 
 // Click 39. "So let me take you back to Brasília." The plan returns exactly as in Act 2. The ghost line darkens.
@@ -19,21 +19,11 @@ const back: Build = (s, beat) => {
   return tl;
 };
 
-function defs(s: Sheet) {
-  let d = s.draw.querySelector("defs");
-  if (!d) d = svg("defs", {}, s.draw);
-  if (!d.querySelector("#to-copper")) {
-    // Dark lines become copper ink with transparency; white paper becomes our paper.
-    const f = svg("filter", { id: "to-copper", "color-interpolation-filters": "sRGB" }, d);
-    svg("feColorMatrix", { type: "matrix", values: "0 0 0 0 0.463  0 0 0 0 0.184  0 0 0 0 0.043  -0.48 -0.944 -0.176 0 1.45" }, f);
-  }
-  return d;
-}
 
 // Click 40. "I think we can." Edu's elevation draws in copper, then becomes the photograph of the building today.
 const building: Build = (s) => {
   const tl = gsap.timeline();
-  defs(s);
+  copperFilter(s.draw);
   const box = { x: 380, y: 470, w: 194, h: 260 };
   const elev = t(svg("image", { href: elevationUrl, x: box.x, y: box.y, width: box.w, height: box.h, filter: "url(#to-copper)", preserveAspectRatio: "xMidYMid meet" }, s.draw)) as SVGImageElement;
   const w = wipe(s, elev, box, "bottom");

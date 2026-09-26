@@ -50,6 +50,17 @@ export function ghost(s: Sheet) {
   return g;
 }
 
+/** Dark scan lines become copper ink; white paper and transparent areas vanish. Shared by Acts 1 and 9. */
+export function copperFilter(root: SVGSVGElement) {
+  let d = root.querySelector("defs");
+  if (!d) d = svg("defs", {}, root);
+  if (!d.querySelector("#to-copper")) {
+    const f = svg("filter", { id: "to-copper", "color-interpolation-filters": "sRGB" }, d);
+    // RGB = copper. Alpha = 1.45 × source alpha, minus luminance: white and transparent both go to zero.
+    svg("feColorMatrix", { type: "matrix", values: "0 0 0 0 0.463  0 0 0 0 0.184  0 0 0 0 0.043  -0.48 -0.944 -0.176 1.45 0" }, f);
+  }
+}
+
 /** Reveal an element with a wipe, for things DrawSVG can't draw (dashed lines, images, many paths). */
 export function wipe(s: Sheet, el: SVGGraphicsElement, box: { x: number; y: number; w: number; h: number }, from: "left" | "bottom" = "left") {
   const id = `w${Math.random().toString(36).slice(2, 8)}`;

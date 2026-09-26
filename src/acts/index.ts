@@ -2,11 +2,12 @@
 
 import { BEATS } from "../beats";
 import { cover, architect } from "./cover";
+import { ACT1 } from "./act1";
 import { ACT2 } from "./act2";
 import { ACT5 } from "./act5";
 import { ACT8 } from "./act8";
 import { ACT9 } from "./act9";
-import { gsap, clearPrevious, ghost, type Build } from "./common";
+import { gsap, clearPrevious, type Build } from "./common";
 import { setTitleBlock } from "../sheet";
 
 const SOURCE_NOTE = "Scope 1, 2 and 3, 2025: 11,002 kt CO2e. Source: dsm-firmenich Integrated Annual Report 2025.";
@@ -38,11 +39,7 @@ const placeholderClearingPlans: Build = (s, beat) => {
 const BUILDS: Record<number, Build> = {
   0: cover,
   1: architect,
-  4: (s, b) => {
-    const tl = placeholder(s, b);
-    const g = ghost(s);
-    return tl.to(g, { opacity: 0.12, duration: 2.5, ease: "sine.inOut" }, 1.5);
-  },
+  ...ACT1,
   ...ACT2,
   9: placeholderClearingPlans,
   ...ACT5,
