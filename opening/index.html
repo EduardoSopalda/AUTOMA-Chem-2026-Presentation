@@ -175,6 +175,8 @@
     place(l, 1634 + f.offsetWidth + nameSize * 0.25, 76, nameSize, 0.839);
   }
 
+  // Typography speed: 1 = original timing. Higher is slower. 1.6 settles everything in about 4.4 s.
+  const SLOW = 1.6;
   let started = false, tl = null;
   function begin() {
     if (started) return;
@@ -188,7 +190,7 @@
     const from = title.map((el) => ({ el, left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }));
     type.classList.add("after");
     layoutAfter();
-    Flip.from(state, { duration: 2.4, ease: "power3.inOut", scale: true, stagger: 0.03 });
+    Flip.from(state, { duration: 2.4 * SLOW, ease: "power3.inOut", scale: true, stagger: 0.03 * SLOW });
     const to = new Map(title.map((el) => [el, { left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }]));
     // Phase 1 (1.8 s): the whole block scales by k about the sheet origin and glides to the corner, as one piece.
     const k = 58 / 113, tx = 163 - k * 175, ty = 830 - k * 293;           // "Sustainable" lands exactly on its final place
@@ -197,17 +199,17 @@
     from.forEach((f) => {
       const a = q.get(f.el), b = to.get(f.el), rule = f.el.classList.contains("rule-left");
       gsap.set(f.el, { left: f.left, top: f.top, ...(rule ? { height: f.h } : { fontSize: f.size }) });
-      tl2.to(f.el, { left: a.left, top: a.top, ...(rule ? { height: a.h } : { fontSize: a.size }), duration: 1.8, ease: "power3.inOut" }, 0);
+      tl2.to(f.el, { left: a.left, top: a.top, ...(rule ? { height: a.h } : { fontSize: a.size }), duration: 1.8 * SLOW, ease: "power3.inOut" }, 0);
       // Phase 2 (about 1 s): every line settles into the final layout.
       const dig = f.el.classList.contains("d-dig");
       if (dig) {
-        tl2.to(f.el, { left: b.left, fontSize: b.size, duration: 0.5, ease: "power2.inOut" }, 1.8)   // slide right along its own line
-           .to(f.el, { top: b.top, duration: 0.45, ease: "power2.inOut" }, 2.3);                      // then step up beside "Sustainable"
+        tl2.to(f.el, { left: b.left, fontSize: b.size, duration: 0.5 * SLOW, ease: "power2.inOut" }, 1.8 * SLOW)   // slide right along its own line
+           .to(f.el, { top: b.top, duration: 0.45 * SLOW, ease: "power2.inOut" }, 2.3 * SLOW);                      // then step up beside "Sustainable"
       } else {
-        tl2.to(f.el, { left: b.left, top: b.top, ...(rule ? { height: b.h } : { fontSize: b.size }), duration: 0.5, ease: "power2.inOut" }, 2.3);
+        tl2.to(f.el, { left: b.left, top: b.top, ...(rule ? { height: b.h } : { fontSize: b.size }), duration: 0.5 * SLOW, ease: "power2.inOut" }, 2.3 * SLOW);
       }
     });
-    gsap.fromTo("#ruleLogo", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, transformOrigin: "50% 50%", duration: 0.6, ease: "power2.out", delay: 2.2 });                    // hand back to the stylesheet
+    gsap.fromTo("#ruleLogo", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, transformOrigin: "50% 50%", duration: 0.6 * SLOW, ease: "power2.out", delay: 2.2 * SLOW });                    // hand back to the stylesheet
     // The film starts under the man. Its first second is only the man on paper, so the paper can give way quietly.
     film.currentTime = 0;
     film.play();
