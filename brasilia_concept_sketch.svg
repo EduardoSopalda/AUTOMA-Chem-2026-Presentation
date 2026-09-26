@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="627" viewBox="0 0 1254 627" fill="none">
+  <title>Clean vector tracing of supplied architectural sketch</title>
+  <desc>Minimal black line architectural sketch with a central tower, left dome, right bowl form, baseline, and stepped base.</desc>
+  <g stroke="#111111" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main datum / ground line -->
+    <path d="M46 438.5 H1207" />
+
+    <!-- Left hemispherical / dome form -->
+    <path d="M166 438
+             C194 390 234 357 292 357
+             C350 357 392 390 418 438" />
+
+    <!-- Central vertical tower / axis -->
+    <path d="M424.5 438 V65 H507.5 V438" />
+    <path d="M457.5 438 V65" />
+    <path d="M475.5 438 V65" />
+    <path d="M467 438 V103" />
+    <path d="M424.5 65 H507.5" />
+
+    <!-- Right bowl / shallow basin form -->
+    <path d="M726 340.5 H1200" />
+    <path d="M726 340.5
+             C756 374 795 405 851 425
+             C907 445 985 444 1044 424
+             C1113 401 1167 371 1200 340.5" />
+
+    <!-- Small top/central horizontal ledges visible in the source -->
+    <path d="M550 438 V455 H657 V438" />
+    <path d="M518 455 V471 H675 V455" />
+    <path d="M536 454 H657" />
+    <path d="M493 471 V490 H693 V471" />
+    <path d="M493 490 H693" />
+
+    <!-- Short central base / plinth construction lines -->
+    <path d="M535 455 H658" />
+    <path d="M517 472 H675" />
+    <path d="M493 489 H693" />
+  </g>
+</svg>
