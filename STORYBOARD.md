@@ -16,7 +16,7 @@ Edu's new direction: he is a storyteller who internalises the script and never r
 * There are no time budgets per click. There are three checkpoints: end of Act 4 at 4:45, start of Act 8 at 7:20, and the finish at 9:55.
 * The three silences stay exactly as they are.
 
-### My recommendation: 26 clicks
+### The full grouping: 28 clicks
 
 Every chapter moment is kept, and so are the three silences. "Was" lists the old storyboard keys each click absorbs. "Cut" is what disappears so that the click fits in about 4 seconds.
 
@@ -51,9 +51,9 @@ Every chapter moment is kept, and so are the three silences. "Was" lists the old
 | 27 | **Useful** | Necessary, not sufficient | The plan lowers to the figure; the dimension line gets its label | 42 | |
 | 28 | **The question** | Ask it at lunch | Everything un-draws; the question on blank paper | 43 | |
 
-That's 28 rows, of which 26 you have to remember. The three silences are fixed, and 24 and 25 run as one gesture ("Agents… Humans…").
+That's 28 clicks, down from 45. Three of them are the silences, which you already know by heart.
 
-### To reach about 20: six more merges, each with its cost
+### Getting closer to 20: the merges, each with its cost
 
 | Merge | Saves | Cost |
 |---|---|---|
@@ -65,7 +65,9 @@ That's 28 rows, of which 26 you have to remember. The three silences are fixed, 
 | F. **Agents** into **Humans**: one click fades everything and brings the words | 1 | The fade happens on "Humans do." instead of "Agents do not own risk." The silence itself is unchanged |
 | G. **Evidence** into **Accountable** | 1 | Far more than 4 s of drawing. Not recommended |
 
-My recommendation: take A (drop Scope 2) and F. That gives **24**, where every remaining click is a moment you'd want to stand in. B, C, D and E each cost something the audience will remember. Your call.
+**Honest arithmetic.** F alone gives 27. B, C, D, E and F together give 23. Reaching 20 would also need G, or folding Batch into 10,000, and both would put far more than 4 seconds of drawing on one click. So 20 isn't reachable without cutting ideas, not just merging clicks.
+
+**My recommendation: 27.** Take A (drop Scope 2) and F. Every remaining click is a moment you'd want to stand in. The fewer clicks, the more each one has to show within 4 seconds, and the more the drawing runs ahead of your story. If you want fewer, B is the least costly next step (26). Your call.
 
 ---
 
