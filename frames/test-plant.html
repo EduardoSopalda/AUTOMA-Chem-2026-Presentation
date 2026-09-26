@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Test: the plant and its twin</title>
+<style>
+  @font-face { font-family: "Source Serif 4"; src: url("../fonts/SourceSerif4.ttf") format("truetype"); font-weight: 200 900; }
+  @font-face { font-family: "DM Sans"; src: url("../fonts/DMSans-500.woff2") format("woff2"); font-weight: 500; }
+  html, body { margin: 0; background: #F3DDC0; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="paper" cx="50%" cy="42%" r="75%">
+      <stop offset="0" stop-color="#F6E7CF"/><stop offset="0.6" stop-color="#F1DDBF"/><stop offset="1" stop-color="#E7CFAA"/>
+    </radialGradient>
+    <filter id="tooth" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="11" result="n"/>
+      <feColorMatrix in="n" values="0 0 0 0 0.42  0 0 0 0 0.33  0 0 0 0 0.22  0 0 0 0.16 0"/>
+    </filter>
+    <filter id="fibres" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.09" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" values="0 0 0 0 0.5  0 0 0 0 0.38  0 0 0 0 0.24  0 0 0 0.10 0"/>
+    </filter>
+    <!-- pencil: breaks the stroke edge slightly, as graphite does on toothed paper -->
+    <filter id="graphite" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" seed="3" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="1.1"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#paper)"/>
+  <rect width="1920" height="1080" filter="url(#fibres)"/>
+  <g id="art"></g>
+  <rect width="1920" height="1080" filter="url(#tooth)" style="mix-blend-mode:multiply"/>
+</svg>
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const art = document.getElementById("art");
+const el = (tag, attrs, parent = art) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+
+// One seed for the whole hand.
+let seed = 7;
+const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+function noise1(x, o) { const i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f); const h = (n) => { const s = Math.sin((n + o) * 127.1) * 43758.5453; return (s - Math.floor(s)) * 2 - 1; }; return h(i) * (1 - u) + h(i + 1) * u; }
+function resample(pts, step = 5) {
+  const out = [pts[0]]; let carry = 0;
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], L = Math.hypot(x1 - x0, y1 - y0); let d = step - carry;
+    while (d <= L) { const t = d / L; out.push([x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]); d += step; }
+    carry = L - (d - step);
+  }
+  out.push(pts[pts.length - 1]); return out;
+}
+function smooth(p) {
+  let d = `M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;
+  for (let i = 0; i < p.length - 1; i++) {
+    const a = p[i - 1] || p[i], b = p[i], c = p[i + 1], e = p[i + 2] || c;
+    d += `C${(b[0] + (c[0] - a[0]) / 6).toFixed(1)} ${(b[1] + (c[1] - a[1]) / 6).toFixed(1)} ${(c[0] - (e[0] - b[0]) / 6).toFixed(1)} ${(c[1] - (e[1] - b[1]) / 6).toFixed(1)} ${c[0].toFixed(1)} ${c[1].toFixed(1)}`;
+  }
+  return d;
+}
+function wobble(pts, amp) {
+  const r = resample(pts), o = rnd() * 1000;
+  return r.map((p, i) => { const a = r[Math.max(0, i - 1)], b = r[Math.min(r.length - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1, n = noise1(i * 0.12, o) * amp + noise1(i * 0.02, o + 50) * amp * 1.4; return [p[0] - dy / L * n, p[1] + dx / L * n]; });
+}
+// A pencil line: two or three passes, never quite on top of each other, with varying weight and pressure.
+function pencil(pts, { w = 2, c = "#762F0B", passes = 3, amp = 0.9, o = 0.85, parent = art } = {}) {
+  const g = el("g", { fill: "none", stroke: c, "stroke-linecap": "round", "stroke-linejoin": "round", filter: "url(#graphite)" }, parent);
+  for (let k = 0; k < passes; k++) el("path", { d: smooth(wobble(pts, amp * (1 + k * 0.5))), "stroke-width": (w * (1 - k * 0.28)).toFixed(2), opacity: (o * (1 - k * 0.22)).toFixed(2) }, g);
+  return g;
+}
+// The machine: exact, dashed when not yet built.
+function blue(pts, { w = 1.8, c = "#5F92B8", dash = "", o = 1, parent = art } = {}) {
+  let d = pts.map((p, i) => `${i ? "L" : "M"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join("");
+  return el("path", { d, fill: "none", stroke: c, "stroke-width": w, "stroke-dasharray": dash, opacity: o, "stroke-linecap": "round", "stroke-linejoin": "round" }, parent);
+}
+const arc = (cx, cy, rx, ry, a0, a1, n = 36) => Array.from({ length: n + 1 }, (_, i) => { const a = a0 + (a1 - a0) * i / n; return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)]; });
+function hatch(x0, y0, x1, y1, clipD, { gap = 7, angle = -58, w = 0.9, c = "#762F0B", o = 0.55, fade = null } = {}) {
+  const id = "c" + Math.floor(rnd() * 1e9); const cp = el("clipPath", { id }, document.querySelector("defs")); el("path", { d: clipD }, cp);
+  const g = el("g", { "clip-path": `url(#${id})`, stroke: c, fill: "none", "stroke-linecap": "round" });
+  const t = angle * Math.PI / 180, L = Math.hypot(x1 - x0, y1 - y0) * 1.5, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  for (let s = -L; s <= L; s += gap * (0.8 + rnd() * 0.5)) {
+    const px = cx + Math.cos(t + Math.PI / 2) * s, py = cy + Math.sin(t + Math.PI / 2) * s;
+    const op = fade ? fade(px, py) : 1; if (op <= 0.02) continue;
+    const a = [px - Math.cos(t) * L, py - Math.sin(t) * L], b = [px + Math.cos(t) * L, py + Math.sin(t) * L];
+    el("path", { d: smooth(wobble([a, b], 0.6)), "stroke-width": w * (0.7 + rnd() * 0.6), opacity: (o * op * (0.6 + rnd() * 0.4)).toFixed(2), filter: "url(#graphite)" }, g);
+  }
+  return g;
+}
+
+// ---------- the column: one geometry, drawn twice ----------
+const G = 932;                                   // ground, where the figure stands
+function vessel(x, draw, mode) {
+  const W = 190, top = 300, bot = 800, cx = x + W / 2, r = W / 2;
+  const P = [];
+  // shell with domed heads
+  P.push([...arc(cx, top, r, 52, Math.PI, 2 * Math.PI)]);                  // top head
+  P.push([[x, top], [x, bot]]); P.push([[x + W, top], [x + W, bot]]);       // walls
+  P.push([...arc(cx, bot, r, 46, 0, Math.PI)]);                             // bottom head
+  // weld seams: front halves of ellipses
+  for (let y = top + 70; y < bot; y += 84) P.push(arc(cx, y, r, 12, 0.08, Math.PI - 0.08, 30));
+  // legs and base plates
+  for (const lx of [x + 26, x + W - 26]) { P.push([[lx, bot + 34], [lx - 8, G]]); P.push([[lx - 30, G], [lx + 14, G]]); }
+  P.push([[x + 8, bot + 20], [x + W - 8, bot + 20]]);
+  // top nozzle and outlet pipe arching to the right and down
+  P.push([[cx - 16, top - 52], [cx - 16, top - 96], [cx + 16, top - 96], [cx + 16, top - 52]]);
+  P.push([[cx - 26, top - 96], [cx + 26, top - 96]]);
+  const pipe = [[cx, top - 96], [cx, top - 150], ...arc(cx + 70, top - 150, 70, 70, Math.PI, 1.5 * Math.PI, 12), [cx + 150, top - 220], ...arc(cx + 150, top - 150, 70, 70, 1.5 * Math.PI, 2 * Math.PI, 12), [cx + 220, top - 150], [cx + 220, 560]];
+  P.push(pipe); P.push(pipe.map(([a, b]) => [a + 22, b]));
+  // side vessel (reboiler), with its flanges
+  const sx = x + W + 150, sy = 560;
+  P.push([[sx, sy], [sx, sy + 170]]); P.push([[sx + 70, sy], [sx + 70, sy + 170]]);
+  P.push(arc(sx + 35, sy, 35, 14, Math.PI, 2 * Math.PI)); P.push(arc(sx + 35, sy + 170, 35, 14, 0, Math.PI));
+  P.push([[sx - 8, sy + 26], [sx + 78, sy + 26]]); P.push([[sx - 8, sy + 144], [sx + 78, sy + 144]]);
+  P.push([[x + W, 700], [sx, 700]]); P.push([[x + W, 722], [sx, 722]]);
+  P.push([[sx + 35, sy + 184], [sx + 35, G - 60], [x + W - 20, G - 60]]);
+  // manholes and instruments
+  const man = (mx, my, rr) => { P.push(arc(mx, my, rr, rr, 0, 2 * Math.PI, 40)); P.push(arc(mx, my, rr * 0.55, rr * 0.55, 0, 2 * Math.PI, 30)); };
+  man(cx - 30, 470, 20); man(cx + 36, 640, 15); man(sx + 35, sy + 85, 12);
+  P.push([[x, 420], [x - 40, 420]]); P.push(arc(x - 54, 420, 14, 14, 0, 2 * Math.PI, 30));
+  P.forEach((pts, i) => draw(pts, i));
+  return { x, W, top, bot, cx, r, sx, sy };
+}
+
+// The real plant, in copper, drawn by hand
+const plant = vessel(360, (pts, i) => pencil(pts, { w: i < 4 ? 3.4 : 2.1, amp: i < 4 ? 1.2 : 0.9, o: 0.92 }), "copper");
+// shading: the right side of the shell, the underside of the heads, the side vessel
+const sh = `M${plant.cx + 20} ${plant.top} L${plant.x + plant.W} ${plant.top} L${plant.x + plant.W} ${plant.bot} L${plant.cx + 20} ${plant.bot}Z`;
+hatch(plant.cx, plant.top, plant.x + plant.W, plant.bot, sh, { gap: 4.2, angle: -82, o: 0.7, w: 1.1, fade: (px) => Math.max(0, (px - (plant.cx + 10)) / (plant.r - 10)) });
+hatch(plant.cx, plant.top, plant.x + plant.W, plant.bot, sh, { gap: 6, angle: -35, o: 0.45, w: 0.9, fade: (px) => Math.max(0, (px - (plant.cx + 45)) / (plant.r - 45)) });
+hatch(plant.cx + 200, 140, plant.cx + 250, 560, `M${plant.cx + 232} 150H${plant.cx + 250}V560H${plant.cx + 232}Z`, { gap: 4, angle: -80, o: 0.6 });
+const px0 = plant.x - 70, py = 560;
+pencil([[px0, py], [plant.x, py]], { w: 2.4 }); pencil([[px0, py + 10], [plant.x, py + 10]], { w: 1.6 });
+pencil([[px0, py - 44], [plant.x, py - 44]], { w: 1.6 }); pencil([[px0, py - 22], [plant.x, py - 22]], { w: 1.1, passes: 2 });
+for (let k = 0; k <= 3; k++) pencil([[px0 + k * 23, py], [px0 + k * 23, py - 44]], { w: 1.3, passes: 2 });
+pencil([[px0 + 10, py + 10], [px0 + 10, G]], { w: 2 }); pencil([[px0 + 40, py + 10], [px0 + 40, G]], { w: 2 });
+for (let yr = py + 34; yr < G; yr += 26) pencil([[px0 + 10, yr], [px0 + 40, yr]], { w: 1.3, passes: 2 });
+const bolts = (bx, by, rr, n) => { for (let k = 0; k < n; k++) { const a = k / n * Math.PI * 2; el("circle", { cx: bx + Math.cos(a) * rr, cy: by + Math.sin(a) * rr, r: 1.8, fill: "#762F0B", opacity: 0.8 }); } };
+bolts(plant.cx - 30, 470, 26, 12); bolts(plant.cx + 36, 640, 20, 10); bolts(plant.sx + 35, plant.sy + 85, 16, 8);
+pencil([[plant.cx - 32, plant.top - 102], [plant.cx + 32, plant.top - 102]], { w: 2 });
+for (const [fx, fy] of [[plant.cx + 211, 480], [plant.x + plant.W + 30, 711]]) { pencil([[fx - 18, fy - 4], [fx + 18, fy - 4]], { w: 2.2, passes: 2 }); pencil([[fx - 18, fy + 4], [fx + 18, fy + 4]], { w: 2.2, passes: 2 }); }
+pencil([[plant.x + 40, 740], [plant.x + 110, 740], [plant.x + 110, 772], [plant.x + 40, 772], [plant.x + 40, 740]], { w: 1.4, passes: 2 });
+for (let k = 0; k < 3; k++) pencil([[plant.x + 48, 750 + k * 8], [plant.x + 100 - k * 12, 750 + k * 8]], { w: 0.9, passes: 1, o: 0.6 });
+hatch(plant.x, plant.bot, plant.x + plant.W, plant.bot + 46, smooth(arc(plant.cx, plant.bot, plant.r, 46, 0, Math.PI)) + "Z", { gap: 5, angle: -30, o: 0.45 });
+hatch(plant.sx + 35, plant.sy, plant.sx + 70, plant.sy + 170, `M${plant.sx + 40} ${plant.sy}H${plant.sx + 70}V${plant.sy + 170}H${plant.sx + 40}Z`, { gap: 5, angle: -80, o: 0.45 });
+// a ground line in copper, loose, with grass ticks
+pencil([[250, G], [870, G]], { w: 1.6, amp: 1.4, passes: 2, o: 0.7 });
+for (let i = 0; i < 26; i++) { const gx = 270 + rnd() * 580; pencil([[gx, G], [gx + (rnd() - 0.5) * 8, G - 5 - rnd() * 8]], { w: 1, passes: 1, o: 0.5, amp: 0.2 }); }
+// three warm points where energy, material and emissions leave the process
+for (const [wx, wy] of [[plant.cx - 30, 470], [plant.x + plant.W + 75, 711], [plant.cx + 36, 640]]) {
+  el("circle", { cx: wx, cy: wy, r: 22, fill: "#D89C67", opacity: 0.28 }); el("circle", { cx: wx, cy: wy, r: 9, fill: "#D89C67", opacity: 0.45 });
+}
+
+// Its twin, in blueprint, exact and dashed: not yet built
+const twinG = el("g", {});
+const twin = vessel(1190, (pts, i) => blue(pts, { w: i < 4 ? 2.2 : 1.5, dash: "11 7", parent: twinG }), "blue");
+el("path", { d: smooth(arc(twin.cx, twin.top, twin.r, 52, Math.PI, 2 * Math.PI)) + `L${twin.x + twin.W} ${twin.bot}` + smooth(arc(twin.cx, twin.bot, twin.r, 46, 0, Math.PI)).replace("M", "L") + "Z", fill: "#8DB5D2", opacity: 0.16 }, twinG);
+blue([[twin.x + twin.W + 34, twin.top - 52], [twin.x + twin.W + 34, twin.bot + 46]], { w: 1.1 });
+for (const yy of [twin.top - 52, twin.bot + 46]) blue([[twin.x + twin.W + 24, yy + 10], [twin.x + twin.W + 44, yy - 10]], { w: 1.1 });
+blue([[twin.x, twin.bot + 110], [twin.x + twin.W, twin.bot + 110]], { w: 1.1 });
+for (const xx of [twin.x, twin.x + twin.W]) blue([[xx - 10, twin.bot + 120], [xx + 10, twin.bot + 100]], { w: 1.1 });
+// the twin's construction lines: centre line and grid ticks, fine and pale
+blue([[twin.cx, 120], [twin.cx, G + 30]], { w: 1, c: "#8DB5D2", dash: "30 6 3 6", o: 0.9 });
+blue([[1120, G], [1720, G]], { w: 1.6, o: 0.9 });
+for (let yy = 200; yy <= 880; yy += 40) blue([[1135, yy], [1147, yy]], { w: 1, c: "#8DB5D2" });
+
+// The trust scale between them: a dimension line, and an empty marker waiting to be set
+const tx = 960;
+blue([[tx, 260], [tx, 760]], { w: 1.4, c: "#48565F" });
+for (let yy = 260; yy <= 760; yy += 50) blue([[tx - (yy % 100 ? 8 : 14), yy], [tx + (yy % 100 ? 8 : 14), yy]], { w: 1.2, c: "#48565F" });
+blue([[tx - 26, 560], [tx + 26, 560]], { w: 3, c: "#0F0F11" });
+const lab = el("text", { x: tx, y: 232, "text-anchor": "middle", "font-family": "DM Sans", "font-size": 30, "font-weight": 500, "letter-spacing": "4", fill: "#365F7C" }); lab.textContent = "TRUST";
+// the figure, from the cover
+el("image", { href: "../planb/figure-from-cover.png", x: 915, y: 806, width: 78 * 1.18, height: 107 * 1.18 });
+</script>
+</body>
+</html>
