@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Proof: panel 1 draws itself, then panel 2</title>
+<!-- Proof of technique only: panels come from the 2048 px board, so they are soft. Full resolution panels replace them. -->
+<style>
+  html, body { margin: 0; background: rgb(246, 239, 224); overflow: hidden; }
+  #stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  svg { position: absolute; inset: 0; }
+  .hint { position: absolute; right: 18px; bottom: 12px; font: 13px system-ui; color: #8a7d6b; }
+</style>
+<script src="../node_modules/gsap/dist/gsap.min.js"></script>
+<script src="../node_modules/gsap/dist/DrawSVGPlugin.min.js"></script>
+<script src="../assets/storyboard/proof/proof-data.js"></script>
+</head>
+<body>
+<div id="stage"><svg id="s" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg"><defs></defs></svg></div>
+<div class="hint">Right arrow or Space: next</div>
+<script>
+gsap.registerPlugin(DrawSVGPlugin);
+const NS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById("s"), defs = svg.querySelector("defs");
+const el = (t, a, p = svg) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+const fit = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080); document.getElementById("stage").style.transform = `translate(${(innerWidth - 1920 * s) / 2}px, ${(innerHeight - 1080 * s) / 2}px) scale(${s})`; };
+addEventListener("resize", fit); fit();
+
+// The fixed figure: bottom centre of the stage, feet on the ground line. Every panel is placed so its own man stands here.
+const SCALE = 2.2, FIG_X = 960, FEET_Y = 1010;
+const panels = {};
+
+async function load(name) {
+  const data = window.PROOF[name], figs = window.PROOF.figures;
+  const f = figs[name];
+  const x = FIG_X - f.cx * SCALE, y = FEET_Y - f.feet * SCALE;
+  const g = el("g", { transform: `translate(${x} ${y}) scale(${SCALE})` });
+  // Feather the panel's edges into the sheet, so it never reads as a box
+  const fid = "feather-" + name;
+  const lg = el("filter", { id: fid + "-blur", x: "-10%", y: "-10%", width: "120%", height: "120%" }, defs);
+  el("feGaussianBlur", { stdDeviation: 14 }, lg);
+  const fm = el("mask", { id: fid, maskUnits: "userSpaceOnUse", x: -40, y: -40, width: data.w + 80, height: data.h + 80 }, defs);
+  el("rect", { x: 26, y: 26, width: data.w - 52, height: data.h - 52, fill: "#fff", filter: `url(#${fid}-blur)` }, fm);
+  g.setAttribute("mask", `url(#${fid})`);
+  const mask = el("mask", { id: "m-" + name, maskUnits: "userSpaceOnUse", x: 0, y: 0, width: data.w, height: data.h }, defs);
+  const strokes = data.paths.map((p) => el("path", { d: p.d, fill: "none", stroke: "#fff", "stroke-width": 6, "stroke-linecap": "round", "stroke-linejoin": "round" }, mask));
+  // The panel's own pixels, seen only through the strokes. A plain copy underneath catches the faintest hatching at the end.
+  const full = el("image", { href: `../assets/storyboard/proof/${name}-nofigure.png`, width: data.w, height: data.h, opacity: 0 }, g);
+  const drawn = el("image", { href: `../assets/storyboard/proof/${name}-nofigure.png`, width: data.w, height: data.h, mask: `url(#m-${name})` }, g);
+  gsap.set(strokes, { drawSVG: "0%" });
+  panels[name] = { strokes, full, drawn, data };
+}
+
+/** Draw a panel's strokes in their traced order within `total` seconds: copper first, then blue. */
+function draw(tl, name, at, total) {
+  const { strokes, full, data } = panels[name];
+  const L = data.paths.reduce((s, p) => s + p.len, 0);
+  let acc = 0;
+  strokes.forEach((st, i) => {
+    const t = at + (acc / L) * (total - 0.9);
+    tl.to(st, { drawSVG: "100%", duration: Math.min(0.9, 0.25 + data.paths[i].len / 260), ease: "power1.out" }, t);
+    acc += data.paths[i].len;
+  });
+  tl.to(full, { opacity: 1, duration: 0.6, ease: "sine.inOut" }, at + total - 0.6);
+}
+function undraw(tl, name, at, total) {
+  const { strokes, full, drawn } = panels[name];
+  tl.to(full, { opacity: 0, duration: 0.3 }, at);
+  [...strokes].reverse().forEach((st, i) => tl.to(st, { drawSVG: "0%", duration: 0.5, ease: "power1.in" }, at + (i / strokes.length) * (total - 0.5)));
+  tl.set(drawn, { opacity: 0 }, at + total);
+}
+
+let step = 0;
+const steps = [
+  () => { const tl = gsap.timeline(); draw(tl, "panel1", 0.2, 4); return tl; },                      // click 1: panel 1 draws itself, 4 s
+  () => { const tl = gsap.timeline(); undraw(tl, "panel1", 0, 1.8); draw(tl, "panel2", 1.0, 2.8); return tl; }, // click 2: 1 goes back to paper while 2 draws, 3.8 s
+];
+(async () => {
+  await load("panel1"); await load("panel2");
+  el("image", { href: "../assets/storyboard/proof/figure.png", x: FIG_X - (217 - 179) / 2 * SCALE, y: FEET_Y - (434 - 324) * SCALE, width: (217 - 179) * SCALE, height: (434 - 324) * SCALE });
+  window.ready = true;
+})();
+addEventListener("keydown", (e) => { if ((e.key === "ArrowRight" || e.key === " ") && window.ready && step < steps.length) { steps[step++](); } });
+</script>
+</body>
+</html>
