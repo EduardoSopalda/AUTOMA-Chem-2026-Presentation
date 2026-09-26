@@ -369,3 +369,14 @@ The web deck must be as reliable as a file on a USB stick.
 * Edu looks forward to pressing the first key.
 
 **Act budgets from the cut script (26 September):** Opening 0:10, Act 1 1:10, Act 2 1:10, Act 3 1:10, Act 4 1:05, Act 5 0:55, Act 6 1:00, Act 7 0:40, Act 8 1:35, Act 9 0:35, Coda 0:25. Total 9:55. Timings inside each click wait for Edu's recording.
+
+## 5d. The deck follows Edu (27 September)
+
+Edu is a storyteller. He internalises the script and never recites it. This overrides "Clicks are phrases" in 5b and every per sentence timing above.
+
+* One click per idea or chapter moment (about 20 to 26). The grouping is proposed in STORYBOARD.md for Edu's review.
+* Nothing inside a click lasts longer than about 4 seconds. Then the drawing holds and waits, however long he talks. Nothing may arrive on a timer expecting a later sentence.
+* Presenter view on stage: one memory keyword for this idea, the next keyword, and the clock. No script text on the main view. The full script sits in a separate rehearsal panel.
+* No per click time budgets. Three checkpoints only: end of Act 4 at 4:45, start of Act 8 at 7:20, finish at 9:55.
+* The three silences stay exactly as they are.
+* Edu's recording is not for stage timing. It becomes the voice-over of the web version, after 5 October.

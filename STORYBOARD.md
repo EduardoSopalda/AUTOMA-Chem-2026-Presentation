@@ -6,6 +6,71 @@ This follows the approved acts in CLAUDE.md sections 5, 5b and 5c. Nothing new h
 
 **Timings are budgets, not measurements.** They assume 140 words a minute until your phone recording gives us your real pace. When the cut script arrives, I'll put each spoken line against its click and replace the budgets with real numbers.
 
+## PROPOSAL, 27 September: chapter clicks (for Edu's review)
+
+Edu's new direction: he is a storyteller who internalises the script and never recites it. **The deck follows him.**
+
+* One click per idea or chapter moment, not per sentence.
+* Nothing inside a click lasts longer than about 4 seconds. Then the drawing holds and waits, however long he talks.
+* On stage, the presenter view shows one keyword for this idea, the next keyword, and the clock. The script lives in a rehearsal panel only.
+* There are no time budgets per click. There are three checkpoints: end of Act 4 at 4:45, start of Act 8 at 7:20, and the finish at 9:55.
+* The three silences stay exactly as they are.
+
+### My recommendation: 26 clicks
+
+Every chapter moment is kept, and so are the three silences. "Was" lists the old storyboard keys each click absorbs. "Cut" is what disappears so that the click fits in about 4 seconds.
+
+| # | Keyword | The idea | What the drawing does (about 4 s, then holds) | Was | Cut |
+|---|---|---|---|---|---|
+| 1 | **Architect** | I drew buildings | The cover un-draws into paper while the wall section draws in, floors then the column | 1, 2 (first half) | |
+| 2 | **From above** | Twenty years designing something else, from above | The building fades; the column turns blue as a data spine and lifts to the top as a plan; the dimension line draws between plan and figure | 2 (second half), 3, 4 | The five copper callouts (they echo spoken words) |
+| 3 | **Brasília** | Monumental from the air | The diagram re-forms into Brasília; the credits; your Congresso rises and stands | 5 | The glow along the axis |
+| 4 | **Scale** | From a helicopter versus on foot | The Congresso lies back down; "The Brasília Syndrome."; the footpath that never arrives; 1 : 50 000 and 1 : 1 | 6, 6b | |
+| 5 | **Built by** | The people who built it | The dots walk in from the satellite towns and stop short. "Built by people who could not afford to live in it." | 7, 8 | The dots flowing back out |
+| 6 | **Governance** | We build governance the same way | The wings become copper blocks; the RACI plaza draws; the letters drop | 9, 10 | The sight lines from auditor, regulator and committee |
+| 7 | **The plant** | The framework reaches the plant | The A–A cut; copper turns blue; the section at 1 : 1 with the long policy wall, Tuesday 07:40, two figures, batch and batch, 3 years | 11, 12 | |
+| 8 | **The plaza** | Nobody used it | People walk around the plaza, and their desire paths turn solid. Complete. Used. | 13, 14 | |
+| 9 | **Evidence** | Ambition has to become evidence | The plaza becomes the target line; plumb lines fall to the ground; Evidence.; People. settles at his feet | 15, 16 | Planet and Progress floating mid sheet |
+| 10 | **Accountable** | Who stands behind the number | The network; the dot that changes on its way; the checklist; Accountable goes to the figure | 17, 18 | |
+| 11 | **Data product** | A carbon number is not chemistry | Act 4 converges into the number; the revision cloud turns Chemistry into Data product | 19 | |
+| 12 | **Underneath** | What stands under the number | Roof and piles; the property line; 93% outside our walls; an owner on every line | 20, 22 | The Scope 2 split (see choice A) |
+| 13 | **Trace** | **Silence** | "You cannot report what you cannot trace." Unchanged | 23 | |
+| 14 | **Batch** | Why don't we just use AI? | The piles regroup around batch; the margin note; eight meanings in one fan, echoing | 24, 25 | |
+| 15 | **10,000** | Ten thousand in, two thousand relevant | The field appears; 8,000 turn pale and warm; 2,000 turn blue | 26 | |
+| 16 | **Filter** | Filter before you embed | The property line; only the 2,000 cross; the three words; the batch definition | 27 | |
+| 17 | **Shiny city** | Everyone wants the city on the hill | The stones become a road up the hill; the copper city; its labels | 28 | |
+| 18 | **Teleport** | We don't get there by teleportation | The dashed arc leaps and erases itself. A laugh | 29 | |
+| 19 | **The road** | Paved with data | Section B–B, the five pavement layers, the road reaching his feet | 30 | |
+| 20 | **Another Brasília** | Built from data nobody trusts | The stones crack, the road stops short, the city resolves into the Congresso | 31, 32 | |
+| 21 | **Believe** | **Silence** | The towers become the plant and the dashed twin; the feeds. Unchanged hold | 33 | |
+| 22 | **Only as good** | What flows into the twin | The margin notes; three warm points; the feeds falter; Yield splits | 34, 35 | |
+| 23 | **Night shift** | When people trust it | Dusk; the twin turns solid; Yield becomes one; Accountable; 1 : 1 | 36, 36b | |
+| 24 | **Agents** | Agents don't own risk | Everything fades except the figure | 37 | |
+| 25 | **Humans** | **Silence** | "Humans do. Always." Five seconds. Unchanged | 38 | |
+| 26 | **Worth doing** | Back to Brasília, and the payoff | The plan returns above; the elevation turns into the photograph, and the nursery draws with its dots, side by side. Then your 3 second pause | 39, 40, 41 | |
+| 27 | **Useful** | Necessary, not sufficient | The plan lowers to the figure; the dimension line gets its label | 42 | |
+| 28 | **The question** | Ask it at lunch | Everything un-draws; the question on blank paper | 43 | |
+
+That's 28 rows, of which 26 you have to remember. The three silences are fixed, and 24 and 25 run as one gesture ("Agents… Humans…").
+
+### To reach about 20: six more merges, each with its cost
+
+| Merge | Saves | Cost |
+|---|---|---|
+| A. **Underneath** keeps the Scope 2 split, or drops it | 0 | Keeping it pushes click 12 past 4 s. My advice: drop "Same electricity. Two correct answers." The cut script no longer says it. |
+| B. **Teleport** into **Shiny city** (the arc follows the city) | 1 | The joke is drawn before you say it. You lose the laugh on your timing |
+| C. **The road** into **Shiny city** | 1 | Section B–B and the five layers go. "Paved with data" becomes spoken only |
+| D. **Scale** into **Brasília** | 1 | The Congresso homage goes (it then appears first in Act 7, and the twist weakens) |
+| E. **The plaza** into **The plant** | 1 | Your confession ("a plaza nobody wanted to stand in") loses its own drawing |
+| F. **Agents** into **Humans**: one click fades everything and brings the words | 1 | The fade happens on "Humans do." instead of "Agents do not own risk." The silence itself is unchanged |
+| G. **Evidence** into **Accountable** | 1 | Far more than 4 s of drawing. Not recommended |
+
+My recommendation: take A (drop Scope 2) and F. That gives **24**, where every remaining click is a moment you'd want to stand in. B, C, D and E each cost something the audience will remember. Your call.
+
+---
+
+## Previous running order (45 clicks, kept for reference until the proposal is approved)
+
 ## How to read this
 
 * **#** is the click number. A click advances one thought, and everything in one row happens after that one click, in order.
