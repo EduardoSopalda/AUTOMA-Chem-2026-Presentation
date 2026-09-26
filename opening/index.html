@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data and AI in Sustainable Digital Transformation</title>
+<!--
+  Edu's title slide (title-slide-original.html), set on a fixed 1920 by 1080 stage so it scales to any screen.
+  Before the click: the title slide, with the man standing on the placeholder.
+  On the click (Space, Right arrow, Page Down, Enter): opening.mp4 starts under him; the title shrinks to the
+  bottom left corner and the name moves to the top right. The man stands exactly where the video's man stands,
+  so he never jumps. Runs offline: open this file with a double click. R resets. F is fullscreen.
+-->
+<script src="gsap.min.js"></script>
+<script src="Flip.min.js"></script>
+<style>
+  :root{ --paper:#ead9bc; --rust:#843b18; --ink:#171717; --blue:#456d8b; }
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#e9d7ba}
+  body{font-family:Arial,Helvetica,sans-serif}
+
+  /* One fixed stage, scaled to fit the window */
+  .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden}
+
+  /* The opening film sits underneath. It is hidden until the click. */
+  .film{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover}
+
+  /* Edu's paper, exactly as in his file, on its own layer so it can give way to the film */
+  .paper{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse at 15% 20%,rgba(255,255,255,.35),transparent 28%),
+      radial-gradient(ellipse at 82% 78%,rgba(130,85,35,.12),transparent 25%),
+      repeating-linear-gradient(0deg,rgba(120,85,45,.035) 0 1px,transparent 1px 5px),
+      repeating-linear-gradient(90deg,rgba(120,85,45,.025) 0 1px,transparent 1px 7px),
+      var(--paper);
+  }
+  .grid{
+    position:absolute;inset:0;opacity:.18;pointer-events:none;
+    background:linear-gradient(rgba(115,78,38,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(115,78,38,.14) 1px,transparent 1px);
+    background-size:173px 173px;
+    -webkit-mask-image:linear-gradient(to bottom,black 0%,transparent 32%,transparent 68%,black 100%);
+    mask-image:linear-gradient(to bottom,black 0%,transparent 32%,transparent 68%,black 100%);
+  }
+  .chem{position:absolute;right:5%;top:4%;font:18px Georgia,serif;color:rgba(105,74,42,.19);transform:rotate(-3deg);letter-spacing:.12em}
+  .chem::after{content:"";position:absolute;width:180px;height:90px;border:1px solid rgba(105,74,42,.16);border-radius:42%;left:30px;top:-18px;transform:rotate(27deg)}
+
+  /* The man: a multiply layer (white is transparent), placed on the video's own man */
+  .man{position:absolute;left:743px;top:655px;width:257px;height:184px;mix-blend-mode:multiply;pointer-events:none}
+
+  /* ---------- Type: Edu's values, converted from vw to the 1920 stage ---------- */
+  .type{position:absolute;inset:0}
+  .t{position:absolute;display:block;white-space:nowrap}   /* every line is its own element so it can travel on its own */
+  .serif{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.055em;line-height:.88}
+  .rust{color:var(--rust)} .dark{color:var(--ink)}
+
+  .rule-left{position:absolute;left:173px;top:216px;height:464px;border-left:1px solid rgba(132,59,24,.78)}
+  .rule-right{position:absolute;left:1455px;top:556px;height:218px;border-left:1px solid rgba(132,59,24,.75)}
+
+  /* BEFORE: Edu's layout */
+  .d-data   {left:211px;top:194px;font-size:61px}
+  .d-andai  {left:211px;top:248px;font-size:61px}
+  .d-in     {left:211px;top:352px;font-size:49px;font-style:italic}
+  .d-sust   {left:260px;top:322px;font-size:101px}
+  .d-dig    {left:260px;top:411px;font-size:101px}
+  .d-trans  {left:260px;top:500px;font-size:101px}
+  .d-sub    {left:215px;top:630px;font:italic 28px Georgia,"Times New Roman",serif}
+
+  .n-first  {left:1520px;top:556px;font:39px/.98 Georgia,"Times New Roman",serif}
+  .n-last   {left:1520px;top:594px;font:39px/.98 Georgia,"Times New Roman",serif}
+  .role     {font:15px/1.65 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+  .r-1      {left:1520px;top:645px}
+  .r-2      {left:1520px;top:670px}
+  .company  {left:1520px;top:724px;font:bold 27px Arial,Helvetica,sans-serif;letter-spacing:-.05em;color:var(--ink)}
+  .dots{display:inline-flex;gap:3px;margin-left:4px;vertical-align:middle}
+  .dots i{width:11px;height:11px;border-radius:50%;background:#111;display:block}
+
+  .people{left:960px;top:899px;transform:translateX(-50%);color:var(--rust);font:700 22px Arial,Helvetica,sans-serif;letter-spacing:.30em}
+  .event {left:960px;top:944px;transform:translateX(-50%);color:var(--blue);font:15.7px Arial,Helvetica,sans-serif;letter-spacing:.20em}
+
+  /* AFTER: the title in the bottom left corner, the name top right (as in Edu's "after" image) */
+  .after .rule-left{left:84px;top:742px;height:256px}
+  .after .d-data {left:118px;top:752px;font-size:44px}
+  .after .d-andai{left:118px;top:791px;font-size:44px}
+  .after .d-in   {left:122px;top:853px;font-size:30px}
+  .after .d-sust {left:163px;top:830px;font-size:58px}
+  .after .d-dig  {left:432px;top:830px;font-size:58px}
+  .after .d-trans{left:163px;top:882px;font-size:58px}
+  .after .d-sub  {left:167px;top:958px;font-size:24px}
+
+  .after .rule-right{left:1572px;top:44px;height:104px}
+  .after .n-first{left:1290px;top:56px;font-size:37px}
+  .after .n-last {left:1437px;top:56px;font-size:37px}
+  .after .r-1    {left:1290px;top:104px;font-size:13.5px}
+  .after .r-2    {left:1290px;top:127px;font-size:13.5px}
+  .after .company{left:1622px;top:72px}
+
+  .after .people{top:950px} .after .event{top:995px}
+  .hint{position:absolute;right:14px;bottom:10px;font:12px Arial;color:rgba(69,109,139,.45);letter-spacing:.1em}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <video class="film" id="film" src="opening.mp4" muted playsinline preload="auto" style="opacity:0"></video>
+
+  <div class="paper" id="paper"><div class="grid"></div><div class="chem">H₂C　O　109.24</div></div>
+
+  <img class="man" id="man" src="man.png" alt="">
+
+  <div class="type" id="type">
+    <div class="rule-left"></div>
+    <span class="t serif rust d-data">Data</span>
+    <span class="t serif rust d-andai">and AI</span>
+    <span class="t serif rust d-in">in</span>
+    <span class="t serif rust d-sust">Sustainable</span>
+    <span class="t serif rust d-dig">Digital</span>
+    <span class="t serif dark d-trans">Transformation</span>
+    <span class="t d-sub">From Brasília to the Plant Floor</span>
+
+    <div class="rule-right"></div>
+    <span class="t n-first">Eduardo</span>
+    <span class="t n-last">Sopalda</span>
+    <span class="t role r-1">D&amp;T · Global Data</span>
+    <span class="t role r-2">Governance Lead</span>
+    <span class="t company">dsm-firmenich <span class="dots"><i></i><i></i><i></i></span></span>
+
+    <span class="t people">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;PLANET&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</span>
+    <span class="t event">AUTOMA CHEM 2026&nbsp;&nbsp;·&nbsp;&nbsp;ESTREL BERLIN&nbsp;&nbsp;·&nbsp;&nbsp;26 OCTOBER 2026&nbsp;&nbsp;·&nbsp;&nbsp;9:40</span>
+  </div>
+  <div class="hint" id="hint">SPACE TO BEGIN</div>
+</div>
+
+<script>
+  gsap.registerPlugin(Flip);
+  const stage = document.getElementById("stage"), type = document.getElementById("type");
+  const film = document.getElementById("film"), paper = document.getElementById("paper"), man = document.getElementById("man");
+
+  const fit = () => {
+    const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.transform = `translate(${(innerWidth - 1920 * s) / 2}px,${(innerHeight - 1080 * s) / 2}px) scale(${s})`;
+  };
+  addEventListener("resize", fit); fit();
+
+  let started = false, tl = null;
+  function begin() {
+    if (started) return;
+    started = true;
+    document.getElementById("hint").style.display = "none";
+    // The name and the event line travel to their places (Flip: each line on its own path).
+    const others = type.querySelectorAll(".n-first, .n-last, .r-1, .r-2, .company, .rule-right, .people, .event");
+    const state = Flip.getState(others);
+    // The title does not use Flip: it moves as one block first, so no line ever crosses another.
+    const title = [...type.querySelectorAll(".d-data, .d-andai, .d-in, .d-sust, .d-dig, .d-trans, .d-sub, .rule-left")];
+    const from = title.map((el) => ({ el, left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }));
+    type.classList.add("after");
+    Flip.from(state, { duration: 2.4, ease: "power3.inOut", scale: true, stagger: 0.03 });
+    const to = new Map(title.map((el) => [el, { left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }]));
+    // Phase 1 (1.8 s): the whole block scales by k about the sheet origin and glides to the corner, as one piece.
+    const k = 0.574, tx = 163 - k * 260, ty = 830 - k * 322;           // "Sustainable" lands exactly on its final place
+    const q = new Map(from.map((f) => [f.el, { left: tx + k * f.left, top: ty + k * f.top, size: f.size * k, h: f.h * k }]));
+    const tl2 = gsap.timeline();
+    from.forEach((f) => {
+      const a = q.get(f.el), b = to.get(f.el), rule = f.el.classList.contains("rule-left");
+      gsap.set(f.el, { left: f.left, top: f.top, ...(rule ? { height: f.h } : { fontSize: f.size }) });
+      tl2.to(f.el, { left: a.left, top: a.top, ...(rule ? { height: a.h } : { fontSize: a.size }), duration: 1.8, ease: "power3.inOut" }, 0);
+      // Phase 2 (about 1 s): every line settles into the final layout.
+      const dig = f.el.classList.contains("d-dig");
+      if (dig) {
+        tl2.to(f.el, { left: b.left, fontSize: b.size, duration: 0.5, ease: "power2.inOut" }, 1.8)   // slide right along its own line
+           .to(f.el, { top: b.top, duration: 0.45, ease: "power2.inOut" }, 2.3);                      // then step up beside "Sustainable"
+      } else {
+        tl2.to(f.el, { left: b.left, top: b.top, ...(rule ? { height: b.h } : { fontSize: b.size }), duration: 0.5, ease: "power2.inOut" }, 2.3);
+      }
+    });
+    tl2.call(() => gsap.set(title, { clearProps: "left,top,fontSize,height" }));                    // hand back to the stylesheet
+    // The film starts under the man. Its first second is only the man on paper, so the paper can give way quietly.
+    film.currentTime = 0;
+    film.play();
+    tl = gsap.timeline()
+      .to(film, { opacity: 1, duration: 0.01 }, 0)
+      .to(paper, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 0.1)
+      .to(man, { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 0.7);   // the film's own man takes over, same place
+  }
+  function reset() {
+    started = false;
+    tl && tl.kill();
+    film.pause(); film.currentTime = 0;
+    gsap.set([paper, man], { opacity: 1 }); gsap.set(film, { opacity: 0 });
+    type.classList.remove("after");
+    gsap.killTweensOf(type.querySelectorAll("*"));
+    gsap.set(type.querySelectorAll(".t, .rule-left, .rule-right"), { clearProps: "transform,translate,rotate,scale,width,height,left,top,fontSize" });
+    document.getElementById("hint").style.display = "";
+  }
+  addEventListener("keydown", (e) => {
+    if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) { e.preventDefault(); if (!e.repeat) begin(); }
+    else if (e.key === "r" || e.key === "R") reset();
+    else if (e.key === "f" || e.key === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
+  });
+  // The film holds on its last frame when it ends: no loop, nothing moves on by itself.
+  film.addEventListener("ended", () => film.pause());
+</script>
+</body>
+</html>

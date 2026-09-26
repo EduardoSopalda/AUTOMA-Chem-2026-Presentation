@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data and AI — Sustainable Digital Transformation</title>
+<style>
+  :root{
+    --paper:#ead9bc;
+    --paper2:#f0e1c8;
+    --rust:#843b18;
+    --ink:#171717;
+    --blue:#456d8b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden}
+  body{
+    background:var(--paper);
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  .slide{
+    position:relative;
+    width:100vw;
+    height:56.25vw;
+    min-height:100vh;
+    overflow:hidden;
+    color:var(--ink);
+    background:
+      radial-gradient(ellipse at 15% 20%,rgba(255,255,255,.35),transparent 28%),
+      radial-gradient(ellipse at 82% 78%,rgba(130,85,35,.12),transparent 25%),
+      repeating-linear-gradient(0deg,rgba(120,85,45,.035) 0 1px,transparent 1px 5px),
+      repeating-linear-gradient(90deg,rgba(120,85,45,.025) 0 1px,transparent 1px 7px),
+      var(--paper);
+  }
+
+  /* faint archival chemistry-paper marks */
+  .grid{
+    position:absolute;inset:0;opacity:.18;pointer-events:none;
+    background:
+      linear-gradient(rgba(115,78,38,.14) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(115,78,38,.14) 1px,transparent 1px);
+    background-size:9vw 9vw;
+    mask-image:linear-gradient(to bottom,black 0%,transparent 32%,transparent 68%,black 100%);
+  }
+  .chem{
+    position:absolute;right:5%;top:4%;font:18px Georgia,serif;
+    color:rgba(105,74,42,.19);transform:rotate(-3deg);
+    letter-spacing:.12em;
+  }
+  .chem::after{
+    content:"";position:absolute;width:180px;height:90px;
+    border:1px solid rgba(105,74,42,.16);
+    border-radius:42%;left:30px;top:-18px;transform:rotate(27deg);
+  }
+
+  .rule-left{
+    position:absolute;left:9%;top:20%;height:43%;
+    border-left:1px solid rgba(132,59,24,.78);
+  }
+
+  .title{
+    position:absolute;left:11%;top:18%;
+    width:45%;
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:400;letter-spacing:-.055em;line-height:.88;
+    color:var(--rust);
+  }
+  .title .small{display:block;font-size:clamp(30px,3.4vw,61px)}
+  .title .in{font-style:italic;font-size:clamp(25px,2.7vw,49px)}
+  .title .big{font-size:clamp(51px,5.7vw,101px)}
+  .title .dark{color:var(--ink)}
+
+  .subtitle{
+    position:absolute;left:11.2%;top:59.5%;
+    font:italic clamp(16px,1.55vw,28px) Georgia,"Times New Roman",serif;
+  }
+
+  .figure{
+    position:absolute;left:49.5%;top:70%;
+    width:30px;height:91px;transform:translateX(-50%);
+    background:linear-gradient(90deg,#363636,#737373,#333);
+    border-radius:48% 48% 20% 20%;
+    filter:grayscale(1);
+  }
+  .figure:before{
+    content:"";position:absolute;left:8px;top:-13px;
+    width:14px;height:15px;border-radius:50%;background:#555;
+  }
+  .figure:after{
+    content:"";position:absolute;left:-95px;top:84px;width:125px;height:8px;
+    background:linear-gradient(90deg,transparent,rgba(55,45,35,.34),transparent);
+    transform:rotate(14deg);filter:blur(2px);
+  }
+
+  .people{
+    position:absolute;left:49.5%;top:83.2%;transform:translateX(-50%);
+    white-space:nowrap;
+    color:var(--rust);
+    font:700 clamp(14px,1.25vw,22px) Arial,Helvetica,sans-serif;
+    letter-spacing:.30em;
+  }
+  .event{
+    position:absolute;left:49.5%;top:87.4%;transform:translateX(-50%);
+    white-space:nowrap;text-align:center;
+    color:var(--blue);
+    font:clamp(10px,.82vw,16px) Arial,Helvetica,sans-serif;
+    letter-spacing:.20em;
+  }
+
+  .right{
+    position:absolute;right:7.5%;top:51.5%;width:18%;
+    border-left:1px solid rgba(132,59,24,.75);
+    padding-left:3.4%;
+  }
+  .name{
+    font:clamp(25px,2.15vw,39px)/.98 Georgia,"Times New Roman",serif;
+    margin-bottom:13px;
+  }
+  .role{
+    color:var(--blue);
+    font:clamp(10px,.78vw,15px)/1.65 Arial,Helvetica,sans-serif;
+    letter-spacing:.16em;text-transform:uppercase;
+  }
+  .company{
+    margin-top:28px;
+    font:bold clamp(18px,1.45vw,27px) Arial,Helvetica,sans-serif;
+    letter-spacing:-.05em;
+  }
+  .dots{display:inline-flex;gap:3px;margin-left:4px;vertical-align:middle}
+  .dots i{width:11px;height:11px;border-radius:50%;background:#111;display:block}
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="grid"></div>
+  <div class="chem">H₂C　O　109.24</div>
+  <div class="rule-left"></div>
+
+  <div class="title">
+    <span class="small">Data<br>and AI</span>
+    <span class="in">in </span><span class="big">Sustainable<br>Digital<br><span class="dark">Transformation</span></span>
+  </div>
+
+  <div class="subtitle">From Brasília to the Plant Floor</div>
+
+  <div class="figure"></div>
+
+  <div class="people">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;PLANET&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</div>
+  <div class="event">AUTOMA CHEM 2026&nbsp;&nbsp;·&nbsp;&nbsp;ESTREL BERLIN&nbsp;&nbsp;·&nbsp;&nbsp;26 OCTOBER 2026&nbsp;&nbsp;·&nbsp;&nbsp;9:40</div>
+
+  <div class="right">
+    <div class="name">Eduardo<br>Sopalda</div>
+    <div class="role">D&amp;T · Global Data<br>Governance Lead</div>
+    <div class="company">dsm-firmenich <span class="dots"><i></i><i></i><i></i></span></div>
+  </div>
+</div>
+</body>
+</html>
