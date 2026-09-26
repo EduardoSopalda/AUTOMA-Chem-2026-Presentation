@@ -23,30 +23,42 @@ function column(x: number, w: number): Pt[][] {
 // Click 33. "Take digital twins…" The real plant in copper, its twin dashed in blue, feeds between. Then nothing moves.
 const twins: Build = (s, beat) => {
   const tl = gsap.timeline();
-  clearPrevious(s, tl, 0);
+  // Handoff from Act 7: the Congresso's twin towers straighten into two process columns.
+  const towers = Array.from(s.draw.querySelectorAll(".congresso path")).slice(2, 4) as SVGPathElement[];
+  const keep = towers.length === 2 ? [towers[0].closest(".congresso")!] : [];
+  clearPrevious(s, tl, 0, keep);
+  if (keep.length) {
+    const cg = keep[0];
+    tl.to(Array.from(cg.querySelectorAll("path")).filter((p) => !towers.includes(p as SVGPathElement)), { opacity: 0, duration: 0.6 }, 0);
+    tl.to(towers[0], { morphSVG: hand(column(PLANT.x, PLANT.w)[0], "plant0", 0.9), strokeWidth: 2.6, duration: 2.2, ease: "power2.inOut" }, 0.4)
+      .to(towers[1], { morphSVG: exact(column(TWIN.x, TWIN.w)[0]), stroke: "var(--blueprint)", strokeWidth: 2.4, duration: 2.2, ease: "power2.inOut" }, 0.4)
+      .to(cg, { opacity: 0, duration: 0.5, onComplete: () => cg.remove() }, 2.8);
+  }
+  const at = keep.length ? 2.4 : 0.5;                      // with the handoff, the columns are already standing
   tl.call(() => setTitleBlock(s, beat), [], 0.3);
   const plant = t(svg("g", { class: "plant" }, s.draw));
   column(PLANT.x, PLANT.w).forEach((pts, i) => {
     const p = svg("path", { d: hand(pts, "plant" + i, 0.9), stroke: "var(--copper)", "stroke-width": i < 2 ? 2.6 : 1.4, fill: "none" }, plant);
     gsap.set(p, { drawSVG: "0%" });
-    drawIn(tl, p, 0.5 + (i < 2 ? 0 : 1.2 + i * 0.08), i < 2 ? 1.8 : 0.5);
+    if (i === 0 && keep.length) tl.set(p, { drawSVG: "100%" }, at + 0.4);     // the shell is the morphed tower
+    else drawIn(tl, p, at + (i < 2 ? 0 : 0.6 + i * 0.08), i < 2 ? 1.2 : 0.5);
   });
-  // The twin is dashed: revealed with a wipe, top to bottom it stands "not yet built"
+  // The twin is dashed: "not yet built". The solid morphed tower gives way to it.
   const twin = t(svg("g", { class: "twin" }, s.draw)) as SVGGElement;
   column(TWIN.x, TWIN.w).forEach((pts, i) => svg("path", { d: exact(pts), stroke: "var(--blueprint)", "stroke-width": i < 2 ? 2.4 : 1.3, fill: "none", "stroke-dasharray": "12 8" }, twin));
   const w = wipe(s, twin, { x: TWIN.x - 10, y: TOP - 10, w: TWIN.w + 20, h: BASE - TOP + 20 }, "bottom");
-  tl.to(w.rect, { ...w.to, duration: 2.4, ease: "power1.inOut" }, 1.8);
+  tl.to(w.rect, { ...w.to, duration: keep.length ? 1.2 : 2.4, ease: "power1.inOut" }, at);
 
   const feeds = t(svg("g", { class: "feeds" }, s.draw));
   FEEDS.forEach((name, i) => {
     const y = feedY(i);
     const ln = svg("path", { class: `feed feed-${i}`, d: exact([[PLANT.x + PLANT.w, y], [TWIN.x, y]]), stroke: "var(--blueprint)", "stroke-width": 1.8, fill: "none" }, feeds);
     gsap.set(ln, { drawSVG: "0%" });
-    drawIn(tl, ln, 4 + i * 0.25, 1);
+    drawIn(tl, ln, at + 2.2 + i * 0.25, 1);
     const lab = label(feeds, 960, y - 14, name, { size: 40, anchor: "middle", halo: true });
     lab.classList.add(`feed-label-${i}`);
     gsap.set(lab, { opacity: 0 });
-    tl.to(lab, { opacity: 1, duration: 0.5 }, 4.4 + i * 0.25);
+    tl.to(lab, { opacity: 1, duration: 0.5 }, at + 2.6 + i * 0.25);
   });
   // "…whether anyone believes it." Then the engine holds: nothing moves.
   return tl;

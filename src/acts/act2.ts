@@ -19,12 +19,44 @@ export function drawPlan(s: Sheet, tl: gsap.core.Timeline, at: number, id: strin
   return plan;
 }
 
+/** Handoff from Act 1: the flattened lineage diagram re-forms into the plan.
+ *  The spine becomes the monumental axis; the four data layers become the wings, the ring road and the lake. */
+function reform(s: Sheet, tl: gsap.core.Timeline, lineage: SVGGElement): Plan {
+  const M = lineage.getCTM()!;
+  const bake = (el: SVGGeometryElement) => {             // the diagram was flattened by a transform: bake it into sheet coordinates
+    const L = el.getTotalLength(), a = el.getPointAtLength(0), b = el.getPointAtLength(L);
+    const A = new DOMPoint(a.x, a.y).matrixTransform(M), B = new DOMPoint(b.x, b.y).matrixTransform(M);
+    return t(svg("path", { d: `M${A.x.toFixed(1)} ${A.y.toFixed(1)}L${B.x.toFixed(1)} ${B.y.toFixed(1)}`, stroke: "var(--blueprint)", "stroke-width": 2, fill: "none" }, s.draw)) as SVGPathElement;
+  };
+  const spine = bake(lineage.querySelector(".spine") as SVGGeometryElement);
+  const floors = Array.from(lineage.querySelectorAll(".floor")) as SVGGeometryElement[];
+  // Seven slab lines collapsed into four layers; take one of each pair
+  const layers = [floors[0], floors[2], floors[4], floors[6]].filter(Boolean).map(bake);
+  lineage.remove();
+  const plan = brasilia(s.draw, "copper", ABOVE, "plan2");
+  t(plan.root);
+  const targets = [plan.wings[0], plan.wings[1], plan.ring[0], plan.lake[0]];
+  gsap.set([...plan.axis, ...plan.wings, ...plan.ring, ...plan.lake], { opacity: 0 });
+  gsap.set(plan.blocks, { opacity: 0 });
+  tl.to(spine, { morphSVG: plan.axis[0].getAttribute("d")!, stroke: "var(--copper)", strokeWidth: 2.4, duration: 2.2, ease: "power2.inOut" }, 0.4);
+  layers.forEach((l, i) => tl.to(l, { morphSVG: targets[i].getAttribute("d")!, stroke: "var(--copper)", strokeWidth: 1.8, duration: 2.4, ease: "power2.inOut" }, 0.5 + i * 0.1));
+  // When the shapes arrive, the real plan takes over underneath, and the rest of the city fills in.
+  tl.set([...plan.axis.slice(0, 1), ...targets], { opacity: 1 }, 3)
+    .set([spine, ...layers], { display: "none" }, 3)
+    .to(plan.axis.slice(1), { opacity: 1, duration: 0.8 }, 3)
+    .to(plan.blocks, { opacity: 1, duration: 0.4, stagger: 0.03, ease: "sine.out" }, 3.2)
+    .call(() => { spine.remove(); layers.forEach((l) => l.remove()); }, [], 4.5);
+  return plan;
+}
+
 // Click 5. "Let me take you to Brasília."
 const plan: Build = (s, beat) => {
   const tl = gsap.timeline();
-  clearPrevious(s, tl, 0);
+  const lineage = s.draw.querySelector(".lineage") as SVGGElement | null;
+  clearPrevious(s, tl, 0, lineage ? [lineage] : []);
   tl.call(() => setTitleBlock(s, beat), [], 0.4);
-  drawPlan(s, tl, 0.6, "plan2");
+  if (lineage) reform(s, tl, lineage);                    // the diagram above becomes Brasília
+  else drawPlan(s, tl, 0.6, "plan2");
 
   // Credits, as a small cartouche beside the drawing. At reading size: they replace the spoken credit.
   const credit = t(svg("g", { class: "credit", opacity: 0 }, s.draw));

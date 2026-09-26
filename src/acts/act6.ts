@@ -40,11 +40,11 @@ const fan: Build = (s) => {
   const g = t(svg("g", { class: "fan" }, s.draw));
   DEFS.forEach((d, i) => {
     const a = (i / DEFS.length) * Math.PI * 2 - Math.PI / 2 + 0.2;
-    const end: Pt = [C[0] + Math.cos(a) * 330, C[1] + Math.sin(a) * 250];
+    const end: Pt = [C[0] + Math.cos(a) * 400, C[1] + Math.sin(a) * 262];
     const br = svg("path", { d: exact([[C[0] + Math.cos(a) * 80, C[1] + Math.sin(a) * 50], end]), stroke: "var(--ink)", "stroke-width": 1.4 }, g);
     gsap.set(br, { drawSVG: "0%" });
     drawOne(tl, br, 0.2 + i * 0.05);
-    const l = label(g, end[0] + Math.cos(a) * 16, end[1] + Math.sin(a) * 16 + 12, d, { size: 36, anchor: Math.cos(a) > 0.2 ? "start" : Math.cos(a) < -0.2 ? "end" : "middle", halo: true });
+    const l = label(g, end[0] + Math.cos(a) * 16, end[1] + Math.sin(a) * 16 + 14, d, { size: 44, anchor: Math.cos(a) > 0.2 ? "start" : Math.cos(a) < -0.2 ? "end" : "middle", halo: true });
     gsap.set(l, { opacity: 0 });
     tl.to(l, { opacity: 1, duration: 0.5 }, 0.6 + i * 0.05);
   });
@@ -101,9 +101,9 @@ const filter: Build = (s) => {
   fadeIn(tl, words, 3.4, 0.8);
   // "…agreeing on what a word means." Batch returns; eight meanings collapse into one glossary entry.
   const gl = t(svg("g", { class: "glossary", opacity: 0 }, s.draw));
-  label(gl, 1240, 520, "batch", { size: 60, halo: true, weight: 500 });
-  svg("path", { d: exact([[1240, 534], [1400, 534]]), stroke: "var(--ink)", "stroke-width": 2 }, gl);
-  label(gl, 1240, 590, "one agreed meaning", { size: 40, halo: true, fill: "var(--blue-text)" });
+  label(gl, 780, 540, "batch:", { size: 60, halo: true, weight: 500 });
+  svg("path", { d: exact([[780, 556], [950, 556]]), stroke: "var(--ink)", "stroke-width": 2 }, gl);
+  label(gl, 780, 624, "one production run, from charge to discharge.", { size: 44, halo: true, fill: "var(--blue-text)" });
   fadeIn(tl, gl, 5.2, 1);
   return tl;
 };

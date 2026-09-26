@@ -1,9 +1,10 @@
 import { gsap } from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import { svg, type Sheet } from "../sheet";
 import type { BeatInfo } from "../beats";
 
-gsap.registerPlugin(DrawSVGPlugin);
+gsap.registerPlugin(DrawSVGPlugin, MorphSVGPlugin);
 export { gsap };
 
 export type Build = (s: Sheet, beat: BeatInfo) => gsap.core.Timeline;

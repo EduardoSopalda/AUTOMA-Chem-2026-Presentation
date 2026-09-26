@@ -2,6 +2,13 @@
 
 Newest first. A two minute read.
 
+## 26 September 2026 (later): Edu's review
+
+* Act 6 glossary now reads "batch: one production run, from charge to discharge."
+* The eight meanings of "batch" are at 44 px, on a wider fan.
+* The 10,000 field reads as documents under projector simulation: every point is a tiny page, and the pale waste keeps at least 30%.
+* **Real handoffs:** the Congresso's towers morph into the plant and its twin (Act 7 to 8). The Act 1 lineage diagram re-forms into Brasília (Act 1 to 2).
+
 ## 26 September 2026 (late night): Phase 5 first pass
 
 * **All nine acts and the coda are drawn.** No placeholders are left. The run through is in `frames/out/run-through.png`, with the projector version beside it.

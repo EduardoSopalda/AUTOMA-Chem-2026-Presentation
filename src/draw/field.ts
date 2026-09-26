@@ -33,20 +33,23 @@ export function getField(s: Sheet): Field {
   const r = rng(7);
   const f: Field = {
     canvas,
-    x: new Float32Array(N), y: new Float32Array(N), relevant: new Uint8Array(N), size: new Float32Array(N).fill(3.4), u: new Float32Array(N),
+    x: new Float32Array(N), y: new Float32Array(N), relevant: new Uint8Array(N), size: new Float32Array(N).fill(4), u: new Float32Array(N),
     st: { shown: 0, waste: 1, blue: 0, glow: 0, alpha: 1, crack: 0, reach: 1 },
     draw() {
       ctx.clearRect(0, 0, 1920, 1080);
       const shown = Math.floor(f.st.shown * N);
       const blueMix = f.st.blue;
       // Waste first: ink fading to pale, with a faint warm glow of energy spent on nothing
+      // Each point is a tiny page, 3 by 4 px, so the field reads as documents, not dust.
+      // Pale never drops below 30% (it must survive a projector) until Act 7 takes the waste away entirely.
+      const pale = (0.3 + 0.7 * f.st.waste) * Math.min(1, f.st.waste / 0.1);
       ctx.fillStyle = f.st.glow > 0
-        ? `rgba(${WARM},${(0.3 + 0.25 * f.st.glow) * f.st.waste * f.st.alpha})`
-        : `rgba(${INK},${0.85 * f.st.waste * f.st.alpha})`;
-      for (let i = 0; i < shown; i++) if (!f.relevant[i]) ctx.fillRect(f.x[i] - 1.3, f.y[i] - 1.3, 2.6, 2.6);
+        ? `rgba(${WARM},${(0.55 + 0.3 * f.st.glow) * pale * f.st.alpha})`
+        : `rgba(${INK},${0.8 * pale * f.st.alpha})`;
+      for (let i = 0; i < shown; i++) if (!f.relevant[i]) ctx.fillRect(f.x[i] - 1.5, f.y[i] - 2, 3, 4);
       if (f.st.glow > 0) {
-        ctx.fillStyle = `rgba(${INK},${0.22 * f.st.waste * f.st.alpha})`;
-        for (let i = 0; i < shown; i++) if (!f.relevant[i]) ctx.fillRect(f.x[i] - 0.8, f.y[i] - 0.8, 1.6, 1.6);
+        ctx.fillStyle = `rgba(${INK},${0.35 * pale * f.st.alpha})`;
+        for (let i = 0; i < shown; i++) if (!f.relevant[i]) ctx.fillRect(f.x[i] - 1, f.y[i] - 1.5, 2, 3);
       }
       // The ones that matter: ink turning blue
       const c = blueMix >= 1 ? BLUE : `${Math.round(15 + (95 - 15) * blueMix)},${Math.round(15 + (146 - 15) * blueMix)},${Math.round(17 + (184 - 17) * blueMix)}`;
@@ -57,7 +60,7 @@ export function getField(s: Sheet): Field {
         const gone = f.st.crack > 0 && cr() < f.st.crack * 0.35;     // cracks: some stones disappear
         if (gone || f.u[i] > f.st.reach) continue;
         const z = f.size[i];
-        ctx.fillRect(f.x[i] - z / 2, f.y[i] - z / 2, z, z);
+        ctx.fillRect(f.x[i] - z / 2, f.y[i] - z * 0.65, z, z * 1.3);
       }
     },
   };
@@ -86,7 +89,7 @@ export function move(tl: gsap.core.Timeline, f: Field, to: (i: number) => [numbe
     },
     onUpdate: () => {
       if (!fx) return;
-      for (let i = 0; i < N; i++) { f.x[i] = fx[i] + (tx[i] - fx[i]) * p.t; f.y[i] = fy[i] + (ty[i] - fy[i]) * p.t; if (size && f.relevant[i]) f.size[i] = 3.4 + (size - 3.4) * p.t; }
+      for (let i = 0; i < N; i++) { f.x[i] = fx[i] + (tx[i] - fx[i]) * p.t; f.y[i] = fy[i] + (ty[i] - fy[i]) * p.t; if (size && f.relevant[i]) f.size[i] = 4 + (size - 4) * p.t; }
       f.draw();
     },
   }, at);

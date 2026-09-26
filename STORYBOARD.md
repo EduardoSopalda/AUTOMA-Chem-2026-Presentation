@@ -61,7 +61,7 @@ The title block reads "Section A–A" from click 11 to the end of the act.
 
 | # | Cue | The drawing | On screen text | Archetype | s |
 |---|---|---|---|---|---|
-| 15 | "We set ambitions, targets and roadmaps." | Chain: the plaza grid lifts to the top and becomes the copper target line, with milestone ticks like a dimension chain. Labels hang from it. | Emissions. Sourcing. Circularity. Footprints. (proposed) | Drawing | 12 |
+| 15 | "We set ambitions, targets and roadmaps." | Chain: the plaza grid lifts to the top and becomes the copper target line, with milestone ticks like a dimension chain. Labels hang from it. | Emissions. Sourcing. Circularity. Footprints. | Drawing | 12 |
 | 16 | "But eventually the ambition has to become evidence." | Chain: plumb lines drop from each label, turning from copper to blue as they fall, and reach the ground. A word appears. Then the three words from the cover return, and "People" settles at the figure's feet. | Evidence. · People. Planet. Progress. | Bridge | 14 |
 | 17 | "…created across businesses, processes…" | Chain: the blue desire paths from Act 3 return as a network of five nodes. One copper dot travels node to node and changes slightly at each stop. | Businesses. Processes. Systems. Suppliers. People. | Drawing | 16 |
 | 18 | "Where did it come from?" | Chain: the checklist words appear. "Accountable" detaches and settles beside the figure. The plumb lines lock into the network, and copper and blue become one structure. | Source. Owner. Definition. Conflict. Accountable. | Bridge | 18 |
@@ -87,7 +87,7 @@ Title block source note: "Scope 1, 2 and 3, 2025. dsm-firmenich Integrated Annua
 | 24 | "…why don't we just use AI?" | Chain: the foundation lines regroup around the word "batch". A blue margin note appears in another hand. | Why don't we just use AI? (margin note) | Statement | 10 |
 | 25 | "…the word batch to mean eight different things…" | Chain: eight definitions fan out on one beat. The branches echo outward into rings of dozens, then hundreds. | production run · lot number · shipping unit · recipe version · data load · blend · campaign · QC sample | Drawing | 13 |
 | 26 | "Around ten thousand documents went in…" | Chain: the echoes break into 10,000 points (drawn on Canvas). 8,000 fade to pale, with small callouts on the faded clusters, and a faint warm glow. 2,000 turn blue. | 10,000 documents · Duplicate · Superseded draft · final_v4_FINAL_2.pptx | Evidence | 17 |
-| 27 | "So filtering before you embed…" | Chain: the dash dot property line returns in front of the documents. The 8,000 stay outside and the 2,000 cross. Then "batch" returns, and the eight definitions collapse into one underlined glossary entry. | Governance. Cost. Sustainability. · batch: one agreed meaning (proposed) | Bridge | 15 |
+| 27 | "So filtering before you embed…" | Chain: the dash dot property line returns in front of the documents. The 8,000 stay outside and the 2,000 cross. Then "batch" returns, and the eight definitions collapse into one underlined glossary entry. | Governance. Cost. Sustainability. · batch: one production run, from charge to discharge. | Bridge | 15 |
 
 ## Act 7. The road to the shiny city · budget 50 s · 5 clicks
 
@@ -184,8 +184,16 @@ Numbers 5, 6 and 9 would each put a line you care about on a timer. I would not 
 4. "A–A" and "B–B" stay.
 5. The Scope 2 labels are "140 kt market based" and "464 kt location based". 464.3 is verified in the report's own table (see `notes/sources.md`), so the beat stays.
 
+## Decided on 26 September, second round
+
+1. Act 6 glossary: "batch: one production run, from charge to discharge."
+2. The Act 4 labels, "Process" in Act 3, and the Act 2 credit headings are approved.
+3. Label sizes: the piles and pavement layers stay at 36 px. The eight meanings of "batch" are at 44 px.
+4. The 10,000 field must read as documents under projector simulation. Done: every point is now a tiny page, and the pale waste never drops below 30%.
+5. Handoffs: Act 7 to 8 (towers into columns) and Act 1 to 2 (lineage diagram into Brasília) are now real transformations.
+
 ## Still open
 
-1. **Words I proposed.** The brief doesn't give the text for the glossary entry (click 27) or the short labels in click 15, so I've written them and marked them "proposed". Please approve or rewrite.
-2. **The Congresso drawing** is still to come, for clicks 5, 32 and 33.
-3. **The cut script and the phone recording**, which will turn these budgets into real timings.
+1. **The Congresso drawing:** Edu uploads it. The placeholder is one file, `src/draw/congresso.ts`.
+2. **Which elevation** matches the photograph: Edu's answer came through as "[left / right]". The right hand one is used for now. Edu is also looking for the originals.
+3. **The cut script and the phone recording**, which will turn the budgets into real timings.
