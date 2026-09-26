@@ -7,6 +7,8 @@ import { ACT2 } from "./act2";
 import { ACT3 } from "./act3";
 import { ACT4 } from "./act4";
 import { ACT5 } from "./act5";
+import { ACT6 } from "./act6";
+import { ACT7 } from "./act7";
 import { ACT8 } from "./act8";
 import { ACT9 } from "./act9";
 import { gsap, clearPrevious, type Build } from "./common";
@@ -38,6 +40,8 @@ const BUILDS: Record<number, Build> = {
   ...ACT3,
   ...ACT4,
   ...ACT5,
+  ...ACT6,
+  ...ACT7,
   ...ACT8,
   ...ACT9,
 };

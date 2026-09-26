@@ -1,6 +1,7 @@
 // Act 2. Brasília. The idea this act introduces, and the rest of the talk reuses, is scale.
 
 import { brasilia, ABOVE, axisPoints, type Plan } from "../draw/brasilia";
+import { congresso } from "../draw/congresso";
 import { hand, exact, type Pt } from "../draw/hand";
 import { label, setTitleBlock, svg, type Sheet } from "../sheet";
 import { gsap, t, clearPrevious, drawIn, fadeIn, wipe, FIG, GHOST_X, type Build } from "./common";
@@ -34,22 +35,9 @@ const plan: Build = (s, beat) => {
   fadeIn(tl, credit, 5, 1);
 
   // The homage: the Congresso rises from the horizon of the plan, holds, and lies back down.
-  // PLACEHOLDER geometry until Edu's own drawing (assets/architecture/congresso-nacional.svg) arrives.
   const hz = 420, cx = 960;
-  const cg = t(svg("g", { class: "congresso" }, s.draw));
-  const cop = { stroke: "var(--copper)", fill: "none", "stroke-width": 2, "stroke-linecap": "round" };
-  const horizon = svg("path", { ...cop, d: hand([[cx - 120, hz], [cx + 120, hz]], "cn-horizon", 0.6) }, cg);
-  const slab = svg("path", { ...cop, d: hand([[cx - 100, hz - 14], [cx + 100, hz - 14]], "cn-slab", 0.5) }, cg);
-  const towers = [cx - 9, cx + 9].map((x, i) => svg("path", { ...cop, d: hand([[x - 7, hz - 14], [x - 7, hz - 120], [x + 7, hz - 120], [x + 7, hz - 14]], "cn-t" + i, 0.5) }, cg));
-  const base = hz - 14;
-  // Dome: a low half ellipse, convex upward, sitting on the slab
-  const dome = svg("path", { ...cop, d: hand(Array.from({ length: 25 }, (_, i): Pt => {
-    const a = Math.PI * (i / 24); return [cx - 62 - 30 * Math.cos(a), base - 18 * Math.sin(a)];
-  }), "cn-dome", 0.4) }, cg);
-  // Bowl: the inverted one, rim on top, touching the slab at its lowest point
-  const bowl = svg("path", { ...cop, d: hand(Array.from({ length: 25 }, (_, i): Pt => {
-    const a = Math.PI * (i / 24); return [cx + 62 - 36 * Math.cos(a), base - 24 + 24 * Math.sin(a)];
-  }), "cn-bowl", 0.4) }, cg);
+  const { g: cg, horizon, slab, towers, dome, bowl } = congresso(s.draw, cx, hz, "cn");
+  t(cg);
   gsap.set([horizon, slab, ...towers, dome, bowl], { drawSVG: "0%" });
   drawIn(tl, horizon, 6.2, 0.8);
   drawIn(tl, slab, 6.6, 0.6);
