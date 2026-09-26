@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>From Brasília to the Plant Floor — AUTOMA Chem 2026</title>
+  <style>
+    @font-face {
+      font-family: "Source Serif 4";
+      src: url("fonts/SourceSerif4.ttf") format("truetype");
+      font-weight: 200 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Source Sans 3";
+      src: url("fonts/SourceSans3.ttf") format("truetype");
+      font-weight: 200 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --paper: #f5e6d0;
+      --paper-deep: #edd8b8;
+      --ink: #1b1612;
+      --ink-soft: #3a322c;
+      --muted: #6d6258;
+      --copper: #8a4324;
+      --copper-line: #b16a3d;
+      --rule: rgba(27, 22, 18, 0.18);
+      --display: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+      --ui: "Source Sans 3", "Source Sans Pro", "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #d7c4a6;
+      color: var(--ink);
+      font-family: var(--ui);
+    }
+    body {
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+    }
+
+    .frame {
+      width: min(100vw, calc(100dvh * 16 / 9));
+      aspect-ratio: 16 / 9;
+      background:
+        radial-gradient(120% 80% at 50% 40%, #f8edd9 0%, var(--paper) 55%, #e7d3b3 100%);
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 60px rgba(40, 24, 8, 0.22);
+    }
+
+    .frame::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid var(--rule);
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .plate {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      padding: 4.2% 4.6% 3.4%;
+      gap: 0.4%;
+    }
+
+    .top, .bottom {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr) minmax(0, 1fr);
+      column-gap: 3.2%;
+      align-items: start;
+    }
+    .bottom { align-items: end; }
+
+    .side {
+      min-width: 0;
+    }
+    .side.right { text-align: right; }
+
+    .kicker {
+      margin: 0;
+      font-size: clamp(10px, 1.05vw, 14px);
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--copper);
+    }
+    .kicker::after {
+      content: "";
+      display: block;
+      width: 2.4em;
+      height: 1px;
+      margin-top: 0.45em;
+      background: var(--copper-line);
+    }
+    .side.right .kicker::after { margin-left: auto; }
+
+    .side h2 {
+      margin: 0.55em 0 0.35em;
+      font-family: var(--display);
+      font-size: clamp(15px, 1.45vw, 22px);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .side p {
+      margin: 0;
+      max-width: 22ch;
+      font-family: var(--display);
+      font-size: clamp(13px, 1.18vw, 18px);
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink-soft);
+    }
+    .side.right p { margin-left: auto; }
+
+    .titleblock {
+      text-align: center;
+      padding-top: 0.15em;
+    }
+    .titleblock h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-optical-sizing: auto;
+      font-size: clamp(28px, 3.35vw, 54px);
+      font-weight: 600;
+      letter-spacing: -0.018em;
+      line-height: 1.02;
+      color: var(--ink);
+    }
+    .titleblock .theme {
+      margin: 0.18em 0 0;
+      font-family: var(--display);
+      font-size: clamp(18px, 2.05vw, 32px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--copper);
+    }
+    .rule {
+      width: 3.2rem;
+      height: 1px;
+      margin: 0.7em auto 0.55em;
+      background: var(--copper-line);
+    }
+    .talk {
+      margin: 0;
+      font-size: clamp(11px, 1.05vw, 15px);
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .stage {
+      position: relative;
+      min-height: 0;
+      margin: 0.6% 1% 0.2%;
+    }
+    .stage img, .stage svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center 42%;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .who .name {
+      margin: 0;
+      font-size: clamp(13px, 1.2vw, 18px);
+      font-weight: 650;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .who .role {
+      margin: 0.28em 0 0.7em;
+      font-size: clamp(11px, 0.95vw, 14px);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+    .logo {
+      display: block;
+      width: min(220px, 16vw);
+      height: auto;
+    }
+
+    .values {
+      text-align: center;
+      padding-bottom: 0.15em;
+    }
+    .values .ppp {
+      margin: 0;
+      font-size: clamp(12px, 1.12vw, 17px);
+      font-weight: 650;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--copper);
+    }
+    .values .ppp span {
+      display: inline-block;
+      margin: 0 0.35em;
+      font-weight: 400;
+      opacity: 0.45;
+    }
+    .values .ppp b {
+      font-weight: 650;
+      box-shadow: inset 0 -1px 0 var(--copper-line);
+    }
+    .values .tag {
+      margin: 0.45em 0 0;
+      font-size: clamp(10px, 0.85vw, 12px);
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .event {
+      text-align: right;
+    }
+    .event .conf {
+      margin: 0;
+      font-size: clamp(13px, 1.2vw, 18px);
+      font-weight: 650;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .event .meta {
+      margin: 0.35em 0 0;
+      font-size: clamp(11px, 0.95vw, 14px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hint {
+      position: absolute;
+      right: 22px;
+      bottom: 8px;
+      z-index: 9;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(27, 22, 18, 0.28);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="frame" id="stage" aria-label="Opening title card">
+    <div class="plate">
+      <header class="top">
+        <div class="side">
+          <p class="kicker">Act I</p>
+          <h2>The idea</h2>
+          <p>You can draw amazing things on paper…</p>
+        </div>
+        <div class="titleblock">
+          <h1>People, Data and AI</h1>
+          <p class="theme">in Sustainable Digital Transformation</p>
+          <div class="rule" aria-hidden="true"></div>
+          <p class="talk">From Brasília to the plant floor</p>
+        </div>
+        <div class="side right">
+          <p class="kicker">Act II</p>
+          <h2>Reality</h2>
+          <p>…and then the real world shows up.</p>
+        </div>
+      </header>
+
+      <div class="stage" aria-hidden="true">
+        <img id="search" src="layers/search.png" alt="" style="clip-path: inset(0 100% 0 0)" />
+        <img id="commit" src="layers/commit.png" alt="" style="clip-path: inset(0 100% 0 0)" />
+        <img id="outline" src="layers/outline.png" alt="" style="opacity: 0" />
+        <img id="field" src="layers/field.png" alt="" style="opacity: 0" />
+        <img id="grain" src="layers/grain.png" alt="" style="opacity: 0" />
+        <img id="figure" src="layers/figure.png" alt="" style="opacity: 0" />
+      </div>
+
+      <footer class="bottom">
+        <div class="who">
+          <p class="name">Eduardo Sopalda</p>
+          <p class="role">D&amp;T · Global Data Governance Lead</p>
+          <img class="logo" src="layers/logo.svg" alt="dsm-firmenich" />
+        </div>
+        <div class="values">
+          <p class="ppp">People <span>|</span> Planet <span>|</span> <b>Progress</b></p>
+          <p class="tag">We bring progress to life</p>
+        </div>
+        <div class="event">
+          <p class="conf">AUTOMA Chem 2026</p>
+          <p class="meta">Berlin · 26 October 2026</p>
+          <p class="meta">Opening panel</p>
+        </div>
+      </footer>
+    </div>
+    <p class="hint">Space pause · Click replay</p>
+  </main>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const search = document.getElementById("search");
+    const commit = document.getElementById("commit");
+    const outline = document.getElementById("outline");
+    const field = document.getElementById("field");
+    const grain = document.getElementById("grain");
+    const figure = document.getElementById("figure");
+
+    const hold = { fill: "forwards", composite: "replace" };
+    let playing = true;
+    let mine = [];
+
+    function run() {
+      mine.forEach((a) => a.cancel());
+      mine = [
+        search.animate(
+          [
+            { clipPath: "inset(0 100% 0 0)" },
+            { clipPath: "inset(0 0% 0 0)" },
+          ],
+          { ...hold, delay: 600, duration: 7200, easing: "cubic-bezier(0.4, 0, 0.2, 1)" }
+        ),
+        commit.animate(
+          [
+            { clipPath: "inset(0 100% 0 0)" },
+            { clipPath: "inset(0 0% 0 0)" },
+          ],
+          { ...hold, delay: 2800, duration: 5600, easing: "cubic-bezier(0.4, 0, 0.2, 1)" }
+        ),
+        outline.animate(
+          [{ opacity: 0 }, { opacity: 1 }],
+          { ...hold, delay: 7800, duration: 4200, easing: "ease-in-out" }
+        ),
+        field.animate(
+          [{ opacity: 0 }, { opacity: 1 }],
+          { ...hold, delay: 9800, duration: 3800, easing: "ease-in-out" }
+        ),
+        grain.animate(
+          [{ opacity: 0 }, { opacity: 1 }],
+          { ...hold, delay: 11800, duration: 3600, easing: "ease-in-out" }
+        ),
+        figure.animate(
+          [{ opacity: 0 }, { opacity: 0.92 }],
+          { ...hold, delay: 14000, duration: 2800, easing: "ease-out" }
+        ),
+      ];
+      playing = true;
+    }
+
+    function list() {
+      return stage.getAnimations({ subtree: true });
+    }
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key !== " ") return;
+      event.preventDefault();
+      if (playing) {
+        list().forEach((a) => a.pause());
+        playing = false;
+      } else {
+        list().forEach((a) => a.play());
+        playing = true;
+      }
+    });
+
+    stage.addEventListener("click", () => run());
+    run();
+  </script>
+</body>
+</html>
