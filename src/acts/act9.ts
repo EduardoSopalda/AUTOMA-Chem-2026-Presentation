@@ -24,7 +24,7 @@ const back: Build = (s, beat) => {
 const building: Build = (s) => {
   const tl = gsap.timeline();
   copperFilter(s.draw);
-  const box = { x: 380, y: 470, w: 194, h: 260 };
+  const box = { x: 346, y: 486, w: 262, h: 230 };          // the left elevation: it matches the photograph
   const elev = t(svg("image", { href: elevationUrl, x: box.x, y: box.y, width: box.w, height: box.h, filter: "url(#to-copper)", preserveAspectRatio: "xMidYMid meet" }, s.draw)) as SVGImageElement;
   const w = wipe(s, elev, box, "bottom");
   tl.to(w.rect, { ...w.to, duration: 2.6, ease: "power1.inOut" }, 0.2);

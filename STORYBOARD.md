@@ -195,5 +195,5 @@ Numbers 5, 6 and 9 would each put a line you care about on a timer. I would not 
 ## Still open
 
 1. **The Congresso drawing:** Edu uploads it. The placeholder is one file, `src/draw/congresso.ts`.
-2. **Which elevation** matches the photograph: Edu's answer came through as "[left / right]". The right hand one is used for now. Edu is also looking for the originals.
+2. **Originals** of the wall section, elevation and photograph: Edu is looking for them. The left elevation is used, since it matches the photograph (26 September).
 3. **The cut script and the phone recording**, which will turn the budgets into real timings.
