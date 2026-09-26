@@ -2,7 +2,7 @@
 
 import { hand, exact } from "../draw/hand";
 import { label, setTitleBlock, svg, type Sheet } from "../sheet";
-import { gsap, t, clearPrevious, drawIn, fadeIn, wipe, GHOST_X, type Build } from "./common";
+import { gsap, t, drawIn, fadeIn, wipe, GHOST_X, type Build } from "./common";
 
 const SOURCE = "Scope 1, 2 and 3, 2025: 11,002 kt CO2e. Scope 3: 10,280 kt, so 93% (our calculation). Scope 2: 140 kt market based, 464 kt location based. Source: dsm-firmenich Integrated Annual Report 2025.";
 
@@ -20,23 +20,29 @@ const PILES: { x: number; name: string[]; inside: boolean }[] = [
 // Click 19. "A carbon number looks like chemistry. It is not. It is a data product."
 const number: Build = (s, beat) => {
   const tl = gsap.timeline();
-  clearPrevious(s, tl, 0);
+  // Handoff: the whole structure of Act 4 converges inward to a single point, which opens into the number.
+  const prev = Array.from(s.draw.querySelectorAll(":scope > .t"));
+  const words = Array.from(s.words.children);
+  if (prev.length) tl.to(prev, { scale: 0.02, svgOrigin: "960 262", opacity: 0, duration: 1.3, ease: "power3.in", onComplete: () => prev.forEach((e) => e.remove()) }, 0);
+  if (words.length) tl.to(words, { opacity: 0, duration: 0.6, onComplete: () => words.forEach((e) => e.remove()) }, 0);
   tl.call(() => setTitleBlock(s, beat, SOURCE), [], 0.3);
+  const dotp = t(svg("circle", { cx: 960, cy: 262, r: 6, fill: "var(--ink)", opacity: 0 }, s.draw));
+  tl.to(dotp, { opacity: 1, duration: 0.2 }, 1.2).to(dotp, { r: 1, opacity: 0, duration: 0.5 }, 1.5);
   const num = t(label(s.draw, 960, 290, "11,002 kt CO2e", { family: "serif", size: 112, anchor: "middle", weight: 500 }));
   num.classList.add("number");
-  fadeIn(tl, num, 0.4, 1.4);
+  tl.fromTo(num, { opacity: 0, scale: 0.6, svgOrigin: "960 262" }, { opacity: 1, scale: 1, svgOrigin: "960 262", duration: 1.1, ease: "power2.out" }, 1.5);
 
   const chem = t(label(s.draw, 1400, 400, "Chemistry", { size: 44, anchor: "middle" }));
   chem.classList.add("chem");
-  fadeIn(tl, chem, 1.4, 0.8);
+  fadeIn(tl, chem, 2.4, 0.8);
   // On "It is not": a copper revision cloud circles the label, and it changes.
   const cloud = t(svg("path", { class: "cloud", d: revisionCloud(1400, 385, 170, 44), fill: "none", stroke: "var(--copper)", "stroke-width": 2.2, "stroke-linecap": "round" }, s.draw));
   gsap.set(cloud, { drawSVG: "0%" });
-  drawIn(tl, cloud, 3, 1.4);
+  drawIn(tl, cloud, 4, 1.4);
   const dp = t(label(s.draw, 1400, 400, "Data product", { size: 44, anchor: "middle" }));
   dp.classList.add("dp");
   gsap.set(dp, { opacity: 0 });
-  tl.to(chem, { opacity: 0, duration: 0.5 }, 4.4).to(dp, { opacity: 1, duration: 0.6 }, 4.7);
+  tl.to(chem, { opacity: 0, duration: 0.5 }, 5.4).to(dp, { opacity: 1, duration: 0.6 }, 5.7);
   return tl;
 };
 
