@@ -74,7 +74,9 @@
   .role     {font:15px/1.65 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
   .r-1      {left:1610px;top:645px}
   .r-2      {left:1610px;top:670px}
-  .company  {left:1610px;top:724px;font:bold 27px Arial,Helvetica,sans-serif;letter-spacing:-.05em;color:var(--ink)}
+  /* The official logo (dsm-firmenich Logo Primary Digital, vector) */
+  .company  {left:1610px;top:729px;width:230px}
+  .company img{display:block;width:100%;height:auto}
   .dots{display:inline-flex;gap:3px;margin-left:4px;vertical-align:middle}
   .dots i{width:11px;height:11px;border-radius:50%;background:#111;display:block}
 
@@ -96,8 +98,7 @@
   .after .n-last {left:1738px;top:40px;font-size:42px}
   .after .r-1    {left:1634px;top:89px;font-size:16px;letter-spacing:.24em}
   .after .r-2    {left:1634px;top:114px;font-size:16px;letter-spacing:.24em}
-  .after .company{left:1594px;top:960px;font-size:35px}
-  .after .company .dots i{width:14px;height:14px}
+  .after .company{left:1594px;top:967px;width:285px}
 
   /* Rules carry a small copper dot, as in the target image */
   .rule-right::after,.rule-logo::after{content:"";position:absolute;left:-6px;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:var(--rust)}
@@ -131,7 +132,7 @@
     <span class="t role r-1">D&amp;T · Global Data</span>
     <span class="t role r-2">Governance Lead</span>
     <div class="rule-logo" id="ruleLogo"></div>
-    <span class="t company">dsm-firmenich <span class="dots"><i></i><i></i><i></i></span></span>
+    <span class="t company"><img src="logo.svg" alt="dsm-firmenich"></span>
 
     <span class="t people">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;PLANET&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</span>
     <span class="t event">AUTOMA CHEM 2026&nbsp;&nbsp;·&nbsp;&nbsp;ESTREL BERLIN&nbsp;&nbsp;·&nbsp;&nbsp;26 OCTOBER 2026&nbsp;&nbsp;·&nbsp;&nbsp;9:40</span>
