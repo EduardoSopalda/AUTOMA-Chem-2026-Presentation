@@ -175,8 +175,8 @@
     place(l, 1634 + f.offsetWidth + nameSize * 0.25, 76, nameSize, 0.839);
   }
 
-  // Typography speed: 1 = original timing. Higher is slower. 2.5 settles everything in about 6.9 s.
-  const SLOW = 2.5;
+  // Typography speed: 1 = original timing. Higher is slower. The typography settles 2.8 x SLOW seconds after the click: 10 s, the time the man takes to look up.
+  const SLOW = 10 / 2.8;
   let started = false, tl = null;
   function begin() {
     if (started) return;
