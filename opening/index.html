@@ -25,6 +25,9 @@
   /* The opening film sits underneath. It is hidden until the click. */
   .film{position:absolute;left:0;top:95px;width:1920px;height:1080px;object-fit:cover}   /* shifted down with the man */
 
+  .film2{position:absolute;left:252.2px;top:148.6px;width:1404px;height:661.7px;object-fit:fill;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent),linear-gradient(transparent,#000 36px,#000 calc(100% - 36px),transparent);
+    -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent),linear-gradient(transparent,#000 36px,#000 calc(100% - 36px),transparent);mask-composite:intersect}
   /* The film starts 95 px down; this blends its top edge into the paper above it */
   .seam{position:absolute;left:0;top:0;width:1920px;height:175px;pointer-events:none;background:linear-gradient(#ebd7bd 0,#ebd7bd 95px,rgba(235,215,189,0) 175px)}
 
@@ -105,6 +108,9 @@
 <body>
 <div class="stage" id="stage">
   <video class="film" id="film" src="opening.mp4" muted playsinline preload="auto" style="opacity:0"></video>
+  <!-- Second clip: placed so its first frame registers exactly on the opening film's last frame
+       (measured: scale 0.788 and offset 197, 43 in the 1500 x 846 film, correlation 0.89) -->
+  <video class="film2" id="film2" src="clip2.mp4" muted playsinline preload="auto" style="opacity:0"></video>
   <div class="seam"></div>
 
   <div class="paper" id="paper"></div>
@@ -220,10 +226,33 @@
       .to(man, { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 0.7);   // the film's own man takes over, same place
     window.__anims.push(tl);
   }
+  // Second click: the next clip. Its first frame is the opening film's last frame, so it only starts from there.
+  // If the click comes early, the opening film finishes at triple speed first, then hands over.
+  const film2 = document.getElementById("film2");
+  let second = false;
+  function next() {
+    if (!started || second) return;
+    second = true;
+    const go = () => {
+      film.playbackRate = 1;
+      film2.currentTime = 0;
+      film2.play();
+      window.__anims2 = [gsap.timeline()
+        // The two clips draw the same lines very slightly differently (each was generated on its own),
+        // so a short dissolve lets each line melt into its twin instead of shimmering on a hard cut.
+        .fromTo(film2, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.inOut" }, 0)
+        .fromTo(man, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.inOut" }, 0)   // the man stays: this clip does not contain him
+        .to(film, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 0.2)];
+    };
+    if (film.ended || film.currentTime >= film.duration - 0.05) go();
+    else { film.playbackRate = 3; film.addEventListener("ended", go, { once: true }); }
+  }
   function reset() {
     started = false;
     tl && tl.kill();
-    film.pause(); film.currentTime = 0;
+    film.pause(); film.currentTime = 0; film.playbackRate = 1;
+    second = false; film2.pause(); film2.currentTime = 0;
+    (window.__anims2 || []).forEach((a) => a.kill()); gsap.set(film2, { opacity: 0 }); gsap.set(film, { opacity: 0 });
     gsap.set([paper, man], { opacity: 1 }); gsap.set(film, { opacity: 0 });
     type.classList.remove("after");
     gsap.killTweensOf(type.querySelectorAll("*"));
@@ -232,12 +261,13 @@
     document.getElementById("hint").style.display = "";
   }
   addEventListener("keydown", (e) => {
-    if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) { e.preventDefault(); if (!e.repeat) begin(); }
+    if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) { e.preventDefault(); if (!e.repeat) (started ? next() : begin()); }
     else if (e.key === "r" || e.key === "R") reset();
     else if (e.key === "f" || e.key === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
   });
   // The film holds on its last frame when it ends: no loop, nothing moves on by itself.
   film.addEventListener("ended", () => film.pause());
+  film2.addEventListener("ended", () => film2.pause());
 </script>
 </body>
 </html>

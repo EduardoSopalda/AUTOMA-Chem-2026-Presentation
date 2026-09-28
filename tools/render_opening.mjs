@@ -1,17 +1,18 @@
 // Frame accurate preview of the opening: steps the film and every animation to each frame's exact time,
 // screenshots it, and leaves a numbered image sequence for ffmpeg. No screen recorder, so no compression artefacts.
-// Usage: node tools/render_opening.mjs <film-that-headless-chromium-can-decode.webm> <out-dir> [fps=24] [before=3] [after=29]
+// Usage: node tools/render_opening.mjs <film.webm> <out-dir> [fps=24] [before=3] [after=29] [clip2.webm] [after2=21]
 import { chromium } from "playwright";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const [film, out, fps = "24", before = "3", after = "29"] = process.argv.slice(2);
+const [film, out, fps = "24", before = "3", after = "29", film2, after2 = "21"] = process.argv.slice(2);
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
 const errs = []; p.on("pageerror", (e) => errs.push(String(e)));
 await p.goto(pathToFileURL(path.join(root, "opening/index.html")).href);
-await p.evaluate((src) => { const f = document.getElementById("film"); f.src = src; f.load(); }, pathToFileURL(film).href);
-await p.waitForFunction(() => document.getElementById("film").readyState >= 3);
+await p.evaluate(([src, src2]) => { const f = document.getElementById("film"); f.src = src; f.load();
+  if (src2) { const g = document.getElementById("film2"); g.src = src2; g.load(); } }, [pathToFileURL(film).href, film2 ? pathToFileURL(film2).href : null]);
+await p.waitForFunction((two) => document.getElementById("film").readyState >= 3 && (!two || document.getElementById("film2").readyState >= 3), !!film2);
 await p.evaluate(() => document.fonts.ready);
 let n = 0;
 const shot = async () => { await p.screenshot({ path: path.join(out, String(n++).padStart(5, "0") + ".png") }); };
@@ -30,6 +31,20 @@ for (let i = 0; i <= +after * +fps; i++) {
     if (Math.abs(f.currentTime - target) > 0.001) { f.currentTime = target; await new Promise((r) => f.addEventListener("seeked", r, { once: true })); }
   }, t);
   await shot();
+}
+if (film2) {
+  await p.evaluate(() => { const g = document.getElementById("film2"); g.play = () => Promise.resolve(); });
+  await p.keyboard.press("Space");
+  await p.evaluate(() => { window.__anims2.forEach((a) => a.pause(0)); });
+  for (let i = 1; i <= +after2 * +fps; i++) {
+    const t = i / +fps;
+    await p.evaluate(async (t) => {
+      window.__anims2.forEach((a) => a.time(Math.max(0, t - a.delay()), false));
+      const g = document.getElementById("film2"); const target = Math.min(t, g.duration - 0.01);
+      if (Math.abs(g.currentTime - target) > 0.001) { g.currentTime = target; await new Promise((r) => g.addEventListener("seeked", r, { once: true })); }
+    }, t);
+    await shot();
+  }
 }
 console.log("frames:", n, "errors:", errs.length ? errs : "none");
 await b.close();
