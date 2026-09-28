@@ -2,69 +2,152 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Act 1 motion test: lines from his feet</title>
-<!-- Each line is a moving stroke: it leaves his feet, runs to the foot of its vertical, turns and runs up it.
-     The part behind the stroke disappears. window.setT(t) draws the state at t seconds (for frame rendering). -->
+<title>Act 1 motion test: the plan is drafted and the spheres are herded</title>
+<!-- Orthographic drafting: vertical rules (each launched from his feet, the launch run vanishing behind the pen)
+     and horizontal rules shooting in from the west and east margins. The rules are barriers; the spheres are
+     characters. Copper: the confident planner. Blue: the anxious operator.
+     window.setT(t) draws the state at t seconds, for frame by frame rendering. -->
 <style>
   html,body{margin:0;background:#e9d4ba;overflow:hidden}
   .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden}
-  svg{position:absolute;left:0;top:0}
+  svg,img.s{position:absolute;left:0;top:0}
+  img.s{transform-origin:50% 50%;will-change:transform}
+  .sh{mix-blend-mode:multiply}
 </style>
 </head>
 <body>
-<div class="stage"><img src="base-frame.png" width="1920" height="1080" style="position:absolute;left:0;top:0">
+<div class="stage" id="stage"><img src="base-frame.png" width="1920" height="1080" style="position:absolute;left:0;top:0">
 <svg id="s" width="1920" height="1080" style="mix-blend-mode:multiply"><defs>
   <mask id="behind" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect width="1920" height="1080" fill="#fff"/>
     <image href="../opening/man.png" x="743" y="750" width="257" height="184" style="filter:contrast(3) brightness(1.15)"/></mask></defs>
   <g id="plan"></g><g id="g" mask="url(#behind)"></g></svg></div>
 <script>
+const NS = "http://www.w3.org/2000/svg";
 const K = 0.65, AX = 1006.5, TOP = 60;
 const F = (x, y) => [955 + (x - AX) * K, TOP + (y - 86) * K];
-const V = [106.1,129.6,374.1,458.3,541.0,590.0,625.9,669.1,708.6,758.4,792.8,875.5,894.6,920.9,939.2,1006.5,1073.9,1093.0,1109.1,1131.0,1176.4,1213.8,1255.5,1295.0,1344.8,1381.4,1423.1,1462.7,1549.0,1631.0,1884.3,1907.0];
 const FEET = [955, 922];
-const SPEED = 820;          // px per second along the path
-const TAIL = 150;           // length of the moving stroke
-const NS = "http://www.w3.org/2000/svg", g = document.getElementById("g");
-// Launch order: the copper axis, then outward in pairs, with a hand-drawn irregular rhythm
-const order = V.map((x, i) => ({ x, d: Math.abs(x - AX) })).sort((a, b) => a.d - b.d);
-const START = {};
-let clock = 0, jit = 7;
-order.forEach((o, k) => {
-  if (k > 0 && (k % 2 === 1)) { jit = (jit * 16807) % 2147483647; clock += 0.07 + (jit / 2147483647) * 0.09; }
-  START[o.x] = clock + (k % 2 === 0 && k > 0 ? 0.03 : 0);
-});
-// The plan's real lines stay behind the climbing strokes
-const planG = document.getElementById("plan"), defs = document.querySelector("defs");
-const pm = document.createElementNS(NS, "mask"); pm.id = "reveal"; pm.setAttribute("maskUnits", "userSpaceOnUse");
-pm.setAttribute("x", 0); pm.setAttribute("y", 0); pm.setAttribute("width", 1920); pm.setAttribute("height", 1080); defs.appendChild(pm);
-const img = document.createElementNS(NS, "image"); img.setAttribute("href", "masterplan-ink.png");
-img.setAttribute("x", 955 - AX * K); img.setAttribute("y", TOP - 86 * K); img.setAttribute("width", 2000 * K); img.setAttribute("height", 1124.4 * K);
-img.setAttribute("mask", "url(#reveal)"); planG.appendChild(img);
-const lines = V.map((x) => {
-  const [bx, by] = F(x, 1045), [, ty] = F(x, 86);
+const ink = "#3a4b7a";
+const g = document.getElementById("g"), defs = document.querySelector("defs"), planG = document.getElementById("plan");
+const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const smooth = (x) => { x = clamp(x); return x * x * (3 - 2 * x); };
+
+// The plan raster, revealed only where rules have been drafted
+const reveal = mk("mask", { id: "reveal", maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 1920, height: 1080 }, defs);
+mk("image", { href: "masterplan-ink.png", x: 955 - AX * K, y: TOP - 86 * K, width: 2000 * K, height: 1124.4 * K, mask: "url(#reveal)" }, planG);
+const [PL, PT] = F(98, 86), [PR, PB] = F(1914, 1045);
+
+// ---- Vertical rules: launched from his feet, climbing north; the launch run vanishes behind the pen ----
+const V = [106.1,129.6,374.1,458.3,541.0,590.0,625.9,669.1,708.6,758.4,792.8,875.5,894.6,920.9,939.2,1006.5,1073.9,1093.0,1109.1,1131.0,1176.4,1213.8,1255.5,1295.0,1344.8,1381.4,1423.1,1462.7,1549.0,1631.0,1884.3,1907.0];
+const VSPEED = 1150, TAIL = 140;
+const order = V.map((x) => ({ x, d: Math.abs(x - AX) })).sort((a, b) => a.d - b.d);
+const VSTART = {}; let clock = 0, jit = 7;
+order.forEach((o, k) => { if (k > 0 && k % 2 === 1) { jit = (jit * 16807) % 2147483647; clock += 0.05 + (jit / 2147483647) * 0.06; } VSTART[o.x] = clock + (k % 2 === 0 && k > 0 ? 0.025 : 0); });
+const verts = V.map((x) => {
+  const [bx, by] = F(x, 1045), [, ty] = F(x, 86), copper = Math.abs(x - AX) < 1;
   const ray = Math.hypot(bx - FEET[0], by - FEET[1]), up = by - ty;
-  const copper = Math.abs(x - AX) < 1;
-  const p = document.createElementNS(NS, "path");
-  p.setAttribute("d", `M${FEET[0]} ${FEET[1]} L${bx.toFixed(1)} ${by.toFixed(1)} L${bx.toFixed(1)} ${ty.toFixed(1)}`);
-  p.setAttribute("fill", "none"); p.setAttribute("stroke", copper ? "#762F0B" : "#3a4b7a");
-  p.setAttribute("stroke-width", copper ? 2.4 : 1.4); p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round");
-  g.appendChild(p);
-  const r = document.createElementNS(NS, "rect"); r.setAttribute("x", bx - 5); r.setAttribute("width", 10); r.setAttribute("fill", "#fff");
-  r.setAttribute("y", by); r.setAttribute("height", 0); pm.appendChild(r);
-  return { p, r, x, by, ray, len: ray + up };
+  const p = mk("path", { d: `M${FEET[0]} ${FEET[1]} L${bx} ${by} L${bx} ${ty}`, fill: "none", stroke: copper ? "#762F0B" : ink, "stroke-width": copper ? 2.4 : 1.4, "stroke-linecap": "round" }, g);
+  const r = mk("rect", { x: bx - 4, width: 8, y: by, height: 0, fill: "#fff" }, reveal);
+  return { x: bx, by, ty, p, r, ray, len: ray + up, t0: VSTART[x] };
 });
-window.setT = (t) => {
-  for (const L of lines) {
-    const head = Math.min(Math.max(0, t - START[L.x]) * SPEED, L.len + TAIL);   // where the pen is
-    const climbed = Math.max(0, Math.min(head, L.len) - L.ray);                  // how far up its vertical
-    L.r.setAttribute("y", (L.by - climbed).toFixed(1)); L.r.setAttribute("height", climbed.toFixed(1));
-    const a = Math.max(0, head - TAIL), b = Math.min(head, L.len);   // the visible stroke: [a, b] along the path
-    if (b <= a) { L.p.style.opacity = 0; continue; }
-    L.p.style.opacity = 1;
-    L.p.setAttribute("stroke-dasharray", `0 ${a.toFixed(1)} ${(b - a).toFixed(1)} ${L.len + TAIL}`);
+
+// ---- Horizontal rules: shot in from the margins. Upper ones from the west (they close Governance around copper),
+//      lower ones from the east (they catch blue and shove it into the Plant zone) ----
+const H = [[113.5, "w"], [392.4, "w"], [95.2, "w"], [475.1, "w"], [557.1, "e"], [641.3, "e"], [720.4, "e"], [801.6, "e"], [964.1, "e"], [1022.7, "e"]];
+const HSTART = 1.55, HGAP = 0.13, HSPEED = 2100;
+const horiz = H.map(([y, side], k) => {
+  const Y = F(0, y)[1];
+  const r = mk("rect", { y: Y - 4, height: 8, x: side === "w" ? PL : PR, width: 0, fill: "#fff" }, reveal);
+  const pen = mk("line", { x1: 0, y1: Y, x2: 0, y2: Y, stroke: ink, "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }, g);
+  return { Y, side, r, pen, t0: HSTART + k * HGAP };
+});
+// the moment a rule reaches a given x (used by the spheres to react)
+const hArrive = (h, x) => h.t0 + (h.side === "w" ? x - PL : PR - x) / HSPEED;
+
+// ---- The spheres: sprites lifted from clip 2 ----
+const SPH = { copper: { w: 168, h: 193, c: 84.5, r: 44.5 }, blue: { w: 166, h: 191, c: 83.5, r: 44 } };
+const stage = document.getElementById("stage");
+function sprite(name) {
+  const o = SPH[name];
+  const sh = document.createElement("img"); sh.src = `shadow-${name}.png`; sh.className = "s sh"; stage.appendChild(sh);
+  const im = document.createElement("img"); im.src = `sphere-${name}.png`; im.className = "s"; stage.appendChild(im);
+  return { o, sh, im };
+}
+function place(sp, x, y, r, sx = 1, sy = 1) {
+  const k = r / sp.o.r, L = x - sp.o.c * k, T = y - sp.o.c * k;
+  for (const e of [sp.sh, sp.im]) { e.style.width = sp.o.w * k + "px"; e.style.height = sp.o.h * k + "px"; }
+  sp.im.style.transform = `translate(${L}px,${T}px) scale(${sx},${sy})`;
+  sp.im.style.transformOrigin = `${sp.o.c * k}px ${sp.o.c * k}px`;
+  sp.sh.style.transform = `translate(${L}px,${T + (1 - sy) * r}px) scale(${sx},1)`;
+}
+const copper = sprite("copper"), blue = sprite("blue");
+
+// Keyframed paths with organic easing, anticipation, micro pauses and overshoot.
+// Each key: [t, x, y, squashX, squashY]
+function track(keys, t) {
+  if (t <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) {
+    const a = keys[i - 1], b = keys[i], u = smooth((t - a[0]) / (b[0] - a[0]));
+    return [1, 2, 3, 4].map((j) => a[j] + (b[j] - a[j]) * u);
   }
+  return keys[keys.length - 1].slice(1);
+}
+const HOME_C = F(285, 240), HOME_B = F(1756, 896);
+// Copper, the confident planner: leans before it moves, glides, steps into Governance as the door closes, looks back.
+const CK = [
+  [0.00, 640, 469, 1, 1],
+  [0.30, 646, 471, 0.94, 1.06],     // anticipation: leans away from the first rule
+  [0.95, 575, 405, 1, 1],           // glides up and left, unhurried
+  [1.20, 575, 402, 1, 1],           // a pause: it considers
+  [1.65, 520, 300, 1, 1],           // the left rules are coming: it moves ahead of them
+  [1.90, 492, 222, 1.04, 0.96],     // into the Governance block, before the rule at y 259 closes it
+  [2.20, HOME_C[0] - 6, HOME_C[1] - 5, 1, 1],   // overshoot
+  [2.55, HOME_C[0] + 2, HOME_C[1] + 1, 1, 1],   // settles
+  [2.90, HOME_C[0] + 5, HOME_C[1], 1, 1],       // a small glance back toward the avenue
+  [3.30, HOME_C[0], HOME_C[1], 1, 1],
+];
+// Blue, the anxious operator: trembles, flinches, overcorrects, gets caught and shoved into the Plant zone.
+const BK = [
+  [0.00, 1270, 469, 1, 1],
+  [0.70, 1272, 468, 1, 1],
+  [0.78, 1300, 466, 1.08, 0.92],    // flinch: a rule passed too close
+  [0.95, 1318, 470, 1, 1],          // overcorrects
+  [1.10, 1310, 470, 1, 1],
+  [1.30, 1308, 470, 1, 1],
+  [1.38, 1336, 472, 1.08, 0.92],    // another flinch
+  [1.60, 1352, 476, 1, 1],
+];
+// The rule at y 472 (641.3 in the plan) comes in from the east; when it reaches blue it catches and shoves it down.
+const catcher = horiz.find((h) => Math.abs(h.Y - F(0, 720.4)[1]) < 1);
+const hit = hArrive(catcher, 1352 + 44);
+BK.push([hit - 0.02, 1352, 476, 1, 1], [hit + 0.06, 1356, 490, 1.12, 0.86], [hit + 0.45, HOME_B[0] + 4, HOME_B[1] + 10, 0.96, 1.04],
+        [hit + 0.62, HOME_B[0] - 2, HOME_B[1] - 3, 1.03, 0.97], [hit + 0.85, HOME_B[0], HOME_B[1], 1, 1], [hit + 1.6, HOME_B[0], HOME_B[1], 1, 1]);
+
+window.setT = (t) => {
+  for (const L of verts) {
+    const head = clamp((t - L.t0) * VSPEED, 0, L.len + TAIL);
+    const climbed = Math.max(0, Math.min(head, L.len) - L.ray);
+    L.r.setAttribute("y", L.by - climbed); L.r.setAttribute("height", climbed);
+    const a = Math.max(0, head - TAIL), b = Math.min(head, L.len);
+    L.p.style.opacity = b > a ? 1 : 0;
+    if (b > a) L.p.setAttribute("stroke-dasharray", `0 ${a} ${b - a} ${L.len + TAIL}`);
+  }
+  for (const h of horiz) {
+    const run = clamp((t - h.t0) * HSPEED, 0, PR - PL);
+    if (h.side === "w") { h.r.setAttribute("x", PL); h.r.setAttribute("width", run); } else { h.r.setAttribute("x", PR - run); h.r.setAttribute("width", run); }
+    const tip = h.side === "w" ? PL + run : PR - run, back = h.side === "w" ? Math.max(PL, tip - 90) : Math.min(PR, tip + 90);
+    const live = run > 0 && run < PR - PL;
+    h.pen.setAttribute("opacity", live ? 1 : 0);
+    h.pen.setAttribute("x1", back); h.pen.setAttribute("x2", tip);
+  }
+  const c = track(CK, t);
+  place(copper, c[0], c[1], 44, c[2], c[3]);
+  let b = track(BK, t);
+  // the anxious one never quite stops trembling
+  const tremble = t > 0.6 ? 1.4 * Math.sin(t * 61) * (t < hit + 0.85 ? 1 : 0.45) : 0;
+  place(blue, b[0] + tremble, b[1], 42, b[2], b[3]);
 };
-window.DURATION = Math.max(...lines.map((l) => START[l.x] + (l.len + TAIL) / SPEED));
+window.DURATION = Math.max(hit + 1.0, ...verts.map((v) => v.t0 + (v.len + TAIL) / VSPEED), ...horiz.map((h) => h.t0 + (PR - PL) / HSPEED));
 setT(0);
 </script>
 </body>
