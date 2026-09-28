@@ -228,6 +228,10 @@ window.setState = (c, t) => {
   click3(c === 3 ? t : -1);
 };
 setState(1, 0);
+// Fit the 1920 x 1080 stage to any window, centred
+const fit = () => { const k = Math.min(innerWidth / 1920, innerHeight / 1080), st = $("stage");
+  st.style.transformOrigin = "0 0"; st.style.transform = `translate(${(innerWidth - 1920 * k) / 2}px,${(innerHeight - 1080 * k) / 2}px) scale(${k})`; };
+addEventListener("resize", fit); fit();
 // Live playback: Space, Right arrow or Page Down starts the next click; R resets. Each click plays once and holds.
 let click = 0, clickStart = 0, raf = 0;
 function frame(now) {
@@ -240,6 +244,7 @@ addEventListener("keydown", (e) => {
     e.preventDefault(); if (e.repeat || click >= 3) return;
     if (click > 0) setState(click, window.CLICK[click] + 1);          // an early click completes the current one
     click++; clickStart = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+  } else if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
   } else if (e.key === "r" || e.key === "R") { cancelAnimationFrame(raf); click = 0; setState(1, 0); }
 });
 </script>
