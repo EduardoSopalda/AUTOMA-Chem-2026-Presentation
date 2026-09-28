@@ -26,7 +26,7 @@
        background:linear-gradient(115deg,#8a3a12 0%,#c4733e 30%,#e8ae7c 44%,#b5602c 58%,#762F0B 100%);
        -webkit-background-clip:text;background-clip:text;color:transparent;opacity:0}
   /* The note: an intentional anchor, legible from the back of the room */
-  .note{position:absolute;z-index:3;left:110px;top:618px;font:500 38px/1 "DM Sans",sans-serif;letter-spacing:.02em;color:#0F0F11;opacity:0}
+  .note{position:absolute;z-index:3;left:110px;top:704px;font:500 38px/1 "DM Sans",sans-serif;letter-spacing:.02em;color:#0F0F11;opacity:0}
   .note::before{content:"";position:absolute;left:0;top:-22px;width:56px;height:2px;background:#762F0B}
   .col{position:absolute;z-index:3;left:1594px;top:212px;width:300px;white-space:nowrap}
   .act{font:500 16px/1 "DM Sans",sans-serif;letter-spacing:.24em;color:#365F7C;opacity:0}
@@ -43,6 +43,7 @@
   <mask id="behind" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect width="1920" height="1080" fill="#fff"/>
     <image href="../opening/man.png" x="743" y="750" width="257" height="184" style="filter:contrast(3) brightness(1.15)"/></mask></defs>
   <g id="full" opacity="0"></g><g id="plan"></g><g id="g" mask="url(#behind)"></g></svg>
+  <svg id="light" width="1920" height="1080" style="z-index:1"><defs><filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs><g id="rays" mask="url(#behind)"></g></svg>
   <div class="one" id="one">01</div><div class="note" id="note">…not as a metaphor.</div>
   <div class="col"><div class="act" id="act">ACT ONE</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
     <div class="stmt"><div>We design from above.</div><div>Not always for the person</div><div>who has to live</div><div>with the result.</div></div></div>
@@ -65,8 +66,8 @@ const [PL] = F(98, 86), [PR] = F(1914, 1045), [, PT] = F(0, 86), AXX = 955;
 
 // ================= CLICK 2 timing: the plan unfolds over about 45 s =================
 const AXIS = { t0: 0.5, dur: 5.0 };                 // the copper axis rises from his feet
-const VDUR = 3.6, V0 = 4.0, VGAP = 1.3;             // verticals: bottom to top, outward in pairs
-const HDUR = 3.2, H0 = 21.0, HGAP = 2.2;            // horizontals: from both margins to the axis, in sync
+const VDUR = 4.4, V0 = 4.0, VGAP = 1.3;             // verticals: bottom to top, outward in pairs
+const HDUR = 3.8, H0 = 21.0, HGAP = 2.2;            // horizontals: from both margins to the axis, in sync
 const V = [106.1,129.6,374.1,458.3,541.0,590.0,625.9,669.1,708.6,758.4,792.8,875.5,894.6,920.9,939.2,1073.9,1093.0,1109.1,1131.0,1176.4,1213.8,1255.5,1295.0,1344.8,1381.4,1423.1,1462.7,1549.0,1631.0,1884.3,1907.0];
 const ROWS = [113.5, 95.2, 392.4, 475.1, 557.1, 641.3, 720.4, 801.6, 964.1, 1022.7];
 
@@ -74,30 +75,55 @@ const ROWS = [113.5, 95.2, 392.4, 475.1, 557.1, 641.3, 720.4, 801.6, 964.1, 1022
 const axisLen = FEET[1] - PT;
 const axisPath = mk("path", { d: `M${FEET[0]} ${FEET[1]} L${AXX} ${PT}`, fill: "none", stroke: "#762F0B", "stroke-width": 2.4, "stroke-linecap": "round", "stroke-dasharray": `0 ${axisLen + 10}` }, g);
 
-// Verticals, launched in pairs outward from the axis
+// ---- Rays of light: a luminous head, a trail that fades behind it, the plan's real line settling in after ----
+const ORIGIN = [955, 764];                          // the verticals leave from the man himself (his head, behind the ink)
+const TRAIL = 260, SEGS = 9, LAG = 150;             // trail length, its fading segments, how far behind the head the line settles
+const raysG = $("rays");
+function ray(d) {                                   // a path drawn as a head with a fading trail
+  const segs = [];
+  for (let k = 0; k < SEGS; k++) {
+    const a = 1 - k / SEGS;
+    const glow = mk("path", { d, fill: "none", stroke: "#fff6e2", "stroke-width": 9, "stroke-linecap": "round", filter: "url(#halo)", opacity: (0.85 * a * a).toFixed(3) }, raysG);
+    const core = mk("path", { d, fill: "none", stroke: k === 0 ? "#D89C67" : "#e8b98c", "stroke-width": k === 0 ? 2 : 1.4, "stroke-linecap": "round", opacity: (a * a).toFixed(3) }, raysG);
+    segs.push(glow, core);
+  }
+  return segs;
+}
+function drawRay(segs, head, len) {                 // head: distance along the path; the trail sits behind it
+  for (let k = 0; k < SEGS; k++) {
+    const b = Math.min(head - (k * TRAIL) / SEGS, len), a = Math.max(0, head - ((k + 1) * TRAIL) / SEGS);
+    for (const e of [segs[2 * k], segs[2 * k + 1]]) {
+      if (b <= a || head <= 0) { e.style.display = "none"; continue; }
+      e.style.display = ""; e.setAttribute("stroke-dasharray", `0 ${a} ${b - a} ${len + TRAIL * 2}`);
+    }
+  }
+}
+// Verticals: each ray leaves the man, enters the plan at the foot of its column and climbs it. Pairs, outward.
 const byDist = V.map((x) => ({ x, d: Math.abs(x - AX) })).sort((a, b) => a.d - b.d);
 const verts = byDist.map((o, i) => {
   const [X, B] = F(o.x, 1045), [, T] = F(o.x, 86);
   const t0 = V0 + Math.floor(i / 2) * VGAP + (i % 2) * 0.35;
+  const diag = Math.hypot(X - ORIGIN[0], B - ORIGIN[1]), len = diag + (B - T);
   const r = mk("rect", { x: X - 4, width: 8, y: B, height: 0, fill: "#fff" }, reveal);
-  const pen = mk("line", { x1: X, x2: X, y1: B, y2: B, stroke: ink, "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }, g);
-  return { X, B, T, t0, r, pen };
+  const segs = ray(`M${ORIGIN[0]} ${ORIGIN[1]} L${X.toFixed(1)} ${B.toFixed(1)} L${X.toFixed(1)} ${T.toFixed(1)}`);
+  return { X, B, T, t0, r, segs, diag, len };
 });
 const vAt = (X) => verts.reduce((a, v) => (Math.abs(v.X - X) < Math.abs(a.X - X) ? v : a));
-function inv(p) { let lo = 0, hi = 1; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; if (ease(m) < p) lo = m; else hi = m; } return lo; }
-const vReach = (v, Y) => v.t0 + VDUR * inv((v.B - Y) / (v.B - v.T));   // when a vertical's pen reaches height Y
+function inv(p) { p = clamp(p); let lo = 0, hi = 1; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; if (ease(m) < p) lo = m; else hi = m; } return lo; }
+const vReach = (v, Y) => v.t0 + VDUR * inv((v.diag + (v.B - Y)) / v.len);   // when a ray's head reaches height Y on its column
 
-// Horizontals: two halves, from each margin to the axis, drawn in parallel
+// Horizontals: from beyond the paper's edges on both sides, travelling in to the copper spine, in parallel
+const OUT = 140;                                    // how far outside the screen they start
 const rows = ROWS.map((y, k) => {
   const Y = F(0, y)[1], t0 = H0 + k * HGAP;
   const rl = mk("rect", { x: PL, y: Y - 4, width: 0, height: 8, fill: "#fff" }, reveal);
   const rr = mk("rect", { x: PR, y: Y - 4, width: 0, height: 8, fill: "#fff" }, reveal);
-  const pl = mk("line", { y1: Y, y2: Y, stroke: ink, "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }, g);
-  const pr = mk("line", { y1: Y, y2: Y, stroke: ink, "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }, g);
-  return { y, Y, t0, rl, rr, pl, pr };
+  const lenL = AXX + OUT, lenR = 1920 + OUT - AXX;
+  const sl = ray(`M${-OUT} ${Y} L${AXX} ${Y}`), sr = ray(`M${1920 + OUT} ${Y} L${AXX} ${Y}`);
+  return { y, Y, t0, rl, rr, sl, sr, lenL, lenR };
 });
 const rowAt = (y) => rows.find((r) => Math.abs(r.y - y) < 0.5);
-const hReach = (r, X) => r.t0 + HDUR * inv(X < AXX ? (X - PL) / (AXX - PL) : (PR - X) / (PR - AXX));
+const hReach = (r, X) => r.t0 + HDUR * inv(X < AXX ? (X + OUT) / r.lenL : (1920 + OUT - X) / r.lenR);
 
 // ================= The spheres =================
 const SPH = { copper: { w: 168, h: 193, c: 84.5, r: 44.5 }, blue: { w: 166, h: 191, c: 83.5, r: 44 } };
@@ -167,19 +193,19 @@ function click2(t) {
   // the axis
   const ap = ease((t - AXIS.t0) / AXIS.dur) * axisLen;
   axisPath.setAttribute("stroke-dasharray", `${ap} ${axisLen + 10}`);
-  // verticals: bottom to top; a short pen stroke leads, the plan's real line stays behind it
+  // verticals: rays from the man, up their columns; the plan's line settles in behind the head
   for (const v of verts) {
-    const p = ease((t - v.t0) / VDUR), y = v.B - (v.B - v.T) * p;
-    v.r.setAttribute("y", y); v.r.setAttribute("height", v.B - y);
-    const live = p > 0 && p < 1;
-    v.pen.setAttribute("opacity", live ? 1 : 0); v.pen.setAttribute("y1", y); v.pen.setAttribute("y2", Math.min(v.B, y + 70));
+    const head = ease((t - v.t0) / VDUR) * v.len;
+    drawRay(v.segs, head, v.len);
+    const settled = clamp(head - LAG - v.diag, 0, v.B - v.T);
+    v.r.setAttribute("y", v.B - settled); v.r.setAttribute("height", settled);
   }
-  // horizontals: both halves in parallel, from the margins to the axis
+  // horizontals: rays from beyond both edges to the spine; the line settles in behind, inside the plan only
   for (const r of rows) {
-    const p = ease((t - r.t0) / HDUR), xl = PL + (AXX - PL) * p, xr = PR - (PR - AXX) * p;
+    const p = ease((t - r.t0) / HDUR);
+    drawRay(r.sl, p * r.lenL, r.lenL); drawRay(r.sr, p * r.lenR, r.lenR);
+    const xl = clamp(-OUT + p * r.lenL - LAG, PL, AXX), xr = clamp(1920 + OUT - p * r.lenR + LAG, AXX, PR);
     r.rl.setAttribute("width", xl - PL); r.rr.setAttribute("x", xr); r.rr.setAttribute("width", PR - xr);
-    const live = p > 0 && p < 1;
-    for (const [pen, x, dir] of [[r.pl, xl, -1], [r.pr, xr, 1]]) { pen.setAttribute("opacity", live ? 1 : 0); pen.setAttribute("x1", x); pen.setAttribute("x2", x + dir * 70); }
   }
   // the spheres
   const c = track(CK, t); place(copper, c[0], c[1], 44 - 6 * smooth((t - cC) / 1.4), c[2], c[3]);
@@ -217,7 +243,7 @@ function click3(t) {
   document.querySelectorAll(".stmt div").forEach((d, i) => (d.style.opacity = smooth((t - 1.2 - i * 0.2) / 0.7)));
 }
 
-const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.5;
+const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.8;
 window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6 };
 window.setState = (c, t) => {
   if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
