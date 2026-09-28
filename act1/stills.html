@@ -130,6 +130,34 @@ function fan(t, grow = 1) {
   add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0">${paths}</svg>`);
 }
 
+
+// ---- True one-point perspective (no warping: every line stays straight) ----
+// Camera at the origin looking into the page. Horizon at the man's eye (y 770), vanishing point on him (x 955).
+// The plan is a flat plane hinged along its bottom edge. phi = 90 deg: it lies overhead like a ceiling, every
+// receding line converging on the man. phi = 0: upright, facing us, exactly the flat plan of still E.
+const CAM = { f: 710, vx: 955, hy: 770, Zw: 10, yb: 1.225, a: 71 };
+function proj(x, y, phi) {                      // x, y in the plan's 2000 px preview space
+  const Xw = (x - AX) * K / CAM.a, h = (1045 - y) * K / CAM.a;
+  const y3 = CAM.yb + h * Math.cos(phi), z3 = CAM.Zw - h * Math.sin(phi);
+  return [CAM.vx + CAM.f * Xw / z3, CAM.hy - CAM.f * y3 / z3];
+}
+function persp(deg) {
+  const phi = deg * Math.PI / 180, ink = "#3a4b7a";
+  let d = "";
+  const L = (a, b, w, c, o) => `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${c}" stroke-width="${w}" opacity="${o}"/>`;
+  for (const x of LM.v) d += L(proj(x, 1045, phi), proj(x, 86, phi), 1.3, ink, 0.8);
+  for (const y of [86, ...LM.h, 1045]) d += L(proj(106, y, phi), proj(1907, y, phi), 1.1, ink, 0.7);
+  d += L(proj(AXIS, 1045, phi), proj(AXIS, 86, phi), 2.4, "#762F0B", 1);
+  // the drawing stays inside the field: left of the right column, above the man
+  // Construction lines, as an architect leaves them: the horizon at his eye, and each receding line
+  // continued (dashed, faint) from the plan's edge down to the vanishing point on him
+  let c = `<line x1="60" y1="${CAM.hy}" x2="1545" y2="${CAM.hy}" stroke="${ink}" stroke-width="1" opacity="0.35" stroke-dasharray="14 8"/>`;
+  c += `<circle cx="${CAM.vx}" cy="${CAM.hy}" r="4" fill="none" stroke="#762F0B" stroke-width="1.4" opacity="0.8"/>`;
+  if (deg > 3) for (const x of LM.v) { const a = proj(x, 1045, phi); c += `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${CAM.vx}" y2="${CAM.hy}" stroke="${ink}" stroke-width="0.8" opacity="${(0.3 * Math.min(1, deg / 40)).toFixed(2)}" stroke-dasharray="4 6"/>`; }
+  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0">${c}</svg>`);
+  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0"><defs><clipPath id="field"><path d="M40 0 H1545 V${CAM.hy - 2} H420 V640 H40 Z"/></clipPath></defs><g clip-path="url(#field)">${d}</g></svg>`);
+}
+
 const note = () => add(`<div class="abs note">…not as a metaphor.</div>`);
 const cap = (t) => add(`<div class="cap">${t}</div>`);
 
@@ -154,6 +182,11 @@ if (s === "E") {
 if (s === "F1") { fan(0.0, 0.6); column(0.5); sphere("copper", 610, 440, 45); sphere("blue", 1300, 470, 45); note(); cap("F1 · click 2 begins: lines leave the man and fan out across the field; the spheres flinch"); }
 if (s === "F2") { fan(0.45); column(1); sphere("copper", 470, 250, 42); sphere("blue", 1420, 610, 42); note(); cap("F2 · the fan bends: the plan lifts from the floor toward the upright; the spheres back away"); }
 if (s === "F3") { fan(0.82); column(1); sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note(); cap("F3 · almost upright: the spheres are cornered in Governance and the Plant zone"); }
+
+if (s === "P1") { persp(90); column(0.5); sphere("copper", 600, 430, 45); sphere("blue", 1300, 460, 45); note(); cap("P1 · the plan overhead, like a ceiling: every receding line converges on the man"); }
+if (s === "P2") { persp(55); column(1); sphere("copper", 500, 280, 42); sphere("blue", 1400, 590, 42); note(); cap("P2 · the plane swings down toward upright; the vanishing point climbs away from him"); }
+if (s === "P3") { persp(22); column(1); sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note(); cap("P3 · almost upright: the lines are nearly parallel; the spheres are cornered"); }
+if (s === "P4") { persp(0); column(1); sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note(); cap("P4 · upright: the drawn lines now sit exactly on the plan of still E"); }
 </script>
 </body>
 </html>
