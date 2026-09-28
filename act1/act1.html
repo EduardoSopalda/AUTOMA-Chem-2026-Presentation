@@ -22,7 +22,7 @@
   img.s{z-index:2}
   .sh{mix-blend-mode:multiply}
   /* 01 sits above the spheres */
-  .one{position:absolute;z-index:5;left:37px;top:36px;font:100 760px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
+  .one{position:absolute;z-index:5;left:50px;top:40px;font:100 470px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
        background:linear-gradient(115deg,#8a3a12 0%,#c4733e 30%,#e8ae7c 44%,#b5602c 58%,#762F0B 100%);
        -webkit-background-clip:text;background-clip:text;color:transparent;opacity:0}
   /* The note: an intentional anchor, legible from the back of the room */
@@ -116,7 +116,7 @@ function track(keys, t) {
   for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) { const a = keys[i - 1], b = keys[i], u = smooth((t - a[0]) / (b[0] - a[0])); return [1, 2, 3, 4].map((j) => a[j] + (b[j] - a[j]) * u); }
   return keys[keys.length - 1].slice(1);
 }
-const C0 = [640, 469], B0 = [1270, 469];
+const C0 = [643, 550], B0 = [1280, 547];          // exactly where clip 2 leaves them: no opening move
 const HOME_C = F(285, 240), HOME_B = F(1756, 896);
 
 // Copper, the confident planner: it withdraws ahead of the lines, calmly, with a lean before each move,
@@ -127,10 +127,10 @@ const CK = [
   [0, C0[0], C0[1], 1, 1],
   [cA - 0.6, C0[0], C0[1], 1, 1],
   [cA - 0.2, C0[0] + 5, C0[1] + 2, 0.95, 1.05],        // leans
-  [cA + 1.6, 592, 418, 1, 1],                            // glides away, unhurried
-  [cB - 0.2, 592, 418, 1, 1],
-  [cB + 1.6, 548, 330, 1, 1],
-  [cC - 0.4, 548, 330, 1, 1],
+  [cA + 1.6, 598, 470, 1, 1],                            // withdraws, unhurried
+  [cB - 0.2, 598, 470, 1, 1],
+  [cB + 1.6, 552, 360, 1, 1],
+  [cC - 0.4, 552, 360, 1, 1],
   [cC + 1.4, HOME_C[0] + 6, HOME_C[1] - 4, 1.03, 0.97],   // steps into Governance, a small overshoot
   [cC + 2.3, HOME_C[0], HOME_C[1], 1, 1],
   [closeC + 0.4, HOME_C[0], HOME_C[1], 1, 1],
@@ -140,7 +140,7 @@ const CK = [
 // Blue, the anxious operator: flinches as rules pass close, overcorrects, waits trembling,
 // is caught by the row at y 472 coming in from the east margin, resists, is dragged down into the Plant box.
 const bA = vReach(vAt(1252), 500), bB = vReach(vAt(1308), 500), bC = vReach(vAt(1361), 520);
-const catcher = rowAt(720.4), hit = hReach(catcher, 1410 + 44);
+const catcher = rowAt(801.6), hit = hReach(catcher, 1410 + 44);   // the row at blue's height, from the east
 const BK = [
   [0, B0[0], B0[1], 1, 1],
   [bA - 0.05, B0[0], B0[1], 1, 1],
@@ -153,10 +153,10 @@ const BK = [
   [bB + 0.9, B0[0] + 80, B0[1] + 4, 1, 1],
   [bC - 0.05, B0[0] + 80, B0[1] + 4, 1, 1],
   [bC + 0.15, B0[0] + 136, B0[1] + 3, 1.08, 0.92],      // and again: now inside the Plant zone's walls, waiting
-  [bC + 0.6, 1410, 474, 1, 1],
-  [hit - 0.03, 1410, 474, 1, 1],
-  [hit + 0.15, 1413, 485, 1.14, 0.84],                  // caught: squashed against the rule
-  [hit + 0.8, 1418, 497, 1.08, 0.92],                   // resists, barely moving
+  [bC + 0.6, 1410, 550, 1, 1],
+  [hit - 0.03, 1410, 550, 1, 1],
+  [hit + 0.15, 1413, 558, 1.14, 0.84],                  // caught: squashed against the rule
+  [hit + 0.8, 1418, 566, 1.08, 0.92],                   // resists, barely moving
   [hit + 1.9, HOME_B[0] + 2, HOME_B[1] - 18, 1.02, 0.98],   // gives way, dragged down
   [hit + 2.3, HOME_B[0] + 3, HOME_B[1] + 11, 0.94, 1.06],   // hits the bottom of the box
   [hit + 2.7, HOME_B[0] - 1, HOME_B[1] - 2, 1.02, 0.98],
@@ -182,9 +182,9 @@ function click2(t) {
     for (const [pen, x, dir] of [[r.pl, xl, -1], [r.pr, xr, 1]]) { pen.setAttribute("opacity", live ? 1 : 0); pen.setAttribute("x1", x); pen.setAttribute("x2", x + dir * 70); }
   }
   // the spheres
-  const c = track(CK, t); place(copper, c[0], c[1], 47 - 9 * smooth((t - cC) / 1.4), c[2], c[3]);
+  const c = track(CK, t); place(copper, c[0], c[1], 44 - 6 * smooth((t - cC) / 1.4), c[2], c[3]);
   const b = track(BK, t), tr = t > bA - 1 ? 1.3 * Math.sin(t * 61) * (t < hit + 3.1 ? 1 : 0.5) : 0;
-  place(blue, b[0] + tr, b[1], 47 - 5 * smooth((t - hit) / 3), b[2], b[3]);
+  place(blue, b[0] + tr, b[1], 43.5 - 1.5 * smooth((t - hit) / 3), b[2], b[3]);
   // ACT ONE and The Architect arrive in the column early in the drawing; the copper rule draws under the title
   const e = (a, d) => smooth((t - a) / d);
   $("act").style.opacity = e(1.0, 1.2); $("hair").style.opacity = 0.55 * e(1.4, 1.2); $("ttl").style.opacity = e(2.0, 1.4);
@@ -192,7 +192,6 @@ function click2(t) {
 }
 
 // ================= CLICK 1 =================
-const START_C = [643, 550], START_B = [1280, 547];     // where clip 2 leaves them
 const ONE_IN = 0.6, ONE_HOLD = 2.5, ONE_OUT = 1.0;
 const ONE_GONE = ONE_IN + ONE_HOLD + ONE_OUT;          // the spheres wait for this moment
 function click1(t) {
@@ -200,9 +199,8 @@ function click1(t) {
   $("one").style.opacity = one;
   $("one").style.filter = `blur(${2.5 * smooth((t - ONE_IN - ONE_HOLD - 0.2) / (ONE_OUT - 0.2))}px)`;   // sinks into the grain
   $("note").style.opacity = smooth((t - ONE_GONE - 0.2) / 1.0);   // after 01 has gone
-  const k = smooth((t - ONE_GONE) / 1.6);              // still until 01 is fully gone, then they glide
-  place(copper, START_C[0] + (C0[0] - START_C[0]) * k, START_C[1] + (C0[1] - START_C[1]) * k, 44 + 3 * k);
-  place(blue, START_B[0] + (B0[0] - START_B[0]) * k, START_B[1] + (B0[1] - START_B[1]) * k, 43.5 + 3.5 * k);
+  place(copper, C0[0], C0[1], 44);                     // the spheres do not move in click 1
+  place(blue, B0[0], B0[1], 43.5);
 }
 
 // ================= CLICK 3 =================
@@ -220,7 +218,7 @@ function click3(t) {
 }
 
 const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.5;
-window.CLICK = { 1: ONE_GONE + 1.8, 2: CLICK2, 3: 2.6 };
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6 };
 window.setState = (c, t) => {
   if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
   click1(99); click2(c === 2 ? t : 999);
