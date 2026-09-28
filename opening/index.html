@@ -16,7 +16,7 @@
 <style>
   :root{ --paper:#ead9bc; --rust:#843b18; --ink:#171717; --blue:#456d8b; }
   *{box-sizing:border-box}
-  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#e9d7ba}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#e9d4ba}
   body{font-family:Arial,Helvetica,sans-serif}
 
   /* One fixed stage, scaled to fit the window */
@@ -29,15 +29,7 @@
   .seam{position:absolute;left:0;top:0;width:1920px;height:175px;pointer-events:none;background:linear-gradient(#ebd7bd 0,#ebd7bd 95px,rgba(235,215,189,0) 175px)}
 
   /* Edu's paper, exactly as in his file, on its own layer so it can give way to the film */
-  .paper{
-    position:absolute;inset:0;
-    background:
-      radial-gradient(ellipse at 15% 20%,rgba(255,255,255,.35),transparent 28%),
-      radial-gradient(ellipse at 82% 78%,rgba(130,85,35,.12),transparent 25%),
-      repeating-linear-gradient(0deg,rgba(120,85,45,.035) 0 1px,transparent 1px 5px),
-      repeating-linear-gradient(90deg,rgba(120,85,45,.025) 0 1px,transparent 1px 7px),
-      var(--paper);
-  }
+  .paper{position:absolute;inset:0;background:#e9d4ba}   /* the film's own paper tone, so nothing shifts on the click */
   .grid{
     position:absolute;inset:0;opacity:.18;pointer-events:none;
     background:linear-gradient(rgba(115,78,38,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(115,78,38,.14) 1px,transparent 1px);
@@ -47,6 +39,9 @@
   }
   .chem{position:absolute;right:5%;top:4%;font:18px Georgia,serif;color:rgba(105,74,42,.19);transform:rotate(-3deg);letter-spacing:.12em}
   .chem::after{content:"";position:absolute;width:180px;height:90px;border:1px solid rgba(105,74,42,.16);border-radius:42%;left:30px;top:-18px;transform:rotate(27deg)}
+
+  .age{position:absolute;inset:0;width:1920px;height:1080px;mix-blend-mode:multiply;pointer-events:none}
+  .lit{position:absolute;inset:0;width:1920px;height:1080px;mix-blend-mode:screen;pointer-events:none}
 
   /* The man: a multiply layer (white is transparent), placed on the video's own man */
   .man{position:absolute;left:743px;top:750px;width:257px;height:184px;mix-blend-mode:multiply;pointer-events:none}
@@ -112,7 +107,10 @@
   <video class="film" id="film" src="opening.mp4" muted playsinline preload="auto" style="opacity:0"></video>
   <div class="seam"></div>
 
-  <div class="paper" id="paper"><div class="grid"></div><div class="chem">H₂C　O　109.24</div></div>
+  <div class="paper" id="paper"></div>
+  <!-- Aged archival paper (tools/make_paper.py): lies over the paper and the film, so it holds through the click -->
+  <img class="age" src="paper-age.png" alt="">
+  <img class="lit" src="paper-light.png" alt="">
 
   <img class="man" id="man" src="man.png" alt="">
 
@@ -176,8 +174,8 @@
     place(l, 1634 + f.offsetWidth + nameSize * 0.25, 76, nameSize, 0.839);
   }
 
-  // Typography speed: 1 = original timing. Higher is slower. The typography settles 2.8 x SLOW seconds after the click: 10 s, the time the man takes to look up.
-  const SLOW = 10 / 2.8;
+  // Typography speed: 1 = original timing. Higher is slower. The typography settles 3.0 x SLOW seconds after the click: 10 s, the time the man takes to look up.
+  const SLOW = 10 / 3.0;
   let started = false, tl = null;
   function begin() {
     if (started) return;
@@ -191,12 +189,14 @@
     const from = title.map((el) => ({ el, left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }));
     type.classList.add("after");
     layoutAfter();
-    Flip.from(state, { duration: 2.4 * SLOW, ease: "power3.inOut", scale: true, stagger: 0.03 * SLOW });
+    window.__anims = [];
+    window.__anims.push(Flip.from(state, { duration: 2.4 * SLOW, ease: "power3.inOut", scale: true, stagger: 0.03 * SLOW }));
     const to = new Map(title.map((el) => [el, { left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }]));
     // Phase 1 (1.8 s): the whole block scales by k about the sheet origin and glides to the corner, as one piece.
     const k = 58 / 113, tx = 163 - k * 175, ty = 830 - k * 293;           // "Sustainable" lands exactly on its final place
     const q = new Map(from.map((f) => [f.el, { left: tx + k * f.left, top: ty + k * f.top, size: f.size * k, h: f.h * k }]));
     const tl2 = gsap.timeline();
+    window.__anims.push(tl2);
     from.forEach((f) => {
       const a = q.get(f.el), b = to.get(f.el), rule = f.el.classList.contains("rule-left");
       gsap.set(f.el, { left: f.left, top: f.top, ...(rule ? { height: f.h } : { fontSize: f.size }) });
@@ -205,12 +205,12 @@
       const dig = f.el.classList.contains("d-dig");
       if (dig) {
         tl2.to(f.el, { left: b.left, fontSize: b.size, duration: 0.5 * SLOW, ease: "power2.inOut" }, 1.8 * SLOW)   // slide right along its own line
-           .to(f.el, { top: b.top, duration: 0.45 * SLOW, ease: "power2.inOut" }, 2.3 * SLOW);                      // then step up beside "Sustainable"
+           .to(f.el, { top: b.top, duration: 0.45 * SLOW, ease: "power2.inOut" }, 2.55 * SLOW);   // after "Sustainable" has mostly settled                      // then step up beside "Sustainable"
       } else {
         tl2.to(f.el, { left: b.left, top: b.top, ...(rule ? { height: b.h } : { fontSize: b.size }), duration: 0.5 * SLOW, ease: "power2.inOut" }, 2.3 * SLOW);
       }
     });
-    gsap.fromTo("#ruleLogo", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, transformOrigin: "50% 50%", duration: 0.6 * SLOW, ease: "power2.out", delay: 2.2 * SLOW });                    // hand back to the stylesheet
+    window.__anims.push(gsap.fromTo("#ruleLogo", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, transformOrigin: "50% 50%", duration: 0.6 * SLOW, ease: "power2.out", delay: 2.2 * SLOW }));                    // hand back to the stylesheet
     // The film starts under the man. Its first second is only the man on paper, so the paper can give way quietly.
     film.currentTime = 0;
     film.play();
@@ -218,6 +218,7 @@
       .to(film, { opacity: 1, duration: 0.01 }, 0)
       .to(paper, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 0.1)
       .to(man, { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 0.7);   // the film's own man takes over, same place
+    window.__anims.push(tl);
   }
   function reset() {
     started = false;
