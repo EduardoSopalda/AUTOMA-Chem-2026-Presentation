@@ -141,21 +141,23 @@ function proj(x, y, phi) {                      // x, y in the plan's 2000 px pr
   const y3 = CAM.yb + h * Math.cos(phi), z3 = CAM.Zw - h * Math.sin(phi);
   return [CAM.vx + CAM.f * Xw / z3, CAM.hy - CAM.f * y3 / z3];
 }
-function persp(deg) {
+function persp(deg, opt = {}) {
   const phi = deg * Math.PI / 180, ink = "#3a4b7a";
+  // The plane runs on past the plan's edge to infinity, so every receding line comes out of the man.
+  // As it swings upright, that run pulls back into the plan's edge.
+  const reach = 4000 * Math.pow(deg / 90, 3);               // how far past the edge (in plan px) the lines continue
+  const far = (x) => proj(x, 1045 + reach, phi);
   let d = "";
   const L = (a, b, w, c, o) => `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${c}" stroke-width="${w}" opacity="${o}"/>`;
-  for (const x of LM.v) d += L(proj(x, 1045, phi), proj(x, 86, phi), 1.3, ink, 0.8);
-  for (const y of [86, ...LM.h, 1045]) d += L(proj(106, y, phi), proj(1907, y, phi), 1.1, ink, 0.7);
-  d += L(proj(AXIS, 1045, phi), proj(AXIS, 86, phi), 2.4, "#762F0B", 1);
-  // the drawing stays inside the field: left of the right column, above the man
-  // Construction lines, as an architect leaves them: the horizon at his eye, and each receding line
-  // continued (dashed, faint) from the plan's edge down to the vanishing point on him
-  let c = `<line x1="60" y1="${CAM.hy}" x2="1545" y2="${CAM.hy}" stroke="${ink}" stroke-width="1" opacity="0.35" stroke-dasharray="14 8"/>`;
-  c += `<circle cx="${CAM.vx}" cy="${CAM.hy}" r="4" fill="none" stroke="#762F0B" stroke-width="1.4" opacity="0.8"/>`;
-  if (deg > 3) for (const x of LM.v) { const a = proj(x, 1045, phi); c += `<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${CAM.vx}" y2="${CAM.hy}" stroke="${ink}" stroke-width="0.8" opacity="${(0.3 * Math.min(1, deg / 40)).toFixed(2)}" stroke-dasharray="4 6"/>`; }
-  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0">${c}</svg>`);
-  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0"><defs><clipPath id="field"><path d="M40 0 H1545 V${CAM.hy - 2} H420 V640 H40 Z"/></clipPath></defs><g clip-path="url(#field)">${d}</g></svg>`);
+  for (const x of LM.v) d += L(far(x), proj(x, 86, phi), 1.3, ink, 0.8);
+  if (!opt.raysOnly) for (const y of [86, ...LM.h, 1045]) d += L(proj(106, y, phi), proj(1907, y, phi), 1.1, ink, 0.7);
+  // cross lines out in the run toward him, tightening as they near the horizon
+  if (reach > 1 && !opt.raysOnly) for (let k = 1; k <= 14; k++) { const y = 1045 + reach * (1 - Math.pow(0.72, k)); d += L(proj(106, y, phi), proj(1907, y, phi), 0.9, ink, 0.45); }
+  d += L(far(AXIS), proj(AXIS, 86, phi), 2.4, "#762F0B", 1);
+  // the horizon, at his eye, across the field; it passes behind him
+  if (opt.horizon) d += `<path d="M420 ${CAM.hy - 16} H924 M986 ${CAM.hy - 16} H1545" stroke="#762F0B" stroke-width="1.6" opacity="0.9"/>`;
+  // everything stays in the field and ends at the top of his head
+  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0"><defs><clipPath id="field"><path d="M40 0 H1545 V754 H420 V640 H40 Z"/></clipPath></defs><g clip-path="url(#field)">${d}</g></svg>`);
 }
 
 const note = () => add(`<div class="abs note">…not as a metaphor.</div>`);
@@ -187,6 +189,19 @@ if (s === "P1") { persp(90); column(0.5); sphere("copper", 600, 430, 45); sphere
 if (s === "P2") { persp(55); column(1); sphere("copper", 500, 280, 42); sphere("blue", 1400, 590, 42); note(); cap("P2 · the plane swings down toward upright; the vanishing point climbs away from him"); }
 if (s === "P3") { persp(22); column(1); sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note(); cap("P3 · almost upright: the lines are nearly parallel; the spheres are cornered"); }
 if (s === "P4") { persp(0); column(1); sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note(); cap("P4 · upright: the drawn lines now sit exactly on the plan of still E"); }
+
+if (s === "R1") { persp(90, { raysOnly: true }); sphere("copper", 610, 440, 45); sphere("blue", 1300, 470, 45); note(); cap("R1 · click 2: the rays leave the man"); }
+if (s === "R2") { persp(90, { horizon: true }); column(0.5); sphere("copper", 560, 400, 45); sphere("blue", 1340, 470, 45); note(); cap("R2 · they find the horizon: a line at his eye; the cross lines tighten toward it"); }
+
+if (s === "G") {        // Still E, plus: every vertical line of the plan joined to the man
+  axis(1); plan("all"); labels(); column(2);
+  sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note();
+  const head = [955, 752];
+  let d = "";
+  for (const x of LM.v) { const [X, Y] = F(x, 1045); d += `<line x1="${X.toFixed(1)}" y1="${Y.toFixed(1)}" x2="${head[0]}" y2="${head[1]}" stroke="#3a4b7a" stroke-width="1" opacity="0.75"/>`; }
+  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0">${d}</svg>`);
+  cap("G · every vertical of the plan joined to the man");
+}
 </script>
 </body>
 </html>
