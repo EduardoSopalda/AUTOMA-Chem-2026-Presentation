@@ -91,11 +91,11 @@
   .after .d-trans{left:155px;top:907px;font-size:66px}
   .after .d-sub  {left:158px;top:970px;font-size:28px}
 
-  .after .rule-right{left:1596px;top:42px;height:105px}
-  .after .n-first{left:1634px;top:40px;font-size:42px}
-  .after .n-last {left:1738px;top:40px;font-size:42px}
-  .after .r-1    {left:1634px;top:89px;font-size:16px;letter-spacing:.24em}
-  .after .r-2    {left:1634px;top:114px;font-size:16px;letter-spacing:.24em}
+  .after .rule-right{left:1557px;top:42px;height:105px}   /* one column on the right: same rule x as the logo */
+  .after .n-first{left:1594px;top:40px;font-size:42px}
+  .after .n-last {left:1698px;top:40px;font-size:42px}
+  .after .r-1    {left:1594px;top:89px;font-size:16px;letter-spacing:.24em}
+  .after .r-2    {left:1594px;top:114px;font-size:16px;letter-spacing:.24em}
   .after .company{left:1594px;top:967px;width:285px}
 
   /* Rules carry a small copper dot, as in the target image */
@@ -176,8 +176,8 @@
     const f = $(".n-first"), l = $(".n-last");
     f.style.fontSize = l.style.fontSize = "100px";
     const nameSize = 100 * 245 / (f.offsetWidth + l.offsetWidth + 25);
-    place(f, 1634, 76, nameSize, 0.839);
-    place(l, 1634 + f.offsetWidth + nameSize * 0.25, 76, nameSize, 0.839);
+    place(f, 1594, 76, nameSize, 0.839);
+    place(l, 1594 + f.offsetWidth + nameSize * 0.25, 76, nameSize, 0.839);
   }
 
   // Typography speed: 1 = original timing. Higher is slower. The typography settles 3.0 x SLOW seconds after the click: 10 s, the time the man takes to look up.
