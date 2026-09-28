@@ -1,4 +1,7 @@
 # From Brasília to the Plant Floor
+
+> **Superseded on 28 September 2026** by `AUTOMA-Chem-2026-Script-8MIN.md`. Kept for reference.
+
 ## Speaking script, cut version for ten minutes
 
 Eduardo Sopalda. AUTOMA Chem 2026, Berlin, 26 October.

@@ -1,5 +1,19 @@
 # Storyboard: From Brasília to the Plant Floor
 
+> **28 September: the script changed.** The talk now follows `docs/AUTOMA-Chem-2026-Script-8MIN.md`, six sections. Everything below was planned for the earlier scripts and must be regrouped. How the six sections map onto the earlier acts:
+>
+> | New section | Earlier acts it draws on | What it no longer contains |
+> |---|---|---|
+> | 1 The architect | Act 1 | The line about the question at the start |
+> | 2 Brasília | Acts 2 and 3 | Costa and Niemeyer, Jan Gehl, the builders ("Built by people…"), satellite towns |
+> | 3 When ambition becomes evidence | Acts 4 and 5 | People Planet Progress, the carbon figures, 93%, Scope 2 |
+> | 4 AI scales what is there | Act 6 | Eight meanings (now five), the ten thousand documents |
+> | 5 Digital twins and trust | Act 8 | The twin definition, the night shift |
+> | 6 Close | Coda, then the end of Act 8 | The shiny city (Act 7) and the return to Brasília (Act 9) are gone |
+>
+> The open decisions are in CLAUDE.md section 5f.
+
+
 Phase 2 draft, 25 September 2026. For Edu to review.
 
 This follows the approved acts in CLAUDE.md sections 5, 5b and 5c. Nothing new has been added. The work here is grouping beats into clicks, putting them in order and setting time budgets.

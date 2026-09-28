@@ -2,6 +2,13 @@
 
 Newest first. A two minute read.
 
+## 28 September 2026: the lean script
+
+* **New script of record:** `docs/AUTOMA-Chem-2026-Script-8MIN.md` (with the PDF), written after Chandar's feedback. Checked word for word against the PDF: 567 spoken words in six sections.
+* **Earlier scripts superseded:** the CUT script carries a banner; CLAUDE.md section 5f, HANDOVER.md, STORYBOARD.md and notes/sources.md are updated.
+* Two earlier locked lines are no longer in the script ("Built by people who could not afford to live in it." and "We have simply built another Brasília."). The carbon figures are no longer spoken.
+* The approved opening is unaffected. The engine in `src/` still follows the old script and needs rebuilding around the six sections.
+
 ## 26 September 2026 (timing decisions)
 
 * **Two new clicks:** 6b on "The point is scale." (the scale notations) and 36b on "designed at human scale." (1 : 1 returns). The talk has 45 clicks. Builds are looked up by stable storyboard keys, so inserting a click renumbers nothing.

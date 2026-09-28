@@ -61,7 +61,8 @@ The web gives us drawing that animates, real typography, interactivity and a lif
 
 These files are in `assets/brand/` and `docs/` (see section 0). Read all of them before proposing anything.
 
-* `docs/AUTOMA-Chem-2026-Script-CUT.md`: **the script of record** (26 September), cut by Edu to about 1,300 words with all five sacred lines. **This is the spine. Do not rewrite it.** Timing, cues and the presenter view come from it.
+* `docs/AUTOMA-Chem-2026-Script-8MIN.md` (and its PDF): **the script of record from 28 September**, the lean storytelling version after Chandar's feedback. See section 5f.
+* `docs/AUTOMA-Chem-2026-Script-CUT.md`: superseded on 28 September; kept for reference. It was the script of record from 26 September, cut by Edu to about 1,300 words with all five sacred lines. **This is the spine. Do not rewrite it.** Timing, cues and the presenter view come from it.
 * `docs/AUTOMA-Chem-2026-Presentation-Text.pdf`: the earlier v2 script, kept for reference only.
 * `assets/brand/AUTOMA-Chem-2026-Art-Branding.pdf`: the visual identity and art direction system. **This is law.** Palette, type, grid, motion rules and slide archetypes all come from here.
 * `docs/AUTOMA-Chem-2026-Brochure.pdf`: the event context and programme.
@@ -392,3 +393,17 @@ The first full run through looked like a wireframe next to the cover. Edu stoppe
 * **Real material stays real:** wall section, elevation, photograph, nursery plan, Congresso. Generated images are illustration, never evidence.
 * **Important finding:** `layers/search.png` and `layers/field.png` are an automatic edge trace of the cover, not the artwork itself. At stage size they break into dotted fragments. The richness is in the full artwork, available only at 1536 × 864. The cover needs regenerating at 3840, or separating by colour from the best source available.
 * **Next:** three style frames only (cover, Act 5, Act 8) at full quality. Nothing else until Edu approves them.
+
+## 5f. The lean script (28 September)
+
+After feedback from Chandar (Senior Director, D&T), Edu rewrote the talk. **`docs/AUTOMA-Chem-2026-Script-8MIN.md` is the script of record.** It overrides every earlier script, act list and click budget in this file. Never rewrite it; Edu approves every word.
+
+* **Six sections:** 1 The architect · 2 Brasília · 3 When ambition becomes evidence · 4 AI scales what is there · 5 Digital twins and trust · 6 Close.
+* **Length:** 567 spoken words. The target rehearsal time is 8 to 8½ minutes for the 10 minute slot. At a normal speaking pace (110 to 130 words a minute) the text alone takes about 4½ to 5 minutes, so roughly three minutes are Edu's own storytelling, pauses and laughs. That is by design: he internalises the script and never recites it.
+* **What the feedback changed:** fewer disclaimers; no digital twin definition; "Humans do. Always." is the final line and nothing follows it; about 30% shorter; the jokes stay (architect opener, RACI line, plaza, AI ambiguity).
+* **Delivery cues (pauses):** after "Then the framework reaches the plant.", after "It is a data product.", and before the final line. Stop after "Humans do. Always."
+* **Lines that remain:** "I am an architect. Not as a metaphor." · "You cannot report what you cannot trace." · "Agents do not own risk. They do not carry accountability. Humans do. Always."
+* **No longer in the script:** "Built by people who could not afford to live in it." and "We have simply built another Brasília." Also gone: the opening line about the question, Lúcio Costa and Niemeyer, Jan Gehl, the satellite towns, People Planet Progress, the carbon figures (11,002 kt, 93%, Scope 2), the ten thousand documents, the shiny city, the night shift, and the return to Brasília (elevation, photograph, nursery school).
+* **Changed:** "five different things" for batch (was eight). The question now comes at the close, just before the final lines.
+* **Open for Edu (see STORYBOARD.md):** which storyboard panels and on screen elements still carry the story, and whether any removed content stays on screen without being spoken.
+* **The engine in `src/`** still anchors its clicks and presenter text to the superseded CUT script. It must be rebuilt around the six sections before it is used. The approved opening (`opening/index.html`) is unaffected.

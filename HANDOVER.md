@@ -9,18 +9,18 @@ One page, for whoever continues this work. Written 27 September 2026.
 * **Stage ready by 3 October; to the organisers before 5 October.**
 
 ## Source of truth
-* **Script:** `docs/AUTOMA-Chem-2026-Script-CUT.md` (1,302 spoken words). Never rewrite; Edu approves every word. Sacred lines: "I am an architect. Not as a metaphor." · "Built by people who could not afford to live in it." · "You cannot report what you cannot trace." · "We have simply built another Brasília." · "Agents do not own risk. Humans do. Always."
+* **Script (from 28 September):** `docs/AUTOMA-Chem-2026-Script-8MIN.md`, the lean storytelling version after Chandar's feedback. Six sections, 567 spoken words, 8 to 8½ minutes with Edu's storytelling. Never rewrite; Edu approves every word. Key lines: "I am an architect. Not as a metaphor." · "You cannot report what you cannot trace." · "Agents do not own risk. They do not carry accountability. Humans do. Always." (the final line; nothing follows it). The earlier CUT script is superseded.
 * **Visual direction:** the ten panel storyboard, `assets/storyboard/board-2048.png`. Never redraw or restyle the art.
 * **The bar for richness:** Edu's finished opening slide, `cover-original/` (eight layers; open `cover-original/index.html`).
 * **Brand:** `assets/brand/AUTOMA-Chem-2026-Art-Branding.pdf`. Paper #F3DDC0, copper #762F0B, blueprint #5F92B8, ink #0F0F11, blue text #365F7C. Source Serif 4 and DM Sans.
 
 ## Rules Edu has set
 * **The deck follows him.** He is a storyteller and never recites. One click per idea (about 20 to 27). Nothing inside a click lasts more than about 4 seconds; then the drawing waits.
-* **Three protected silences:** "You cannot report what you cannot trace." · the unfinished dashed twin · "Humans do. Always." (five seconds).
+* **Pauses (delivery cues in the new script):** after "Then the framework reaches the plant.", after "It is a data product.", and before the final line. Stop after "Humans do. Always."
 * **The figure** (the drawn man) stays fixed at bottom centre, except in Act 9, when the plan descends to meet him.
 * **Locked camera:** no zoom, pan or scroll. The drawing moves; the composition does not.
 * **No hyphens or dashes in on screen text.** Few words, large serif.
-* **Presenter view on stage:** one keyword, the next keyword, the clock. Three checkpoints: end of Act 4 at 4:45, start of Act 8 at 7:20, finish at 9:55.
+* **Presenter view on stage:** one keyword, the next keyword, the clock. The old checkpoints (4:45, 7:20, 9:55) belonged to the ten act structure and need resetting for the six sections.
 * **Runs offline from one file** on a USB stick. No service worker, no network.
 * **Pre-show:** Edu's Kling video loops until his first click.
 * **Rights:** never trace Lúcio Costa's pilot plan or show Niemeyer's own drawings; the Congresso is Edu's drawing (`assets/architecture/congresso-nacional.svg`). Panels 1 and 3 of the board currently carry Costa-style layouts and labels ("Eixo Monumental", "Asa Norte", "Lago Paranoá"); review before stage.
@@ -30,7 +30,8 @@ One page, for whoever continues this work. Written 27 September 2026.
 Wall section, elevation and photograph (`assets/architecture/`), the nursery school plan for 72 children (vector lines in `assets/architecture/nursery-plan-lines.svg`), the Congresso drawing.
 
 ## What exists and works
-* **Engine** (`src/`, build with `npm run build`, open `dist/index.html`): one file, offline, clicker keys, blank to paper, presenter window, reload recovery, protected silences. It currently runs the rejected SVG drawings, which need replacing.
+* **The approved opening** (`opening/index.html`, preview `frames/out/opening-preview.mp4`): Edu's title slide with the man; on the click the title and name move to their corners over 10 seconds while `opening.mp4` draws around him. Official dsm-firmenich logo. Runs offline.
+* **Engine** (`src/`, build with `npm run build`, open `dist/index.html`): one file, offline, clicker keys, blank to paper, presenter window, reload recovery, protected silences. It currently runs the rejected SVG drawings and the superseded CUT script, so it needs rebuilding around the six sections.
 * **Proof of the panel technique** (`frames/proof-panels.html`, video `frames/out/proof-panel1-to-panel2.mp4`): each panel reveals its own pixels through invisible strokes traced from its ink (`tools/trace_panel.py`). It works; it's soft only because the board is 2048 px wide.
 
 ## What went wrong, so it isn't repeated

@@ -17,6 +17,8 @@ Page: [Climate change](https://annualreport.dsm-firmenich.com/2025/sustainabilit
 
 The report's own home page gives the total rounded as "11,002 kt CO2e" (Greenhouse gas emissions Scope 1, 2 and 3). The same page states Scope 1 and 2 market based as 722 kt (582 + 140).
 
+> **28 September:** the lean script no longer speaks any of these figures ("A carbon number looks like chemistry. It is a data product."). They stay verified here in case Edu decides to show the number on screen in section 3.
+
 ## What goes on screen in Act 5
 
 | On screen | Where it comes from | Status |
