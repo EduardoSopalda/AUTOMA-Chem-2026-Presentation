@@ -64,6 +64,8 @@ def repair(m):
 # baked spheres and their cast shadows
 clear_disc(285, 240, 62)
 clear_disc(1756, 896, 74)
+# the plan's own tiny figure: the deck's man stands below the plan instead, at the foot of its avenue
+clear_disc(1004, 556, 16); clear(1008, 560, 1075, 612, 0)
 # garbled or repeated labels in the governance block, and the plant label
 for bx in [(219, 127, 277, 153), (307, 127, 362, 153), (133, 196, 183, 226), (393, 199, 450, 227),
            (469, 170, 539, 198), (134, 286, 184, 315), (393, 290, 450, 315), (473, 297, 532, 322),

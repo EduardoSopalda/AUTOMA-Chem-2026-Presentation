@@ -3,119 +3,116 @@
 <head>
 <meta charset="utf-8">
 <title>Act 1 stills</title>
-<!-- Stills for Edu's approval. Nothing here animates. ?s=A to E picks a still. -->
+<!-- Act 1 stills for Edu's approval. Nothing animates here. ?s=A..E
+     The frame (title, name, logo, event lines, the man) is permanent: base-frame.png.
+     Everything else happens in the field inside it: what is going on in his head. -->
 <style>
   @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4.ttf") format("truetype");font-weight:200 900}
-  @font-face{font-family:"Source Serif 4";src:url("../fonts/source-serif-4-latin-800-italic.woff2") format("woff2");font-weight:800;font-style:italic}
-  @font-face{font-family:"Source Serif 4";src:url("../fonts/source-serif-4-latin-400-italic.woff2") format("woff2");font-weight:400;font-style:italic}
-  @font-face{font-family:"Pinyon Script";src:url("../fonts/pinyon-script-latin-400-normal.woff2") format("woff2")}
+  @font-face{font-family:"DM Sans";src:url("../fonts/dm-sans-latin-100-normal.woff2") format("woff2");font-weight:100}
+  @font-face{font-family:"DM Sans";src:url("../fonts/DMSans-400.woff2") format("woff2");font-weight:400}
+  @font-face{font-family:"DM Sans";src:url("../fonts/DMSans-500.woff2") format("woff2");font-weight:500}
   html,body{margin:0;background:#e9d4ba;overflow:hidden}
-  .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;background:#e9d4ba}
+  .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden}
   .abs{position:absolute}
-  .age{inset:0;width:1920px;height:1080px;mix-blend-mode:multiply;pointer-events:none}
-  .lit{inset:0;width:1920px;height:1080px;mix-blend-mode:screen;pointer-events:none}
-  .man{left:743px;top:750px;width:257px;height:184px;mix-blend-mode:multiply}
   .shadow{mix-blend-mode:multiply}
+  .ink{mix-blend-mode:multiply}
 
-  /* 01: a hairline copper numeral, "heated copper ink" in a raking light. No bloom. */
-  .one{left:36px;top:18px;font:200 1030px/0.78 "Source Serif 4",Georgia,serif;letter-spacing:-.04em;
-       background:linear-gradient(115deg,#8a3a12 0%,#c4733e 32%,#e3a877 45%,#b5602c 58%,#762F0B 100%);
+  /* 01: DM Sans Thin, heated copper, no bloom */
+  .one{left:392px;top:36px;font:100 760px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
+       background:linear-gradient(115deg,#8a3a12 0%,#c4733e 30%,#e8ae7c 44%,#b5602c 58%,#762F0B 100%);
        -webkit-background-clip:text;background-clip:text;color:transparent;
-       filter:drop-shadow(0 0 6px rgba(216,156,103,.35))}
+       filter:drop-shadow(0 0 5px rgba(216,156,103,.30))}
 
-  /* ...not as a metaphor: heavy italic, pressed into the paper (letterpress) */
-  .metaphor{left:84px;bottom:92px;font:italic 800 64px/1 "Source Serif 4",Georgia,serif;color:rgba(15,15,17,.86);
-       text-shadow:0 1.5px 0 rgba(255,244,222,.75),0 -1px 1px rgba(0,0,0,.35)}
+  /* ...not as a metaphor: a small survey note */
+  .note{left:110px;top:668px;font:400 22px/1 "DM Sans",sans-serif;letter-spacing:.06em;color:#0F0F11}
 
-  /* The Architect: copper script written by the sphere */
-  .arch{left:1190px;top:150px;font:118px/1 "Pinyon Script",cursive;color:#762F0B}
+  /* The right column, under Edu's name */
+  .col{left:1596px;top:212px;width:300px;white-space:nowrap}
+  .act{font:500 16px/1 "DM Sans",sans-serif;letter-spacing:.24em;color:#365F7C}
+  .hair{height:1px;background:#365F7C;opacity:.55;margin:12px 0 20px}
+  .title{font:500 46px/1.05 "Source Serif 4",Georgia,serif;color:#0F0F11;letter-spacing:-.01em}
+  .copper{height:2px;background:#762F0B;margin:16px 0 26px}
+  .stmt{font:400 23px/1.4 "Source Serif 4",Georgia,serif;color:#0F0F11}
 
-  /* The plan */
-  .plane{left:0;top:0;width:1920px;height:1080px;transform-origin:50% 100%;mix-blend-mode:multiply}
-  .plane .plan{mix-blend-mode:normal}
-  .plan{left:0;top:0;width:1920px;height:1079px;mix-blend-mode:multiply}
-  .lbl{font:italic 400 12.5px/1.1 "Source Serif 4",Georgia,serif;color:#2c3a66;text-align:center;width:80px}
-
-  /* Thesis, lettered on the plan (legible only from above) */
-  .thesis{left:0;width:1920px;top:250px;text-align:center;font:500 150px/0.95 "Source Serif 4",Georgia,serif;
-       letter-spacing:.01em;color:#0F0F11;text-transform:uppercase;
-       -webkit-text-stroke:0;paint-order:stroke;text-shadow:0 0 18px #efe2cc,0 0 10px #efe2cc,0 0 4px #efe2cc}
-  .thesis2{left:0;width:1920px;top:580px;text-align:center;font:italic 400 58px/1.2 "Source Serif 4",Georgia,serif;color:#0F0F11;
-       text-shadow:0 0 14px #efe2cc,0 0 8px #efe2cc,0 0 3px #efe2cc}
-  .rule{height:2px;background:#762F0B}
-  .dot{width:13px;height:13px;border-radius:50%;background:#762F0B}
-  .cap{position:absolute;right:16px;bottom:10px;font:13px system-ui;color:rgba(80,60,40,.6)}
+  .lbl{font:italic 400 9.5px/1.1 "Source Serif 4",Georgia,serif;color:#2c3a66;text-align:center;width:56px}
+  .cap{position:absolute;right:16px;bottom:6px;font:12px system-ui;color:rgba(80,60,40,.55)}
 </style>
 </head>
 <body>
-<div class="stage" id="stage"></div>
+<div class="stage" id="stage"><img class="abs" src="base-frame.png" style="left:0;top:0;width:1920px;height:1080px"></div>
 <script>
 const q = new URLSearchParams(location.search), s = q.get("s") || "A";
 const st = document.getElementById("stage");
-const add = (html) => st.insertAdjacentHTML("beforeend", html);
+const add = (h) => st.insertAdjacentHTML("beforeend", h);
+const NS = "http://www.w3.org/2000/svg";
 
-// Spheres: sprite crops (from clip2's last frame) are 168x193 / 166x191 with the centre at (84.5, 84.5) / (83.5, 83.5), radius 44.5 / 44
+// The plan inside the field: its central axis (1006.5 in the 2000 px preview) sits exactly on the man (x 955)
+const K = 0.65, AX = 1006.5, TOP = 60;
+const F = (x, y) => [955 + (x - AX) * K, TOP + (y - 86) * K];
+const IMG = { w: 2732 / 2000, left: F(0, 0)[0], top: F(0, 0)[1] };        // image placement: 2000 px preview space -> stage
+const imgW = 2000 * K, imgH = 1124.4 * K;
+
+// The plan's own lines (tools: act1/plan-lines.json), in the order they are drawn
+const AXIS = 1006.5;
+const THREE = [939, 1074];
+const SIX = [904, 1109, 800, 1214];
+const CUTS = [113, 402, 557, 729, 964, 1023];
+
+function plan(lines) {        // lines: {v:[x...], h:[y...]} to reveal, or "all"
+  const id = "m" + Math.random().toString(36).slice(2, 7);
+  let mask = "";
+  if (lines !== "all") {
+    for (const x of lines.v) mask += `<rect x="${x - 6}" y="86" width="12" height="959" fill="#fff"/>`;
+    for (const y of lines.h) mask += `<rect x="98" y="${y - 6}" width="1816" height="12" fill="#fff"/>`;
+  }
+  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0">
+    <defs><mask id="${id}" maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="1125">${mask}</mask></defs>
+    <g transform="translate(${F(0, 86)[0]} ${F(0, 86)[1] - 86 * K}) scale(${K})">
+      <image href="masterplan-ink.png" width="2000" height="1124.4" ${lines === "all" ? "" : `mask="url(#${id})"`}/>
+    </g></svg>`);
+}
+function axis(extent = 1) {  // the first line: copper, the idea, drawn by hand from the top of the plan down to him
+  const [x, y0] = F(AXIS, 86), [, y1] = F(AXIS, 1045);
+  add(`<svg class="abs" width="1920" height="1080" style="left:0;top:0"><line x1="${x}" y1="${y0}" x2="${x}" y2="${y0 + (y1 - y0) * extent}" stroke="#762F0B" stroke-width="2.4" stroke-linecap="round"/></svg>`);
+}
 const SPH = { copper: { w: 168, h: 193, c: 84.5, r: 44.5 }, blue: { w: 166, h: 191, c: 83.5, r: 44 } };
 function sphere(name, x, y, r) {
-  const k = r / SPH[name].r, o = SPH[name];
-  const L = x - o.c * k, T = y - o.c * k;
+  const k = r / SPH[name].r, o = SPH[name], L = x - o.c * k, T = y - o.c * k;
   add(`<img class="abs shadow" src="shadow-${name}.png" style="left:${L}px;top:${T}px;width:${o.w * k}px;height:${o.h * k}px">`);
   add(`<img class="abs" src="sphere-${name}.png" style="left:${L}px;top:${T}px;width:${o.w * k}px;height:${o.h * k}px">`);
 }
-// Positions, measured: where clip 2 leaves them, and shere.png's targets
-const AT = { copper: [640, 469, 47], blue: [1270, 469, 47] };
+const START = { copper: [640, 469, 47], blue: [1270, 469, 47] };
+const HOME = { copper: [...F(285, 240), 38], blue: [...F(1756, 896), 38] };
 
-// Masterplan in overhead view (2732x1536 scaled to 1920x1079): 2000 px preview coordinates x 0.96
-const P = (x, y) => [x * 0.96, y * 0.96];
-const LABELS = [
-  [248, 140, "Ministry of Governance"], [335, 140, "Executive Direction"], [158, 211, "Ministry of Governance"],
+function column(stage) {
+  let h = `<div class="abs col"><div class="act">ACT ONE</div><div class="hair"></div><div class="title">The Architect</div><div class="copper" style="width:${stage >= 1 ? 100 : 40}%"></div>`;
+  if (stage >= 2) h += `<div class="stmt">We design from above.<br>Not always for the person<br>who has to live<br>with the result.</div>`;
+  add(h + `</div>`);
+}
+const LABELS = [[248, 140, "Ministry of Governance"], [335, 140, "Executive Direction"], [158, 211, "Ministry of Governance"],
   [421, 213, "Operational Risk"], [504, 184, "Ministry of Administration"], [159, 300, "Ministry of Governance"],
   [421, 302, "Ministry of Governance"], [502, 310, "Ministry of Governance"], [250, 359, "Operational Risk"],
-  [332, 359, "Executive Direction"], [1761, 819, "Plant Interface Zone"],
-];
-function plan(transform, labels = true) {
-  let h = `<div class="abs plane" style="transform:${transform}">`;
-  h += `<img class="abs plan" src="masterplan-ink.png">`;
-  if (labels) for (const [x, y, t] of LABELS) { const [X, Y] = P(x, y); const wide = t.startsWith("Plant"); h += `<div class="abs lbl" style="left:${X - (wide ? 80 : 40)}px;top:${Y - 9}px;${wide ? "width:160px;font-size:15px" : ""}">${wide ? t : t.replace(" of ", " of<br>").replace("Executive ", "Executive<br>").replace("Operational ", "Operational<br>")}</div>`; }
-  h += `</div>`;
-  add(h);
-}
-function paper() { add(`<img class="abs age" src="../opening/paper-age.png"><img class="abs lit" src="../opening/paper-light.png">`); }
-function man(op = 1) { add(`<img class="abs man" src="../opening/man.png" style="opacity:${op}">`); }
-function cap(t) { add(`<div class="cap">${t}</div>`); }
+  [332, 359, "Executive Direction"], [1761, 819, "Plant Interface Zone"]];
+function labels() { for (const [x, y, t] of LABELS) { const [X, Y] = F(x, y); const w = t.startsWith("Plant"); add(`<div class="abs lbl" style="left:${X - (w ? 45 : 28)}px;top:${Y - 6}px;${w ? "width:90px" : ""}">${w ? t : t.replace(" of ", " of<br>").replace("Executive ", "Executive<br>").replace("Operational ", "Operational<br>")}</div>`); } }
+const note = () => add(`<div class="abs note">…not as a metaphor.</div>`);
+const cap = (t) => add(`<div class="cap">${t}</div>`);
 
-if (s === "A") {       // Click 1, about 1 s in: the frame has dissolved, the spheres have settled, 01 at full heat
-  add(`<div class="abs one">01</div>`);
-  sphere("copper", ...AT.copper); sphere("blue", ...AT.blue);
-  man(); add(`<div class="abs metaphor">…not as a metaphor.</div>`);
-  paper(); cap("A · click 1, about 1 s: the corners have dissolved, the spheres settle, 01 blazes");
+if (s === "A") { add(`<div class="abs one">01</div>`); sphere("copper", ...START.copper); sphere("blue", ...START.blue); note(); cap("A · click 1, about 1 s: 01 glows in the field; the note settles low on the left"); }
+if (s === "B") { sphere("copper", ...START.copper); sphere("blue", ...START.blue); note(); cap("B · click 1 end: 01 has sunk into the paper"); }
+if (s === "C") {
+  axis(1); plan({ v: THREE, h: [] }); column(0.5);
+  sphere("copper", 560, 330, 44); sphere("blue", 1350, 520, 44); note();
+  cap("C · click 2, about 1.5 s: the copper axis falls to his feet, then three lines; ACT ONE and The Architect; the spheres begin to move");
 }
-if (s === "B") {       // Click 1 end: 01 has sunk into the paper
-  sphere("copper", ...AT.copper); sphere("blue", ...AT.blue);
-  man(); add(`<div class="abs metaphor">…not as a metaphor.</div>`);
-  paper(); cap("B · click 1 end: 01 has sunk into the grain, the line stays");
+if (s === "D") {
+  axis(1); plan({ v: [...THREE, ...SIX], h: CUTS }); column(1);
+  sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note();
+  cap("D · click 2 end: six lines and the horizontal cuts; the spheres have been herded into their zones");
 }
-if (s === "C") {       // Click 2 end: the copper sphere has written The Architect, from his feet
-  add(`<svg class="abs" width="1920" height="1080" style="left:0;top:0"><path d="M962 930 C 1010 880, 1060 760, 1080 620 S 1120 330, 1180 250" fill="none" stroke="#762F0B" stroke-width="3" stroke-linecap="round"/></svg>`);
-  add(`<div class="abs arch">The Architect</div>`);
-  sphere("copper", 1805, 262, 47); sphere("blue", ...AT.blue);
-  man(); add(`<div class="abs metaphor">…not as a metaphor.</div>`);
-  paper(); cap("C · click 2 end: the copper sphere was the pen; it wrote the line from his feet and rests after the word");
-}
-if (s === "D") {       // Click 3, mid tilt: the plan lies on the floor behind him and rises toward us
-  plan("perspective(900px) rotateX(58deg) scale(1.15)", false);
-  add(`<div class="abs plane" style="transform:perspective(900px) rotateX(58deg) scale(1.15)"><div class="abs thesis">We design<br>from above.</div></div>`);
-  sphere("copper", 520, 560, 40); sphere("blue", 1420, 640, 44);
-  man(0.85); paper();
-  cap("D · click 3, halfway: the plan tilts up from the floor; the words on it are still unreadable from where he stands");
-}
-if (s === "E") {       // Click 3 end: overhead. The words are readable only from above.
-  plan("none");
-  add(`<div class="abs thesis">We design<br>from above.</div>`);
-  add(`<div class="abs thesis2">Not always for the person<br>who has to live with the result.</div>`);
-  const [cx, cy] = P(285, 240), [bx, by] = P(1756, 896);
-  sphere("copper", cx, cy, 57); sphere("blue", bx, by, 57);
-  paper(); cap("E · click 3 end: from above the sentence can be read; copper at the centre of governance, blue pushed to the edge");
+if (s === "E") {
+  axis(1); plan("all"); labels(); column(2);
+  sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note();
+  cap("E · click 3 end: the plan is complete; the statement sits in the column; the avenue in front of him stays empty");
 }
 </script>
 </body>
