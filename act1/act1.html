@@ -228,6 +228,20 @@ window.setState = (c, t) => {
   click3(c === 3 ? t : -1);
 };
 setState(1, 0);
+// Live playback: Space, Right arrow or Page Down starts the next click; R resets. Each click plays once and holds.
+let click = 0, clickStart = 0, raf = 0;
+function frame(now) {
+  const t = (now - clickStart) / 1000;
+  setState(click, Math.min(t, window.CLICK[click] + 0.01));
+  raf = t < window.CLICK[click] ? requestAnimationFrame(frame) : 0;
+}
+addEventListener("keydown", (e) => {
+  if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) {
+    e.preventDefault(); if (e.repeat || click >= 3) return;
+    if (click > 0) setState(click, window.CLICK[click] + 1);          // an early click completes the current one
+    click++; clickStart = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+  } else if (e.key === "r" || e.key === "R") { cancelAnimationFrame(raf); click = 0; setState(1, 0); }
+});
 </script>
 </body>
 </html>
