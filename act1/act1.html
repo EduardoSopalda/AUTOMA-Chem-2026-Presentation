@@ -3,31 +3,38 @@
 <head>
 <meta charset="utf-8">
 <title>Act 1: The Architect</title>
-<!-- Orthographic drafting: vertical rules (each launched from his feet, the launch run vanishing behind the pen)
-     and horizontal rules shooting in from the west and east margins. The rules are barriers; the spheres are
-     characters. Copper: the confident planner. Blue: the anxious operator.
-     window.setT(t) draws the state at t seconds, for frame by frame rendering. -->
+<!-- Act 1, three clicks, inside the permanent frame (base-frame.png). window.setState(click, t) draws any moment.
+     CLICK 1  "01" (above the spheres) glows and fades; only when it is gone do the spheres glide to their places.
+     CLICK 2  The plan unfolds slowly behind the speaker, about 45 s:
+              the copper axis rises from his feet; verticals draw bottom to top, outward in pairs;
+              horizontals draw from both paper margins inward, meeting at the axis.
+              The spheres react to the lines as they come: copper withdraws calmly into Governance,
+              blue flinches, waits trembling, and is caught by a rule from the east and dragged into the Plant zone.
+     CLICK 3  The construction strips resolve into the full plan; labels; the statement, line by line. -->
 <style>
   @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4.ttf") format("truetype");font-weight:200 900}
   @font-face{font-family:"DM Sans";src:url("../fonts/dm-sans-latin-100-normal.woff2") format("woff2");font-weight:100}
   @font-face{font-family:"DM Sans";src:url("../fonts/DMSans-400.woff2") format("woff2");font-weight:400}
   @font-face{font-family:"DM Sans";src:url("../fonts/DMSans-500.woff2") format("woff2");font-weight:500}
-  .one{position:absolute;left:37px;top:36px;font:100 760px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
-       background:linear-gradient(115deg,#8a3a12 0%,#c4733e 30%,#e8ae7c 44%,#b5602c 58%,#762F0B 100%);
-       -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 5px rgba(216,156,103,.30));opacity:0}
-  .note{position:absolute;left:110px;top:668px;font:400 22px/1 "DM Sans",sans-serif;letter-spacing:.06em;color:#0F0F11;opacity:0}
-  .col{position:absolute;left:1594px;top:212px;width:300px;white-space:nowrap}
-  .act{font:500 16px/1 "DM Sans",sans-serif;letter-spacing:.24em;color:#365F7C}
-  .hair{height:1px;background:#365F7C;opacity:.55;margin:12px 0 20px}
-  .title{font:500 46px/1.05 "Source Serif 4",Georgia,serif;color:#0F0F11;letter-spacing:-.01em}
-  .copper{height:2px;background:#762F0B;margin:16px 0 26px;width:0}
-  .stmt div{font:400 23px/1.4 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
-  .lbl{position:absolute;font:italic 400 9.5px/1.1 "Source Serif 4",Georgia,serif;color:#2c3a66;text-align:center;width:56px;opacity:0}
   html,body{margin:0;background:#e9d4ba;overflow:hidden}
   .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden}
   svg,img.s{position:absolute;left:0;top:0}
-  img.s{transform-origin:50% 50%;will-change:transform}
+  img.s{z-index:2}
   .sh{mix-blend-mode:multiply}
+  /* 01 sits above the spheres */
+  .one{position:absolute;z-index:5;left:37px;top:36px;font:100 760px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
+       background:linear-gradient(115deg,#8a3a12 0%,#c4733e 30%,#e8ae7c 44%,#b5602c 58%,#762F0B 100%);
+       -webkit-background-clip:text;background-clip:text;color:transparent;opacity:0}
+  /* The note: an intentional anchor, legible from the back of the room */
+  .note{position:absolute;z-index:3;left:110px;top:618px;font:500 38px/1 "DM Sans",sans-serif;letter-spacing:.02em;color:#0F0F11;opacity:0}
+  .note::before{content:"";position:absolute;left:0;top:-22px;width:56px;height:2px;background:#762F0B}
+  .col{position:absolute;z-index:3;left:1594px;top:212px;width:300px;white-space:nowrap}
+  .act{font:500 16px/1 "DM Sans",sans-serif;letter-spacing:.24em;color:#365F7C;opacity:0}
+  .hair{height:1px;background:#365F7C;margin:12px 0 20px;opacity:0}
+  .title{font:500 46px/1.05 "Source Serif 4",Georgia,serif;color:#0F0F11;letter-spacing:-.01em;opacity:0}
+  .copper{height:2px;background:#762F0B;margin:16px 0 26px;width:0}
+  .stmt div{font:400 23px/1.4 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
+  .lbl{position:absolute;z-index:3;font:italic 400 9.5px/1.1 "Source Serif 4",Georgia,serif;color:#2c3a66;text-align:center;width:56px;opacity:0}
 </style>
 </head>
 <body>
@@ -37,181 +44,189 @@
     <image href="../opening/man.png" x="743" y="750" width="257" height="184" style="filter:contrast(3) brightness(1.15)"/></mask></defs>
   <g id="full" opacity="0"></g><g id="plan"></g><g id="g" mask="url(#behind)"></g></svg>
   <div class="one" id="one">01</div><div class="note" id="note">…not as a metaphor.</div>
-  <div class="col" id="col"><div class="act" id="act">ACT ONE</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
+  <div class="col"><div class="act" id="act">ACT ONE</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
     <div class="stmt"><div>We design from above.</div><div>Not always for the person</div><div>who has to live</div><div>with the result.</div></div></div>
 </div>
 <script>
-const NS = "http://www.w3.org/2000/svg";
+const NS = "http://www.w3.org/2000/svg", $ = (id) => document.getElementById(id);
 const K = 0.65, AX = 1006.5, TOP = 60;
 const F = (x, y) => [955 + (x - AX) * K, TOP + (y - 86) * K];
-const FEET = [955, 922];
-const ink = "#3a4b7a";
-const g = document.getElementById("g"), defs = document.querySelector("defs"), planG = document.getElementById("plan");
-const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+const FEET = [955, 922], ink = "#3a4b7a";
+const mk = (tag, a, p) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p && p.appendChild(e); return e; };
 const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = (x) => { x = clamp(x); return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };   // quadratic in and out
 const smooth = (x) => { x = clamp(x); return x * x * (3 - 2 * x); };
-
-// The plan raster, revealed only where rules have been drafted
+const g = $("g"), defs = document.querySelector("defs");
 const reveal = mk("mask", { id: "reveal", maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 1920, height: 1080 }, defs);
-mk("image", { href: "masterplan-ink.png", x: 955 - AX * K, y: TOP - 86 * K, width: 2000 * K, height: 1124.4 * K, mask: "url(#reveal)" }, planG);
-const [PL, PT] = F(98, 86), [PR, PB] = F(1914, 1045);
-mk("image", { href: "masterplan-ink.png", x: 955 - AX * K, y: TOP - 86 * K, width: 2000 * K, height: 1124.4 * K }, document.getElementById("full"));
+const planAttrs = { href: "masterplan-ink.png", x: 955 - AX * K, y: TOP - 86 * K, width: 2000 * K, height: 1124.4 * K };
+mk("image", { ...planAttrs, mask: "url(#reveal)" }, $("plan"));
+mk("image", planAttrs, $("full"));
+const [PL] = F(98, 86), [PR] = F(1914, 1045), [, PT] = F(0, 86), AXX = 955;
 
-// ---- Vertical rules: launched from his feet, climbing north; the launch run vanishes behind the pen ----
-const V = [106.1,129.6,374.1,458.3,541.0,590.0,625.9,669.1,708.6,758.4,792.8,875.5,894.6,920.9,939.2,1006.5,1073.9,1093.0,1109.1,1131.0,1176.4,1213.8,1255.5,1295.0,1344.8,1381.4,1423.1,1462.7,1549.0,1631.0,1884.3,1907.0];
-const VSPEED = 1150, TAIL = 140;
-const order = V.map((x) => ({ x, d: Math.abs(x - AX) })).sort((a, b) => a.d - b.d);
-const VSTART = {}; let clock = 0, jit = 7;
-order.forEach((o, k) => { if (k > 0 && k % 2 === 1) { jit = (jit * 16807) % 2147483647; clock += 0.05 + (jit / 2147483647) * 0.06; } VSTART[o.x] = clock + (k % 2 === 0 && k > 0 ? 0.025 : 0); });
-const verts = V.map((x) => {
-  const [bx, by] = F(x, 1045), [, ty] = F(x, 86), copper = Math.abs(x - AX) < 1;
-  const ray = Math.hypot(bx - FEET[0], by - FEET[1]), up = by - ty;
-  const p = mk("path", { d: `M${FEET[0]} ${FEET[1]} L${bx} ${by} L${bx} ${ty}`, fill: "none", stroke: copper ? "#762F0B" : ink, "stroke-width": copper ? 2.4 : 1.4, "stroke-linecap": "round" }, g);
-  const r = mk("rect", { x: bx - 4, width: 8, y: by, height: 0, fill: "#fff" }, reveal);
-  return { x: bx, by, ty, p, r, ray, len: ray + up, t0: VSTART[x] };
+// ================= CLICK 2 timing: the plan unfolds over about 45 s =================
+const AXIS = { t0: 0.5, dur: 5.0 };                 // the copper axis rises from his feet
+const VDUR = 3.6, V0 = 4.0, VGAP = 1.3;             // verticals: bottom to top, outward in pairs
+const HDUR = 3.2, H0 = 21.0, HGAP = 2.2;            // horizontals: from both margins to the axis, in sync
+const V = [106.1,129.6,374.1,458.3,541.0,590.0,625.9,669.1,708.6,758.4,792.8,875.5,894.6,920.9,939.2,1073.9,1093.0,1109.1,1131.0,1176.4,1213.8,1255.5,1295.0,1344.8,1381.4,1423.1,1462.7,1549.0,1631.0,1884.3,1907.0];
+const ROWS = [113.5, 95.2, 392.4, 475.1, 557.1, 641.3, 720.4, 801.6, 964.1, 1022.7];
+
+// The axis: from his feet up the avenue to the plan's top edge
+const axisLen = FEET[1] - PT;
+const axisPath = mk("path", { d: `M${FEET[0]} ${FEET[1]} L${AXX} ${PT}`, fill: "none", stroke: "#762F0B", "stroke-width": 2.4, "stroke-linecap": "round", "stroke-dasharray": `0 ${axisLen + 10}` }, g);
+
+// Verticals, launched in pairs outward from the axis
+const byDist = V.map((x) => ({ x, d: Math.abs(x - AX) })).sort((a, b) => a.d - b.d);
+const verts = byDist.map((o, i) => {
+  const [X, B] = F(o.x, 1045), [, T] = F(o.x, 86);
+  const t0 = V0 + Math.floor(i / 2) * VGAP + (i % 2) * 0.35;
+  const r = mk("rect", { x: X - 4, width: 8, y: B, height: 0, fill: "#fff" }, reveal);
+  const pen = mk("line", { x1: X, x2: X, y1: B, y2: B, stroke: ink, "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }, g);
+  return { X, B, T, t0, r, pen };
 });
+const vAt = (X) => verts.reduce((a, v) => (Math.abs(v.X - X) < Math.abs(a.X - X) ? v : a));
+function inv(p) { let lo = 0, hi = 1; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; if (ease(m) < p) lo = m; else hi = m; } return lo; }
+const vReach = (v, Y) => v.t0 + VDUR * inv((v.B - Y) / (v.B - v.T));   // when a vertical's pen reaches height Y
 
-// ---- Horizontal rules: shot in from the margins. Upper ones from the west (they close Governance around copper),
-//      lower ones from the east (they catch blue and shove it into the Plant zone) ----
-const H = [[113.5, "w"], [392.4, "w"], [95.2, "w"], [475.1, "w"], [557.1, "e"], [641.3, "e"], [720.4, "e"], [801.6, "e"], [964.1, "e"], [1022.7, "e"]];
-const HSTART = 1.55, HGAP = 0.13, HSPEED = 2100;
-const horiz = H.map(([y, side], k) => {
-  const Y = F(0, y)[1];
-  const r = mk("rect", { y: Y - 4, height: 8, x: side === "w" ? PL : PR, width: 0, fill: "#fff" }, reveal);
-  const pen = mk("line", { x1: 0, y1: Y, x2: 0, y2: Y, stroke: ink, "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }, g);
-  return { Y, side, r, pen, t0: HSTART + k * HGAP };
+// Horizontals: two halves, from each margin to the axis, drawn in parallel
+const rows = ROWS.map((y, k) => {
+  const Y = F(0, y)[1], t0 = H0 + k * HGAP;
+  const rl = mk("rect", { x: PL, y: Y - 4, width: 0, height: 8, fill: "#fff" }, reveal);
+  const rr = mk("rect", { x: PR, y: Y - 4, width: 0, height: 8, fill: "#fff" }, reveal);
+  const pl = mk("line", { y1: Y, y2: Y, stroke: ink, "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }, g);
+  const pr = mk("line", { y1: Y, y2: Y, stroke: ink, "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }, g);
+  return { y, Y, t0, rl, rr, pl, pr };
 });
-// the moment a rule reaches a given x (used by the spheres to react)
-const hArrive = (h, x) => h.t0 + (h.side === "w" ? x - PL : PR - x) / HSPEED;
+const rowAt = (y) => rows.find((r) => Math.abs(r.y - y) < 0.5);
+const hReach = (r, X) => r.t0 + HDUR * inv(X < AXX ? (X - PL) / (AXX - PL) : (PR - X) / (PR - AXX));
 
-// ---- The spheres: sprites lifted from clip 2 ----
+// ================= The spheres =================
 const SPH = { copper: { w: 168, h: 193, c: 84.5, r: 44.5 }, blue: { w: 166, h: 191, c: 83.5, r: 44 } };
-const stage = document.getElementById("stage");
-function sprite(name) {
-  const o = SPH[name];
-  const sh = document.createElement("img"); sh.src = `shadow-${name}.png`; sh.className = "s sh"; stage.appendChild(sh);
-  const im = document.createElement("img"); im.src = `sphere-${name}.png`; im.className = "s"; stage.appendChild(im);
-  return { o, sh, im };
-}
+function sprite(n) { const o = SPH[n]; const sh = document.createElement("img"); sh.src = `shadow-${n}.png`; sh.className = "s sh"; $("stage").appendChild(sh);
+  const im = document.createElement("img"); im.src = `sphere-${n}.png`; im.className = "s"; $("stage").appendChild(im); return { o, sh, im }; }
 function place(sp, x, y, r, sx = 1, sy = 1) {
   const k = r / sp.o.r, L = x - sp.o.c * k, T = y - sp.o.c * k;
   for (const e of [sp.sh, sp.im]) { e.style.width = sp.o.w * k + "px"; e.style.height = sp.o.h * k + "px"; }
-  sp.im.style.transform = `translate(${L}px,${T}px) scale(${sx},${sy})`;
   sp.im.style.transformOrigin = `${sp.o.c * k}px ${sp.o.c * k}px`;
+  sp.im.style.transform = `translate(${L}px,${T}px) scale(${sx},${sy})`;
   sp.sh.style.transform = `translate(${L}px,${T + (1 - sy) * r}px) scale(${sx},1)`;
 }
 const copper = sprite("copper"), blue = sprite("blue");
-
-// Keyframed paths with organic easing, anticipation, micro pauses and overshoot.
-// Each key: [t, x, y, squashX, squashY]
 function track(keys, t) {
   if (t <= keys[0][0]) return keys[0].slice(1);
-  for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) {
-    const a = keys[i - 1], b = keys[i], u = smooth((t - a[0]) / (b[0] - a[0]));
-    return [1, 2, 3, 4].map((j) => a[j] + (b[j] - a[j]) * u);
-  }
+  for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) { const a = keys[i - 1], b = keys[i], u = smooth((t - a[0]) / (b[0] - a[0])); return [1, 2, 3, 4].map((j) => a[j] + (b[j] - a[j]) * u); }
   return keys[keys.length - 1].slice(1);
 }
+const C0 = [640, 469], B0 = [1270, 469];
 const HOME_C = F(285, 240), HOME_B = F(1756, 896);
-// Copper, the confident planner: leans before it moves, glides, steps into Governance as the door closes, looks back.
+
+// Copper, the confident planner: it withdraws ahead of the lines, calmly, with a lean before each move,
+// and is inside Governance well before the row at y 259 closes the door. Then it glances back.
+const cA = vReach(vAt(684), 520), cB = vReach(vAt(652), 520), cC = vReach(vAt(598), 480);
+const closeC = hReach(rowAt(392.4), HOME_C[0]);
 const CK = [
-  [0.00, 640, 469, 1, 1],
-  [0.30, 646, 471, 0.94, 1.06],     // anticipation: leans away from the first rule
-  [0.95, 575, 405, 1, 1],           // glides up and left, unhurried
-  [1.20, 575, 402, 1, 1],           // a pause: it considers
-  [1.65, 520, 300, 1, 1],           // the left rules are coming: it moves ahead of them
-  [1.90, 492, 222, 1.04, 0.96],     // into the Governance block, before the rule at y 259 closes it
-  [2.20, HOME_C[0] - 6, HOME_C[1] - 5, 1, 1],   // overshoot
-  [2.55, HOME_C[0] + 2, HOME_C[1] + 1, 1, 1],   // settles
-  [2.90, HOME_C[0] + 5, HOME_C[1], 1, 1],       // a small glance back toward the avenue
-  [3.30, HOME_C[0], HOME_C[1], 1, 1],
+  [0, C0[0], C0[1], 1, 1],
+  [cA - 0.6, C0[0], C0[1], 1, 1],
+  [cA - 0.2, C0[0] + 5, C0[1] + 2, 0.95, 1.05],        // leans
+  [cA + 1.6, 592, 418, 1, 1],                            // glides away, unhurried
+  [cB - 0.2, 592, 418, 1, 1],
+  [cB + 1.6, 548, 330, 1, 1],
+  [cC - 0.4, 548, 330, 1, 1],
+  [cC + 1.4, HOME_C[0] + 6, HOME_C[1] - 4, 1.03, 0.97],   // steps into Governance, a small overshoot
+  [cC + 2.3, HOME_C[0], HOME_C[1], 1, 1],
+  [closeC + 0.4, HOME_C[0], HOME_C[1], 1, 1],
+  [closeC + 1.1, HOME_C[0] + 5, HOME_C[1], 1, 1],       // the door closes behind it: it glances back at the avenue
+  [closeC + 2.0, HOME_C[0], HOME_C[1], 1, 1],
 ];
-// Blue, the anxious operator: trembles, flinches, overcorrects, gets caught and shoved into the Plant zone.
+// Blue, the anxious operator: flinches as rules pass close, overcorrects, waits trembling,
+// is caught by the row at y 472 coming in from the east margin, resists, is dragged down into the Plant box.
+const bA = vReach(vAt(1252), 500), bB = vReach(vAt(1308), 500), bC = vReach(vAt(1361), 520);
+const catcher = rowAt(720.4), hit = hReach(catcher, 1410 + 44);
 const BK = [
-  [0.00, 1270, 469, 1, 1],
-  [0.70, 1272, 468, 1, 1],
-  [0.78, 1300, 466, 1.08, 0.92],    // flinch: a rule passed too close
-  [0.95, 1318, 470, 1, 1],          // overcorrects
-  [1.10, 1310, 470, 1, 1],
-  [1.30, 1308, 470, 1, 1],
-  [1.38, 1336, 472, 1.08, 0.92],    // another flinch
-  [1.60, 1352, 476, 1, 1],
+  [0, B0[0], B0[1], 1, 1],
+  [bA - 0.05, B0[0], B0[1], 1, 1],
+  [bA + 0.12, B0[0] + 26, B0[1] - 2, 1.09, 0.91],       // flinch
+  [bA + 0.45, B0[0] + 40, B0[1] + 3, 1, 1],             // overcorrects
+  [bA + 0.8, B0[0] + 33, B0[1] + 1, 1, 1],
+  [bB - 0.05, B0[0] + 33, B0[1] + 1, 1, 1],
+  [bB + 0.12, B0[0] + 70, B0[1] + 2, 1.09, 0.91],       // flinch again
+  [bB + 0.5, B0[0] + 86, B0[1] + 6, 1, 1],
+  [bB + 0.9, B0[0] + 80, B0[1] + 4, 1, 1],
+  [bC - 0.05, B0[0] + 80, B0[1] + 4, 1, 1],
+  [bC + 0.15, B0[0] + 136, B0[1] + 3, 1.08, 0.92],      // and again: now inside the Plant zone's walls, waiting
+  [bC + 0.6, 1410, 474, 1, 1],
+  [hit - 0.03, 1410, 474, 1, 1],
+  [hit + 0.15, 1413, 485, 1.14, 0.84],                  // caught: squashed against the rule
+  [hit + 0.8, 1418, 497, 1.08, 0.92],                   // resists, barely moving
+  [hit + 1.9, HOME_B[0] + 2, HOME_B[1] - 18, 1.02, 0.98],   // gives way, dragged down
+  [hit + 2.3, HOME_B[0] + 3, HOME_B[1] + 11, 0.94, 1.06],   // hits the bottom of the box
+  [hit + 2.7, HOME_B[0] - 1, HOME_B[1] - 2, 1.02, 0.98],
+  [hit + 3.1, HOME_B[0], HOME_B[1], 1, 1],
 ];
-// The rule at y 472 (641.3 in the plan) comes in from the east; when it reaches blue it catches and shoves it down.
-const catcher = horiz.find((h) => Math.abs(h.Y - F(0, 720.4)[1]) < 1);
-const hit = hArrive(catcher, 1352 + 44);
-// the thesis beat: it resists, gives way under the weight, is dragged down, hits the border, and trembles there
-BK.push([hit - 0.02, 1352, 476, 1, 1],
-        [hit + 0.12, 1355, 486, 1.14, 0.84],                 // impact: squashed against the rule
-        [hit + 0.40, 1360, 496, 1.08, 0.92],                 // resists, barely moving
-        [hit + 0.95, HOME_B[0] + 2, HOME_B[1] - 20, 1.02, 0.98],   // gives way, dragged down
-        [hit + 1.25, HOME_B[0] + 3, HOME_B[1] + 12, 0.94, 1.06],   // hits the bottom of the Plant box
-        [hit + 1.50, HOME_B[0] - 1, HOME_B[1] - 2, 1.02, 0.98],
-        [hit + 1.75, HOME_B[0], HOME_B[1], 1, 1], [hit + 3.0, HOME_B[0], HOME_B[1], 1, 1]);
 
 function click2(t) {
-  for (const L of verts) {
-    const head = clamp((t - L.t0) * VSPEED, 0, L.len + TAIL);
-    const climbed = Math.max(0, Math.min(head, L.len) - L.ray);
-    L.r.setAttribute("y", L.by - climbed); L.r.setAttribute("height", climbed);
-    const a = Math.max(0, head - TAIL), b = Math.min(head, L.len);
-    L.p.style.opacity = b > a ? 1 : 0;
-    if (b > a) L.p.setAttribute("stroke-dasharray", `0 ${a} ${b - a} ${L.len + TAIL}`);
+  // the axis
+  const ap = ease((t - AXIS.t0) / AXIS.dur) * axisLen;
+  axisPath.setAttribute("stroke-dasharray", `${ap} ${axisLen + 10}`);
+  // verticals: bottom to top; a short pen stroke leads, the plan's real line stays behind it
+  for (const v of verts) {
+    const p = ease((t - v.t0) / VDUR), y = v.B - (v.B - v.T) * p;
+    v.r.setAttribute("y", y); v.r.setAttribute("height", v.B - y);
+    const live = p > 0 && p < 1;
+    v.pen.setAttribute("opacity", live ? 1 : 0); v.pen.setAttribute("y1", y); v.pen.setAttribute("y2", Math.min(v.B, y + 70));
   }
-  for (const h of horiz) {
-    const run = clamp((t - h.t0) * HSPEED, 0, PR - PL);
-    if (h.side === "w") { h.r.setAttribute("x", PL); h.r.setAttribute("width", run); } else { h.r.setAttribute("x", PR - run); h.r.setAttribute("width", run); }
-    const tip = h.side === "w" ? PL + run : PR - run, back = h.side === "w" ? Math.max(PL, tip - 90) : Math.min(PR, tip + 90);
-    const live = run > 0 && run < PR - PL;
-    h.pen.setAttribute("opacity", live ? 1 : 0);
-    h.pen.setAttribute("x1", back); h.pen.setAttribute("x2", tip);
+  // horizontals: both halves in parallel, from the margins to the axis
+  for (const r of rows) {
+    const p = ease((t - r.t0) / HDUR), xl = PL + (AXX - PL) * p, xr = PR - (PR - AXX) * p;
+    r.rl.setAttribute("width", xl - PL); r.rr.setAttribute("x", xr); r.rr.setAttribute("width", PR - xr);
+    const live = p > 0 && p < 1;
+    for (const [pen, x, dir] of [[r.pl, xl, -1], [r.pr, xr, 1]]) { pen.setAttribute("opacity", live ? 1 : 0); pen.setAttribute("x1", x); pen.setAttribute("x2", x + dir * 70); }
   }
-  const c = track(CK, t);
-  place(copper, c[0], c[1], 44, c[2], c[3]);
-  let b = track(BK, t);
-  // the anxious one never quite stops trembling
-  const tremble = t > 0.6 ? 1.4 * Math.sin(t * 61) * (t < hit + 1.75 ? 1 : 0.5) : 0;
-  place(blue, b[0] + tremble, b[1], 42, b[2], b[3]);
-  // ACT ONE and The Architect arrive in the column; the copper rule draws under the title
+  // the spheres
+  const c = track(CK, t); place(copper, c[0], c[1], 47 - 9 * smooth((t - cC) / 1.4), c[2], c[3]);
+  const b = track(BK, t), tr = t > bA - 1 ? 1.3 * Math.sin(t * 61) * (t < hit + 3.1 ? 1 : 0.5) : 0;
+  place(blue, b[0] + tr, b[1], 47 - 5 * smooth((t - hit) / 3), b[2], b[3]);
+  // ACT ONE and The Architect arrive in the column early in the drawing; the copper rule draws under the title
   const e = (a, d) => smooth((t - a) / d);
-  $("act").style.opacity = e(0.2, 0.6); $("hair").style.opacity = 0.55 * e(0.3, 0.6); $("ttl").style.opacity = e(0.5, 0.7);
-  $("rule").style.width = 100 * e(0.9, 1.0) + "%";
+  $("act").style.opacity = e(1.0, 1.2); $("hair").style.opacity = 0.55 * e(1.4, 1.2); $("ttl").style.opacity = e(2.0, 1.4);
+  $("rule").style.width = 100 * e(3.2, 2.5) + "%";
 }
-const $ = (id) => document.getElementById(id);
-const START_C = [643, 550], START_B = [1280, 547];          // where clip 2 leaves them
-// Click 1: the spheres glide to their places (no change of material); 01 glows copper and sinks into the paper; the note settles
+
+// ================= CLICK 1 =================
+const START_C = [643, 550], START_B = [1280, 547];     // where clip 2 leaves them
+const ONE_IN = 0.6, ONE_HOLD = 2.5, ONE_OUT = 1.0;
+const ONE_GONE = ONE_IN + ONE_HOLD + ONE_OUT;          // the spheres wait for this moment
 function click1(t) {
-  const k = smooth(t / 1.5);
-  place(copper, START_C[0] + (640 - START_C[0]) * k, START_C[1] + (469 - START_C[1]) * k, 44 + 3 * k);
-  place(blue, START_B[0] + (1270 - START_B[0]) * k, START_B[1] + (469 - START_B[1]) * k, 43.5 + 3.5 * k);
-  const one = smooth(t / 0.5) * (1 - smooth((t - 2.5) / 0.7));
-  $("one").style.opacity = one; $("one").style.filter = `drop-shadow(0 0 ${5 + 8 * (1 - smooth((t - 2.5) / 0.7))}px rgba(216,156,103,.3)) blur(${3 * smooth((t - 2.6) / 0.6)}px)`;
-  $("note").style.opacity = smooth((t - 1.4) / 0.8);
-  for (const L of verts) L.p.style.opacity = 0;
+  const one = smooth(t / ONE_IN) * (1 - smooth((t - ONE_IN - ONE_HOLD) / ONE_OUT));
+  $("one").style.opacity = one;
+  $("one").style.filter = `blur(${2.5 * smooth((t - ONE_IN - ONE_HOLD - 0.2) / (ONE_OUT - 0.2))}px)`;   // sinks into the grain
+  $("note").style.opacity = smooth((t - ONE_GONE - 0.2) / 1.0);   // after 01 has gone
+  const k = smooth((t - ONE_GONE) / 1.6);              // still until 01 is fully gone, then they glide
+  place(copper, START_C[0] + (C0[0] - START_C[0]) * k, START_C[1] + (C0[1] - START_C[1]) * k, 44 + 3 * k);
+  place(blue, START_B[0] + (B0[0] - START_B[0]) * k, START_B[1] + (B0[1] - START_B[1]) * k, 43.5 + 3.5 * k);
 }
-// Click 3: the construction strips resolve into the full plan; labels, then the statement, line by line
+
+// ================= CLICK 3 =================
 const LABELS = [[248, 140, "Ministry of Governance"], [335, 140, "Executive Direction"], [158, 211, "Ministry of Governance"],
   [421, 213, "Operational Risk"], [504, 184, "Ministry of Administration"], [159, 300, "Ministry of Governance"],
   [421, 302, "Ministry of Governance"], [502, 310, "Ministry of Governance"], [250, 359, "Operational Risk"],
   [332, 359, "Executive Direction"], [1761, 819, "Plant Interface Zone"]];
-const lbls = LABELS.map(([x, y, t]) => { const [X, Y] = F(x, y), w = t.startsWith("Plant"); const d = document.createElement("div"); d.className = "lbl";
+const lbls = LABELS.map(([x, y, s]) => { const [X, Y] = F(x, y), w = s.startsWith("Plant"); const d = document.createElement("div"); d.className = "lbl";
   d.style.left = X - (w ? 45 : 28) + "px"; d.style.top = Y - 6 + "px"; if (w) d.style.width = "90px";
-  d.innerHTML = w ? t : t.replace(" of ", " of<br>").replace("Executive ", "Executive<br>").replace("Operational ", "Operational<br>"); $("stage").appendChild(d); return d; });
+  d.innerHTML = w ? s : s.replace(" of ", " of<br>").replace("Executive ", "Executive<br>").replace("Operational ", "Operational<br>"); $("stage").appendChild(d); return d; });
 function click3(t) {
-  $("full").setAttribute("opacity", smooth(t / 1.2));
-  lbls.forEach((d) => (d.style.opacity = smooth((t - 0.8) / 0.6)));
-  document.querySelectorAll(".stmt div").forEach((d, i) => (d.style.opacity = smooth((t - 1.0 - i * 0.2) / 0.6)));
+  $("full").setAttribute("opacity", smooth(t / 1.4));
+  lbls.forEach((d) => (d.style.opacity = smooth((t - 0.9) / 0.7)));
+  document.querySelectorAll(".stmt div").forEach((d, i) => (d.style.opacity = smooth((t - 1.2 - i * 0.2) / 0.7)));
 }
-// Render any moment of the act: which click, and how far into it
+
+const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.5;
+window.CLICK = { 1: ONE_GONE + 1.8, 2: CLICK2, 3: 2.6 };
 window.setState = (c, t) => {
-  if (c === 1) { click2(-1); click1(t); return; }
-  click1(99); click2(c === 2 ? t : 99);
-  $("one").style.opacity = 0; $("note").style.opacity = 1;
+  if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
+  click1(99); click2(c === 2 ? t : 999);
+  $("one").style.opacity = 0;
   click3(c === 3 ? t : -1);
 };
-window.CLICK = { 1: 3.3, 2: 0, 3: 2.2 };
-window.CLICK2 = Math.max(hit + 1.9, ...verts.map((v) => v.t0 + (v.len + TAIL) / VSPEED), ...horiz.map((h) => h.t0 + (PR - PL) / HSPEED));
-window.CLICK[2] = window.CLICK2;
 setState(1, 0);
 </script>
 </body>

@@ -12,7 +12,7 @@ await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(500);
 const C = await p.evaluate(() => window.CLICK);
 let n = 0;
 const shot = async () => p.screenshot({ path: path.join(out, String(n++).padStart(5, "0") + ".png") });
-for (const [c, hold] of [[1, 0.8], [2, 0.9], [3, 1.6]]) {
+for (const [c, hold] of [[1, 1.2], [2, 1.2], [3, 2.0]]) {
   for (let i = 0; i <= Math.ceil((C[c] + hold) * +fps); i++) { await p.evaluate(([c, t]) => setState(c, t), [c, Math.min(i / +fps, C[c] + 0.01)]); await shot(); }
 }
 console.log("clicks", JSON.stringify(C), "frames", n, "errors", errs.length ? errs : "none");
