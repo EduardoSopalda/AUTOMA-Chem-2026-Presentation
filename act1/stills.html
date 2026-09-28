@@ -196,11 +196,12 @@ if (s === "R2") { persp(90, { horizon: true }); column(0.5); sphere("copper", 56
 if (s === "G") {        // Still E, plus: every vertical line of the plan joined to the man
   axis(1); plan("all"); labels(); column(2);
   sphere("copper", ...HOME.copper); sphere("blue", ...HOME.blue); note();
-  const head = [955, 752];
+  const feet = [955, 922];
   let d = "";
-  for (const x of LM.v) { const [X, Y] = F(x, 1045); d += `<line x1="${X.toFixed(1)}" y1="${Y.toFixed(1)}" x2="${head[0]}" y2="${head[1]}" stroke="#3a4b7a" stroke-width="1" opacity="0.75"/>`; }
-  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0">${d}</svg>`);
-  cap("G · every vertical of the plan joined to the man");
+  for (const x of LM.v) { const [X, Y] = F(x, 1045); d += `<line x1="${X.toFixed(1)}" y1="${Y.toFixed(1)}" x2="${feet[0]}" y2="${feet[1]}" stroke="#3a4b7a" stroke-width="1" opacity="0.75"/>`; }
+  // the lines pass behind him: his drawing (white where there is paper) masks them out
+  add(`<svg class="abs ink" width="1920" height="1080" style="left:0;top:0"><defs><mask id="behind" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect width="1920" height="1080" fill="#fff"/><image href="../opening/man.png" x="743" y="750" width="257" height="184" style="filter:contrast(3) brightness(1.15)"/></mask></defs><g mask="url(#behind)">${d}</g></svg>`);
+  cap("G · every vertical of the plan joined to his feet");
 }
 </script>
 </body>
