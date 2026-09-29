@@ -52,6 +52,9 @@
   <filter id="soft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="7"/></filter>
   <mask id="retract" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><g filter="url(#soft)"><rect id="retL" x="0" y="0" width="955" height="1080" fill="#fff"/><rect id="retR" x="955" y="0" width="965" height="1080" fill="#fff"/></g>
     <circle class="excl" cx="0" cy="0" r="55" fill="#000" opacity="0"/><circle class="excl" cx="0" cy="0" r="55" fill="#000" opacity="0"/></mask>
+  <mask id="leftOnly" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect x="0" y="0" width="949" height="1080" fill="#fff"/>
+    <circle class="excl" cx="0" cy="0" r="55" fill="#000"/></mask>
+  <g id="ghost" opacity="0" mask="url(#leftOnly)"></g>
   <g id="full" opacity="0" mask="url(#retract)"></g><g id="planWrap" mask="url(#dash)"><g id="plan"></g></g>
   <line id="edgeL" y1="30" y2="700" stroke="#D89C67" stroke-width="3" opacity="0" filter="url(#halo2)"/><line id="edgeR" y1="30" y2="700" stroke="#D89C67" stroke-width="3" opacity="0" filter="url(#halo2)"/><g id="g" mask="url(#behind)"></g></svg>
   <svg id="light" width="1920" height="1080" style="z-index:1"><defs><filter id="halo2"><feGaussianBlur stdDeviation="2"/></filter><filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs><g id="rays" mask="url(#behind)"></g></svg>
@@ -73,6 +76,7 @@ const reveal = mk("mask", { id: "reveal", maskUnits: "userSpaceOnUse", x: 0, y: 
 const planAttrs = { href: "masterplan-ink.png", x: 955 - AX * K, y: TOP - 86 * K, width: 2000 * K, height: 1124.4 * K, filter: "url(#presence)" };
 mk("image", { ...planAttrs, mask: "url(#reveal)" }, $("plan"));
 mk("image", planAttrs, $("full"));
+mk("image", planAttrs, $("ghost"));
 const [PL] = F(98, 86), [PR] = F(1914, 1045), [, PT] = F(0, 86), AXX = 955;
 
 // ================= CLICK 2 timing: the plan unfolds over about 45 s =================
@@ -260,11 +264,13 @@ function click3(t) {
 const excl = [...document.querySelectorAll(".excl")];
 excl[0].setAttribute("cx", HOME_C[0]); excl[0].setAttribute("cy", HOME_C[1]);
 excl[1].setAttribute("cx", HOME_B[0]); excl[1].setAttribute("cy", HOME_B[1]);
+excl[2].setAttribute("cx", HOME_C[0]); excl[2].setAttribute("cy", HOME_C[1]);
 const RET = 4.5, tBlue = RET * inv((PR - (HOME_B[0] + 55)) / (PR - AXX));   // when the retreating edge passes blue
 const HOLD_FROM = 9.5, HOLD = 7;
 function click4(t) {
   const on = t >= 0, E = (a, d) => smooth((t - a) / d);
-  excl.forEach((c) => c.setAttribute("opacity", on ? 1 : 0));
+  excl.slice(0, 2).forEach((c) => c.setAttribute("opacity", on ? 1 : 0));
+  $("ghost").setAttribute("opacity", on ? 0.1 * E(RET - 1.5, 2.5) : 0);   // the framework still exists on paper, in the office
   // horizontals retract toward the spine: the plan withdraws from the perimeter
   const H = on ? ease(t / RET) : 0, xl = PL + (AXX - PL) * H, xr = PR - (PR - AXX) * H;
   $("retL").setAttribute("x", on ? xl : 0); $("retL").setAttribute("width", on ? AXX - xl : 955);
