@@ -66,7 +66,7 @@
     <rect id="raciShadow" x="1000" y="120" width="560" height="660" fill="#0F0F11" opacity="0" filter="url(#soft2)"/>
     <defs><filter id="soft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="40"/></filter></defs>
     <g id="dim" opacity="0" stroke="#0F0F11" stroke-width="1.6"><line id="dimLine" y1="0" y2="0"/><line id="dimT1"/><line id="dimT2"/></g>
-    <line id="dropLine" x1="1343" x2="1343" stroke="#365F7C" stroke-width="1" stroke-dasharray="6 6" opacity="0"/>
+    <line id="dropLine" x1="1395" x2="1395" stroke="#365F7C" stroke-width="1" stroke-dasharray="6 6" opacity="0"/>
   </svg>
   <div class="scale" id="s250">1 : 250</div><div class="scale" id="s500">1 : 500</div><div class="scale" id="s1000">1 : 1000</div>
   <svg id="raci" width="450" height="312" viewBox="0 0 360 250" style="position:absolute;left:0;top:0;z-index:3;opacity:0;transform-origin:50% 100%"></svg>
@@ -386,7 +386,7 @@ function click6(t) {
     for (let c = 0; c < 4; c++) if ((r * 3 + c * 5) % 4 !== 0) h += `<text x="${136 + 56 * c + 28}" y="${y + 9}" text-anchor="middle" font-family="DM Sans" font-size="14" fill="#365F7C">${"RACI"[(r + c) % 4]}</text>`; }
   g.innerHTML = h;
 })();
-const RACI_X = 1118, RACI_REST = 770 - 312, T_DROP = 2.7, T_HIT = 3.05;
+const RACI_X = 1170, RACI_REST = 770 - 312, T_DROP = 2.7, T_HIT = 3.05;
 function click7(t) {
   const on = t >= 0, rc = $("raci");
   if (!on) { rc.style.opacity = 0; $("raciShadow").setAttribute("opacity", 0); $("dropLine").setAttribute("opacity", 0); return; }
@@ -403,7 +403,7 @@ function click7(t) {
   WORDS.forEach(([, , , x], i) => { const right = x > 1250; wordAt(i, 99, right ? [34 * imp, 4 * imp, 5 * imp] : [-22 * imp, -3 * imp, -4 * imp]); });
   // blue: a small anticipation, then one startled jump into the remaining clear space
   const k = track([[0, 1278, 710, 1, 1], [1.1, 1278, 710, 1, 1], [1.4, 1278, 712, 1.03, 0.97], [1.8, 1278, 710, 1, 1], [T_HIT, 1278, 710, 1, 1],
-    [T_HIT + 0.07, 1278, 716, 1.08, 0.92], [T_HIT + 0.45, 1150, 600, 0.97, 1.03], [T_HIT + 0.8, 1068, 590, 1.07, 0.93], [T_HIT + 1.05, 1066, 585, 0.99, 1.01], [T_HIT + 1.3, 1066, 586, 1, 1]], t);
+    [T_HIT + 0.07, 1278, 716, 1.08, 0.92], [T_HIT + 0.45, 1150, 600, 0.97, 1.03], [T_HIT + 0.8, 1060, 590, 1.07, 0.93], [T_HIT + 1.05, 1058, 585, 0.99, 1.01], [T_HIT + 1.3, 1058, 586, 1, 1]], t);
   place(blue, k[0], k[1], 42, k[2], k[3]);
 }
 
