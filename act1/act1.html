@@ -34,6 +34,7 @@
   .title{font:500 46px/1.05 "Source Serif 4",Georgia,serif;color:#0F0F11;letter-spacing:-.01em;opacity:0}
   .copper{height:2px;background:#762F0B;margin:16px 0 26px;width:0}
   .stmt div{font:400 23px/1.4 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
+  .confess{position:absolute;z-index:3;left:364px;top:292px;font:italic 400 30px/1.3 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
   .lbl{position:absolute;z-index:3;font:italic 400 9.5px/1.1 "Source Serif 4",Georgia,serif;color:#2c3a66;text-align:center;width:56px;opacity:0}
 </style>
 </head>
@@ -46,9 +47,15 @@
     <feMorphology operator="erode" radius="0.25"/>
     <feComponentTransfer><feFuncR type="gamma" exponent="1.45"/><feFuncG type="gamma" exponent="1.45"/><feFuncB type="gamma" exponent="1.3"/></feComponentTransfer>
   </filter>
-  <g id="full" opacity="0"></g><g id="plan"></g><g id="g" mask="url(#behind)"></g></svg>
-  <svg id="light" width="1920" height="1080" style="z-index:1"><defs><filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs><g id="rays" mask="url(#behind)"></g></svg>
-  <div class="one" id="one">01</div><div class="note" id="note">…not as a metaphor.</div>
+  <pattern id="stripes" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="4" fill="#fff"/></pattern>
+  <mask id="dash" maskUnits="userSpaceOnUse" x="0" y="-100" width="1920" height="1280"><rect id="dashSolid" x="0" y="-100" width="1920" height="1280" fill="#fff"/><rect id="dashStripes" x="0" y="-100" width="1920" height="1280" fill="url(#stripes)" opacity="0"/></mask>
+  <filter id="soft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="7"/></filter>
+  <mask id="retract" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><g filter="url(#soft)"><rect id="retL" x="0" y="0" width="955" height="1080" fill="#fff"/><rect id="retR" x="955" y="0" width="965" height="1080" fill="#fff"/></g>
+    <circle class="excl" cx="0" cy="0" r="55" fill="#000" opacity="0"/><circle class="excl" cx="0" cy="0" r="55" fill="#000" opacity="0"/></mask>
+  <g id="full" opacity="0" mask="url(#retract)"></g><g id="planWrap" mask="url(#dash)"><g id="plan"></g></g>
+  <line id="edgeL" y1="30" y2="700" stroke="#e8b98c" stroke-width="2" opacity="0" filter="url(#halo2)"/><line id="edgeR" y1="30" y2="700" stroke="#e8b98c" stroke-width="2" opacity="0"/><g id="g" mask="url(#behind)"></g></svg>
+  <svg id="light" width="1920" height="1080" style="z-index:1"><defs><filter id="halo2"><feGaussianBlur stdDeviation="2"/></filter><filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs><g id="rays" mask="url(#behind)"></g></svg>
+  <div class="one" id="one">01</div><div class="confess" id="confess">I had built them a plaza<br>nobody wanted to stand in.</div><div class="note" id="note">…not as a metaphor.</div>
   <div class="col"><div class="act" id="act">ACT ONE</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
     <div class="stmt"><div>We design from above.</div><div>Not always for the person</div><div>who has to live</div><div>with the result.</div></div></div>
 </div>
@@ -213,7 +220,7 @@ function click2(t) {
   }
   // the spheres
   const c = track(CK, t); place(copper, c[0], c[1], 44 - 6 * smooth((t - cC) / 1.4), c[2], c[3]);
-  const b = track(BK, t), tr = t > bA - 1 ? 1.3 * Math.sin(t * 61) * (t < hit + 3.1 ? 1 : 0.5) : 0;
+  const b = track(BK, t), tr = 0;   // no continuous vibration: only discrete reactions
   place(blue, b[0] + tr, b[1], 43.5 - 1.5 * smooth((t - hit) / 3), b[2], b[3]);
   // ACT ONE and The Architect arrive in the column early in the drawing; the copper rule draws under the title
   const e = (a, d) => smooth((t - a) / d);
@@ -247,9 +254,49 @@ function click3(t) {
   document.querySelectorAll(".stmt div").forEach((d, i) => (d.style.opacity = smooth((t - 1.2 - i * 0.2) / 0.7)));
 }
 
+// ================= CLICK 4 · ACT TWO: the disconnection =================
+// "Don't show the system failing; show the system becoming disconnected from the person it was supposed to serve."
+const excl = [...document.querySelectorAll(".excl")];
+excl[0].setAttribute("cx", HOME_C[0]); excl[0].setAttribute("cy", HOME_C[1]);
+excl[1].setAttribute("cx", HOME_B[0]); excl[1].setAttribute("cy", HOME_B[1]);
+const RET = 4.5, tBlue = RET * inv((PR - (HOME_B[0] + 55)) / (PR - AXX));   // when the retreating edge passes blue
+const HOLD_FROM = 9.5, HOLD = 7;
+function click4(t) {
+  const on = t >= 0, E = (a, d) => smooth((t - a) / d);
+  excl.forEach((c) => c.setAttribute("opacity", on ? 1 : 0));
+  // horizontals retract toward the spine: the plan withdraws from the perimeter
+  const H = on ? ease(t / RET) : 0, xl = PL + (AXX - PL) * H, xr = PR - (PR - AXX) * H;
+  $("retL").setAttribute("x", on ? xl : 0); $("retL").setAttribute("width", on ? AXX - xl : 955);
+  $("retR").setAttribute("x", AXX); $("retR").setAttribute("width", on ? xr - AXX : 965);
+  for (const r of rows) if (on) { r.rl.setAttribute("x", xl); r.rl.setAttribute("width", AXX - xl); r.rr.setAttribute("width", xr - AXX); } else { r.rl.setAttribute("x", PL); }
+  const edge = on && H > 0.01 && H < 0.99 ? 0.8 : 0;
+  $("edgeL").setAttribute("x1", xl); $("edgeL").setAttribute("x2", xl); $("edgeR").setAttribute("x1", xr); $("edgeR").setAttribute("x2", xr);
+  $("edgeL").setAttribute("opacity", edge); $("edgeR").setAttribute("opacity", edge);
+  // verticals: detach from the ground, lift about 25 px, break into dashes, dissolve where they hover
+  const lift = on ? 25 * E(4.0, 3.0) : 0, dash = on ? E(4.4, 2.0) : 0;
+  $("planWrap").setAttribute("transform", `translate(0 ${-lift})`);
+  $("dashSolid").setAttribute("opacity", 1 - dash); $("dashStripes").setAttribute("opacity", dash);
+  $("plan").setAttribute("opacity", on ? 1 - E(6.2, 3.0) : 1);
+  axisPath.setAttribute("opacity", on ? 1 - E(6.5, 2.5) : 1);
+  if (!on) { $("act").textContent = "ACT ONE"; $("ttl").textContent = "The Architect"; $("confess").style.opacity = 0; return; }
+  // the page turns to Act Two; Act One's words withdraw
+  lbls.forEach((d) => (d.style.opacity = 1 - E(0, 1.2)));
+  document.querySelectorAll(".stmt div").forEach((d) => (d.style.opacity = 1 - E(0, 1.0)));
+  $("note").style.opacity = 1 - E(3, 2);
+  const swap = t >= 1.2; $("act").textContent = swap ? "ACT TWO" : "ACT ONE"; $("ttl").textContent = swap ? "Brasília" : "The Architect";
+  const hd = swap ? E(1.2, 1.2) : 1 - E(0, 1.2); $("act").style.opacity = hd; $("ttl").style.opacity = hd;
+  $("confess").style.opacity = E(7.5, 2.0);
+  // the spheres: copper holds, completely still; blue gives one small settle as the structure pulls away from it
+  place(copper, HOME_C[0], HOME_C[1], 38);
+  const bk = track([[0, 0, 0, 1, 1], [tBlue, 0, 0, 1, 1], [tBlue + 0.25, 0, 7, 1.06, 0.94], [tBlue + 0.9, 0, 5, 1, 1]], t);
+  place(blue, HOME_B[0], HOME_B[1] + bk[1], 42, bk[2], bk[3]);
+}
+
 const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.8;
-window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6 };
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD };
 window.setState = (c, t) => {
+  click4(-1);
+  if (c === 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(t); return; }
   if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
   click1(99); click2(c === 2 ? t : 999);
   $("one").style.opacity = 0;
@@ -269,7 +316,7 @@ function frame(now) {
 }
 addEventListener("keydown", (e) => {
   if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) {
-    e.preventDefault(); if (e.repeat || click >= 3) return;
+    e.preventDefault(); if (e.repeat || click >= 4) return;
     if (click > 0) setState(click, window.CLICK[click] + 1);          // an early click completes the current one
     click++; clickStart = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
   } else if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
