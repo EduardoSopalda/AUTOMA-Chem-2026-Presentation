@@ -42,6 +42,10 @@
 <svg id="s" width="1920" height="1080" style="mix-blend-mode:multiply"><defs>
   <mask id="behind" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect width="1920" height="1080" fill="#fff"/>
     <image href="../opening/man.png" x="743" y="750" width="257" height="184" style="filter:contrast(3) brightness(1.15)"/></mask></defs>
+  <filter id="presence" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feMorphology operator="erode" radius="0.25"/>
+    <feComponentTransfer><feFuncR type="gamma" exponent="1.45"/><feFuncG type="gamma" exponent="1.45"/><feFuncB type="gamma" exponent="1.3"/></feComponentTransfer>
+  </filter>
   <g id="full" opacity="0"></g><g id="plan"></g><g id="g" mask="url(#behind)"></g></svg>
   <svg id="light" width="1920" height="1080" style="z-index:1"><defs><filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs><g id="rays" mask="url(#behind)"></g></svg>
   <div class="one" id="one">01</div><div class="note" id="note">…not as a metaphor.</div>
@@ -59,7 +63,7 @@ const ease = (x) => { x = clamp(x); return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2
 const smooth = (x) => { x = clamp(x); return x * x * (3 - 2 * x); };
 const g = $("g"), defs = document.querySelector("defs");
 const reveal = mk("mask", { id: "reveal", maskUnits: "userSpaceOnUse", x: 0, y: 0, width: 1920, height: 1080 }, defs);
-const planAttrs = { href: "masterplan-ink.png", x: 955 - AX * K, y: TOP - 86 * K, width: 2000 * K, height: 1124.4 * K };
+const planAttrs = { href: "masterplan-ink.png", x: 955 - AX * K, y: TOP - 86 * K, width: 2000 * K, height: 1124.4 * K, filter: "url(#presence)" };
 mk("image", { ...planAttrs, mask: "url(#reveal)" }, $("plan"));
 mk("image", planAttrs, $("full"));
 const [PL] = F(98, 86), [PR] = F(1914, 1045), [, PT] = F(0, 86), AXX = 955;
@@ -110,7 +114,7 @@ const verts = byDist.map((o, i) => {
 });
 const vAt = (X) => verts.reduce((a, v) => (Math.abs(v.X - X) < Math.abs(a.X - X) ? v : a));
 function inv(p) { p = clamp(p); let lo = 0, hi = 1; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; if (ease(m) < p) lo = m; else hi = m; } return lo; }
-const vReach = (v, Y) => v.t0 + VDUR * inv((v.diag + (v.B - Y)) / v.len);   // when a ray's head reaches height Y on its column
+const vReach = (v, Y) => v.t0 + VDUR * inv((v.diag + (v.B - Y)) / (v.len + TRAIL));   // when a ray's head reaches height Y on its column
 
 // Horizontals: from beyond the paper's edges on both sides, travelling in to the copper spine, in parallel
 const OUT = 140;                                    // how far outside the screen they start
@@ -123,7 +127,7 @@ const rows = ROWS.map((y, k) => {
   return { y, Y, t0, rl, rr, sl, sr, lenL, lenR };
 });
 const rowAt = (y) => rows.find((r) => Math.abs(r.y - y) < 0.5);
-const hReach = (r, X) => r.t0 + HDUR * inv(X < AXX ? (X + OUT) / r.lenL : (1920 + OUT - X) / r.lenR);
+const hReach = (r, X) => r.t0 + HDUR * inv(X < AXX ? (X + OUT) / (r.lenL + TRAIL) : (1920 + OUT - X) / (r.lenR + TRAIL));
 
 // ================= The spheres =================
 const SPH = { copper: { w: 168, h: 193, c: 84.5, r: 44.5 }, blue: { w: 166, h: 191, c: 83.5, r: 44 } };
@@ -195,7 +199,7 @@ function click2(t) {
   axisPath.setAttribute("stroke-dasharray", `${ap} ${axisLen + 10}`);
   // verticals: rays from the man, up their columns; the plan's line settles in behind the head
   for (const v of verts) {
-    const head = ease((t - v.t0) / VDUR) * v.len;
+    const head = ease((t - v.t0) / VDUR) * (v.len + TRAIL);
     drawRay(v.segs, head, v.len);
     const settled = clamp(head - LAG - v.diag, 0, v.B - v.T);
     v.r.setAttribute("y", v.B - settled); v.r.setAttribute("height", settled);
@@ -203,8 +207,8 @@ function click2(t) {
   // horizontals: rays from beyond both edges to the spine; the line settles in behind, inside the plan only
   for (const r of rows) {
     const p = ease((t - r.t0) / HDUR);
-    drawRay(r.sl, p * r.lenL, r.lenL); drawRay(r.sr, p * r.lenR, r.lenR);
-    const xl = clamp(-OUT + p * r.lenL - LAG, PL, AXX), xr = clamp(1920 + OUT - p * r.lenR + LAG, AXX, PR);
+    drawRay(r.sl, p * (r.lenL + TRAIL), r.lenL); drawRay(r.sr, p * (r.lenR + TRAIL), r.lenR);
+    const xl = clamp(-OUT + p * (r.lenL + TRAIL) - LAG, PL, AXX), xr = clamp(1920 + OUT - p * (r.lenR + TRAIL) + LAG, AXX, PR);
     r.rl.setAttribute("width", xl - PL); r.rr.setAttribute("x", xr); r.rr.setAttribute("width", PR - xr);
   }
   // the spheres
