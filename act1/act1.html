@@ -83,8 +83,9 @@ const V = [106.1,129.6,374.1,458.3,541.0,590.0,625.9,669.1,708.6,758.4,792.8,875
 const ROWS = [113.5, 95.2, 392.4, 475.1, 557.1, 641.3, 720.4, 801.6, 964.1, 1022.7];
 
 // The axis: from his feet up the avenue to the plan's top edge
-const axisLen = FEET[1] - PT;
-const axisPath = mk("path", { d: `M${FEET[0]} ${FEET[1]} L${AXX} ${PT}`, fill: "none", stroke: "#762F0B", "stroke-width": 2.4, "stroke-linecap": "round", "stroke-dasharray": `0 ${axisLen + 10}` }, g);
+const AXIS_FOOT = 732;                              // stops about 20 px above his head: he stands at the threshold of the divide
+const axisLen = AXIS_FOOT - PT;
+const axisPath = mk("path", { d: `M${AXX} ${AXIS_FOOT} L${AXX} ${PT}`, fill: "none", stroke: "#762F0B", "stroke-width": 2.4, "stroke-linecap": "round", "stroke-dasharray": `0 ${axisLen + 10}` }, g);
 
 // ---- Rays of light: a luminous head, a trail that fades behind it, the plan's real line settling in after ----
 const ORIGIN = [955, 764];                          // the verticals leave from the man himself (his head, behind the ink)
