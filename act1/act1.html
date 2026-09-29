@@ -35,6 +35,10 @@
   .copper{height:2px;background:#762F0B;margin:16px 0 26px;width:0}
   .stmt div{font:400 23px/1.4 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
   .confess{position:absolute;z-index:3;left:364px;top:282px;font:italic 400 26px/1.35 "Source Serif 4",Georgia,serif;letter-spacing:.04em;color:#0F0F11;opacity:0}
+  .gw{position:absolute;z-index:1;left:0;top:0;white-space:nowrap;color:#0F0F11;transform-origin:50% 100%;opacity:0}
+  .gw.serif{font-family:"Source Serif 4",Georgia,serif;font-weight:500}
+  .gw.sans{font-family:"DM Sans",sans-serif;font-weight:500;color:#365F7C}
+  .scale{position:absolute;z-index:3;font:500 28px/1 "DM Sans",sans-serif;letter-spacing:.06em;color:#0F0F11;opacity:0}
   .lbl{position:absolute;z-index:3;font:italic 400 9.5px/1.1 "Source Serif 4",Georgia,serif;color:#2c3a66;text-align:center;width:56px;opacity:0}
 </style>
 </head>
@@ -58,6 +62,14 @@
   <g id="full" opacity="0" mask="url(#retract)"></g><g id="planWrap" mask="url(#dash)"><g id="plan"></g></g>
   <line id="edgeL" y1="30" y2="700" stroke="#D89C67" stroke-width="3" opacity="0" filter="url(#halo2)"/><line id="edgeR" y1="30" y2="700" stroke="#D89C67" stroke-width="3" opacity="0" filter="url(#halo2)"/><g id="g" mask="url(#behind)"></g></svg>
   <svg id="light" width="1920" height="1080" style="z-index:1"><defs><filter id="halo2"><feGaussianBlur stdDeviation="2"/></filter><filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs><g id="rays" mask="url(#behind)"></g></svg>
+  <svg id="over" width="1920" height="1080" style="position:absolute;left:0;top:0;z-index:1;mix-blend-mode:multiply">
+    <rect id="raciShadow" x="1000" y="120" width="560" height="660" fill="#0F0F11" opacity="0" filter="url(#soft2)"/>
+    <defs><filter id="soft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="40"/></filter></defs>
+    <g id="dim" opacity="0" stroke="#0F0F11" stroke-width="1.6"><line id="dimLine" y1="0" y2="0"/><line id="dimT1"/><line id="dimT2"/></g>
+    <line id="dropLine" x1="1343" x2="1343" stroke="#365F7C" stroke-width="1" stroke-dasharray="6 6" opacity="0"/>
+  </svg>
+  <div class="scale" id="s250">1 : 250</div><div class="scale" id="s500">1 : 500</div><div class="scale" id="s1000">1 : 1000</div>
+  <svg id="raci" width="450" height="312" viewBox="0 0 360 250" style="position:absolute;left:0;top:0;z-index:3;opacity:0;transform-origin:50% 100%"></svg>
   <div class="one" id="one">01</div><div class="confess" id="confess">I had built them a plaza<br>nobody wanted to stand in.</div><div class="note" id="note">…not as a metaphor.</div>
   <div class="col"><div class="act" id="act">ACT ONE</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
     <div class="stmt"><div>We design from above.</div><div>Not always for the person</div><div>who has to live</div><div>with the result.</div></div></div>
@@ -301,11 +313,109 @@ function click4(t) {
   place(blue, HOME_B[0], HOME_B[1] + bk[1], 42, bk[2], bk[3]);
 }
 
+// ================= CLICKS 5 to 7 · ACT TWO: from the air; the language of governance; a beautiful RACI =================
+const E2 = (t, a, d) => smooth((t - a) / d);
+const jumpY = (t, t0, h) => { const u = (t - t0 - 0.25) / 0.6; return u > 0 && u < 1 ? -h * Math.sin(Math.PI * u) : 0; };
+const squash = (t, t0) => {                        // anticipation, landing squash, rebound
+  const a = t - t0; if (a < 0) return [1, 1];
+  if (a < 0.25) { const k = smooth(a / 0.25); return [1 + 0.03 * k, 1 - 0.04 * k]; }
+  if (a < 0.85) return [1, 1];
+  if (a < 1.0) { const k = smooth((a - 0.85) / 0.15); return [1 + 0.07 * k, 1 - 0.07 * k]; }
+  if (a < 1.25) { const k = smooth((a - 1.0) / 0.25); return [1.07 - 0.07 * k, 0.93 + 0.07 * k]; }
+  return [1, 1];
+};
+// Click 5: copper takes the centre of the left half, then three jumps; it grows only after each landing
+const GROUND_C = 520, CX5 = 560, J = [1.6, 3.7, 5.9], H5 = [35, 50, 65], R5 = [38, 43.3, 50.3, 60.4];
+function click5(t) {
+  const on = t >= 0;
+  ["s250", "s500", "s1000"].forEach((id) => ($(id).style.opacity = 0)); $("dim").setAttribute("opacity", 0);
+  if (!on) return;
+  let r = R5[0]; J.forEach((j, i) => { r += (R5[i + 1] - R5[i]) * E2(t, j + 1.0, 0.35); });
+  const mv = E2(t, 0, 1.1), settle = 2 * Math.sin(Math.PI * clamp((t - 1.1) / 0.3)) * (t < 1.4 ? 1 : 0);
+  const x = HOME_C[0] + (CX5 - HOME_C[0]) * mv;
+  const gy = HOME_C[1] + r * 0 + (GROUND_C - r - HOME_C[1]) * mv;
+  let dy = settle, sq = [1, 1];
+  J.forEach((j, i) => { dy += jumpY(t, j, H5[i]); const q = squash(t, j); if (t >= j && t < j + 1.25) sq = q; });
+  place(copper, x, (mv < 1 ? HOME_C[1] + (GROUND_C - R5[0] - HOME_C[1]) * mv : GROUND_C - r) + dy, r, sq[0], sq[1]);
+  // the dimension line from the axis to copper, and the scale it earns
+  const y = GROUND_C + 26, x1 = x;
+  $("dimLine").setAttribute("x1", AXX - (AXX - x1) * E2(t, J[0] + 1.0, 0.6)); $("dimLine").setAttribute("x2", AXX); $("dimLine").setAttribute("y1", y); $("dimLine").setAttribute("y2", y);
+  for (const [id, X] of [["dimT1", AXX], ["dimT2", x1]]) { const e = $(id); e.setAttribute("x1", X); e.setAttribute("x2", X); e.setAttribute("y1", y - 9); e.setAttribute("y2", y + 9); }
+  $("dim").setAttribute("opacity", 0.8 * E2(t, J[0] + 1.0, 0.4));
+  const lab = [E2(t, J[0] + 1.2, 0.5), E2(t, J[1] + 1.2, 0.5), E2(t, J[2] + 1.2, 0.5)];
+  $("s250").style.opacity = lab[0] * (1 - 0.8 * lab[1]); $("s500").style.opacity = lab[1] * (1 - 0.8 * lab[2]); $("s1000").style.opacity = lab[2];
+  for (const id of ["s250", "s500", "s1000"]) { $(id).style.left = (x + AXX) / 2 - 60 + "px"; $(id).style.top = y + 18 + "px"; }
+  $("s250").style.top = y + 18 + "px"; $("s500").style.top = y + 18 + "px";
+}
+// Click 6: twelve governance words fall and settle around blue; blue loses ground in two stages
+const FLOOR = 770;
+const WORDS = [
+  ["Policy", "serif", 42, 1040, 770, -2, 0.8], ["Controls", "sans", 38, 1370, 772, 3, 1.4], ["Committee", "serif", 36, 1030, 726, 4, 2.0], ["Operating Model", "sans", 28, 1330, 730, -3, 2.6],
+  ["Governance", "sans", 28, 1050, 688, -5, 3.4], ["Accountability", "serif", 26, 1360, 692, 2, 3.9], ["Ownership", "sans", 24, 1090, 652, 3, 4.4], ["Risk", "serif", 30, 1450, 656, -6, 4.9],
+  ["Compliance", "sans", 18, 1070, 622, -2, 5.5], ["Approval", "serif", 18, 1410, 624, 5, 5.9], ["Exception", "sans", 16, 1150, 598, -4, 6.3], ["Human Oversight", "sans", 15, 1370, 598, 2, 6.7]];
+const gws = WORDS.map(([w, f, size]) => { const d = document.createElement("div"); d.className = "gw " + f; d.style.fontSize = size + "px"; d.textContent = w; $("stage").appendChild(d); return d; });
+function wordAt(i, t, push = [0, 0, 0]) {             // falls, bounces once, settles; push = [dx, dy, drot] from the RACI
+  const [, , size, x, y, rot, t0] = WORDS[i], d = gws[i], a = t - t0;
+  if (a < 0) { d.style.opacity = 0; return; }
+  const fall = 0.85, top = -80;
+  let Y;
+  if (a < fall) { const u = a / fall; Y = top + (y - top) * u * u; }
+  else if (a < fall + 0.3) { const u = (a - fall) / 0.3; Y = y - 14 * Math.sin(Math.PI * u); }
+  else Y = y;
+  const r = a < fall ? rot * 0.4 : rot;
+  d.style.opacity = 1;
+  d.style.transform = `translate(${x + push[0]}px, ${Y - size + push[1]}px) rotate(${r + push[2]}deg)`;
+}
+function click6(t) {
+  const on = t >= 0;
+  if (!on) { gws.forEach((d) => (d.style.opacity = 0)); return; }
+  WORDS.forEach((_, i) => wordAt(i, t));
+  const k = track([[0, 1442, 591, 1, 1], [0.3, 1442, 591, 1, 1], [1.3, 1432, 606, 1, 1], [2.6, 1432, 606, 1, 1],
+    [2.9, 1433, 610, 1.03, 0.97], [3.9, 1300, 660, 1, 1], [5.0, 1300, 660, 1, 1], [5.2, 1296, 664, 1.02, 0.98],
+    [6.6, 1276, 704, 1, 1], [7.2, 1280, 712, 1.02, 0.98], [7.6, 1278, 710, 1, 1]], t);
+  place(blue, k[0], k[1], 42, k[2], k[3]);
+}
+// Click 7: a beautiful RACI
+(function buildRaci() {
+  const g = $("raci"), W = 360, H = 250, rows = 7, hy = 34, cw = [136, 56, 56, 56, 56];
+  let h = `<rect x="1" y="1" width="${W - 2}" height="${H - 2}" fill="#f4e6cf" stroke="#0F0F11" stroke-width="2.4"/>`;
+  let x = 0; cw.forEach((w, i) => { x += w; if (i < 4) h += `<line x1="${x}" y1="1" x2="${x}" y2="${H - 1}" stroke="#0F0F11" stroke-width="1.2"/>`; });
+  for (let r = 0; r <= rows; r++) { const y = hy + r * ((H - hy) / rows); h += `<line x1="1" y1="${y}" x2="${W - 1}" y2="${y}" stroke="#0F0F11" stroke-width="${r ? 0.8 : 1.6}"/>`; }
+  ["R", "A", "C", "I"].forEach((c, i) => { h += `<text x="${136 + 56 * i + 28}" y="25" text-anchor="middle" font-family="DM Sans" font-weight="600" font-size="20" fill="#0F0F11">${c}</text>`; });
+  for (let r = 0; r < rows; r++) { const y = hy + r * ((H - hy) / rows) + 13; h += `<rect x="10" y="${y}" width="${60 + (r * 37) % 60}" height="5" fill="#48565F" opacity="0.5"/>`;
+    for (let c = 0; c < 4; c++) if ((r * 3 + c * 5) % 4 !== 0) h += `<text x="${136 + 56 * c + 28}" y="${y + 9}" text-anchor="middle" font-family="DM Sans" font-size="14" fill="#365F7C">${"RACI"[(r + c) % 4]}</text>`; }
+  g.innerHTML = h;
+})();
+const RACI_X = 1118, RACI_REST = 770 - 312, T_DROP = 2.7, T_HIT = 3.05;
+function click7(t) {
+  const on = t >= 0, rc = $("raci");
+  if (!on) { rc.style.opacity = 0; $("raciShadow").setAttribute("opacity", 0); $("dropLine").setAttribute("opacity", 0); return; }
+  $("raciShadow").setAttribute("opacity", 0.09 * E2(t, 0.7, 0.9) * (1 - E2(t, T_HIT, 0.5)));
+  let y;
+  if (t < 1.5) y = -320; else if (t < T_DROP) y = -320 + (140 + 320) * (1 - Math.pow(1 - clamp((t - 1.5) / 0.8), 3));
+  else if (t < T_HIT) { const u = (t - T_DROP) / (T_HIT - T_DROP); y = 140 + (RACI_REST - 140) * u * u; } else y = RACI_REST;
+  const tilt = t < T_HIT ? 0 : -4 * smooth((t - T_HIT) / 0.12) + 1.2 * Math.sin(Math.PI * clamp((t - T_HIT - 0.12) / 0.3)) * (t < T_HIT + 0.42 ? 1 : 0);
+  rc.style.opacity = t < 1.5 ? 0 : 1;
+  rc.style.transform = `translate(${RACI_X}px, ${y}px) rotate(${tilt}deg)`;
+  $("dropLine").setAttribute("y1", 140 + 312); $("dropLine").setAttribute("y2", 770); $("dropLine").setAttribute("opacity", 0.6 * E2(t, 2.3, 0.3) * (1 - E2(t, T_HIT, 0.2)));
+  // impact: the words under and around it are pushed outward
+  const imp = E2(t, T_HIT, 0.35);
+  WORDS.forEach(([, , , x], i) => { const right = x > 1250; wordAt(i, 99, right ? [34 * imp, 4 * imp, 5 * imp] : [-22 * imp, -3 * imp, -4 * imp]); });
+  // blue: a small anticipation, then one startled jump into the remaining clear space
+  const k = track([[0, 1278, 710, 1, 1], [1.1, 1278, 710, 1, 1], [1.4, 1278, 712, 1.03, 0.97], [1.8, 1278, 710, 1, 1], [T_HIT, 1278, 710, 1, 1],
+    [T_HIT + 0.07, 1278, 716, 1.08, 0.92], [T_HIT + 0.45, 1150, 600, 0.97, 1.03], [T_HIT + 0.8, 1068, 590, 1.07, 0.93], [T_HIT + 1.05, 1066, 585, 0.99, 1.01], [T_HIT + 1.3, 1066, 586, 1, 1]], t);
+  place(blue, k[0], k[1], 42, k[2], k[3]);
+}
+
 const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.8;
-window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD };
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: J[2] + 2.2, 6: 8.3, 7: T_HIT + 1.3 + 6 };
 window.setState = (c, t) => {
-  click4(-1);
-  if (c === 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(t); return; }
+  click4(-1); click5(-1); click6(-1); click7(-1);
+  if (c >= 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(c === 4 ? t : 99);
+    if (c >= 5) click5(c === 5 ? t : 99);
+    if (c >= 6) click6(c === 6 ? t : 99);
+    if (c >= 7) click7(t);
+    return; }
   if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
   click1(99); click2(c === 2 ? t : 999);
   $("one").style.opacity = 0;
@@ -325,7 +435,7 @@ function frame(now) {
 }
 addEventListener("keydown", (e) => {
   if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) {
-    e.preventDefault(); if (e.repeat || click >= 4) return;
+    e.preventDefault(); if (e.repeat || click >= 7) return;
     if (click > 0) setState(click, window.CLICK[click] + 1);          // an early click completes the current one
     click++; clickStart = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
   } else if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
