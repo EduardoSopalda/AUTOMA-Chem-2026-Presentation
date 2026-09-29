@@ -38,7 +38,7 @@
   .gw{position:absolute;z-index:1;left:0;top:0;white-space:nowrap;color:#0F0F11;transform-origin:50% 100%;opacity:0}
   .gw.serif{font-family:"Source Serif 4",Georgia,serif;font-weight:500}
   .gw.sans{font-family:"DM Sans",sans-serif;font-weight:500;color:#365F7C}
-  .scale{position:absolute;z-index:3;font:500 28px/1 "DM Sans",sans-serif;letter-spacing:.06em;color:#0F0F11;opacity:0}
+  .scale{position:absolute;z-index:3;font:500 34px/1 "DM Sans",sans-serif;letter-spacing:.04em;font-variant-numeric:tabular-nums;color:#A96B32;text-shadow:0 1px 0 rgba(57,35,22,.28);opacity:0}
   .cnum{position:absolute;z-index:3;font:500 44px/1 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0;white-space:nowrap}
   .cdesc{position:absolute;z-index:3;font:500 17px/1 "DM Sans",sans-serif;letter-spacing:.04em;color:#365F7C;opacity:0;white-space:nowrap}
   .csrc{position:absolute;z-index:3;font:400 16px/1.3 "DM Sans",sans-serif;color:#48565F;opacity:0;white-space:nowrap}
@@ -60,7 +60,8 @@
   <filter id="soft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="7"/></filter>
   <mask id="retract" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><g filter="url(#soft)"><rect id="retL" x="0" y="0" width="955" height="1080" fill="#fff"/><rect id="retR" x="955" y="0" width="965" height="1080" fill="#fff"/></g>
     <circle class="excl" cx="0" cy="0" r="55" fill="#000" opacity="0"/><circle class="excl" cx="0" cy="0" r="55" fill="#000" opacity="0"/></mask>
-  <mask id="leftOnly" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect x="0" y="0" width="949" height="1080" fill="#fff"/>
+  <radialGradient id="memory" gradientUnits="userSpaceOnUse" cx="560" cy="440" r="620"><stop offset="0" stop-color="#000"/><stop offset="0.42" stop-color="#000"/><stop offset="0.7" stop-color="#777"/><stop offset="1" stop-color="#fff"/></radialGradient>
+  <mask id="leftOnly" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect x="0" y="0" width="949" height="1080" fill="url(#memory)"/>
     <circle class="excl" cx="0" cy="0" r="55" fill="#000"/></mask>
   <g id="ghost" opacity="0" mask="url(#leftOnly)"></g>
   <g id="full" opacity="0" mask="url(#retract)"></g><g id="planWrap" mask="url(#dash)"><g id="plan"></g></g>
@@ -69,7 +70,7 @@
   <svg id="over" width="1920" height="1080" style="position:absolute;left:0;top:0;z-index:1;mix-blend-mode:multiply">
     <rect id="raciShadow" x="1000" y="120" width="560" height="660" fill="#0F0F11" opacity="0" filter="url(#soft2)"/>
     <defs><filter id="soft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="40"/></filter></defs>
-    <g id="dim" opacity="0" stroke="#0F0F11" stroke-width="1.6"><line id="dimLine" y1="0" y2="0"/><line id="dimT1"/><line id="dimT2"/></g>
+    <g id="dim" opacity="0" stroke="#3a2a1e" stroke-width="1.4"><line id="dimLine" y1="0" y2="0"/><line id="dimT1"/><line id="dimT2"/><g id="ticks"></g><g id="cursor"><circle r="5" fill="none"/><line x1="0" y1="-12" x2="0" y2="12"/></g></g>
     <line id="dropLine" x1="1395" x2="1395" stroke="#365F7C" stroke-width="1" stroke-dasharray="6 6" opacity="0"/>
   </svg>
   <div class="scale" id="s250">1 : 250</div><div class="scale" id="s500">1 : 500</div><div class="scale" id="s1000">1 : 1000</div>
@@ -289,7 +290,7 @@ const HOLD_FROM = 9.5, HOLD = 7;
 function click4(t) {
   const on = t >= 0, E = (a, d) => smooth((t - a) / d);
   excl.slice(0, 2).forEach((c) => c.setAttribute("opacity", on ? 1 : 0));
-  $("ghost").setAttribute("opacity", on ? 0.1 * E(RET - 1.5, 2.5) : 0);   // the framework still exists on paper, in the office
+  $("ghost").setAttribute("opacity", on ? 0.045 * E(RET - 1.5, 3.0) : 0);   // a faint imprint at the edges only; clean paper around copper   // the framework still exists on paper, in the office
   // horizontals retract toward the spine: the plan withdraws from the perimeter
   const H = on ? ease(t / RET) : 0, xl = PL + (AXX - PL) * H, xr = PR - (PR - AXX) * H;
   $("retL").setAttribute("x", on ? xl : 0); $("retL").setAttribute("width", on ? AXX - xl : 955);
@@ -332,27 +333,49 @@ const squash = (t, t0) => {                        // anticipation, landing squa
   return [1, 1];
 };
 // Click 5: copper takes the centre of the left half, then three jumps; it grows only after each landing
-const GROUND_C = 520, CX5 = 560, J = [1.6, 3.7, 5.9], H5 = [35, 50, 65], R5 = [38, 43.3, 50.3, 60.4];
+const GROUND_C = 600, CX5 = 560, J = [1.6, 3.7, 6.4], H5 = [35, 50, 65], R5 = [38, 43.3, 50.3, 60.4], R_INF = 100;
+const T_COUNT = J[1] + 1.0, T_INF = J[2] + 1.7;       // the counter runs from the second landing; the inflation beat comes last
+const STEPS = [250, 251, 253, 258, 270, 310, 365, 420, 500, 590, 680, 760, 850, 930, 1000];
+const STEP_T = [0, 0.12, 0.23, 0.35, 0.47, 0.57, 0.66, 0.74, 0.8, 0.9, 0.98, 1.05, 1.11, 1.16, 1.25];   // readable, then accelerating, then runaway
 function click5(t) {
   const on = t >= 0;
   ["s250", "s500", "s1000"].forEach((id) => ($(id).style.opacity = 0)); $("dim").setAttribute("opacity", 0);
   if (!on) return;
   let r = R5[0]; J.forEach((j, i) => { r += (R5[i + 1] - R5[i]) * E2(t, j + 1.0, 0.35); });
+  r += (R_INF - R5[3]) * (t < T_INF ? 0 : 1 - Math.pow(1 - clamp((t - T_INF) / 0.7), 3));   // the unlabelled inflation beat
   const mv = E2(t, 0, 1.1), settle = 2 * Math.sin(Math.PI * clamp((t - 1.1) / 0.3)) * (t < 1.4 ? 1 : 0);
   const x = HOME_C[0] + (CX5 - HOME_C[0]) * mv;
-  const gy = HOME_C[1] + r * 0 + (GROUND_C - r - HOME_C[1]) * mv;
   let dy = settle, sq = [1, 1];
   J.forEach((j, i) => { dy += jumpY(t, j, H5[i]); const q = squash(t, j); if (t >= j && t < j + 1.25) sq = q; });
+  if (t >= T_INF - 0.25 && t < T_INF) sq = [1.02, 0.97];                                        // it gathers itself
   place(copper, x, (mv < 1 ? HOME_C[1] + (GROUND_C - R5[0] - HOME_C[1]) * mv : GROUND_C - r) + dy, r, sq[0], sq[1]);
-  // the dimension line from the axis to copper, and the scale it earns
-  const y = GROUND_C + 26, x1 = x;
-  $("dimLine").setAttribute("x1", AXX - (AXX - x1) * E2(t, J[0] + 1.0, 0.6)); $("dimLine").setAttribute("x2", AXX); $("dimLine").setAttribute("y1", y); $("dimLine").setAttribute("y2", y);
-  for (const [id, X] of [["dimT1", AXX], ["dimT2", x1]]) { const e = $(id); e.setAttribute("x1", X); e.setAttribute("x2", X); e.setAttribute("y1", y - 9); e.setAttribute("y2", y + 9); }
-  $("dim").setAttribute("opacity", 0.8 * E2(t, J[0] + 1.0, 0.4));
-  const lab = [E2(t, J[0] + 1.2, 0.5), E2(t, J[1] + 1.2, 0.5), E2(t, J[2] + 1.2, 0.5)];
-  $("s250").style.opacity = lab[0] * (1 - 0.8 * lab[1]); $("s500").style.opacity = lab[1] * (1 - 0.8 * lab[2]); $("s1000").style.opacity = lab[2];
-  for (const id of ["s250", "s500", "s1000"]) { $(id).style.left = (x + AXX) / 2 - 60 + "px"; $(id).style.top = y + 18 + "px"; }
-  $("s250").style.top = y + 18 + "px"; $("s500").style.top = y + 18 + "px";
+  // the measurement rail: from copper's edge to the axis, never across it
+  const y = GROUND_C + 26, edge = x + Math.min(r, R5[3]) , show = E2(t, J[0] + 1.0, 0.5);
+  const railL = AXX - (AXX - edge) * E2(t, J[0] + 1.0, 0.6);
+  $("dimLine").setAttribute("x1", railL); $("dimLine").setAttribute("x2", AXX - 3); $("dimLine").setAttribute("y1", y); $("dimLine").setAttribute("y2", y);
+  for (const [id, X] of [["dimT1", AXX - 3], ["dimT2", railL]]) { const e = $(id); e.setAttribute("x1", X); e.setAttribute("x2", X); e.setAttribute("y1", y - 14); e.setAttribute("y2", y + 14); }
+  $("dim").setAttribute("opacity", 0.9 * show);
+  // graduations: major every 100 px, minor every 20; subdivisions every 10 after the second landing; a few overflow ticks at the end
+  const sub = E2(t, J[1] + 1.0, 0.6), over = E2(t, T_COUNT + 1.25, 0.3);
+  let h = "";
+  for (let k = 10; AXX - 3 - k > railL; k += 10) {
+    const X = AXX - 3 - k, major = k % 100 === 0, minor = k % 20 === 0;
+    if (!minor && sub <= 0) continue;
+    const len = major ? 10 : minor ? 5 : 3, op = major ? 1 : minor ? 0.7 : 0.5 * sub;
+    h += `<line x1="${X}" x2="${X}" y1="${y - len}" y2="${y}" stroke-width="${major ? 1.3 : 0.8}" opacity="${op}"/>`;
+  }
+  for (let k = 0; k < 3; k++) h += `<line x1="${railL - 8 - k * 7}" x2="${railL - 8 - k * 7}" y1="${y - 6}" y2="${y}" stroke-width="0.8" opacity="${over * (0.7 - k * 0.2)}"/>`;
+  $("ticks").innerHTML = h;
+  // the counter: 1 : 250 after the first landing; from the second landing it runs away to 1 : 1000, then holds, immaculate
+  const c = t - T_COUNT;
+  let n = 250; STEP_T.forEach((st, k) => { if (c >= st) n = STEPS[k]; });
+  const lab = $("s1000"); lab.textContent = `1 : ${n}`;
+  lab.style.opacity = E2(t, J[0] + 1.2, 0.5);
+  lab.style.left = CX5 + 40 + "px"; lab.style.top = y + 44 + "px";
+  // the cursor races along the rail with the counter, then presses against the axis
+  const prog = c < 0 ? 0 : clamp(c / 1.25), jitter = c > 1.25 && t < T_INF + 0.7 ? 1.6 * Math.sin(t * 47) : 0;
+  const cx = railL + (AXX - 8 - railL) * (prog * prog * (3 - 2 * prog)) + jitter;
+  $("cursor").setAttribute("transform", `translate(${cx} ${y})`); $("cursor").setAttribute("opacity", show);
 }
 // Click 6: twelve governance words fall and settle around blue; blue loses ground in two stages
 const FLOOR = 770;
@@ -418,7 +441,7 @@ function click7(t) {
 // Data is born on the plant floor; evidence has to travel, visibly, across the divide to the report.
 const EVY = GROUND_C + 26;                              // the old scale rule becomes the evidence line
 const CONV = [992, EVY];                                // where the sources converge, just right of the axis
-const COPPER_R = R5[3], REPORT_END = CX5 + COPPER_R + 8;  // where a complete trace would reach the report
+const COPPER_R = R_INF, REPORT_END = CX5 + COPPER_R + 8;  // where a complete trace would reach the report
 const SOURCES = [                                       // [label, node x, node y, control x, control y, arrival]
   ["Supplier declarations", 1214, 428, 1080, 430, 2.6], ["Energy data", 1352, 506, 1150, 520, 3.1],
   ["Production records", 1262, 612, 1120, 600, 2.9], ["Transport", 1404, 690, 1180, 650, 3.4],
@@ -449,12 +472,13 @@ function click8(t) {
   gws.forEach((d) => (d.style.opacity = rec)); $("raci").style.opacity = rec;
   // the boundary first, then the scale gives way to the number in place, then the source
   $("s250").style.opacity = $("s500").style.opacity = 0;
-  const nx = CX5 + COPPER_R + 22;                        // clear of copper, clear of the axis
-  $("cdesc").style.left = nx + "px"; $("cdesc").style.top = EVY - 32 + "px"; $("cdesc").style.opacity = E(1.0, 0.8);
+  const nx = CX5 + 40;                                     // under copper, where the scale was, clear of the axis
+  $("cdesc").style.left = nx + "px"; $("cdesc").style.top = EVY + 18 + "px"; $("cdesc").style.opacity = E(1.0, 0.8);
   $("s1000").style.opacity = 1 - E(2.3, 0.6);
-  $("cnum").style.left = nx + "px"; $("cnum").style.top = EVY + 16 + "px"; $("cnum").style.opacity = E(2.6, 0.9);
-  $("csrc").style.left = nx + "px"; $("csrc").style.top = EVY + 72 + "px"; $("csrc").style.opacity = 0.9 * E(3.4, 1.0);
+  $("cnum").style.left = nx + "px"; $("cnum").style.top = EVY + 44 + "px"; $("cnum").style.opacity = E(2.6, 0.9);
+  $("csrc").style.left = nx + "px"; $("csrc").style.top = EVY + 100 + "px"; $("csrc").style.opacity = 0.9 * E(3.4, 1.0);
   $("dimT1").style.opacity = $("dimT2").style.opacity = 1 - E(1.2, 0.8);   // ticks become provenance nodes
+  $("ticks").style.opacity = 1 - E(1.2, 0.8); $("cursor").style.opacity = 1 - E(1.2, 0.8);
   provNodes.forEach((n, i) => n.setAttribute("opacity", E(2.3 + i * 0.2, 0.5)));
   drawTo(blueTrace, bLen, E(2.6, 1.6));                   // the trace begins at blue
   convNode.setAttribute("opacity", E(3.8, 0.4));
@@ -481,7 +505,7 @@ function click10(t) {                                    // five traces arrive; 
 }
 
 const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.8;
-window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: J[2] + 2.2, 6: 8.3, 7: T_HIT + 1.3 + 6, 8: 5.2, 9: 5.2, 10: 3.8 + 6 };
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.6, 6: 8.3, 7: T_HIT + 1.3 + 6, 8: 5.2, 9: 5.2, 10: 3.8 + 6 };
 window.setState = (c, t) => {
   click4(-1); click5(-1); click6(-1); click7(-1); click8(-1);
   if (c >= 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(c === 4 ? t : 99);
