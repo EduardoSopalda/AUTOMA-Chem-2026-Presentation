@@ -16,7 +16,7 @@
      CLICK 5  "...the scale is vast"               copper jumps, the counter locks at 1 : 1000, copper swells
      CLICK 6  "We build governance..."             the governance words pile up against blue
      CLICK 7  "...a beautiful RACI"                the RACI lands; hold still for the laugh, "accountable", "reaches the plant"
-     CLICK 8  "I have been the person with the beautiful drawing."   quote 1 becomes a ghost; the confession emerges
+     CLICK 8  "I have been the person with the beautiful drawing."   quote 1 dissolves; the confession emerges
      CLICK 9  "That matters..."                    Act Three begins; Act 2 recedes; the rail's ticks become provenance nodes
      CLICK 10 pause after "It is a data product."  1 : 1000 becomes 11,002 kt CO2e; the trace starts at blue
      CLICK 11 "Behind one apparently simple number..."   the six sources
@@ -173,9 +173,9 @@ const hReach = (r, X) => r.t0 + HDUR * inv(X < AXX ? (X + OUT) / (r.lenL + TRAIL
 
 // ================= The spheres =================
 const SPH = { copper: { w: 168, h: 193, c: 84.5, r: 44.5 }, blue: { w: 166, h: 191, c: 83.5, r: 44 } };
-// copper grows to 300 px, so it uses a sharper 4x sprite (same proportions, so place() is unchanged)
-function sprite(n) { const o = SPH[n]; const sh = document.createElement("img"); sh.src = `shadow-${n}.png`; sh.className = "s sh"; $("stage").appendChild(sh);
-  const im = document.createElement("img"); im.src = n === "copper" ? "sphere-copper-4x.png" : `sphere-${n}.png`; im.className = "s"; $("stage").appendChild(im); return { o, sh, im }; }
+// copper grows to 300 px, so it uses the 8x remaster from tools/make_copper.py (same proportions, so place() is unchanged)
+function sprite(n) { const o = SPH[n]; const sh = document.createElement("img"); sh.src = n === "copper" ? "shadow-copper-8x.png" : `shadow-${n}.png`; sh.className = "s sh"; $("stage").appendChild(sh);
+  const im = document.createElement("img"); im.src = n === "copper" ? "sphere-copper-8x.png" : `sphere-${n}.png`; im.className = "s"; $("stage").appendChild(im); return { o, sh, im }; }
 function place(sp, x, y, r, sx = 1, sy = 1) {
   const k = r / sp.o.r, L = x - sp.o.c * k, T = y - sp.o.c * k;
   for (const e of [sp.sh, sp.im]) { e.style.width = sp.o.w * k + "px"; e.style.height = sp.o.h * k + "px"; }
@@ -429,7 +429,7 @@ function click6(t) {
     [Cm, 1310, 702, 1, 1], [Cm + 0.35, 1304, 716, 1, 1],                                              // Committee in front: lower
     [A, 1304, 718, 1, 1], [A + 0.12, 1304, 721, 1.05, 0.95], [A + 0.4, 1300, 724, 1, 1],             // Accountability close: a compression
     [H + 0.2, 1300, 726, 1, 1], [H + 0.45, 1300, 728, 1.02, 0.98], [H + 0.8, 1300, 726, 1, 1]], t);
-  place(blue, k[0], k[1], 40, k[2], k[3]);
+  place(blue, k[0], k[1], 42, k[2], k[3]);
 }
 // Click 7: a beautiful RACI
 (function buildRaci() {
@@ -442,7 +442,8 @@ function click6(t) {
     for (let c = 0; c < 4; c++) if ((r * 3 + c * 5) % 4 !== 0) h += `<text x="${136 + 56 * c + 28}" y="${y + 9}" text-anchor="middle" font-family="DM Sans" font-size="14" fill="#365F7C">${"RACI"[(r + c) % 4]}</text>`; }
   g.innerHTML = h;
 })();
-const RACI_X = 1170, RACI_REST = 770 - 312, T_DROP = 2.7, T_HIT = 3.05;
+const RACI_X = 1230, RACI_REST = 770 - 312, T_DROP = 2.7, T_HIT = 3.05;   // lands on the right half of the pile and buries it
+const BLUE_END = [1110, 562];                            // where blue ends up: squeezed out, on top of the pile; Act 3 starts from here
 function click7(t) {
   const on = t >= 0, rc = $("raci");
   if (!on) { rc.style.opacity = 0; $("raciShadow").setAttribute("opacity", 0); $("dropLine").setAttribute("opacity", 0); return; }
@@ -454,27 +455,27 @@ function click7(t) {
   rc.style.opacity = t < 1.5 ? 0 : 1;
   rc.style.transform = `translate(${RACI_X}px, ${y}px) rotate(${tilt}deg)`;
   $("dropLine").setAttribute("y1", 140 + 312); $("dropLine").setAttribute("y2", 770); $("dropLine").setAttribute("opacity", 0.6 * E2(t, 2.3, 0.3) * (1 - E2(t, T_HIT, 0.2)));
-  // impact: the words under and around it are pushed outward
+  // impact: the words it lands on are shoved right and buried; the ones to its left are squeezed toward the axis, never across it
   const imp = E2(t, T_HIT, 0.35);
-  WORDS.forEach(([, , , x], i) => { const right = x > 1250; wordAt(i, 99, right ? [34 * imp, 4 * imp, 5 * imp] : [-22 * imp, -3 * imp, -4 * imp]); });
+  WORDS.forEach(([, , , x], i) => { const under = x > RACI_X - 60; wordAt(i, 99, under ? [30 * imp, 4 * imp, 5 * imp] : [-Math.min(14, x - 968) * imp, -2 * imp, -3 * imp]); });
   // blue: a small anticipation, then one startled jump into the remaining clear space
   const k = track([[0, 1300, 726, 1, 1], [1.1, 1300, 726, 1, 1], [1.4, 1300, 728, 1.03, 0.97], [1.8, 1300, 726, 1, 1], [T_HIT, 1300, 726, 1, 1],
-    [T_HIT + 0.07, 1300, 731, 1.08, 0.92], [T_HIT + 0.45, 1150, 600, 0.97, 1.03], [T_HIT + 0.8, 1060, 590, 1.07, 0.93], [T_HIT + 1.05, 1058, 585, 0.99, 1.01], [T_HIT + 1.3, 1058, 586, 1, 1]], t);
+    [T_HIT + 0.07, 1300, 731, 1.08, 0.92], [T_HIT + 0.45, 1190, 560, 0.97, 1.03], [T_HIT + 0.8, BLUE_END[0] + 2, BLUE_END[1] + 4, 1.07, 0.93], [T_HIT + 1.05, BLUE_END[0], BLUE_END[1] - 1, 0.99, 1.01], [T_HIT + 1.3, BLUE_END[0], BLUE_END[1], 1, 1]], t);
   place(blue, k[0], k[1], 42, k[2], k[3]);
 }
 
-// ================= CLICKS 8 to 10 · ACT THREE: when ambition becomes evidence =================
+// ================= CLICKS 9 to 12 · ACT THREE: when ambition becomes evidence =================
 // Data is born on the plant floor; evidence has to travel, visibly, across the divide to the report.
 const EVY = GROUND_C + 26;                              // the old scale rule becomes the evidence line
 const CONV = [992, EVY];                                // where the sources converge, just right of the axis
 const COPPER_R = R_INF, REPORT_END = CX5 + COPPER_R + 8;  // where a complete trace would reach the report
 const SOURCES = [                                       // [label, node x, node y, control x, control y, arrival]
-  ["Supplier declarations", 1214, 428, 1080, 430, 2.6], ["Energy data", 1352, 506, 1150, 520, 3.1],
+  ["Supplier declarations", 1214, 428, 990, 440, 2.6], ["Energy data", 1352, 506, 1190, 650, 3.1],   // routed around blue: left of it, and under it
   ["Production records", 1262, 612, 1120, 600, 2.9], ["Transport", 1404, 690, 1180, 650, 3.4],
   ["Allocation rules", 1186, 742, 1060, 700, 3.2], ["Assumptions", 1130, 672, 994, 700, 3.0]];
 const ev = $("ev"), SVGNS = "http://www.w3.org/2000/svg";
 const evEl = (tag, a) => { const e = document.createElementNS(SVGNS, tag); for (const k in a) e.setAttribute(k, a[k]); ev.appendChild(e); return e; };
-const blueTrace = evEl("path", { d: `M${1058 - 44} 586 Q 1000 586 ${CONV[0]} ${CONV[1]}`, fill: "none", stroke: "#365F7C", "stroke-width": 1.8, "stroke-linecap": "round" });
+const blueTrace = evEl("path", { d: `M${BLUE_END[0] - 44} ${BLUE_END[1]} Q ${BLUE_END[0] - 90} ${BLUE_END[1]} ${CONV[0]} ${CONV[1]}`, fill: "none", stroke: "#365F7C", "stroke-width": 1.8, "stroke-linecap": "round" });
 const srcs = SOURCES.map(([label, x, y, cx, cy]) => {
   const path = evEl("path", { d: `M${x} ${y} Q ${cx} ${cy} ${CONV[0]} ${CONV[1]}`, fill: "none", stroke: "#365F7C", "stroke-width": 1.6, "stroke-linecap": "round" });
   const node = evEl("circle", { cx: x, cy: y, r: 5.5, fill: "#f1e4d1", stroke: "#0F0F11", "stroke-width": 1.4 });
@@ -493,7 +494,7 @@ function click8(t) {
   $("confess").style.opacity = 0;
   if (t < 0) return;
   const E = (a, d) => smooth((t - a) / d);
-  $("quote1").style.opacity = 0.75 - 0.69 * E(0, 1.4); $("quote1").style.filter = `blur(${(0.8 * E(0, 1.4)).toFixed(2)}px)`;
+  $("quote1").style.opacity = 0.75 * (1 - E(0, 1.6)); $("quote1").style.filter = `blur(${(0.8 * E(0, 1.6)).toFixed(2)}px)`;   // gone completely; 0.9 s overlap with the confession
   $("confess").style.opacity = 0.75 * E(0.7, 1.4);
 }
 // Click 9, on "That matters…": Act Three begins. Act 2 recedes, the rail's ticks become provenance nodes; 1 : 1000 stays for now.
