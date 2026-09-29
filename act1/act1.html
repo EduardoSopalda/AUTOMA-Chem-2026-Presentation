@@ -80,7 +80,7 @@
   <svg id="over" width="1920" height="1080" style="position:absolute;left:0;top:0;z-index:1;mix-blend-mode:multiply">
     <rect id="raciShadow" x="1000" y="120" width="560" height="660" fill="#0F0F11" opacity="0" filter="url(#soft2)"/>
     <defs><filter id="soft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="40"/></filter></defs>
-    <g id="modulor" opacity="0"></g><g id="dim" opacity="0" stroke="#b8783e" stroke-width="1.4" style="filter:drop-shadow(0 0 3px rgba(207,145,77,.35))"><line id="dimLine" y1="0" y2="0"/><line id="dimT1"/><line id="dimT2"/><g id="ticks"></g><g id="cursor"><circle r="4.5" fill="none"/><line x1="-13" y1="0" x2="13" y2="0"/></g></g>
+    <g id="modulor" opacity="0"></g><g id="dim" opacity="0" stroke="#b8783e" stroke-width="1.4" style="filter:drop-shadow(0 0 3px rgba(207,145,77,.35))"><line id="dimLine" y1="0" y2="0"/><g id="ticks"></g><g id="cursor"><circle r="4.5" fill="none"/><line x1="-13" y1="0" x2="13" y2="0"/></g></g>
     <line id="dropLine" x1="1395" x2="1395" stroke="#365F7C" stroke-width="1" stroke-dasharray="6 6" opacity="0"/>
   </svg>
   <div class="scale" id="s250">1 : 250</div><div class="scale" id="s500">1 : 500</div><div class="scale" id="s1000">1 : 1000</div>
@@ -346,34 +346,41 @@ const squash = (t, t0) => {                        // anticipation, landing squa
 // Click 5: copper takes the centre of the left half, then three jumps; it grows only after each landing
 const GROUND_C = 670, CX5 = 530, J = [1.6, 3.7, 6.4], H5 = [35, 50, 65], R5 = [38, 48, 62, 80], R_INF = 150;   // ends about 4 times its first size
 const T_COUNT = J[2] + 1.0, T_INF = T_COUNT + 1.25 + 0.5;   // the counter runs after the last landing; it locks, holds half a second, then the swell
-const STEPS = [250, 251, 253, 258, 270, 310, 365, 420, 500, 590, 680, 760, 850, 930, 1000];
+const STEPS = [500, 501, 503, 508, 520, 560, 615, 670, 740, 810, 870, 920, 960, 985, 1000];   // from 1 : 500, where the second landing left it
 const STEP_T = [0, 0.12, 0.23, 0.35, 0.47, 0.57, 0.66, 0.74, 0.8, 0.9, 0.98, 1.05, 1.11, 1.16, 1.25];   // readable, then accelerating, then runaway
-// The Modulor: a human-proportion scale on its own spine, standing on copper's ground line. Both series
-// (red 63 ... 1829, blue 78 ... 1397) grow by the golden ratio from the ground. The system is always a little taller
-// than copper, until the swell: then copper outgrows the human measure that was supposed to contain it.
+// The Modulor: a human-proportion scale on its own spine, standing on copper's ground. Both series
+// (red 63 ... 1829, blue 78 ... 1397) grow by the golden ratio from the ground; the numbers set the proportions and are never shown.
+// It is built with copper's landings and always stays a little taller than copper: three lobes and 110 px after the first,
+// five lobes and 150 px after the second, all eight and 240 px as the counter runs. Then copper swells past it; it does not follow.
 const MOD_R = [0, 63, 102, 165, 267, 432, 698, 1130, 1829], MOD_B = [78, 126, 204, 330, 534, 863, 1397];
 const SPX = 730;                                          // 50 px clear of copper's final edge; far short of the axis
+function modState(t) {                                    // V: the highest Modulor value built so far; H: its height on screen
+  const r1 = E2(t, J[0] + 1.0, 0.9), s2 = E2(t, J[1] + 1.0, 0.7), c = t - T_COUNT, p = c < 0 ? 0 : clamp(c / 1.25), pe = p * p * (3 - 2 * p);
+  if (s2 <= 0 && pe <= 0) return { V: 165 * r1, H: 110 * r1, pe };
+  const L = Math.log, V = Math.exp(L(165) + s2 * (L(432) - L(165)) + pe * (L(1829) - L(432)));
+  return { V, H: 110 + 40 * s2 + 90 * pe, pe };
+}
 function modulor(t, y) {
-  const c = t - T_COUNT, p = c < 0 ? 0 : clamp(c / 1.25), pe = p * p * (3 - 2 * p);
-  const H = 110 + 40 * E2(t, J[1] + 1.0, 0.5) + 90 * pe;  // height of the 1829 mark: 110, then 150, then 240 as the counter races
-  const f = H / 1829, Y = (v) => y - v * f;
+  const { V, H } = modState(t);
+  if (V <= 0) { $("modulor").innerHTML = ""; return y; }
+  const f = H / V, Y = (v) => y - Math.min(v, V) * f;
   let air = 0; J.forEach((j) => { const u = (t - j - 0.25) / 0.6; if (u > 0 && u < 1) air = Math.sin(Math.PI * u); });
-  const breathe = 1 + 0.14 * air;                         // the lobes widen while copper is in the air, and settle when it lands
-  const sub = E2(t, J[1] + 1.0, 0.6);                     // the second series and the long arcs come with the second landing
-  let h = `<line x1="${SPX}" x2="${SPX}" y1="${y}" y2="${y - (H + 12) * E2(t, J[0] + 1.0, 0.9)}" stroke="#8a5a30" stroke-width="1.3"/>`;   // the spine rises with its lobes
-  for (let k = 1; k < MOD_R.length; k++) {                // lobes: gold on copper's side, a faint blue-grey ghost on the other
-    const a = Y(MOD_R[k - 1]), b = Y(MOD_R[k]), w = (a - b) * 0.3 * breathe, m = (a + b) / 2, op = E2(t, J[0] + 1.0 + k * 0.08, 0.3);
-    h += `<path d="M${SPX} ${a} Q ${SPX - 2 * w} ${m} ${SPX} ${b} Z" fill="#C58A4B" fill-opacity="${0.3 * op}" stroke="#b8783e" stroke-width="0.8" stroke-opacity="${0.8 * op}"/>`;
-    h += `<path d="M${SPX} ${a} Q ${SPX + 2 * w} ${m} ${SPX} ${b} Z" fill="#6f8594" fill-opacity="${0.12 * op}" stroke="#6f8594" stroke-width="0.6" stroke-opacity="${0.4 * op}"/>`;
-    h += `<line x1="${SPX - 6 - (k % 2) * 6}" x2="${SPX}" y1="${b}" y2="${b}" stroke="#8a5a30" stroke-width="${k % 2 ? 1.2 : 0.8}" opacity="${op}"/>`;
+  const breathe = 1 + 0.12 * air;                         // the lobes widen a little while copper is in the air, and settle when it lands
+  let h = `<line x1="${SPX}" x2="${SPX}" y1="${y}" y2="${y - H - 12 * Math.min(1, V / 165)}" stroke="#8a5a30" stroke-width="1.3"/>`;
+  for (let k = 1; k < MOD_R.length && MOD_R[k - 1] < V; k++) {   // lobes grow upward as they are built: gold on copper's side, a faint blue-grey ghost on the other
+    const a = Y(MOD_R[k - 1]), b = Y(MOD_R[k]), w = (a - b) * 0.3 * breathe, m = (a + b) / 2;
+    h += `<path d="M${SPX} ${a} Q ${SPX - 2 * w} ${m} ${SPX} ${b} Z" fill="#C58A4B" fill-opacity="0.3" stroke="#b8783e" stroke-width="0.8" stroke-opacity="0.8"/>`;
+    h += `<path d="M${SPX} ${a} Q ${SPX + 2 * w} ${m} ${SPX} ${b} Z" fill="#6f8594" fill-opacity="0.12" stroke="#6f8594" stroke-width="0.6" stroke-opacity="0.4"/>`;
+    if (MOD_R[k] <= V) h += `<line x1="${SPX - 6 - (k % 2) * 6}" x2="${SPX}" y1="${b}" y2="${b}" stroke="#8a5a30" stroke-width="${k % 2 ? 1.2 : 0.8}"/>`;
   }
-  MOD_B.forEach((v) => { h += `<line x1="${SPX}" x2="${SPX + 8}" y1="${Y(v)}" y2="${Y(v)}" stroke="#6f8594" stroke-width="0.8" opacity="${0.7 * sub}"/>`; });
-  [[3, -1], [4, 1], [5, -1]].forEach(([k, side]) => {      // three long arcs, alternating sides
+  MOD_B.forEach((v) => { if (v <= V) h += `<line x1="${SPX}" x2="${SPX + 8}" y1="${Y(v)}" y2="${Y(v)}" stroke="#6f8594" stroke-width="0.8" opacity="0.7"/>`; });
+  [[3, -1], [4, 1], [5, -1]].forEach(([k, side]) => {      // three long arcs, alternating sides, once both their ends exist
+    if (MOD_R[k + 2] > V) return;
     const a = Y(MOD_R[k]), b = Y(MOD_R[k + 2]);
-    h += `<path d="M${SPX} ${a} Q ${SPX + side * (a - b) * 0.45 * breathe} ${(a + b) / 2} ${SPX} ${b}" fill="none" stroke="${side < 0 ? "#b8783e" : "#6f8594"}" stroke-width="0.8" opacity="${0.5 * sub}"/>`; });
+    h += `<path d="M${SPX} ${a} Q ${SPX + side * (a - b) * 0.45 * breathe} ${(a + b) / 2} ${SPX} ${b}" fill="none" stroke="${side < 0 ? "#b8783e" : "#6f8594"}" stroke-width="0.8" opacity="0.5"/>`; });
   $("modulor").innerHTML = h;
-  $("modulor").setAttribute("opacity", E2(t, J[0] + 1.0, 0.5));
-  return y - H * pe;                                      // where the cursor sits: the ground, then climbing with the counter
+  $("modulor").setAttribute("opacity", 1);
+  return y - H;                                           // the cursor and the label sit at the highest mark built so far
 }
 function click5(t) {
   const on = t >= 0;
@@ -387,27 +394,26 @@ function click5(t) {
   J.forEach((j, i) => { dy += jumpY(t, j, H5[i]); const q = squash(t, j); if (t >= j && t < j + 1.25) sq = q; });
   if (t >= T_INF - 0.25 && t < T_INF) sq = [1.02, 0.97];                                        // it gathers itself
   place(copper, x, (mv < 1 ? HOME_C[1] + (GROUND_C - R5[0] - HOME_C[1]) * mv : GROUND_C - r) + dy, r, sq[0], sq[1]);
-  // the measurement rail: from copper's edge to the axis, never across it
-  const y = GROUND_C + 26, edge = x + Math.min(r, R5[3]) , show = E2(t, J[0] + 1.0, 0.5);
-  const railL = AXX - (AXX - edge) * E2(t, J[0] + 1.0, 0.6);
-  $("dimLine").setAttribute("x1", railL); $("dimLine").setAttribute("x2", AXX - 3); $("dimLine").setAttribute("y1", y); $("dimLine").setAttribute("y2", y);
-  for (const [id, X] of [["dimT1", AXX - 3], ["dimT2", railL]]) { const e = $(id); e.setAttribute("x1", X); e.setAttribute("x2", X); e.setAttribute("y1", y - 14); e.setAttribute("y2", y + 14); }
+  // the ground under the spine; the Modulor above it; one label to its right, at the highest mark
+  const y = GROUND_C + 26, show = E2(t, J[0] + 1.0, 0.5);
+  $("dimLine").setAttribute("x1", SPX - 30); $("dimLine").setAttribute("x2", SPX + 30); $("dimLine").setAttribute("y1", y); $("dimLine").setAttribute("y2", y);
   $("dim").setAttribute("opacity", 0.9 * show);
   $("ticks").innerHTML = "";
-  const pos = modulor(t, y);
-  // the counter: 1 : 250 after the first landing; from the second landing it runs away to 1 : 1000, then holds, immaculate
+  const top = modulor(t, y);
+  // the label: 1 : 250 after the first landing, 1 : 500 after the second; from the third it runs away to 1 : 1000, then holds, immaculate
   const c = t - T_COUNT;
-  let n = 250; STEP_T.forEach((st, k) => { if (c >= st) n = STEPS[k]; });
+  let n = t < J[1] + 1.2 ? 250 : 500; if (c >= 0) STEP_T.forEach((st, k) => { if (c >= st) n = STEPS[k]; });
   const lab = $("s1000"); lab.textContent = `1 : ${n}`;
-  lab.style.opacity = E2(t, J[0] + 1.2, 0.5);
+  lab.style.opacity = E2(t, J[0] + 1.4, 0.5);
   const lock = T_COUNT + 1.25;
   const g = 0.8 + 0.18 * clamp(c / 1.25) + 0.12 * (E2(t, lock, 0.15) - E2(t, lock + 0.4, 0.4)) + 0.1 * (E2(t, T_INF, 0.3) - E2(t, T_INF + 0.9, 0.8));
   lab.style.textShadow = `0 1px 0 rgba(57,35,22,.28), 0 0 3px rgba(255,214,137,${(0.75 * g).toFixed(3)}), 0 0 9px rgba(196,125,55,${(0.42 * g).toFixed(3)}), 0 0 18px rgba(177,100,35,${(0.2 * g).toFixed(3)})`;
-  lab.style.left = CX5 + 90 + "px"; lab.style.top = y + 44 + "px";
-  // the cursor climbs the spine with the counter, then presses against the top mark until the swell is over
+  lab.style.left = LAB_X + "px"; lab.style.top = top - 19 + "px";
+  // the cursor rides the highest mark, and presses against it until the swell is over
   const jitter = c > 1.25 && t < T_INF + 0.7 ? 1.4 * Math.sin(t * 47) : 0;
-  $("cursor").setAttribute("transform", `translate(${SPX} ${pos + jitter})`); $("cursor").setAttribute("opacity", show);
+  $("cursor").setAttribute("transform", `translate(${SPX} ${top + jitter})`); $("cursor").setAttribute("opacity", show);
 }
+const LAB_X = SPX + 24;                                   // the scale label, 24 px right of the spine
 // Click 6: twelve governance words fall and settle around blue; blue loses ground in two stages
 const FLOOR = 770;
 // [word, voice, size, x, baseline, rotation, start, fall duration, slide on landing, opacity]
@@ -520,12 +526,13 @@ function click9(t) {
   ev.style.display = on ? "" : "none";
   for (const id of ["cnum", "csrc", "cdesc"]) $(id).style.opacity = 0;
   srcs.forEach((q) => (q.l.style.opacity = 0));
-  if (!on) { for (const id of ["dimT1", "dimT2", "ticks", "cursor", "modulor"]) $(id).style.opacity = ""; return; }   // a reset replays click 5 with its instrument
+  if (!on) { for (const id of ["ticks", "cursor", "modulor"]) $(id).style.opacity = ""; return; }   // a reset replays click 5 with its instrument
   const E = (a, d) => smooth((t - a) / d);
   const rec = 1 - 0.93 * E(0.4, 1.8);                    // the RACI and the words recede to paper ghosts
   gws.forEach((d) => (d.style.opacity = rec * WORDS[gws.indexOf(d)][9])); $("raci").style.opacity = rec;
   $("s250").style.opacity = $("s500").style.opacity = 0;
-  $("dimT1").style.opacity = $("dimT2").style.opacity = 1 - E(1.2, 0.8);   // ticks become provenance nodes
+  const st = E(0.8, 1.2);                                  // the ground under the spine stretches into the evidence line; nodes appear on it
+  $("dimLine").setAttribute("x1", SPX - 30 + (REPORT_END - SPX + 30) * st); $("dimLine").setAttribute("x2", SPX + 30 + (AXX - 3 - SPX - 30) * st);
   $("ticks").style.opacity = 1 - E(1.2, 0.8); $("cursor").style.opacity = 1 - E(1.2, 0.8); $("modulor").style.opacity = 1 - E(0.6, 1.2);
   provNodes.forEach((n, i) => n.setAttribute("opacity", E(1.8 + i * 0.2, 0.5)));
   drawTo(blueTrace, bLen, 0); convNode.setAttribute("opacity", 0);
@@ -538,10 +545,13 @@ function click9(t) {
 function click10(t) {
   if (t < 0) return;
   const E = (a, d) => smooth((t - a) / d);
-  const nx = CX5 + 90;                                     // where the scale was: off copper's centre, so it reads as the rail's reading, not a price tag
-  $("cdesc").style.left = nx + "px"; $("cdesc").style.top = EVY + 18 + "px"; $("cdesc").style.opacity = E(0.2, 0.8);
-  $("s1000").style.opacity = 1 - E(0.8, 0.6);
-  $("cnum").style.left = nx + "px"; $("cnum").style.top = EVY + 44 + "px"; $("cnum").style.opacity = E(1.1, 0.9);
+  const nx = CX5 + 90;                                     // the evidence field: off copper's centre, on the evidence line, clear of the axis
+  // the locked 1 : 1000 slides down from the spine into the evidence field and becomes the figure there: one number, seen moving
+  const fromY = EVY - 240 - 19, toY = EVY + 44;             // down first, clear of copper; then left, once below it
+  $("s1000").style.left = LAB_X + (nx - LAB_X) * E(0.7, 0.6) + "px"; $("s1000").style.top = fromY + (toY - fromY) * E(0.2, 0.7) + "px";
+  $("s1000").style.opacity = 1 - E(1.0, 0.5);
+  $("cnum").style.left = nx + "px"; $("cnum").style.top = toY + "px"; $("cnum").style.opacity = E(1.0, 0.8);
+  $("cdesc").style.left = nx + "px"; $("cdesc").style.top = EVY + 18 + "px"; $("cdesc").style.opacity = E(1.3, 0.8);
   $("csrc").style.left = nx + "px"; $("csrc").style.top = EVY + 100 + "px"; $("csrc").style.opacity = 0.9 * E(1.9, 1.0);
   drawTo(blueTrace, bLen, E(1.1, 1.6));                   // the trace begins at blue
   convNode.setAttribute("opacity", E(2.3, 0.4));

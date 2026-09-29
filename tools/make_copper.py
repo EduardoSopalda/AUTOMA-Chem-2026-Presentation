@@ -43,5 +43,9 @@ if len(sys.argv) > 4:
     ring = (1 - np.clip((r - 47.5) / 3.0, 0, 1)) * (1 - np.clip((dy / K - 0.35 * R0) / (0.3 * R0), 0, 1))
     base = np.median(sh[: int(20 * K)].reshape(-1, 3), axis=0)   # the sprite's own level where there is no shadow (it is not pure white)
     sh = sh + (base - sh) * ring[..., None]
+    # under the sphere's lower half, extend the contact crescent inward, so a squash never opens a gap of paper
+    r2 = np.maximum(np.hypot(dx, dy), 1e-6); inner = (r2 < 46 * K) & (dy > 0.2 * R)
+    ex, ey = np.clip(C + dx / r2 * 46.5 * K, 0, W - 1).astype(int), np.clip(C + dy / r2 * 46.5 * K, 0, H - 1).astype(int)
+    sh[inner] = np.minimum(sh[inner], sh[ey[inner], ex[inner]])
     Image.fromarray(sh.clip(0, 255).round().astype(np.uint8)).save(sys.argv[4])
     print("saved", sys.argv[4])
