@@ -422,7 +422,7 @@ const COPPER_R = R5[3], REPORT_END = CX5 + COPPER_R + 8;  // where a complete tr
 const SOURCES = [                                       // [label, node x, node y, control x, control y, arrival]
   ["Supplier declarations", 1214, 428, 1080, 430, 2.6], ["Energy data", 1352, 506, 1150, 520, 3.1],
   ["Production records", 1262, 612, 1120, 600, 2.9], ["Transport", 1404, 690, 1180, 650, 3.4],
-  ["Allocation rules", 1186, 742, 1060, 700, 3.2], ["Assumptions", 1130, 672, 1030, 640, 3.0]];
+  ["Allocation rules", 1186, 742, 1060, 700, 3.2], ["Assumptions", 1130, 672, 994, 700, 3.0]];
 const ev = $("ev"), SVGNS = "http://www.w3.org/2000/svg";
 const evEl = (tag, a) => { const e = document.createElementNS(SVGNS, tag); for (const k in a) e.setAttribute(k, a[k]); ev.appendChild(e); return e; };
 const blueTrace = evEl("path", { d: `M${1058 - 44} 586 Q 1000 586 ${CONV[0]} ${CONV[1]}`, fill: "none", stroke: "#365F7C", "stroke-width": 1.8, "stroke-linecap": "round" });
@@ -437,7 +437,7 @@ const report = evEl("path", { d: `M${CONV[0]} ${EVY} L ${REPORT_END} ${EVY}`, fi
 const provNodes = [0.3, 0.55, 0.8].map((k) => evEl("circle", { cx: AXX - (AXX - REPORT_END) * k, cy: EVY, r: 4, fill: "#762F0B" }));
 const bLen = blueTrace.getTotalLength(), rLen = report.getTotalLength();
 const drawTo = (el, len, frac) => el.setAttribute("stroke-dasharray", `${Math.max(0, len * frac)} ${len + 10}`);
-const GAP = 24;                                         // the assumptions trace stops this far short
+const GAP = 36;                                         // the assumptions trace stops this far short
 function click8(t) {
   const on = t >= 0;
   ev.style.display = on ? "" : "none";
