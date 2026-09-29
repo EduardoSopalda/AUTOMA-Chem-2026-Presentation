@@ -34,7 +34,7 @@
   .title{font:500 46px/1.05 "Source Serif 4",Georgia,serif;color:#0F0F11;letter-spacing:-.01em;opacity:0}
   .copper{height:2px;background:#762F0B;margin:16px 0 26px;width:0}
   .stmt div{font:400 23px/1.4 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
-  .confess{position:absolute;z-index:3;left:364px;top:292px;font:italic 400 30px/1.3 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
+  .confess{position:absolute;z-index:3;left:364px;top:282px;font:italic 400 26px/1.35 "Source Serif 4",Georgia,serif;letter-spacing:.04em;color:#0F0F11;opacity:0}
   .lbl{position:absolute;z-index:3;font:italic 400 9.5px/1.1 "Source Serif 4",Georgia,serif;color:#2c3a66;text-align:center;width:56px;opacity:0}
 </style>
 </head>
@@ -47,13 +47,13 @@
     <feMorphology operator="erode" radius="0.25"/>
     <feComponentTransfer><feFuncR type="gamma" exponent="1.45"/><feFuncG type="gamma" exponent="1.45"/><feFuncB type="gamma" exponent="1.3"/></feComponentTransfer>
   </filter>
-  <pattern id="stripes" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="4" fill="#fff"/></pattern>
+  <pattern id="stripes" width="10" height="8" patternUnits="userSpaceOnUse"><rect id="stripe" width="10" height="2" fill="#fff"/></pattern>
   <mask id="dash" maskUnits="userSpaceOnUse" x="0" y="-100" width="1920" height="1280"><rect id="dashSolid" x="0" y="-100" width="1920" height="1280" fill="#fff"/><rect id="dashStripes" x="0" y="-100" width="1920" height="1280" fill="url(#stripes)" opacity="0"/></mask>
   <filter id="soft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="7"/></filter>
   <mask id="retract" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><g filter="url(#soft)"><rect id="retL" x="0" y="0" width="955" height="1080" fill="#fff"/><rect id="retR" x="955" y="0" width="965" height="1080" fill="#fff"/></g>
     <circle class="excl" cx="0" cy="0" r="55" fill="#000" opacity="0"/><circle class="excl" cx="0" cy="0" r="55" fill="#000" opacity="0"/></mask>
   <g id="full" opacity="0" mask="url(#retract)"></g><g id="planWrap" mask="url(#dash)"><g id="plan"></g></g>
-  <line id="edgeL" y1="30" y2="700" stroke="#e8b98c" stroke-width="2" opacity="0" filter="url(#halo2)"/><line id="edgeR" y1="30" y2="700" stroke="#e8b98c" stroke-width="2" opacity="0"/><g id="g" mask="url(#behind)"></g></svg>
+  <line id="edgeL" y1="30" y2="700" stroke="#D89C67" stroke-width="3" opacity="0" filter="url(#halo2)"/><line id="edgeR" y1="30" y2="700" stroke="#D89C67" stroke-width="3" opacity="0" filter="url(#halo2)"/><g id="g" mask="url(#behind)"></g></svg>
   <svg id="light" width="1920" height="1080" style="z-index:1"><defs><filter id="halo2"><feGaussianBlur stdDeviation="2"/></filter><filter id="halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3.2"/></filter></defs><g id="rays" mask="url(#behind)"></g></svg>
   <div class="one" id="one">01</div><div class="confess" id="confess">I had built them a plaza<br>nobody wanted to stand in.</div><div class="note" id="note">…not as a metaphor.</div>
   <div class="col"><div class="act" id="act">ACT ONE</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
@@ -276,8 +276,10 @@ function click4(t) {
   const lift = on ? 25 * E(4.0, 3.0) : 0, dash = on ? E(4.4, 2.0) : 0;
   $("planWrap").setAttribute("transform", `translate(0 ${-lift})`);
   $("dashSolid").setAttribute("opacity", 1 - dash); $("dashStripes").setAttribute("opacity", dash);
+  const chalk = on ? E(5.6, 2.4) : 0;                              // 2 on 6, then 1 on 12
+  document.getElementById("stripes").setAttribute("height", 8 + 5 * chalk); $("stripe").setAttribute("height", 2 - chalk);
   $("plan").setAttribute("opacity", on ? 1 - E(6.2, 3.0) : 1);
-  axisPath.setAttribute("opacity", on ? 1 - E(6.5, 2.5) : 1);
+  axisPath.setAttribute("opacity", on ? 1 - 0.3 * E(6.5, 2.5) : 1);   // the eixo stays: the divide remains
   if (!on) { $("act").textContent = "ACT ONE"; $("ttl").textContent = "The Architect"; $("confess").style.opacity = 0; return; }
   // the page turns to Act Two; Act One's words withdraw
   lbls.forEach((d) => (d.style.opacity = 1 - E(0, 1.2)));
@@ -285,7 +287,7 @@ function click4(t) {
   $("note").style.opacity = 1 - E(3, 2);
   const swap = t >= 1.2; $("act").textContent = swap ? "ACT TWO" : "ACT ONE"; $("ttl").textContent = swap ? "Brasília" : "The Architect";
   const hd = swap ? E(1.2, 1.2) : 1 - E(0, 1.2); $("act").style.opacity = hd; $("ttl").style.opacity = hd;
-  $("confess").style.opacity = E(7.5, 2.0);
+  $("confess").style.opacity = 0.75 * E(RET, 1.2);                 // lands as the rules reach the spine
   // the spheres: copper holds, completely still; blue gives one small settle as the structure pulls away from it
   place(copper, HOME_C[0], HOME_C[1], 38);
   const bk = track([[0, 0, 0, 1, 1], [tBlue, 0, 0, 1, 1], [tBlue + 0.25, 0, 7, 1.06, 0.94], [tBlue + 0.9, 0, 5, 1, 1]], t);
