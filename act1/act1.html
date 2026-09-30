@@ -32,7 +32,7 @@
   img.s{z-index:2}
   .sh{mix-blend-mode:multiply}
   /* 01 sits above the spheres */
-  .one{position:absolute;z-index:5;left:50px;top:40px;font:100 470px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
+  .one{position:absolute;z-index:1;left:50px;top:40px;font:100 470px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
        background:linear-gradient(115deg,#8a3a12 0%,#c4733e 30%,#e8ae7c 44%,#b5602c 58%,#762F0B 100%);
        -webkit-background-clip:text;background-clip:text;color:transparent;opacity:0}
   /* The note: an intentional anchor, legible from the back of the room */
@@ -44,6 +44,8 @@
   .title{font:500 46px/1.05 "Source Serif 4",Georgia,serif;color:#0F0F11;letter-spacing:-.01em;opacity:0}
   .copper{height:2px;background:#762F0B;margin:16px 0 26px;width:0}
   .stmt div{font:400 23px/1.4 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
+  /* Act 02's copper message: one lockup, anchored at its lower left (x 320, y 330), grown by transform only */
+  .cmsg{position:absolute;z-index:3;left:320px;top:226px;white-space:nowrap;font:italic 600 44px/1.18 "Source Serif 4",Georgia,serif;color:#762F0B;transform-origin:0 100%;opacity:0}
   .confess{position:absolute;z-index:3;left:364px;top:282px;font:italic 400 26px/1.35 "Source Serif 4",Georgia,serif;letter-spacing:.04em;color:#0F0F11;opacity:0}
   .gw{position:absolute;z-index:1;left:0;top:0;white-space:nowrap;color:#0F0F11;transform-origin:50% 100%;opacity:0}
   .gw.serif{font-family:"Source Serif 4",Georgia,serif;font-weight:500}
@@ -88,8 +90,8 @@
   <svg id="ev" width="1920" height="1080" style="position:absolute;left:0;top:0;z-index:3"></svg>
   <div class="cdesc" id="cdesc">2025 total Scope 1, 2 &amp; 3 emissions</div><div class="cnum" id="cnum">11,002 kt CO₂e</div>
   <div class="csrc" id="csrc">Source: dsm-firmenich<br>Integrated Annual Report 2025</div>
-  <div class="one" id="one">01</div><div class="confess" id="quote1">From above, every line found its place.<br>Below, no one knew where to stand.</div><div class="confess" id="confess">I had built them a plaza<br>nobody wanted to stand in.</div><div class="note" id="note">…not as a metaphor.</div>
-  <div class="col"><div class="act" id="act">ACT ONE</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
+  <div class="one" id="one">01</div><div class="cmsg" id="cmsg">From above,<br>every line found its place.</div><div class="confess" id="quote1">From above, every line found its place.<br>Below, no one knew where to stand.</div><div class="confess" id="confess">I had built them a plaza<br>nobody wanted to stand in.</div><div class="note" id="note">…not as a metaphor.</div>
+  <div class="col"><div class="act" id="act">ACT 01</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
     <div class="stmt"><div>We design from above.</div><div>Not always for the person</div><div>who has to live</div><div>with the result.</div></div></div>
 </div>
 <script>
@@ -173,9 +175,9 @@ const hReach = (r, X) => r.t0 + HDUR * inv(X < AXX ? (X + OUT) / (r.lenL + TRAIL
 
 // ================= The spheres =================
 const SPH = { copper: { w: 168, h: 193, c: 84.5, r: 44.5 }, blue: { w: 166, h: 191, c: 83.5, r: 44 } };
-// copper grows to 300 px, so it uses the 8x remaster from tools/make_copper.py (same proportions, so place() is unchanged)
-function sprite(n) { const o = SPH[n]; const sh = document.createElement("img"); sh.src = n === "copper" ? "shadow-copper-8x.png" : `shadow-${n}.png`; sh.className = "s sh"; $("stage").appendChild(sh);
-  const im = document.createElement("img"); im.src = n === "copper" ? "sphere-copper-8x.png" : `sphere-${n}.png`; im.className = "s"; $("stage").appendChild(im); return { o, sh, im }; }
+// copper grows to 460 px, so it uses the 16x remaster from tools/make_copper.py (1.5x the pixels it needs even at 4K; same proportions)
+function sprite(n) { const o = SPH[n]; const sh = document.createElement("img"); sh.src = n === "copper" ? "shadow-copper-16x.png" : `shadow-${n}.png`; sh.className = "s sh"; $("stage").appendChild(sh);
+  const im = document.createElement("img"); im.src = n === "copper" ? "sphere-copper-16x.png" : `sphere-${n}.png`; im.className = "s"; $("stage").appendChild(im); return { o, sh, im }; }
 function place(sp, x, y, r, sx = 1, sy = 1) {
   const k = r / sp.o.r, L = x - sp.o.c * k, T = y - sp.o.c * k;
   for (const e of [sp.sh, sp.im]) { e.style.width = sp.o.w * k + "px"; e.style.height = sp.o.h * k + "px"; }
@@ -258,19 +260,32 @@ function click2(t) {
   const c = track(CK, t); place(copper, c[0], c[1], 44 - 6 * smooth((t - cC) / 1.4), c[2], c[3]);
   const b = track(BK, t), tr = 0;   // no continuous vibration: only discrete reactions
   place(blue, b[0] + tr, b[1], 43.5 - 1.5 * smooth((t - hit) / 3), b[2], b[3]);
-  // ACT ONE and The Architect arrive in the column early in the drawing; the copper rule draws under the title
+  // ACT 01 and The Architect arrive in the column early in the drawing; the copper rule draws under the title
+  chapterColumn(t, CHAPTERS[1]);
+}
+
+// ================= CHAPTERS: one component, content only =================
+// The giant number (top left, behind the spheres), the small ACT label, the serif title and the copper rule,
+// with one set of timings for every act. Act 01 reveals it in clicks 1 and 2; Act 02 reuses it at click 4.
+const CHAPTERS = { 1: { number: "01", label: "ACT 01", title: "The Architect" }, 2: { number: "02", label: "ACT 02", title: "Brasília" },
+                   3: { number: "03", label: "ACT 03", title: "Evidence" } };
+const ONE_IN = 0.6, ONE_HOLD = 2.5, ONE_OUT = 1.0;
+const ONE_GONE = ONE_IN + ONE_HOLD + ONE_OUT;          // the spheres wait for this moment
+function chapterNumber(t, ch) {                         // appears, holds, then sinks into the grain
+  $("one").textContent = ch.number;
+  $("one").style.opacity = smooth(t / ONE_IN) * (1 - smooth((t - ONE_IN - ONE_HOLD) / ONE_OUT));
+  $("one").style.filter = `blur(${2.5 * smooth((t - ONE_IN - ONE_HOLD - 0.2) / (ONE_OUT - 0.2))}px)`;
+}
+function chapterColumn(t, ch) {                         // label, hairline, title, then the copper rule draws under the title
   const e = (a, d) => smooth((t - a) / d);
+  $("act").textContent = ch.label; $("ttl").textContent = ch.title;
   $("act").style.opacity = e(1.0, 1.2); $("hair").style.opacity = 0.55 * e(1.4, 1.2); $("ttl").style.opacity = e(2.0, 1.4);
   $("rule").style.width = 100 * e(3.2, 2.5) + "%";
 }
 
 // ================= CLICK 1 =================
-const ONE_IN = 0.6, ONE_HOLD = 2.5, ONE_OUT = 1.0;
-const ONE_GONE = ONE_IN + ONE_HOLD + ONE_OUT;          // the spheres wait for this moment
 function click1(t) {
-  const one = smooth(t / ONE_IN) * (1 - smooth((t - ONE_IN - ONE_HOLD) / ONE_OUT));
-  $("one").style.opacity = one;
-  $("one").style.filter = `blur(${2.5 * smooth((t - ONE_IN - ONE_HOLD - 0.2) / (ONE_OUT - 0.2))}px)`;   // sinks into the grain
+  chapterNumber(t, CHAPTERS[1]);   // sinks into the grain
   $("note").style.opacity = smooth((t - ONE_GONE - 0.2) / 1.0);   // after 01 has gone
   place(copper, C0[0], C0[1], 44);                     // the spheres do not move in click 1
   place(blue, B0[0], B0[1], 43.5);
@@ -318,14 +333,18 @@ function click4(t) {
   document.getElementById("stripes").setAttribute("height", 8 + 5 * chalk); $("stripe").setAttribute("height", 2 - chalk);
   $("plan").setAttribute("opacity", on ? 1 - E(6.2, 3.0) : 1);
   axisPath.setAttribute("opacity", on ? 1 - 0.3 * E(6.5, 2.5) : 1);   // the eixo stays: the divide remains
-  if (!on) { $("act").textContent = "ACT ONE"; $("ttl").textContent = "The Architect"; $("confess").style.opacity = 0; $("quote1").style.opacity = 0; return; }
+  if (!on) { $("act").textContent = CHAPTERS[1].label; $("ttl").textContent = CHAPTERS[1].title; $("one").textContent = CHAPTERS[1].number;
+    $("confess").style.opacity = 0; $("quote1").style.opacity = 0; $("cmsg").style.opacity = 0; $("cmsg").style.filter = ""; return; }
   // the page turns to Act Two; Act One's words withdraw
   lbls.forEach((d) => (d.style.opacity = 1 - E(0, 1.2)));
   document.querySelectorAll(".stmt div").forEach((d) => (d.style.opacity = 1 - E(0, 1.0)));
   $("note").style.opacity = 1 - E(3, 2);
-  const swap = t >= 1.2; $("act").textContent = swap ? "ACT TWO" : "ACT ONE"; $("ttl").textContent = swap ? "Brasília" : "The Architect";
-  const hd = swap ? E(1.2, 1.2) : 1 - E(0, 1.2); $("act").style.opacity = hd; $("ttl").style.opacity = hd;
-  $("quote1").style.opacity = 0.75 * E(RET, 1.2); $("quote1").style.filter = "";   // the aerial/ground quote lands as the rules reach the spine; it stays through the RACI
+  // Act 02 takes the chapter component: 02 appears and sinks away; Act 01's words and rule withdraw, then Act 02's arrive
+  chapterNumber(t, CHAPTERS[2]);
+  if (t < 1.2) { const out = 1 - E(0, 1.2); $("act").style.opacity = out; $("ttl").style.opacity = out; $("hair").style.opacity = 0.55 * out; $("rule").style.width = 100 * out + "%"; }
+  else chapterColumn(t - 1.2, CHAPTERS[2]);
+  $("quote1").style.opacity = 0;   // "Below, no one knew where to stand." waits for the blue side
+  $("cmsg").style.opacity = E(RET, 1.2); $("cmsg").style.filter = ""; $("cmsg").style.transform = `scale(${MSG0})`;   // the copper message lands as the rules reach the spine
   // the spheres: copper holds, completely still; blue gives one small settle as the structure pulls away from it
   place(copper, HOME_C[0], HOME_C[1], 38);
   const bk = track([[0, 0, 0, 1, 1], [tBlue, 0, 0, 1, 1], [tBlue + 0.25, 0, 7, 1.06, 0.94], [tBlue + 0.9, 0, 5, 1, 1]], t);
@@ -343,63 +362,80 @@ const squash = (t, t0) => {                        // anticipation, landing squa
   if (a < 1.25) { const k = smooth((a - 1.0) / 0.25); return [1.07 - 0.07 * k, 0.93 + 0.07 * k]; }
   return [1, 1];
 };
-// Click 5: copper takes the centre of the left half, then three jumps; it grows only after each landing
-const GROUND_C = 670, CX5 = 530, J = [1.6, 3.7, 6.4], H5 = [35, 50, 65], R5 = [38, 48, 62, 80], R_INF = 150;   // ends about 4 times its first size
-const T_COUNT = J[2] + 1.0, T_INF = T_COUNT + 1.25 + 0.5;   // the counter runs after the last landing; it locks, holds half a second, then the swell
+// Click 5: copper takes its ground in the left half and makes three jumps, growing only after each landing; the scale
+// runs to 1 : 1000; then copper swells past the Modulor and knocks it over. The copper message grows with the sphere.
+const GROUND_C = 670, CX5 = 530, J = [1.6, 3.7, 6.4], H5 = [35, 50, 65], R5 = [38, 48, 62, 80], R_INF = 150;   // R_INF, CX5, GROUND_C: Act 3's copper
+const CU_X = 551, CU_G = 890, CU_MAX = 230;             // Act 2's copper: centre x, ground, final radius (D 460, x 321-781, 14 px short of the man)
+const MSG0 = 0.85, MSG1 = 1.2;                          // the message grows with the sphere, 0.85 -> 1.20 (x 320-900, clear of the axis corridor at 907)
+const msgScale = (r) => MSG0 * Math.pow(r / R5[0], Math.log(MSG1 / MSG0) / Math.log(CU_MAX / R5[0]));
+const T_COUNT = J[2] + 1.0, T_INF = T_COUNT + 1.25 + 0.5, T_SWELL = 0.9, T_FALL = 0.56;   // lock, half a second, the swell, then the fall
 const STEPS = [500, 501, 503, 508, 520, 560, 615, 670, 740, 810, 870, 920, 960, 985, 1000];   // from 1 : 500, where the second landing left it
 const STEP_T = [0, 0.12, 0.23, 0.35, 0.47, 0.57, 0.66, 0.74, 0.8, 0.9, 0.98, 1.05, 1.11, 1.16, 1.25];   // readable, then accelerating, then runaway
-// The Modulor: a human-proportion scale on its own spine, standing on copper's ground. Both series
-// (red 63 ... 1829, blue 78 ... 1397) grow by the golden ratio from the ground; the numbers set the proportions and are never shown.
-// It is built with copper's landings and always stays a little taller than copper: three lobes and 110 px after the first,
-// five lobes and 150 px after the second, all eight and 240 px as the counter runs. Then copper swells past it; it does not follow.
-const MOD_R = [0, 63, 102, 165, 267, 432, 698, 1130, 1829], MOD_B = [78, 126, 204, 330, 534, 863, 1397];
-const SPX = 730;                                          // 50 px clear of copper's final edge; far short of the axis
-function modState(t) {                                    // V: the highest Modulor value built so far; H: its height on screen
-  const r1 = E2(t, J[0] + 1.0, 0.9), s2 = E2(t, J[1] + 1.0, 0.7), c = t - T_COUNT, p = c < 0 ? 0 : clamp(c / 1.25), pe = p * p * (3 - 2 * p);
-  if (s2 <= 0 && pe <= 0) return { V: 165 * r1, H: 110 * r1, pe };
-  const L = Math.log, V = Math.exp(L(165) + s2 * (L(432) - L(165)) + pe * (L(1829) - L(432)));
-  return { V, H: 110 + 40 * s2 + 90 * pe, pe };
+const p3 = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+function copperR(t) {                                   // grows after each landing, then the swell (eased by ratio)
+  let r = R5[0]; J.forEach((j, i) => { r += (R5[i + 1] - R5[i]) * E2(t, j + 1.0, 0.35); });
+  return t < T_INF ? r : r * Math.pow(CU_MAX / R5[3], p3(clamp((t - T_INF) / T_SWELL)));
 }
-function modulor(t, y) {
-  const { V, H } = modState(t);
-  if (V <= 0) { $("modulor").innerHTML = ""; return y; }
-  const f = H / V, Y = (v) => y - Math.min(v, V) * f;
-  let air = 0; J.forEach((j) => { const u = (t - j - 0.25) / 0.6; if (u > 0 && u < 1) air = Math.sin(Math.PI * u); });
-  const breathe = 1 + 0.12 * air;                         // the lobes widen a little while copper is in the air, and settle when it lands
-  let h = `<line x1="${SPX}" x2="${SPX}" y1="${y}" y2="${y - H - 12 * Math.min(1, V / 165)}" stroke="#8a5a30" stroke-width="1.3"/>`;
-  for (let k = 1; k < MOD_R.length && MOD_R[k - 1] < V; k++) {   // lobes grow upward as they are built: gold on copper's side, a faint blue-grey ghost on the other
-    const a = Y(MOD_R[k - 1]), b = Y(MOD_R[k]), w = (a - b) * 0.3 * breathe, m = (a + b) / 2;
-    h += `<path d="M${SPX} ${a} Q ${SPX - 2 * w} ${m} ${SPX} ${b} Z" fill="#C58A4B" fill-opacity="0.3" stroke="#b8783e" stroke-width="0.8" stroke-opacity="0.8"/>`;
-    h += `<path d="M${SPX} ${a} Q ${SPX + 2 * w} ${m} ${SPX} ${b} Z" fill="#6f8594" fill-opacity="0.12" stroke="#6f8594" stroke-width="0.6" stroke-opacity="0.4"/>`;
-    if (MOD_R[k] <= V) h += `<line x1="${SPX - 6 - (k % 2) * 6}" x2="${SPX}" y1="${b}" y2="${b}" stroke="#8a5a30" stroke-width="${k % 2 ? 1.2 : 0.8}"/>`;
+// The Modulor: the human measure, at world scale and never growing. Its 1829 mark stands 232 px above copper's ground.
+// Both series (red 63 ... 1829, blue 78 ... 1397) set the proportions; the numbers are never shown. It stands left of copper;
+// when the swelling sphere reaches it, it tilts exactly as far as the sphere pushes it, then falls to the left and stops dead.
+const MOD_R = [0, 63, 102, 165, 267, 432, 698, 1130, 1829], MOD_B = [78, 126, 204, 330, 534, 863, 1397];
+const MOD_X = 345, MOD_H = 232, MOD_F = MOD_H / 1829, MOD_W = 0.3;   // foot x, height of the 1829 mark, lobe half-width ratio
+const MOD_PTS = (() => { const pts = [[0, -(MOD_H + 12)]];   // its outline, for contact: lobe tips on both sides and the spine top
+  for (let k = 1; k < MOD_R.length; k++) { const a = MOD_R[k - 1] * MOD_F, b = MOD_R[k] * MOD_F, w = (b - a) * MOD_W;
+    for (const u of [0.25, 0.5, 0.75]) { const y = -(a + (b - a) * u), ww = 4 * w * u * (1 - u); pts.push([ww, y], [-ww, y]); } }
+  return pts; })();
+const MOD_LIFT = Math.max(...MOD_PTS.map(([x]) => -x));          // lying on its side, it rests on its widest lobe
+function modPose(angle) {                                 // world points of the outline, turned left by angle (degrees)
+  const q = angle * Math.PI / 180, c = Math.cos(q), s = Math.sin(q), lift = MOD_LIFT * s;
+  return MOD_PTS.map(([x, y]) => [MOD_X + x * c + y * s, CU_G - lift - x * s + y * c]);
+}
+function modContact(r) {                                  // the least tilt that keeps the Modulor outside the sphere
+  const cx = CU_X, cy = CU_G - r;
+  for (let a = 0; a <= 90; a += 0.25) if (modPose(a).every(([x, y]) => Math.hypot(x - cx, y - cy) >= r + 1)) return a;
+  return 90;
+}
+const T_END = T_INF + T_SWELL, A_END = modContact(CU_MAX);
+function modAngle(t) {
+  if (t < T_INF) return 0;
+  if (t < T_END) return modContact(copperR(t));
+  const u = clamp((t - T_END) / T_FALL); return A_END + (90 - A_END) * u * u;      // falling: it accelerates, then stops dead
+}
+function modDraw(reveal) {                                // local drawing, foot at 0,0; strong enough to hold against the paper
+  const V = 1829 * reveal, Y = (v) => -Math.min(v, V) * MOD_F;
+  let h = `<line x1="0" x2="0" y1="0" y2="${-(MOD_H + 12) * reveal}" stroke="#5e2d10" stroke-width="2.2"/>`;
+  for (let k = 1; k < MOD_R.length && MOD_R[k - 1] < V; k++) {
+    const a = Y(MOD_R[k - 1]), b = Y(MOD_R[k]), w = (a - b) * MOD_W, m = (a + b) / 2;
+    h += `<path d="M0 ${a} Q ${-2 * w} ${m} 0 ${b} Z" fill="#C58A4B" fill-opacity="0.55" stroke="#7a3a14" stroke-width="1.3"/>`;
+    h += `<path d="M0 ${a} Q ${2 * w} ${m} 0 ${b} Z" fill="#56748a" fill-opacity="0.28" stroke="#3f5d72" stroke-width="1.1" stroke-opacity="0.85"/>`;
+    if (MOD_R[k] <= V) h += `<line x1="${-8 - (k % 2) * 8}" x2="0" y1="${b}" y2="${b}" stroke="#5e2d10" stroke-width="${k % 2 ? 1.8 : 1.2}"/>`;
   }
-  MOD_B.forEach((v) => { if (v <= V) h += `<line x1="${SPX}" x2="${SPX + 8}" y1="${Y(v)}" y2="${Y(v)}" stroke="#6f8594" stroke-width="0.8" opacity="0.7"/>`; });
-  [[3, -1], [4, 1], [5, -1]].forEach(([k, side]) => {      // three long arcs, alternating sides, once both their ends exist
-    if (MOD_R[k + 2] > V) return;
+  MOD_B.forEach((v) => { if (v <= V) h += `<line x1="0" x2="10" y1="${Y(v)}" y2="${Y(v)}" stroke="#3f5d72" stroke-width="1.2"/>`; });
+  [[3, -1], [4, 1], [5, -1]].forEach(([k, side]) => { if (MOD_R[k + 2] > V) return;
     const a = Y(MOD_R[k]), b = Y(MOD_R[k + 2]);
-    h += `<path d="M${SPX} ${a} Q ${SPX + side * (a - b) * 0.45 * breathe} ${(a + b) / 2} ${SPX} ${b}" fill="none" stroke="${side < 0 ? "#b8783e" : "#6f8594"}" stroke-width="0.8" opacity="0.5"/>`; });
-  $("modulor").innerHTML = h;
-  $("modulor").setAttribute("opacity", 1);
-  return y - H;                                           // the cursor and the label sit at the highest mark built so far
+    h += `<path d="M0 ${a} Q ${side * (a - b) * 0.45} ${(a + b) / 2} 0 ${b}" fill="none" stroke="${side < 0 ? "#7a3a14" : "#3f5d72"}" stroke-width="1.1" opacity="0.75"/>`; });
+  if (reveal >= 1) h += `<g stroke="#7a3a14" stroke-width="1.6" fill="none"><circle cx="0" cy="${-MOD_H}" r="5"/><line x1="-14" x2="14" y1="${-MOD_H}" y2="${-MOD_H}"/></g>`;
+  return h;
 }
 function click5(t) {
   const on = t >= 0;
   ["s250", "s500", "s1000"].forEach((id) => ($(id).style.opacity = 0)); $("dim").setAttribute("opacity", 0); $("modulor").setAttribute("opacity", 0);
   if (!on) return;
-  let r = R5[0]; J.forEach((j, i) => { r += (R5[i + 1] - R5[i]) * E2(t, j + 1.0, 0.35); });
-  r += (R_INF - R5[3]) * (t < T_INF ? 0 : 1 - Math.pow(1 - clamp((t - T_INF) / 0.9), 3));   // the unlabelled inflation beat: the number has stopped, the ambition has not
+  const r = copperR(t);
   const mv = E2(t, 0, 1.1), settle = 2 * Math.sin(Math.PI * clamp((t - 1.1) / 0.3)) * (t < 1.4 ? 1 : 0);
-  const x = HOME_C[0] + (CX5 - HOME_C[0]) * mv;
+  const x = HOME_C[0] + (CU_X - HOME_C[0]) * mv;
   let dy = settle, sq = [1, 1];
   J.forEach((j, i) => { dy += jumpY(t, j, H5[i]); const q = squash(t, j); if (t >= j && t < j + 1.25) sq = q; });
   if (t >= T_INF - 0.25 && t < T_INF) sq = [1.02, 0.97];                                        // it gathers itself
-  place(copper, x, (mv < 1 ? HOME_C[1] + (GROUND_C - R5[0] - HOME_C[1]) * mv : GROUND_C - r) + dy, r, sq[0], sq[1]);
-  // the ground under the spine; the Modulor above it; one label to its right, at the highest mark
-  const y = GROUND_C + 26, show = E2(t, J[0] + 1.0, 0.5);
-  $("dimLine").setAttribute("x1", SPX - 30); $("dimLine").setAttribute("x2", SPX + 30); $("dimLine").setAttribute("y1", y); $("dimLine").setAttribute("y2", y);
-  $("dim").setAttribute("opacity", 0.9 * show);
+  place(copper, x, (mv < 1 ? HOME_C[1] + (CU_G - R5[0] - HOME_C[1]) * mv : CU_G - r) + dy, r, sq[0], sq[1]);
+  $("cmsg").style.transform = `scale(${msgScale(r).toFixed(4)})`;                                  // the message grows with the sphere
+  // the ground; the Modulor on it, left of copper; its label to the left of the top mark
+  const show = E2(t, J[0] + 1.0, 0.5), ang = modAngle(t);
+  $("dimLine").setAttribute("x1", MOD_X - 272); $("dimLine").setAttribute("x2", MOD_X + 40); $("dimLine").setAttribute("y1", CU_G); $("dimLine").setAttribute("y2", CU_G);
+  $("dim").setAttribute("opacity", 0.9 * show); $("cursor").setAttribute("opacity", 0);
   $("ticks").innerHTML = "";
-  const top = modulor(t, y);
+  const m = $("modulor"); m.innerHTML = modDraw(E2(t, J[0] + 1.0, 0.9)); m.setAttribute("opacity", show);
+  m.setAttribute("transform", `translate(${MOD_X} ${(CU_G - MOD_LIFT * Math.sin(ang * Math.PI / 180)).toFixed(2)}) rotate(${(-ang).toFixed(3)})`);
   // the label: 1 : 250 after the first landing, 1 : 500 after the second; from the third it runs away to 1 : 1000, then holds, immaculate
   const c = t - T_COUNT;
   let n = t < J[1] + 1.2 ? 250 : 500; if (c >= 0) STEP_T.forEach((st, k) => { if (c >= st) n = STEPS[k]; });
@@ -408,12 +444,9 @@ function click5(t) {
   const lock = T_COUNT + 1.25;
   const g = 0.8 + 0.18 * clamp(c / 1.25) + 0.12 * (E2(t, lock, 0.15) - E2(t, lock + 0.4, 0.4)) + 0.1 * (E2(t, T_INF, 0.3) - E2(t, T_INF + 0.9, 0.8));
   lab.style.textShadow = `0 1px 0 rgba(57,35,22,.28), 0 0 3px rgba(255,214,137,${(0.75 * g).toFixed(3)}), 0 0 9px rgba(196,125,55,${(0.42 * g).toFixed(3)}), 0 0 18px rgba(177,100,35,${(0.2 * g).toFixed(3)})`;
-  lab.style.left = LAB_X + "px"; lab.style.top = top - 19 + "px";
-  // the cursor rides the highest mark, and presses against it until the swell is over
-  const jitter = c > 1.25 && t < T_INF + 0.7 ? 1.4 * Math.sin(t * 47) : 0;
-  $("cursor").setAttribute("transform", `translate(${SPX} ${top + jitter})`); $("cursor").setAttribute("opacity", show);
+  lab.style.left = LAB_R - lab.offsetWidth + "px"; lab.style.top = LAB_Y + "px";
 }
-const LAB_X = SPX + 24;                                   // the scale label, 24 px right of the spine
+const LAB_R = MOD_X - 93, LAB_Y = 600;                  // the scale label, up and left of the top mark: clear of the ball and of the arc the Modulor sweeps as it falls
 // Click 6: twelve governance words fall and settle around blue; blue loses ground in two stages
 const FLOOR = 770;
 // [word, voice, size, x, baseline, rotation, start, fall duration, slide on landing, opacity]
@@ -534,7 +567,7 @@ function click8(t) {
   $("confess").style.opacity = 0;
   if (t < 0) return;
   const E = (a, d) => smooth((t - a) / d);
-  $("quote1").style.opacity = 0.75 * (1 - E(0, 1.6)); $("quote1").style.filter = `blur(${(0.8 * E(0, 1.6)).toFixed(2)}px)`;   // gone completely; 0.9 s overlap with the confession
+  $("cmsg").style.opacity = 1 - E(0, 1.6); $("cmsg").style.filter = `blur(${(0.8 * E(0, 1.6)).toFixed(2)}px)`;   // gone completely; 0.9 s overlap with the confession
   $("confess").style.opacity = 0.75 * E(0.7, 1.4);
 }
 // Click 9, on "That matters…": Act Three begins. Act 2 recedes, the rail's ticks become provenance nodes; 1 : 1000 stays for now.
@@ -549,13 +582,18 @@ function click9(t) {
   gws.forEach((d) => (d.style.opacity = rec * WORDS[gws.indexOf(d)][9])); $("raci").style.opacity = rec;
   $("s250").style.opacity = $("s500").style.opacity = 0;
   const st = E(0.8, 1.2);                                  // the ground under the spine stretches into the evidence line; nodes appear on it
-  $("dimLine").setAttribute("x1", SPX - 30 + (REPORT_END - SPX + 30) * st); $("dimLine").setAttribute("x2", SPX + 30 + (AXX - 3 - SPX - 30) * st);
+  // the ground under the Modulor lifts into the evidence line; copper deflates back to its size before the swell:
+  // when ambition has to become evidence, it is cut back down
+  $("dimLine").setAttribute("x1", MOD_X - 272 + (REPORT_END - MOD_X + 272) * st); $("dimLine").setAttribute("x2", MOD_X + 40 + (AXX - 3 - MOD_X - 40) * st);
+  $("dimLine").setAttribute("y1", CU_G + (EVY - CU_G) * st); $("dimLine").setAttribute("y2", CU_G + (EVY - CU_G) * st);
+  const dfl = E(0.4, 1.8), cr = CU_MAX + (R_INF - CU_MAX) * dfl;
+  place(copper, CU_X + (CX5 - CU_X) * dfl, (CU_G - CU_MAX) + ((GROUND_C - R_INF) - (CU_G - CU_MAX)) * dfl, cr);
   $("ticks").style.opacity = 1 - E(1.2, 0.8); $("cursor").style.opacity = 1 - E(1.2, 0.8); $("modulor").style.opacity = 1 - E(0.6, 1.2);
   provNodes.forEach((n, i) => n.setAttribute("opacity", E(1.8 + i * 0.2, 0.5)));
   drawTo(blueTrace, bLen, 0); convNode.setAttribute("opacity", 0);
   srcs.forEach((q) => { drawTo(q.path, q.len, 0); q.node.setAttribute("opacity", 0); });
   drawTo(report, rLen, 0);
-  const swap = t >= 0.8; $("act").textContent = swap ? "ACT THREE" : "ACT TWO"; $("ttl").textContent = swap ? "Evidence" : "Brasília";
+  const swap = t >= 0.8; $("act").textContent = swap ? CHAPTERS[3].label : CHAPTERS[2].label; $("ttl").textContent = swap ? CHAPTERS[3].title : CHAPTERS[2].title;
   const hd = swap ? E(0.8, 1.0) : 1 - E(0, 0.8); $("act").style.opacity = hd; $("ttl").style.opacity = hd;
 }
 // Click 10, on the pause after "It is a data product.": the descriptor, then the scale gives way to the number in place, then the source
@@ -564,8 +602,8 @@ function click10(t) {
   const E = (a, d) => smooth((t - a) / d);
   const nx = CX5 + 90;                                     // the evidence field: off copper's centre, on the evidence line, clear of the axis
   // the locked 1 : 1000 slides down from the spine into the evidence field and becomes the figure there: one number, seen moving
-  const fromY = EVY - 240 - 19, toY = EVY + 44;             // down first, clear of copper; then left, once below it
-  $("s1000").style.left = LAB_X + (nx - LAB_X) * E(0.7, 0.6) + "px"; $("s1000").style.top = fromY + (toY - fromY) * E(0.2, 0.7) + "px";
+  const fromX = LAB_R - $("s1000").offsetWidth, fromY = LAB_Y, toY = EVY + 44;   // down first, under copper; then right, into the field
+  $("s1000").style.left = fromX + (nx - fromX) * E(0.7, 0.6) + "px"; $("s1000").style.top = fromY + (toY - fromY) * E(0.2, 0.7) + "px";
   $("s1000").style.opacity = 1 - E(1.0, 0.5);
   $("cnum").style.left = nx + "px"; $("cnum").style.top = toY + "px"; $("cnum").style.opacity = E(1.0, 0.8);
   $("cdesc").style.left = nx + "px"; $("cdesc").style.top = EVY + 18 + "px"; $("cdesc").style.opacity = E(1.3, 0.8);
@@ -616,8 +654,9 @@ const fit = () => { const k = Math.min(innerWidth / 1920, innerHeight / 1080), s
 addEventListener("resize", fit); fit();
 // Live playback: Space, Right arrow or Page Down starts the next click; R resets. Each click plays once and holds.
 let click = 0, clickStart = 0, raf = 0;
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;   // reduced motion: every click shows its final state at once
 function frame(now) {
-  const t = (now - clickStart) / 1000;
+  const t = REDUCED ? window.CLICK[click] + 0.01 : (now - clickStart) / 1000;
   setState(click, Math.min(t, window.CLICK[click] + 0.01));
   raf = t < window.CLICK[click] ? requestAnimationFrame(frame) : 0;
 }
