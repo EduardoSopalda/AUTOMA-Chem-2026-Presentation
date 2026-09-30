@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p . && vite build",
+    "build": "tsc -p . && vite build && node tools/publish-act1.mjs",
     "frames": "node tools/frames.mjs",
     "stagetest": "npm run build && node tools/stagetest.mjs"
   },
