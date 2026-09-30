@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Data and AI in Sustainable Digital Transformation</title>
 <!--
-  Act 0. Edu's title slide, set on a fixed 1920 by 1080 stage so it scales to any screen.
-  The man is the measure of the drawing: no title type ever sits above the foot datum (y 936, his soles at 928 + 8).
-  Layout (Edu, 30 Sep): title bottom left, name top right with the role under it, dsm-firmenich bottom right.
-  On the click (Space, Right arrow, Page Down, Enter) opening.mp4 starts under the man; PEOPLE | PLANET | PROGRESS,
-  centred on him with the occasion line, fades out first; then the title (one line and its subtitle, one group) shrinks and sinks down the
-  left margin to its place. The group is laid out once at its starting size and only transformed, so its letters never
-  change shape; the shrink finishes before it reaches the man's height, so it never crosses him.
+  Act 0. Edu's approved title slide, set on a fixed 1920 by 1080 stage so it scales to any screen.
+  On the click (Space, Right arrow, Page Down, Enter) opening.mp4 starts under the man. The lines under him
+  (PEOPLE | PLANET | PROGRESS and the occasion) fade out in place; then every word moves as a rigid printed piece
+  to the three final lockups: title bottom left (below the foot datum, y 936), name and role top right,
+  dsm-firmenich bottom right. The title stack and the identity each come down or up as one block, then unfold
+  into one line, the lower piece moving first so nothing crosses; no piece ever passes over the man.
+  Only transform and opacity animate: no font size changes. Approved by Edu, 30 Sep 2026 (the image 1 to image 2 video).
   Runs offline: open this file with a double click. R resets. F is fullscreen.
 -->
 <script src="gsap.min.js"></script>
@@ -51,35 +51,49 @@
   /* The man: a multiply layer (white is transparent), placed on the video's own man */
   .man{position:absolute;left:743px;top:750px;width:257px;height:184px;mix-blend-mode:multiply;pointer-events:none}
 
-  /* ---------- Type: static, in its final place from the first frame ---------- */
+  /* ---------- Type: Edu's values, converted from vw to the 1920 stage ---------- */
   .type{position:absolute;inset:0}
-  .t{position:absolute;display:block;white-space:nowrap}
+  .t{position:absolute;display:block;white-space:nowrap}   /* every line is its own element so it can travel on its own */
+  .serif{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.055em;line-height:.88}
   .rust{color:var(--rust)} .dark{color:var(--ink)}
 
-  /* Title: one group, bottom left at rest (entirely below the foot datum, y 936). It is laid out at its starting
-     size (x 1.875) and scaled down to rest, so every frame is a downscale of the same sharp raster. */
-  .tgroup{position:absolute;left:96px;top:954px;transform-origin:0 0;will-change:transform}
-  .tgroup .rule-left{position:absolute;left:-43px;top:-4px;height:131px;border-left:2px solid rgba(132,59,24,.78)}
-  .title{left:0;top:0;font:60px/1 Georgia,"Times New Roman",serif;letter-spacing:-.02em}
-  .d-sub{left:4px;top:82px;font:italic 35.6px/1 Georgia,"Times New Roman",serif;color:var(--ink)}
+  .rule-left{position:absolute;left:77px;top:175px;height:520px;border-left:1px solid rgba(132,59,24,.78)}
+  .rule-right{position:absolute;left:1560px;top:556px;height:218px;border-left:1px solid rgba(132,59,24,.75)}
 
-  /* Identity, top right, right-justified to x 1824 (the logo's right edge): the name, the role directly beneath.
-     Its copper rule sits 37 px left of the block, as the logo's does. */
-  .idblock{position:absolute;right:96px;top:44px;text-align:right}
-  .idblock .t{position:static}
-  .idblock .rule-right{position:absolute;left:-37px;top:0;height:60px;border-left:1px solid rgba(132,59,24,.75)}
-  .name{font:32px/1 Georgia,"Times New Roman",serif;color:var(--ink)}
-  .role{margin-top:14px;font:14px/1 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+  /* BEFORE: Edu's layout */
+  .d-data   {left:120px;top:150px;font-size:68px}
+  .d-andai  {left:120px;top:210px;font-size:68px}
+  .d-in     {left:120px;top:327px;font-size:55px;font-style:italic}
+  .d-sust   {left:175px;top:293px;font-size:113px}
+  .d-dig    {left:175px;top:392px;font-size:113px}
+  .d-trans  {left:175px;top:492px;font-size:113px}
+  .d-sub    {left:124px;top:635px;font:italic 31px Georgia,"Times New Roman",serif}
 
-  /* The official logo (dsm-firmenich Logo Primary Digital, vector), bottom right; its rule starts below the datum */
-  .company{left:1594px;top:968px;width:230px}
+  .n-first  {left:1610px;top:556px;font:39px/.98 Georgia,"Times New Roman",serif}
+  .n-last   {left:1610px;top:594px;font:39px/.98 Georgia,"Times New Roman",serif}
+  .role     {font:15px/1.65 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+  .r-1      {left:1610px;top:645px}
+  .r-2      {left:1610px;top:670px}
+  /* The official logo (dsm-firmenich Logo Primary Digital, vector) */
+  .company  {left:1610px;top:729px;width:230px}
   .company img{display:block;width:100%;height:auto}
-  .rule-right::after,.rule-logo::after{content:"";position:absolute;left:-6px;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:var(--rust)}
-  .rule-logo{position:absolute;left:1557px;top:944px;height:78px;border-left:2px solid rgba(132,59,24,.85)}
+  .dots{display:inline-flex;gap:3px;margin-left:4px;vertical-align:middle}
+  .dots i{width:11px;height:11px;border-radius:50%;background:#111;display:block}
 
-  /* The brand line and the occasion: centred on the man before the click; they fade out before the title moves */
-  .people{left:905px;top:958px;transform:translateX(-50%);color:var(--rust);font:700 24.5px Arial,Helvetica,sans-serif;letter-spacing:.30em}
-  .event{left:905px;top:1003px;transform:translateX(-50%);color:var(--blue);font:17.5px Arial,Helvetica,sans-serif;letter-spacing:.20em}
+  .people{left:960px;top:958px;transform:translateX(-50%);color:var(--rust);font:700 24.5px Arial,Helvetica,sans-serif;letter-spacing:.30em}
+  .event {left:960px;top:1003px;transform:translateX(-50%);color:var(--blue);font:17.5px Arial,Helvetica,sans-serif;letter-spacing:.20em}
+
+
+  /* Rules carry a small copper dot, as in the target image */
+  .rule-right::after,.rule-logo::after{content:"";position:absolute;left:-6px;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:var(--rust)}
+  .rule-logo{position:absolute;left:1557px;top:929px;height:103px;border-left:2px solid rgba(132,59,24,.85);opacity:0}
+
+  .hint{position:absolute;right:14px;bottom:10px;font:12px Arial;color:rgba(69,109,139,.45);letter-spacing:.1em}
+  .frule{position:absolute;opacity:0}
+  .frule.dot::after{content:"";position:absolute;left:-6px;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:var(--rust)}
+  .ghost{position:absolute;visibility:hidden;white-space:nowrap}
+  .ghost span{display:inline-block}
+  .t.piece{will-change:transform;transform-origin:0 0}
 </style>
 </head>
 <body>
@@ -98,28 +112,39 @@
   <img class="man" id="man" src="man.png" alt="">
 
   <div class="type" id="type">
-    <div class="tgroup" id="tgroup">
-      <div class="rule-left"></div>
-      <span class="t title"><span class="rust">Data and AI in Sustainable Digital</span> <span class="dark">Transformation</span></span>
-      <span class="t d-sub">From Brasília to the Plant Floor</span>
-    </div>
+    <div class="rule-left"></div>
+    <span class="t serif rust d-data">Data</span>
+    <span class="t serif rust d-andai">and AI</span>
+    <span class="t serif rust d-in">in</span>
+    <span class="t serif rust d-sust">Sustainable</span>
+    <span class="t serif rust d-dig">Digital</span>
+    <span class="t serif dark d-trans">Transformation</span>
+    <span class="t d-sub">From Brasília to the Plant Floor</span>
 
-    <div class="idblock">
-      <div class="rule-right"></div>
-      <span class="t name">Eduardo Sopalda</span>
-      <span class="t role">D&amp;T · Global Data Governance Lead</span>
-    </div>
-
+    <div class="rule-right"></div>
+    <span class="t n-first">Eduardo</span>
+    <span class="t n-last">Sopalda</span>
+    <span class="t role r-1">D&amp;T · Global Data</span>
+    <span class="t role r-2">Governance Lead</span>
     <div class="rule-logo" id="ruleLogo"></div>
     <span class="t company"><img src="logo.svg" alt="dsm-firmenich"></span>
 
-    <span class="t people" id="people">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;PLANET&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</span>
-    <span class="t event" id="event">AUTOMA CHEM 2026&nbsp;&nbsp;·&nbsp;&nbsp;ESTREL BERLIN&nbsp;&nbsp;·&nbsp;&nbsp;26 OCTOBER 2026&nbsp;&nbsp;·&nbsp;&nbsp;9:40</span>
+    <span class="t people">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;PLANET&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</span>
+    <div class="frule" id="fRuleL" style="left:73px;top:952px;height:66px;border-left:1px solid rgba(132,59,24,.78)"></div>
+    <div class="frule dot" id="fRuleId" style="top:44px;height:60px;border-left:1px solid rgba(132,59,24,.75)"></div>
+    <div class="frule dot" id="fRuleLogo" style="left:1557px;top:944px;height:78px;border-left:2px solid rgba(132,59,24,.85)"></div>
+    <span class="t event">AUTOMA CHEM 2026&nbsp;&nbsp;·&nbsp;&nbsp;ESTREL BERLIN&nbsp;&nbsp;·&nbsp;&nbsp;26 OCTOBER 2026&nbsp;&nbsp;·&nbsp;&nbsp;9:40</span>
   </div>
+  <div class="hint" id="hint">SPACE TO BEGIN</div>
+  <!-- The final layout, invisible: every moving piece is measured here and sent to its own slot -->
+  <div class="ghost serif" id="gTitle" style="left:96px;top:954px;font-size:32px;line-height:.88"><span data-for="d-data" style="font-size:32px">Data</span> <span data-for="d-andai" style="font-size:32px">and AI</span> <span data-for="d-in" style="font-size:26px;font-style:italic">in</span> <span data-for="d-sust" style="font-size:32px">Sustainable</span> <span data-for="d-dig" style="font-size:32px">Digital</span> <span data-for="d-trans" style="font-size:32px">Transformation</span></div>
+  <div class="ghost" id="gSub" style="left:98px;top:994px;font:italic 19px Georgia,'Times New Roman',serif"><span data-for="d-sub">From Brasília to the Plant Floor</span></div>
+  <div class="ghost" id="gName" style="right:96px;top:44px;text-align:right;font:32px/.98 Georgia,'Times New Roman',serif"><span data-for="n-first">Eduardo</span> <span data-for="n-last">Sopalda</span></div>
+  <div class="ghost role" id="gRole" style="right:96px;top:84px;text-align:right;font-size:14px"><span data-for="r-1">D&amp;T · Global Data</span> <span data-for="r-2">Governance Lead</span></div>
 </div>
 
 <script>
-  const stage = document.getElementById("stage"), people = document.getElementById("people"), event = document.getElementById("event"), tgroup = document.getElementById("tgroup");
+  const stage = document.getElementById("stage"), type = document.getElementById("type");
   const film = document.getElementById("film"), paper = document.getElementById("paper"), man = document.getElementById("man");
 
   const fit = () => {
@@ -129,32 +154,68 @@
   addEventListener("resize", fit); fit();
 
 
-  // The title's move, solved so it never crosses the man (tools: path checked frame by frame against his box):
-  // the brand line fades out first (0.2 to 1.2 s); then, from 1.4 s, the title shrinks (1.6 s) and sinks (3.2 s) together;
-  // the shrink finishes first, so it is already at its final size when it passes the man's height, 19 px left of his shadow.
-  // Scale is interpolated by ratio (log), so the shrink reads even. One ease, power3.inOut: no bounce, no overshoot.
-  const S0 = 60 / 32, DY = 160 - 954;                         // start: one line at the title-slide height; rest: y 954
+  // Act 0 transition: Edu's approved title slide (start) to the three final lockups (end).
+  // The lines under the man fade first, in place (0.2-1.2 s). Then every word moves as a rigid printed piece:
+  // measured start box -> measured slot in the invisible final layout, one translate + one uniform scale,
+  // never a font-size change. Scale leads the slide, so big words are already small when they pass the man.
+  const $ = (c) => type.querySelector(c);
+  const PIECES = ["d-data", "d-andai", "d-in", "d-sust", "d-dig", "d-trans", "d-sub", "n-first", "n-last", "r-1", "r-2"];
   const p3 = gsap.parseEase("power3.inOut");
-  const evenShrink = (p) => (Math.pow(S0, -p3(p)) - 1) / (1 / S0 - 1);   // power3.inOut applied to log(scale)
-  const titleStart = () => gsap.set(tgroup, { transformOrigin: "0 0", y: DY, scale: 1, force3D: true });
-  titleStart();
+  let plan = null;
+  function measure() {
+    const k = stage.getBoundingClientRect().width / 1920, o = stage.getBoundingClientRect();
+    const box = (el) => { const r = el.getBoundingClientRect(); return { x: (r.left - o.left) / k, y: (r.top - o.top) / k, w: r.width / k }; };
+    return PIECES.map((cls) => { const el = $("." + cls), a = box(el), g = box(document.querySelector(`[data-for="${cls}"]`));
+      return { el, a, dx: g.x - a.x, dy: g.y - a.y, s: g.w / a.w }; });
+  }
   let started = false, tl = null;
   function begin() {
     if (started) return;
     started = true;
+    document.getElementById("hint").style.display = "none";
+    plan = plan || measure();
     const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    film.currentTime = 0;
-    film.play();
+    film.currentTime = 0; film.play();
     tl = gsap.timeline()
       .to(film, { opacity: 1, duration: 0.01 }, 0)
       .to(paper, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 0.1)
-      .to(man, { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 0.7)   // the film's own man takes over, same place
-      .to([people, event], { opacity: 0, duration: 1.0, ease: "sine.inOut" }, 0.2)
-      .to(tgroup, { scale: 1 / S0, duration: 1.6, ease: evenShrink }, 1.4)
-      .to(tgroup, { y: 0, duration: 3.2, ease: "power3.inOut" }, 1.4);
+      .to(man, { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 0.7)                 // the film's own man takes over, same place
+      .to([$(".people"), $(".event"), $(".rule-left"), $(".rule-right")], { opacity: 0, duration: 1.0, ease: "sine.inOut" }, 0.2);
+    // 1. the title stack keeps its arrangement and comes down whole, shrinking evenly, to sit left of the man
+    // 2. it unfolds into one line, bottom first: each word leaves before the one above it arrives
+    const byCls = Object.fromEntries(plan.map((q) => [q.el.className.split(" ").find((c) => /^(d|n|r)-/.test(c)), q]));
+    const even = (s0, s1) => (p) => (Math.pow(s1 / s0, p3(p)) - 1) / ((s1 / s0) - 1 || 1);
+    plan.forEach((q) => q.el.classList.add("piece"));
+    const SA = 32 / 68, AX = 120, AY = 150, BX = 96, BY = 732;          // staged stack: Data at its final size
+    STACK.forEach((cls, n) => { const q = byCls[cls], a = q.a;
+      const sx = BX + (a.x - AX) * SA - a.x, sy = BY + (a.y - AY) * SA - a.y;
+      tl.to(q.el, { x: sx, y: sy, duration: 1.8, ease: "power3.inOut" }, 1.4)
+        .to(q.el, { scale: SA, duration: 1.8, ease: even(1, SA) }, 1.4)
+        .to(q.el, { x: q.dx, y: q.dy, duration: 1.0, ease: "power3.inOut" }, UNFOLD[n])
+        .to(q.el, { scale: q.s, duration: 1.0, ease: even(SA, q.s) }, UNFOLD[n]); });
+    const sub = byCls["d-sub"];                                          // the subtitle goes ahead, below the stack
+    tl.to(sub.el, { x: sub.dx, y: sub.dy, duration: 1.6, ease: "power3.inOut" }, 1.3)
+      .to(sub.el, { scale: sub.s, duration: 1.6, ease: even(1, sub.s) }, 1.3);
+    // the identity lockup rises as one rigid block until "Eduardo" is in place, then unfolds: Sopalda beside Eduardo,
+    // the second role line beside the first
+    const E = byCls["n-first"], bx = E.dx, by = E.dy;
+    [["n-first", 2.8, 0], ["n-last", 2.8, 1], ["r-1", 3.0, 0], ["r-2", 3.15, 1]].forEach(([cls, t1, side]) => { const q = byCls[cls];
+      tl.to(q.el, { x: bx, y: by, duration: 1.4, ease: "power3.inOut" }, 1.4)
+        .to(q.el, { scale: q.s, duration: 0.9, ease: even(1, q.s) }, t1);
+      if (!side) tl.to(q.el, { x: q.dx, y: q.dy, duration: 0.9, ease: "power3.inOut" }, t1);
+      else tl.to(q.el, { x: q.dx, duration: 0.6, ease: "power3.inOut" }, t1)              // the lower piece goes right first,
+              .to(q.el, { y: q.dy, duration: 0.7, ease: "power3.inOut" }, t1 + 0.3); }); // then up beside the other: they never cross
+    tl.to($(".company"), { x: 1594 - 1610, y: 968 - 729, duration: MOVE_DUR, ease: "power3.inOut" }, 1.6)
+      .to(["#fRuleL", "#fRuleId", "#fRuleLogo"], { opacity: 1, duration: 0.6, ease: "sine.inOut" }, 4.6);
     if (calm) tl.progress(1);
     window.__anims = [tl];
   }
+  const MOVE_DUR = 2.4;
+  const STACK = ["d-trans", "d-dig", "d-sust", "d-in", "d-andai", "d-data"];      // bottom first
+  const UNFOLD = [3.0, 3.18, 3.36, 3.54, 3.72, 3.9];
+  addEventListener("load", () => { document.fonts.ready.then(() => {
+    const g = document.getElementById("gName").getBoundingClientRect(), o = stage.getBoundingClientRect(), k = o.width / 1920;
+    document.getElementById("fRuleId").style.left = ((g.left - o.left) / k - 37) + "px"; }); });
   // Second click: the next clip. Its first frame is the opening film's last frame, so it only starts from there.
   // If the click comes early, the opening film finishes at triple speed first, then hands over.
   const film2 = document.getElementById("film2");
@@ -183,8 +244,10 @@
     second = false; film2.pause(); film2.currentTime = 0;
     (window.__anims2 || []).forEach((a) => a.kill());
     gsap.set([film, film2], { opacity: 0 });
-    gsap.set([paper, man, people, event], { opacity: 1 });
-    titleStart();
+    gsap.set([paper, man, $(".people"), $(".event"), $(".rule-left"), $(".rule-right")], { opacity: 1 });
+    gsap.set([...PIECES.map((c) => $("." + c)), $(".company")], { clearProps: "transform" });
+    gsap.set(["#fRuleL", "#fRuleId", "#fRuleLogo"], { opacity: 0 });
+    document.getElementById("hint").style.display = "";
   }
   addEventListener("keydown", (e) => {
     if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) { e.preventDefault(); if (!e.repeat) (started ? next() : begin()); }
