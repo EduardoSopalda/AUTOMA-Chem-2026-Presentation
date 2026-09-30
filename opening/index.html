@@ -214,8 +214,9 @@
   const STACK = ["d-trans", "d-dig", "d-sust", "d-in", "d-andai", "d-data"];      // bottom first
   const UNFOLD = [3.0, 3.18, 3.36, 3.54, 3.72, 3.9];
   addEventListener("load", () => { document.fonts.ready.then(() => {
-    const g = document.getElementById("gName").getBoundingClientRect(), o = stage.getBoundingClientRect(), k = o.width / 1920;
-    document.getElementById("fRuleId").style.left = ((g.left - o.left) / k - 37) + "px"; }); });
+    // the identity rule sits 37 px left of the WIDER line (the role is wider than the name), so it never crosses the text
+    const o = stage.getBoundingClientRect(), k = o.width / 1920, left = Math.min(...["gName", "gRole"].map((id) => document.getElementById(id).getBoundingClientRect().left));
+    document.getElementById("fRuleId").style.left = ((left - o.left) / k - 37) + "px"; }); });
   // Second click: the next clip. Its first frame is the opening film's last frame, so it only starts from there.
   // If the click comes early, the opening film finishes at triple speed first, then hands over.
   const film2 = document.getElementById("film2");
