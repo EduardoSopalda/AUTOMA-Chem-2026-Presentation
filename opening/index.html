@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Data and AI in Sustainable Digital Transformation</title>
 <!--
-  Edu's title slide (title-slide-original.html), set on a fixed 1920 by 1080 stage so it scales to any screen.
-  Before the click: the title slide, with the man standing on the placeholder.
-  On the click (Space, Right arrow, Page Down, Enter): opening.mp4 starts under him; the title shrinks to the
-  bottom left corner and the name moves to the top right. The man stands exactly where the video's man stands,
-  so he never jumps. Runs offline: open this file with a double click. R resets. F is fullscreen.
+  Act 0. Edu's title slide, set on a fixed 1920 by 1080 stage so it scales to any screen.
+  The man is the measure of the drawing: no title type ever sits above the foot datum (y 936, his soles at 928 + 8).
+  Layout (Edu, 30 Sep): title bottom left, name top right with the role under it, dsm-firmenich bottom right.
+  Nothing travels: every piece of type is already in its final place. On the click (Space, Right arrow, Page Down,
+  Enter) opening.mp4 starts under the man and PEOPLE | PLANET | PROGRESS fades out; opacity only, no moving letters.
+  Runs offline: open this file with a double click. R resets. F is fullscreen.
 -->
 <script src="gsap.min.js"></script>
-<script src="Flip.min.js"></script>
 <style>
   :root{ --paper:#ead9bc; --rust:#843b18; --ink:#171717; --blue:#456d8b; }
   *{box-sizing:border-box}
@@ -49,60 +49,32 @@
   /* The man: a multiply layer (white is transparent), placed on the video's own man */
   .man{position:absolute;left:743px;top:750px;width:257px;height:184px;mix-blend-mode:multiply;pointer-events:none}
 
-  /* ---------- Type: Edu's values, converted from vw to the 1920 stage ---------- */
+  /* ---------- Type: static, in its final place from the first frame ---------- */
   .type{position:absolute;inset:0}
-  .t{position:absolute;display:block;white-space:nowrap}   /* every line is its own element so it can travel on its own */
-  .serif{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.055em;line-height:.88}
+  .t{position:absolute;display:block;white-space:nowrap}
   .rust{color:var(--rust)} .dark{color:var(--ink)}
 
-  .rule-left{position:absolute;left:77px;top:175px;height:520px;border-left:1px solid rgba(132,59,24,.78)}
-  .rule-right{position:absolute;left:1560px;top:556px;height:218px;border-left:1px solid rgba(132,59,24,.75)}
+  /* Title, bottom left, entirely below the foot datum (y 936) */
+  .rule-left{position:absolute;left:73px;top:952px;height:70px;border-left:1px solid rgba(132,59,24,.78)}
+  .title{left:96px;top:954px;font:34px/1 Georgia,"Times New Roman",serif;letter-spacing:-.02em}
+  .d-sub{left:98px;top:998px;font:italic 20px/1 Georgia,"Times New Roman",serif;color:var(--ink)}
 
-  /* BEFORE: Edu's layout */
-  .d-data   {left:120px;top:150px;font-size:68px}
-  .d-andai  {left:120px;top:210px;font-size:68px}
-  .d-in     {left:120px;top:327px;font-size:55px;font-style:italic}
-  .d-sust   {left:175px;top:293px;font-size:113px}
-  .d-dig    {left:175px;top:392px;font-size:113px}
-  .d-trans  {left:175px;top:492px;font-size:113px}
-  .d-sub    {left:124px;top:635px;font:italic 31px Georgia,"Times New Roman",serif}
+  /* Name top right, role and occasion under it */
+  .rule-right{position:absolute;left:1557px;top:44px;height:128px;border-left:1px solid rgba(132,59,24,.75)}
+  .name{left:1594px;top:44px;font:32px/1 Georgia,"Times New Roman",serif;color:var(--ink)}
+  .role{font:14px/1 Arial,Helvetica,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--blue)}
+  .r-1{left:1594px;top:90px} .r-2{left:1594px;top:111px}
+  .event{font:12px/1 Arial,Helvetica,sans-serif;letter-spacing:.13em;color:var(--blue);opacity:.85}
+  .e-1{left:1594px;top:143px} .e-2{left:1594px;top:160px}
 
-  .n-first  {left:1610px;top:556px;font:39px/.98 Georgia,"Times New Roman",serif}
-  .n-last   {left:1610px;top:594px;font:39px/.98 Georgia,"Times New Roman",serif}
-  .role     {font:15px/1.65 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
-  .r-1      {left:1610px;top:645px}
-  .r-2      {left:1610px;top:670px}
-  /* The official logo (dsm-firmenich Logo Primary Digital, vector) */
-  .company  {left:1610px;top:729px;width:230px}
+  /* The official logo (dsm-firmenich Logo Primary Digital, vector), bottom right; its rule starts below the datum */
+  .company{left:1594px;top:968px;width:230px}
   .company img{display:block;width:100%;height:auto}
-  .dots{display:inline-flex;gap:3px;margin-left:4px;vertical-align:middle}
-  .dots i{width:11px;height:11px;border-radius:50%;background:#111;display:block}
-
-  .people{left:960px;top:958px;transform:translateX(-50%);color:var(--rust);font:700 24.5px Arial,Helvetica,sans-serif;letter-spacing:.30em}
-  .event {left:960px;top:1003px;transform:translateX(-50%);color:var(--blue);font:17.5px Arial,Helvetica,sans-serif;letter-spacing:.20em}
-
-  /* AFTER: positions measured on Edu's target image (2000 wide, scaled to the 1920 stage) */
-  .after .rule-left{left:73px;top:758px;height:261px}
-  .after .d-data {left:108px;top:758px;font-size:50px}
-  .after .d-andai{left:108px;top:802px;font-size:50px}
-  .after .d-in   {left:113px;top:881px;font-size:32px}
-  .after .d-sust {left:155px;top:854px;font-size:66px}
-  .after .d-dig  {left:418px;top:854px;font-size:66px}
-  .after .d-trans{left:155px;top:907px;font-size:66px}
-  .after .d-sub  {left:158px;top:970px;font-size:28px}
-
-  .after .rule-right{left:1557px;top:42px;height:105px}   /* one column on the right: same rule x as the logo */
-  .after .n-first{left:1594px;top:40px;font-size:42px}
-  .after .n-last {left:1698px;top:40px;font-size:42px}
-  .after .r-1    {left:1594px;top:89px;font-size:16px;letter-spacing:.24em}
-  .after .r-2    {left:1594px;top:114px;font-size:16px;letter-spacing:.24em}
-  .after .company{left:1594px;top:967px;width:285px}
-
-  /* Rules carry a small copper dot, as in the target image */
   .rule-right::after,.rule-logo::after{content:"";position:absolute;left:-6px;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:var(--rust)}
-  .rule-logo{position:absolute;left:1557px;top:929px;height:103px;border-left:2px solid rgba(132,59,24,.85);opacity:0}
+  .rule-logo{position:absolute;left:1557px;top:944px;height:78px;border-left:2px solid rgba(132,59,24,.85)}
 
-  .hint{position:absolute;right:14px;bottom:10px;font:12px Arial;color:rgba(69,109,139,.45);letter-spacing:.1em}
+  /* The brand line: under the man before the click, then it fades out */
+  .people{left:1188px;top:962px;transform:translateX(-50%);color:var(--rust);font:700 20px Arial,Helvetica,sans-serif;letter-spacing:.30em}
 </style>
 </head>
 <body>
@@ -122,31 +94,25 @@
 
   <div class="type" id="type">
     <div class="rule-left"></div>
-    <span class="t serif rust d-data">Data</span>
-    <span class="t serif rust d-andai">and AI</span>
-    <span class="t serif rust d-in">in</span>
-    <span class="t serif rust d-sust">Sustainable</span>
-    <span class="t serif rust d-dig">Digital</span>
-    <span class="t serif dark d-trans">Transformation</span>
+    <span class="t title"><span class="rust">Data and AI in Sustainable Digital</span> <span class="dark">Transformation</span></span>
     <span class="t d-sub">From Brasília to the Plant Floor</span>
 
     <div class="rule-right"></div>
-    <span class="t n-first">Eduardo</span>
-    <span class="t n-last">Sopalda</span>
+    <span class="t name">Eduardo Sopalda</span>
     <span class="t role r-1">D&amp;T · Global Data</span>
     <span class="t role r-2">Governance Lead</span>
+    <span class="t event e-1">AUTOMA CHEM 2026&nbsp;·&nbsp;ESTREL BERLIN</span>
+    <span class="t event e-2">26 OCTOBER 2026&nbsp;·&nbsp;9:40</span>
+
     <div class="rule-logo" id="ruleLogo"></div>
     <span class="t company"><img src="logo.svg" alt="dsm-firmenich"></span>
 
-    <span class="t people">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;PLANET&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</span>
-    <span class="t event">AUTOMA CHEM 2026&nbsp;&nbsp;·&nbsp;&nbsp;ESTREL BERLIN&nbsp;&nbsp;·&nbsp;&nbsp;26 OCTOBER 2026&nbsp;&nbsp;·&nbsp;&nbsp;9:40</span>
+    <span class="t people" id="people">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;PLANET&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</span>
   </div>
-  <div class="hint" id="hint">SPACE TO BEGIN</div>
 </div>
 
 <script>
-  gsap.registerPlugin(Flip);
-  const stage = document.getElementById("stage"), type = document.getElementById("type");
+  const stage = document.getElementById("stage"), people = document.getElementById("people");
   const film = document.getElementById("film"), paper = document.getElementById("paper"), man = document.getElementById("man");
 
   const fit = () => {
@@ -156,75 +122,21 @@
   addEventListener("resize", fit); fit();
 
 
-  // The after layout, measured on Edu's target image and fitted to the fonts in use.
-  // Widths are the target's (stage px); vertical positions are the target's baselines.
-  function layoutAfter() {
-    const $ = (c) => type.querySelector(c);
-    const fit = (el, width) => { el.style.fontSize = "100px"; return 100 * width / el.offsetWidth; };
-    const place = (el, left, baseline, size, asc) => { el.style.fontSize = size + "px"; el.style.left = left + "px"; el.style.top = (baseline - asc * size) + "px"; };
-    const big = fit($(".d-trans"), 340);                       // "Transformation" is 340 px wide in the target
-    const small = fit($(".d-andai"), 133);                     // "and AI" is 133 px wide
-    const A = 0.789;                                           // baseline position of a .88 line-height serif line
-    place($(".d-data"), 108, 798, small, A);
-    place($(".d-andai"), 108, 842, small, A);
-    place($(".d-in"), 113, 906, big * 0.49, A);
-    place($(".d-sust"), 155, 906, big, A);
-    place($(".d-trans"), 155, 958, big, A);
-    const dig = $(".d-dig"); place(dig, 155 + $(".d-sust").offsetWidth + big * 0.22, 906, big, A);
-    const sub = $(".d-sub"); const subSize = fit(sub, 360); place(sub, 158, 995, subSize, 0.917);
-    // Name on one line, 245 px wide in the target
-    const f = $(".n-first"), l = $(".n-last");
-    f.style.fontSize = l.style.fontSize = "100px";
-    const nameSize = 100 * 245 / (f.offsetWidth + l.offsetWidth + 25);
-    place(f, 1594, 76, nameSize, 0.839);
-    place(l, 1594 + f.offsetWidth + nameSize * 0.25, 76, nameSize, 0.839);
-  }
-
-  // Typography speed: 1 = original timing. Higher is slower. The typography settles 3.0 x SLOW seconds after the click: 10 s, the time the man takes to look up.
-  const SLOW = 10 / 3.0;
+  // The click: the film starts under the man, the paper gives way to it, and the brand line fades out.
+  // One timeline, opacity only: no type moves, so nothing can wobble. Reduced motion: the brand line goes at once.
   let started = false, tl = null;
   function begin() {
     if (started) return;
     started = true;
-    document.getElementById("hint").style.display = "none";
-    // The name and the event line travel to their places (Flip: each line on its own path).
-    const others = type.querySelectorAll(".n-first, .n-last, .r-1, .r-2, .company, .rule-right, .people, .event");
-    const state = Flip.getState(others);
-    // The title does not use Flip: it moves as one block first, so no line ever crosses another.
-    const title = [...type.querySelectorAll(".d-data, .d-andai, .d-in, .d-sust, .d-dig, .d-trans, .d-sub, .rule-left")];
-    const from = title.map((el) => ({ el, left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }));
-    type.classList.add("after");
-    layoutAfter();
-    window.__anims = [];
-    window.__anims.push(Flip.from(state, { duration: 2.4 * SLOW, ease: "power3.inOut", scale: true, stagger: 0.03 * SLOW }));
-    const to = new Map(title.map((el) => [el, { left: el.offsetLeft, top: el.offsetTop, size: parseFloat(getComputedStyle(el).fontSize) || 0, h: el.offsetHeight }]));
-    // Phase 1 (1.8 s): the whole block scales by k about the sheet origin and glides to the corner, as one piece.
-    const k = 58 / 113, tx = 163 - k * 175, ty = 830 - k * 293;           // "Sustainable" lands exactly on its final place
-    const q = new Map(from.map((f) => [f.el, { left: tx + k * f.left, top: ty + k * f.top, size: f.size * k, h: f.h * k }]));
-    const tl2 = gsap.timeline();
-    window.__anims.push(tl2);
-    from.forEach((f) => {
-      const a = q.get(f.el), b = to.get(f.el), rule = f.el.classList.contains("rule-left");
-      gsap.set(f.el, { left: f.left, top: f.top, ...(rule ? { height: f.h } : { fontSize: f.size }) });
-      tl2.to(f.el, { left: a.left, top: a.top, ...(rule ? { height: a.h } : { fontSize: a.size }), duration: 1.8 * SLOW, ease: "power3.inOut" }, 0);
-      // Phase 2 (about 1 s): every line settles into the final layout.
-      const dig = f.el.classList.contains("d-dig");
-      if (dig) {
-        tl2.to(f.el, { left: b.left, fontSize: b.size, duration: 0.5 * SLOW, ease: "power2.inOut" }, 1.8 * SLOW)   // slide right along its own line
-           .to(f.el, { top: b.top, duration: 0.45 * SLOW, ease: "power2.inOut" }, 2.55 * SLOW);   // after "Sustainable" has mostly settled                      // then step up beside "Sustainable"
-      } else {
-        tl2.to(f.el, { left: b.left, top: b.top, ...(rule ? { height: b.h } : { fontSize: b.size }), duration: 0.5 * SLOW, ease: "power2.inOut" }, 2.3 * SLOW);
-      }
-    });
-    window.__anims.push(gsap.fromTo("#ruleLogo", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, transformOrigin: "50% 50%", duration: 0.6 * SLOW, ease: "power2.out", delay: 2.2 * SLOW }));                    // hand back to the stylesheet
-    // The film starts under the man. Its first second is only the man on paper, so the paper can give way quietly.
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
     film.currentTime = 0;
     film.play();
     tl = gsap.timeline()
       .to(film, { opacity: 1, duration: 0.01 }, 0)
       .to(paper, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 0.1)
-      .to(man, { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 0.7);   // the film's own man takes over, same place
-    window.__anims.push(tl);
+      .to(man, { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 0.7)   // the film's own man takes over, same place
+      .to(people, { opacity: 0, duration: calm ? 0 : 1.2, ease: "sine.inOut" }, calm ? 0 : 0.5);
+    window.__anims = [tl];
   }
   // Second click: the next clip. Its first frame is the opening film's last frame, so it only starts from there.
   // If the click comes early, the opening film finishes at triple speed first, then hands over.
@@ -252,13 +164,9 @@
     tl && tl.kill();
     film.pause(); film.currentTime = 0; film.playbackRate = 1;
     second = false; film2.pause(); film2.currentTime = 0;
-    (window.__anims2 || []).forEach((a) => a.kill()); gsap.set(film2, { opacity: 0 }); gsap.set(film, { opacity: 0 });
-    gsap.set([paper, man], { opacity: 1 }); gsap.set(film, { opacity: 0 });
-    type.classList.remove("after");
-    gsap.killTweensOf(type.querySelectorAll("*"));
-    gsap.set("#ruleLogo", { opacity: 0, clearProps: "transform" });
-    gsap.set(type.querySelectorAll(".t, .rule-left, .rule-right"), { clearProps: "transform,translate,rotate,scale,width,height,left,top,fontSize" });
-    document.getElementById("hint").style.display = "";
+    (window.__anims2 || []).forEach((a) => a.kill());
+    gsap.set([film, film2], { opacity: 0 });
+    gsap.set([paper, man, people], { opacity: 1 });
   }
   addEventListener("keydown", (e) => {
     if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) { e.preventDefault(); if (!e.repeat) (started ? next() : begin()); }
