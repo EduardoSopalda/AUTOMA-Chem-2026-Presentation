@@ -267,7 +267,9 @@
   });
   // The film holds on its last frame when it ends: no loop, nothing moves on by itself.
   film.addEventListener("ended", () => film.pause());
-  film2.addEventListener("ended", () => film2.pause());
+  film2.addEventListener("ended", () => { film2.pause(); if (parent !== window) parent.postMessage({ deck: "opening-done" }, "*"); });   // tells deck.html the opening is still
+  // When this page runs inside deck.html, the deck owns the keyboard and relays keys here.
+  addEventListener("message", (e) => { const k = e.data && e.data.deckKey; if (k) dispatchEvent(new KeyboardEvent("keydown", { key: k, cancelable: true })); });
 </script>
 </body>
 </html>
