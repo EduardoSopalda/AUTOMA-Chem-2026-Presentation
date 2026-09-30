@@ -612,6 +612,9 @@ addEventListener("keydown", (e) => {
   } else if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
   } else if (e.key === "r" || e.key === "R") { cancelAnimationFrame(raf); click = 0; setState(1, 0); }
 });
+  // When this page runs inside deck.html, the deck owns the keyboard and relays keys here.
+  addEventListener("message", (e) => { const k = e.data && e.data.deckKey; if (k) dispatchEvent(new KeyboardEvent("keydown", { key: k, cancelable: true })); });
+
 </script>
 </body>
 </html>
