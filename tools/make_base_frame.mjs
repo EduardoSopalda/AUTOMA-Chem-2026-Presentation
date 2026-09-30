@@ -9,7 +9,7 @@ import { pathToFileURL } from "node:url";
 import path from "node:path";
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
-const DATUM = 936, TOP_RIGHT = [".rule-right", ".name", ".role", ".event"];   // Edu's layout: the name block sits top right
+const DATUM = 936, TOP_RIGHT = [".idblock"];   // Edu's layout: the name block sits top right
 const b = await chromium.launch({ channel: "chrome" });
 const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
 await p.goto(pathToFileURL(path.join(root, "opening/index.html")).href);

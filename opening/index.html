@@ -9,7 +9,7 @@
   The man is the measure of the drawing: no title type ever sits above the foot datum (y 936, his soles at 928 + 8).
   Layout (Edu, 30 Sep): title bottom left, name top right with the role under it, dsm-firmenich bottom right.
   On the click (Space, Right arrow, Page Down, Enter) opening.mp4 starts under the man; PEOPLE | PLANET | PROGRESS,
-  centred on him, fades out first; then the title (one line and its subtitle, one group) shrinks and sinks down the
+  centred on him with the occasion line, fades out first; then the title (one line and its subtitle, one group) shrinks and sinks down the
   left margin to its place. The group is laid out once at its starting size and only transformed, so its letters never
   change shape; the shrink finishes before it reaches the man's height, so it never crosses him.
   Runs offline: open this file with a double click. R resets. F is fullscreen.
@@ -63,13 +63,13 @@
   .title{left:0;top:0;font:60px/1 Georgia,"Times New Roman",serif;letter-spacing:-.02em}
   .d-sub{left:4px;top:82px;font:italic 35.6px/1 Georgia,"Times New Roman",serif;color:var(--ink)}
 
-  /* Name top right, role and occasion under it */
-  .rule-right{position:absolute;left:1557px;top:44px;height:128px;border-left:1px solid rgba(132,59,24,.75)}
-  .name{left:1594px;top:44px;font:32px/1 Georgia,"Times New Roman",serif;color:var(--ink)}
-  .role{font:14px/1 Arial,Helvetica,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--blue)}
-  .r-1{left:1594px;top:90px} .r-2{left:1594px;top:111px}
-  .event{font:12px/1 Arial,Helvetica,sans-serif;letter-spacing:.13em;color:var(--blue);opacity:.85}
-  .e-1{left:1594px;top:143px} .e-2{left:1594px;top:160px}
+  /* Identity, top right, right-justified to x 1824 (the logo's right edge): the name, the role directly beneath.
+     Its copper rule sits 37 px left of the block, as the logo's does. */
+  .idblock{position:absolute;right:96px;top:44px;text-align:right}
+  .idblock .t{position:static}
+  .idblock .rule-right{position:absolute;left:-37px;top:0;height:60px;border-left:1px solid rgba(132,59,24,.75)}
+  .name{font:32px/1 Georgia,"Times New Roman",serif;color:var(--ink)}
+  .role{margin-top:14px;font:14px/1 Arial,Helvetica,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
 
   /* The official logo (dsm-firmenich Logo Primary Digital, vector), bottom right; its rule starts below the datum */
   .company{left:1594px;top:968px;width:230px}
@@ -77,8 +77,9 @@
   .rule-right::after,.rule-logo::after{content:"";position:absolute;left:-6px;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:var(--rust)}
   .rule-logo{position:absolute;left:1557px;top:944px;height:78px;border-left:2px solid rgba(132,59,24,.85)}
 
-  /* The brand line: centred on the man before the click; it fades out before the title moves */
+  /* The brand line and the occasion: centred on the man before the click; they fade out before the title moves */
   .people{left:905px;top:958px;transform:translateX(-50%);color:var(--rust);font:700 24.5px Arial,Helvetica,sans-serif;letter-spacing:.30em}
+  .event{left:905px;top:1003px;transform:translateX(-50%);color:var(--blue);font:17.5px Arial,Helvetica,sans-serif;letter-spacing:.20em}
 </style>
 </head>
 <body>
@@ -103,22 +104,22 @@
       <span class="t d-sub">From Brasília to the Plant Floor</span>
     </div>
 
-    <div class="rule-right"></div>
-    <span class="t name">Eduardo Sopalda</span>
-    <span class="t role r-1">D&amp;T · Global Data</span>
-    <span class="t role r-2">Governance Lead</span>
-    <span class="t event e-1">AUTOMA CHEM 2026&nbsp;·&nbsp;ESTREL BERLIN</span>
-    <span class="t event e-2">26 OCTOBER 2026&nbsp;·&nbsp;9:40</span>
+    <div class="idblock">
+      <div class="rule-right"></div>
+      <span class="t name">Eduardo Sopalda</span>
+      <span class="t role">D&amp;T · Global Data Governance Lead</span>
+    </div>
 
     <div class="rule-logo" id="ruleLogo"></div>
     <span class="t company"><img src="logo.svg" alt="dsm-firmenich"></span>
 
     <span class="t people" id="people">PEOPLE&nbsp;&nbsp;|&nbsp;&nbsp;PLANET&nbsp;&nbsp;|&nbsp;&nbsp;PROGRESS</span>
+    <span class="t event" id="event">AUTOMA CHEM 2026&nbsp;&nbsp;·&nbsp;&nbsp;ESTREL BERLIN&nbsp;&nbsp;·&nbsp;&nbsp;26 OCTOBER 2026&nbsp;&nbsp;·&nbsp;&nbsp;9:40</span>
   </div>
 </div>
 
 <script>
-  const stage = document.getElementById("stage"), people = document.getElementById("people"), tgroup = document.getElementById("tgroup");
+  const stage = document.getElementById("stage"), people = document.getElementById("people"), event = document.getElementById("event"), tgroup = document.getElementById("tgroup");
   const film = document.getElementById("film"), paper = document.getElementById("paper"), man = document.getElementById("man");
 
   const fit = () => {
@@ -148,7 +149,7 @@
       .to(film, { opacity: 1, duration: 0.01 }, 0)
       .to(paper, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 0.1)
       .to(man, { opacity: 0, duration: 0.6, ease: "sine.inOut" }, 0.7)   // the film's own man takes over, same place
-      .to(people, { opacity: 0, duration: 1.0, ease: "sine.inOut" }, 0.2)
+      .to([people, event], { opacity: 0, duration: 1.0, ease: "sine.inOut" }, 0.2)
       .to(tgroup, { scale: 1 / S0, duration: 1.6, ease: evenShrink }, 1.4)
       .to(tgroup, { y: 0, duration: 3.2, ease: "power3.inOut" }, 1.4);
     if (calm) tl.progress(1);
@@ -182,7 +183,7 @@
     second = false; film2.pause(); film2.currentTime = 0;
     (window.__anims2 || []).forEach((a) => a.kill());
     gsap.set([film, film2], { opacity: 0 });
-    gsap.set([paper, man, people], { opacity: 1 });
+    gsap.set([paper, man, people, event], { opacity: 1 });
     titleStart();
   }
   addEventListener("keydown", (e) => {
