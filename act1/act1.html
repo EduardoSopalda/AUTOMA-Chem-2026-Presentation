@@ -20,7 +20,10 @@
      CLICK 8  "Then the framework reaches the plant."  the line snaps; the RACI falls on Blue: squash, hold, release, the pin
      CLICK 9  "I had built them a plaza..."        the admission under Brasilia
      CLICK 10 "That matters..."                    the stage clears, copper deflates: two equal spheres; the giant 03; Act 03's column
-     CLICKS 11-14  Act 03's evidence sequence (to be re-routed from the symmetric frame) -->
+     CLICK 11 "A carbon number looks like chemistry. It is a data product."   11,001.8 kt CO2e writes in; the line; hard pause
+     CLICK 12 "Behind one apparently simple number sit..."   scopes, copper lines to the axis node, the root delta to the six sources; the spheres approach
+     CLICK 13 "Where did it come from? Who owns it?..."     the spheres talk across the axis, four questions, four hops; they never touch
+     CLICK 14 "You cannot report what you cannot trace."   the line writes in; stillness -->
 <style>
   @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4.ttf") format("truetype");font-weight:200 900}
   @font-face{font-family:"DM Sans";src:url("../fonts/dm-sans-latin-100-normal.woff2") format("woff2");font-weight:100}
@@ -738,11 +741,140 @@ function click13(t) {                                    // five traces arrive; 
 }
 
 const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.8;
-window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 3.3, 12: 3.2, 13: 5.2, 14: 3.8 + 6 };
+// ================= CLICKS 11 to 14 · ACT 03: the carbon number; copper hands its evidence to blue =================
+// Approved still (1 Oct): the declared number and its scopes on copper's side; each scope's copper line meets the axis in one
+// ink node (the analysis); from it a blueprint root delta grows on blue's side to the six sources, in spoken order;
+// Assumptions stops short. The two spheres approach in turns and talk across the axis; they never touch.
+// The delta is drawn once from a fixed seed (identical every run); time only reveals it.
+const A3 = { built: false, els: {}, ink: [], marks: [], rows: [], lines: [], labels: [] };
+function buildA3() {
+  if (A3.built) return; A3.built = true;
+  const st = $("stage"), CU = "#762F0B", BLU = "#1F4C6E", INKC = "#26221E", X0 = 110;
+  const T = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;" + css; st.appendChild(d); return d; };
+  const E = A3.els;
+  E.tag = T("THE CARBON NUMBER", `left:${X0}px;top:148px;font:500 16px/1 'DM Sans';letter-spacing:.24em;color:#365F7C`);
+  E.number = T("11,001.8 kt CO<sub style='font-size:.55em;vertical-align:-.12em'>2</sub>e", `left:${X0 - 4}px;top:176px;font:500 90px/1 'Source Serif 4';color:${CU};letter-spacing:-.01em`);
+  E.product = T("It is a data product.", `left:${X0}px;top:286px;font:italic 500 32px/1 'Source Serif 4';color:${CU}`);
+  const rows = [["SCOPE 1", "581.7 kt", ""], ["SCOPE 2", "140.0 kt", "market-based"], ["SCOPE 2", "464.3 kt", "location-based"], ["SCOPE 3", "10,280.1 kt", ""]];
+  const ROW0 = 348, RH = 70, rowY = [], rowR = [];
+  rows.forEach(([l, v, n], i) => { const y = ROW0 + i * RH;
+    const d = T(`<span style="font:500 17px/1 'Source Serif 4';letter-spacing:.12em;color:${CU}">${l}</span><br><span style="font:500 34px/1.15 'Source Serif 4';color:${BLU}">${v}</span>${n ? ` <span style="font:italic 400 16px/1 'Source Serif 4';color:${INKC};margin-left:8px">${n}</span>` : ""}`, `left:${X0}px;top:${y}px`);
+    A3.rows.push(d); rowY.push(y + 34); d.style.opacity = 1; rowR.push(d.getBoundingClientRect().right / (st.getBoundingClientRect().width / 1920) - st.getBoundingClientRect().left / (st.getBoundingClientRect().width / 1920) + 18); d.style.opacity = 0; });
+  E.claim = T("THE NUMBER IS OURS.<br>MUCH OF THE EVIDENCE IS ELSEWHERE.", `left:${X0}px;top:${ROW0 + 4 * RH + 8}px;font:500 18px/1.45 'Source Serif 4';letter-spacing:.08em;color:${CU}`);
+  E.thesis = T("You cannot report what you cannot trace.", `left:${X0}px;top:842px;font:italic 400 34px/1 'Source Serif 4';color:${INKC}`);
+  const svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080);
+  svg.style.cssText = "position:absolute;left:0;top:0;z-index:2;mix-blend-mode:multiply"; st.appendChild(svg); A3.svg = svg;
+  const el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  const NODE = [955, 476]; A3.NODE = NODE;
+  rowY.forEach((y, i) => { const x1 = rowR[i], xm = 720;
+    const pth = el("path", { d: `M${x1} ${y} L${xm} ${y} C ${xm + 140} ${y} ${NODE[0] - 120} ${NODE[1]} ${NODE[0] - 6} ${NODE[1]}`, fill: "none", stroke: CU, "stroke-width": 1.6, opacity: 0.9 });
+    const dot = el("circle", { cx: xm, cy: y, r: 3.2, fill: CU });
+    const L = pth.getTotalLength(); A3.lines.push({ pth, dot, L, at: (xm - x1) / L }); });
+  A3.node = [el("circle", { cx: NODE[0], cy: NODE[1], r: 9, fill: CU }), el("circle", { cx: NODE[0], cy: NODE[1], r: 15, fill: "none", stroke: CU, "stroke-width": 1.2 })];
+  let seed = 2610; const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const LABELS = [["Supplier declarations", 1290, 168], ["Energy data", 1360, 262], ["Production records", 1318, 360], ["Transport data", 1586, 486], ["Allocation rules", 1572, 578], ["Assumptions", 1520, 664]];
+  const lab = LABELS.map(([t, x, y], i) => T(t, `left:${x}px;top:${y - 13}px;font:500 21px/1 'Source Serif 4';color:${i === 5 ? CU : BLU}`));
+  A3.labels = lab;
+  const k0 = st.getBoundingClientRect(), kk = k0.width / 1920;
+  const boxes = lab.map((d) => { d.style.opacity = 1; const r = d.getBoundingClientRect(); d.style.opacity = 0; return [(r.left - k0.left) / kk - 6, (r.top - k0.top) / kk - 4, (r.right - k0.left) / kk + 6, (r.bottom - k0.top) / kk + 4]; });
+  const FORBID = [[1557, 0, 1920, 440], [1420, 0, 1920, 132], [930, 640, 1500, 1080], ...boxes];
+  const okPt = (x, y) => x > 968 && x < 1830 && y > 128 && y < 700 && !FORBID.some((f) => x > f[0] && x < f[2] && y > f[1] && y < f[3]);
+  const bez = (P, t) => { const u = 1 - t; return [0, 1].map((k) => u * u * u * P[0][k] + 3 * u * u * t * P[1][k] + 3 * u * t * t * P[2][k] + t * t * t * P[3][k]); };
+  const curveOK = (P) => { for (let t = 0.04; t <= 1; t += 0.04) { const [x, y] = bez(P, t); if (!okPt(x, y)) return false; } return true; };
+  const ring = (x, y, r, w, c, t0) => { const e = el("circle", { cx: x, cy: y, r, fill: "none", stroke: c || "#365F7C", "stroke-width": w || 1 }); A3.marks.push({ e, t0 }); return e; };
+  const dotm = (x, y, r, c, t0) => { const e = el("circle", { cx: x, cy: y, r, fill: c }); A3.marks.push({ e, t0 }); return e; };
+  const ink = (P, attrs, t0, dur) => { const e = el("path", { d: `M${P[0]} C ${P[1]} ${P[2]} ${P[3]}`, fill: "none", "stroke-linecap": "round", ...attrs }); const L = e.getTotalLength(); A3.ink.push({ e, L, t0, dur, dashed: !!attrs["stroke-dasharray"] }); return e; };
+  function branch(p0, ang, len, width, depth, color, op, t0) {
+    const p3 = [p0[0] + Math.cos(ang) * len, p0[1] + Math.sin(ang) * len], bend = (rnd() - 0.5) * 0.5;
+    const P = [p0, [p0[0] + Math.cos(ang - bend) * len * 0.35, p0[1] + Math.sin(ang - bend) * len * 0.35], [p0[0] + Math.cos(ang + bend) * len * 0.7, p0[1] + Math.sin(ang + bend) * len * 0.7], p3];
+    if (!curveOK(P)) return;
+    const dur = 0.5 + len / 260;
+    ink(P, { stroke: color, "stroke-width": width, opacity: op, ...(width < 0.9 && rnd() < 0.3 ? { "stroke-dasharray": "2 3.5" } : {}) }, t0, dur);
+    if (depth === 0) { if (rnd() < 0.8) ring(p3[0], p3[1], 2.2 + rnd() * 2.6, 1, null, t0 + dur); else dotm(p3[0], p3[1], 1.8, "#2B5F94", t0 + dur); return; }
+    const kids = rnd() < 0.55 ? 1 : 2;
+    for (let k = 0; k < kids; k++) { const t = 0.4 + 0.5 * rnd(), q = bez(P, t), a = ang + (rnd() < 0.5 ? -1 : 1) * (0.26 + rnd() * 0.3);
+      if (rnd() < 0.25) ring(q[0], q[1], 1.8 + rnd() * 1.6, 0.8, null, t0 + dur * t);
+      branch(q, a, len * (0.45 + rnd() * 0.2), Math.max(0.75, width * 0.6), depth - 1, "#5F92B8", 0.75, t0 + dur * t); }
+    if (depth > 1) branch(p3, ang + (rnd() - 0.5) * 0.35, len * 0.55, Math.max(0.75, width * 0.7), depth - 1, "#5F92B8", 0.8, t0 + dur);
+  }
+  // spoken order: supplier declarations, energy data, production records, transport data, allocation rules, assumptions
+  const S = A3.S = [5.6, 7.0, 8.4, 9.8, 11.2, 12.6], TR = 1.8;
+  LABELS.forEach(([t, x, y], i) => { const tx = x - 14, ty = y, gap = i === 5 ? 110 : 0, ex = tx - gap;
+    const P = [NODE, [NODE[0] + 120, NODE[1] + (ty - NODE[1]) * 0.15], [ex - 180, ty], [ex, ty]];
+    ink(P, { stroke: "#365F7C", "stroke-width": 2.2 }, S[i], TR);
+    if (i === 5) ring(ex, ty, 6, 1.6, CU, S[i] + TR); else ring(tx, ty, 4.5, 1.4, null, S[i] + TR);
+    for (let k = 0; k < 6; k++) { const tt = 0.18 + k * 0.12 + rnd() * 0.05, q = bez(P, tt), dir = Math.atan2(bez(P, tt + 0.01)[1] - q[1], bez(P, tt + 0.01)[0] - q[0]);
+      ring(q[0], q[1], 1.8 + rnd() * 2, 0.9, null, S[i] + TR * tt);
+      branch(q, dir + (k % 2 ? -1 : 1) * (0.3 + rnd() * 0.3), 60 + rnd() * 60, 1.1, 2, "#365F7C", 0.9, S[i] + TR * tt); } });
+  const angOf = LABELS.map(([t, x, y]) => Math.atan2(y - NODE[1], x - 14 - NODE[0]));
+  for (let k = 0; k < 34; k++) { const a = -1.0 + (k / 33) * 1.75 + (rnd() - 0.5) * 0.06; let j = 0; angOf.forEach((q, i) => { if (Math.abs(q - a) < Math.abs(angOf[j] - a)) j = i; });
+    branch(NODE, a, 170 + rnd() * 230, 0.9, k % 3 ? 2 : 3, "#5F92B8", 0.8, S[j] - 0.5 + (k % 3) * 0.15); }
+  A3.ink.forEach((q) => { if (!q.dashed) q.e.setAttribute("stroke-dasharray", `${q.L} ${q.L + 2}`); });
+}
+function a3Hide() { if (!A3.built) return; Object.values(A3.els).forEach((d) => (d.style.opacity = 0)); A3.rows.forEach((d) => (d.style.opacity = 0)); A3.labels.forEach((d) => (d.style.opacity = 0)); A3.svg.style.display = "none"; }
+function a3Reveal(t12) {                                   // the drawing at time t12 of click 12 (99 = complete)
+  A3.svg.style.display = "";
+  const E = (a, d) => smooth((t12 - a) / d);
+  A3.rows.forEach((d, i) => (d.style.opacity = E(0.4 + i * 1.3, 0.7)));
+  A3.lines.forEach((q, i) => { const u = clamp((t12 - (0.8 + i * 1.3)) / 1.6), e = u * u * (3 - 2 * u);
+    q.pth.setAttribute("stroke-dasharray", `${q.L} ${q.L + 2}`); q.pth.setAttribute("stroke-dashoffset", q.L * (1 - e)); q.dot.setAttribute("opacity", e >= q.at ? 1 : 0); });
+  const nd = E(2.4, 0.4); A3.node.forEach((c) => c.setAttribute("opacity", nd));
+  A3.ink.forEach((q) => { const u = clamp((t12 - q.t0) / q.dur), e = 1 - Math.pow(1 - u, 2);
+    if (q.dashed) q.e.style.opacity = e; else { q.e.style.opacity = u > 0 ? 1 : 0; q.e.setAttribute("stroke-dashoffset", q.L * (1 - e)); } });
+  A3.marks.forEach((m) => (m.e.style.opacity = E(m.t0, 0.25)));
+  A3.labels.forEach((d, i) => (d.style.opacity = E(A3.S[i] + 1.5, 0.6)));
+  A3.els.claim.style.opacity = E(15.5, 1.2);
+}
+// the two spheres: a hop = 0.1 s crouch, an arc, a landing squash; they move closer in turns, then talk in place, never touching
+const A3_C0 = 517, A3_B0 = 1393, A3_STEP = 61;
+const HOPS12 = [[4.0, "c", 1, 46], [5.4, "b", 1, 46], [7.6, "c", 1, 46], [9.0, "b", 1, 46], [11.4, "c", 1, 46], [12.8, "b", 1, 46]];
+const HOPS13 = [[1.2, "c", 0, 34], [3.2, "b", 0, 34], [5.6, "c", 0, 30], [8.0, "b", 0, 30]];
+function sphereHops(who, x0, dir, hops, t) {
+  let x = x0, y = 0, sx = 1, sy = 1; const D = 0.55;
+  for (const [ts, w, steps, h] of hops) { if (w !== who) continue; const a = t - ts, dx = dir * steps * A3_STEP;
+    if (a >= D + 0.12) { x += dx; continue; }
+    if (a < -0.1) break;
+    if (a < 0) { sy = 0.92; sx = 1.04; }                                                   // he gathers himself
+    else if (a < D) { const u = a / D; x += dx * (u * u * (3 - 2 * u)); y = h * 4 * u * (1 - u); sy = 1.05; sx = 0.975; }
+    else { const u = (a - D) / 0.12; x += dx; sy = 0.9 + 0.1 * u; sx = 1 / Math.sqrt(sy); }   // lands
+    break; }
+  return [x, FLOOR - SYM_R * sy - y, sx, sy];
+}
+function placeA3(c12, c13) {
+  const xc = A3_C0 + 3 * A3_STEP, xb = A3_B0 - 3 * A3_STEP;
+  let C = sphereHops("c", A3_C0, 1, HOPS12, c12), B = sphereHops("b", A3_B0, -1, HOPS12, c12);
+  if (c13 >= 0) { C = sphereHops("c", xc, 1, HOPS13, c13); B = sphereHops("b", xb, -1, HOPS13, c13); }
+  place(copper, C[0], C[1], SYM_R, C[2], C[3]); place(blue, B[0], B[1], SYM_R, B[2], B[3]);
+}
+// Click 11, "A carbon number looks like chemistry. It is a data product.": the number writes in; the line lands; hard pause
+function act3Number(t) {
+  if (t < 0) { a3Hide(); return; }
+  buildA3(); a3Hide(); const E = (a, d) => smooth((t - a) / d), e = A3.els;
+  e.tag.style.opacity = E(0.3, 0.8);
+  e.number.style.opacity = E(0.6, 0.3); e.number.style.clipPath = `inset(-20% ${(100 * (1 - E(0.6, 1.8))).toFixed(2)}% -20% 0)`;
+  e.product.style.opacity = E(3.2, 1.0);
+  placeA3(0, -1);
+}
+// Click 12, "Behind one apparently simple number sit…": scopes, copper lines to the axis, the node, the roots in spoken order; the approach
+function act3Delta(t) {
+  if (t < 0) return;
+  const e = A3.els; e.tag.style.opacity = 1; e.number.style.opacity = 1; e.number.style.clipPath = "none"; e.product.style.opacity = 1;
+  a3Reveal(t); placeA3(t, -1);
+}
+// Click 13, "Where did it come from? Who owns it?…": four questions, four alternating hops in place; they stay apart
+function act3Talk(t) { if (t < 0) return; a3Reveal(99); placeA3(99, t); }
+// Click 14, "You cannot report what you cannot trace.": the line writes in; then nothing moves
+function act3Thesis(t) {
+  if (t < 0) return;
+  a3Reveal(99); placeA3(99, 99);
+  const e = A3.els.thesis, E = (a, d) => smooth((t - a) / d);
+  e.style.opacity = E(0.4, 0.3); e.style.clipPath = `inset(-20% ${(100 * (1 - E(0.4, 2.2))).toFixed(2)}% -20% 0)`;
+}
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 4.6, 12: 17.2, 13: 9.0, 14: 3.0 };
 window.setState = (c, t) => {
-  click4(-1); click5(-1); click6(-1); click7(-1); click9(-1); clickSym(-1); click10(-1);
+  click4(-1); click5(-1); click6(-1); click7(-1); click9(-1); clickSym(-1); click10(-1); act3Number(-1);
   if (c >= 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(c === 4 ? t : 99);
-    const steps = [null, null, null, null, null, click5, click6, click7, click8, click9, clickSym, click10, click11, click12, click13];
+    const steps = [null, null, null, null, null, click5, click6, click7, click8, click9, clickSym, act3Number, act3Delta, act3Talk, act3Thesis];
     for (let k = 5; k <= c; k++) steps[k](k === c ? t : 99);
     return; }
   if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
