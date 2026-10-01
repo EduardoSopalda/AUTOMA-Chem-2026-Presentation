@@ -23,7 +23,11 @@
      CLICK 11 "A carbon number looks like chemistry. It is a data product."   11,001.8 kt CO2e writes in; the line; hard pause
      CLICK 12 "Behind one apparently simple number sit..."   scopes, copper lines to the axis node, the root delta to the six sources; the spheres approach
      CLICK 13 "Where did it come from? Who owns it?..."     the spheres talk across the axis, four questions, four hops; they never touch
-     CLICK 14 "You cannot report what you cannot trace."   the line writes in; stillness -->
+     CLICK 14 "You cannot report what you cannot trace."   the line writes in; stillness
+     CLICK 15 "Why do we not just use AI?"         Act 03's words leave; 04; the axis swallows the evidence network
+     CLICK 16 "I am optimistic about AI... It can scale it."   the bump at the axis; copper stamps AI on blue; 1-2-4-8-16-32
+     CLICK 17 "If five people use the word 'batch'..."   past counting; mutants surface; the copper rule searches along the axis
+     CLICK 18 "Sometimes AI is the answer..."      the copper rule constructs AI, then better data, then better process -->
 <style>
   @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4.ttf") format("truetype");font-weight:200 900}
   @font-face{font-family:"DM Sans";src:url("../fonts/dm-sans-latin-100-normal.woff2") format("woff2");font-weight:100}
@@ -294,7 +298,8 @@ function click2(t) {
 // The giant number (top left, behind the spheres), the small ACT label, the serif title and the copper rule,
 // with one set of timings for every act. Act 01 reveals it in clicks 1 and 2; Act 02 reuses it at click 4.
 const CHAPTERS = { 1: { number: "01", label: "ACT 01", title: "The Architect" }, 2: { number: "02", label: "ACT 02", title: "Brasília" },
-                   3: { number: "03", label: "ACT 03", title: "When ambition<br>becomes<br>evidence" } };
+                   3: { number: "03", label: "ACT 03", title: "When ambition<br>becomes<br>evidence" },
+                   4: { number: "04", label: "ACT 04", title: "AI scales<br>what is there" } };
 CHAPTERS[1].subtitle = ["We design from above.", "Not always for the person", "who has to live", "with the result."];
 CHAPTERS[2].subtitle = ["I built a plaza", "nobody wanted to stand in."];
 function chapterSubtitle(ch) { const el = $("stmt"), html = ch.subtitle.map((l) => `<div>${l}</div>`).join("");
@@ -870,11 +875,217 @@ function act3Thesis(t) {
   const e = A3.els.thesis, E = (a, d) => smooth((t - a) / d);
   e.style.opacity = E(0.4, 0.3); e.style.clipPath = `inset(-20% ${(100 * (1 - E(0.4, 2.2))).toFixed(2)}% -20% 0)`;
 }
-window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 4.6, 12: 17.2, 13: 9.0, 14: 3.0 };
+// ================= CLICKS 15 to 18 · ACT 04: AI scales what is there =================
+// The evidence is swallowed by the axis; the spheres bump at the axis and copper stamps AI on blue; blue multiplies,
+// 1-2-4-8-16-32 and then past counting, each child on its own path; mutants emerge one by one (a square, a triangle,
+// a slow purple the others avoid); the axis is an absolute wall. A copper rule watches, searches along the axis, and
+// constructs the spoken lines: AI, then better data, then better process. All motion is seeded and precomputed.
+function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const A4 = { built: false };
+function a3Retract(u, tw) {                                // the evidence runs backwards into the axis: tips first, then the trunks, the copper lines, the node
+  buildA3(); A3.svg.style.display = "";
+  const maxE = Math.max(...A3.ink.map((q) => q.t0 + q.dur)), k = 3.6 / maxE;
+  A3.ink.forEach((q) => { const back = (maxE - (q.t0 + q.dur)) * k, v = 1 - clamp((tw - back) / Math.max(0.35, q.dur * k * 1.6)), e = v * v * (3 - 2 * v);
+    if (q.dashed) q.e.style.opacity = e; else { q.e.style.opacity = e > 0.002 ? 1 : 0; q.e.setAttribute("stroke-dashoffset", q.L * (1 - e)); } });
+  A3.marks.forEach((m) => { const back = (maxE - m.t0) * k; m.e.style.opacity = 1 - clamp((tw - back) / 0.2); });
+  A3.lines.forEach((q, i) => { const v = 1 - clamp((tw - 3.0 - i * 0.15) / 1.0), e = v * v * (3 - 2 * v);   // the copper lines run into the node
+    q.pth.setAttribute("stroke-dasharray", `0 ${(q.L * (1 - e)).toFixed(1)} ${(q.L * e).toFixed(1)} ${q.L * 2}`); q.pth.setAttribute("stroke-dashoffset", 0);
+    q.dot.setAttribute("opacity", e > 1 - q.at ? 1 : 0); });
+  const n = 1 - clamp((tw - 4.4) / 0.6); A3.node[0].setAttribute("r", (9 * n).toFixed(2)); A3.node[1].setAttribute("r", (15 * n).toFixed(2));   // the axis swallows the node
+  A3.node.forEach((c) => c.setAttribute("opacity", n > 0.01 ? 1 : 0)); A3.labels.forEach((d) => (d.style.opacity = 0));
+}
+function buildA4() {
+  if (A4.built) return; A4.built = true;
+  const st = $("stage");
+  // the swarm canvas
+  const cv = document.createElement("canvas"); cv.width = 1920 * 2; cv.height = 1080 * 2; cv.style.cssText = "position:absolute;left:0;top:0;width:1920px;height:1080px;z-index:2;pointer-events:none";
+  st.appendChild(cv); A4.cv = cv; A4.ctx = cv.getContext("2d");
+  // the stamp
+  const sp = document.createElement("div"); sp.textContent = "AI";
+  sp.style.cssText = "position:absolute;left:0;top:0;z-index:3;font:600 19px/1 'DM Sans',sans-serif;letter-spacing:.08em;color:#E7C39B;border:1.6px solid #E7C39B;padding:3px 5px 2px 6px;opacity:0;transform-origin:50% 50%";
+  st.appendChild(sp); A4.stamp = sp;
+  // the copper rule and its construction lines
+  const svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080); svg.style.cssText = "position:absolute;left:0;top:0;z-index:2;mix-blend-mode:multiply"; st.appendChild(svg);
+  const mk = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  A4.rule = mk("line", { stroke: "#762F0B", "stroke-width": 2.6, "stroke-linecap": "round", opacity: 0 });
+  A4.guides = [0, 1, 2].map(() => [mk("line", { stroke: "#9A5B24", "stroke-width": 1, opacity: 0 }), mk("line", { stroke: "#9A5B24", "stroke-width": 0.8, "stroke-dasharray": "3 4", opacity: 0 })]);
+  A4.ticks = mk("g", { stroke: "#762F0B", "stroke-width": 1.4, opacity: 0 });
+  // the typography (Source Serif 4 and DM Sans only)
+  const T = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;transform-origin:0 100%;" + css; st.appendChild(d); return d; };
+  const CU = "#762F0B", INK = "#26221E";
+  A4.t = {
+    s1: T("Sometimes", `left:112px;top:196px;font:italic 400 34px/1 'Source Serif 4';color:${INK}`),
+    ai: T("AI", `left:104px;top:240px;font:600 250px/0.8 'Source Serif 4';color:${CU};letter-spacing:-.02em`),
+    ans: T("is the answer.", `left:440px;top:402px;font:400 42px/1 'Source Serif 4';color:${INK}`),
+    l1: T("Sometimes <b style='font-weight:600;color:#762F0B'>AI</b> is the answer.", `left:112px;top:150px;font:italic 400 28px/1 'Source Serif 4';color:${INK}`),
+    s2: T("Sometimes the answer is", `left:112px;top:252px;font:italic 400 34px/1 'Source Serif 4';color:${INK}`),
+    data: T("better data", `left:104px;top:300px;font:600 128px/1 'Source Serif 4';color:${CU};letter-spacing:-.01em`),
+    l2: T("Sometimes the answer is <b style='font-weight:600;color:#762F0B;font-size:1.25em'>better data</b>.", `left:112px;top:204px;font:italic 400 28px/1 'Source Serif 4';color:${INK}`),
+    s3: T("Sometimes it is a", `left:112px;top:304px;font:italic 400 34px/1 'Source Serif 4';color:${INK}`),
+    proc: T("better process", `left:104px;top:352px;font:600 108px/1 'Source Serif 4';color:${CU};letter-spacing:-.01em`),
+  };
+  // ---- the swarm: precomputed once from a fixed seed (30 fps, 40 s) ----
+  const rnd = rng(1026), FPS = 30, TMAX = 40, dt = 1 / FPS, ag = [], frames = [];
+  const births = [];                                        // [time, count]: exact doubling first, then past counting
+  [[2.6, 1], [3.8, 2], [4.8, 4], [5.7, 8], [6.4, 16]].forEach(([t, n]) => { for (let i = 0; i < n; i++) births.push(t + (n > 1 ? (i / n) * 0.45 : 0)); });
+  for (let t = 7.0, g = 0.5; t < TMAX - 6 && births.length < 128; t += g, g = Math.max(0.06, g * 0.9)) births.push(t);
+  const MUT = { 30: "sq", 37: "tri", 44: "purple", 53: "dia", 62: "sq", 71: "pent", 83: "tri", 96: "sq", 110: "dia", 124: "tri", 139: "pent" };
+  const spawn = (x, y, r, kind, born) => { const a = { x, y, vx: 0, vy: 0, r, kind, born, th: rnd() * Math.PI * 2, sp: 60 + rnd() * 170, f1: 0.3 + rnd() * 1.1, f2: 1.1 + rnd() * 2.3, p1: rnd() * 6.3, p2: rnd() * 6.3, a1: 0.8 + rnd() * 1.6, a2: 0.5 + rnd() * 1.4, rot: rnd() * 6.3, wr: (rnd() - 0.5) * 2.4 }; ag.push(a); return a; };
+  spawn(1120, FLOOR - SYM_R, SYM_R, "blue", 0).sp = 90;     // the stamped one
+  const inside = (a) => { const r = a.r; let x = Math.max(957 + r, Math.min(1828 - r, a.x)), y = Math.max(150 + r, Math.min(930 - r, a.y));
+    if (x + r > 1545 && y - r < 452) { if (1545 - r - x > 452 + r - y) x = 1545 - r; else y = 452 + r; }      // the chapter column and the name
+    if (x + r > 1545 && y + r > 935) y = 935 - r;                                                       // the logo
+    if (x - r < 1060 && y + r > 700) { if (1060 + r - x < y + r - 700) x = 1060 + r; else y = 700 - r; }  // the man keeps his space
+    a.x = x; a.y = y; };
+  let bi = 0, birthN = 0;
+  for (let f = 0; f <= TMAX * FPS; f++) {
+    const T = f * dt;
+    while (bi < births.length && births[bi] <= T) { bi++; birthN++;
+      const cands = ag.filter((q) => q.kind !== "purple"), par = cands[Math.floor(rnd() * cands.length)], dir = rnd() * Math.PI * 2;
+      const r = Math.max(12, Math.min(34, (par.kind === "blue" && par === ag[0] ? 30 : par.r) * (0.8 + rnd() * 0.14))), kind = MUT[birthN] || "sphere";
+      const c = spawn(par.x + Math.cos(dir) * (par.r + r + 1), par.y + Math.sin(dir) * (par.r + r + 1), kind === "purple" ? 30 : r, kind, T);
+      c.vx = Math.cos(dir) * 120; c.vy = Math.sin(dir) * 120; par.vx -= Math.cos(dir) * 60; par.vy -= Math.sin(dir) * 60; if (kind === "purple") { c.sp = 34; c.a1 = 0.25; c.a2 = 0.1; } inside(c); }
+    const purple = ag.find((q) => q.kind === "purple");
+    for (const a of ag) {
+      if (a === ag[0] && T < 2.6) continue;                  // the stamped one rests until it starts to divide
+      a.th += (Math.sin(T * a.f1 + a.p1) * a.a1 + Math.sin(T * a.f2 + a.p2) * a.a2) * dt;
+      // walls steer, they do not bounce: near a boundary the heading turns back inside
+      const near = [[a.x - a.r - 957, 0], [1828 - a.r - a.x, Math.PI], [a.y - a.r - 210, Math.PI / 2], [930 - a.r - a.y, -Math.PI / 2]];
+      const zones = [[a.x + a.r - 1545, a.y - a.r - 452, Math.PI * 0.75], [1060 - (a.x - a.r), (a.y + a.r) - 700, -Math.PI / 4]];   // the column corner and the man's corner push the heading away
+      for (const [d, inward] of near) if (d < 90) { let df = inward - a.th; df = Math.atan2(Math.sin(df), Math.cos(df)); a.th += df * (1 - d / 90) * 7 * dt; }
+      for (const [ex, ey, inward] of zones) if (ex > -70 && ey < 70) { let df = inward - a.th; df = Math.atan2(Math.sin(df), Math.cos(df)); a.th += df * 5 * dt; }
+      if (purple && a !== purple) { const dx = a.x - purple.x, dy = a.y - purple.y, d = Math.hypot(dx, dy); if (d < 150) { const away = Math.atan2(dy, dx); let df = away - a.th; df = Math.atan2(Math.sin(df), Math.cos(df)); a.th += df * (1 - d / 150) * 4 * dt; } }
+      const tv = [Math.cos(a.th) * a.sp, Math.sin(a.th) * a.sp]; a.vx += (tv[0] - a.vx) * 2.2 * dt; a.vy += (tv[1] - a.vy) * 2.2 * dt;
+      a.x += a.vx * dt; a.y += a.vy * dt; a.rot += a.wr * dt; inside(a);
+    }
+    // collisions: they bump, push apart, and trade a little momentum
+    const G = new Map(), key = (x, y) => Math.floor(x / 70) * 1000 + Math.floor(y / 70); ag.forEach((a) => { a.cx = 0; a.cy = 0; a.cn = 0; });
+    ag.forEach((a, i) => { const k = key(a.x, a.y); if (!G.has(k)) G.set(k, []); G.get(k).push(i); });
+    ag.forEach((a, i) => { const cx = Math.floor(a.x / 70), cy = Math.floor(a.y / 70);
+      for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) for (const j of G.get((cx + ox) * 1000 + cy + oy) || []) { if (j <= i) continue; const b = ag[j];
+        const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01, ov = a.r + b.r - d;
+        if (d < 1.9 * (a.r + b.r)) { a.cx += dx; a.cy += dy; a.cn++; b.cx -= dx; b.cy -= dy; b.cn++; }
+        if (ov <= 0) continue;
+        const nx = dx / d, ny = dy / d, wa = b.r * b.r / (a.r * a.r + b.r * b.r), wb = 1 - wa;
+        a.x -= nx * ov * wa; a.y -= ny * ov * wa; b.x += nx * ov * wb; b.y += ny * ov * wb;
+        const rv = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny; if (rv < 0) { const imp = -1.5 * rv; a.vx -= nx * imp * wa; a.vy -= ny * imp * wa; b.vx += nx * imp * wb; b.vy += ny * imp * wb; }
+        a.th = Math.atan2(a.vy, a.vx); b.th = Math.atan2(b.vy, b.vx); inside(a); inside(b); } });
+    ag.forEach((a) => { if (a.cn > 1 && a.kind !== "purple") { const away = Math.atan2(-a.cy, -a.cx); let df = away - a.th; df = Math.atan2(Math.sin(df), Math.cos(df)); a.th += df * Math.min(1, a.cn / 6) * 6 * dt; } });   // personal space: no packing
+    frames.push(ag.map((a) => [a.x, a.y, a.rot]));
+  }
+  A4.ag = ag.map((a) => ({ r: a.r, kind: a.kind, born: a.born })); A4.frames = frames; A4.FPS = FPS; A4.TMAX = TMAX;
+}
+function drawSwarm(T) {                                    // T: swarm time (s) from the start of click 16
+  const c = A4.ctx; c.setTransform(2, 0, 0, 2, 0, 0); c.clearRect(0, 0, 1920, 1080);
+  if (T < 2.6) return;
+  const f = Math.min(A4.frames.length - 1, Math.max(0, Math.round(T * A4.FPS))), fr = A4.frames[f], im = blue.im, o = blue.o;
+  for (let i = 1; i < fr.length; i++) { const a = A4.ag[i]; if (a.born > T) continue; const [x, y, rot] = fr[i], age = T - a.born, pop = Math.min(1, age / 0.18), r = a.r * (0.6 + 0.4 * pop);
+    if (a.kind === "sphere" || a.kind === "purple") { const k = r / o.r; c.save(); if (a.kind === "purple") c.filter = "hue-rotate(48deg) saturate(.75) brightness(.92)"; c.drawImage(im, x - o.c * k, y - o.c * k, o.w * k, o.h * k); c.restore(); continue; }
+    c.save(); c.translate(x, y); c.rotate(rot); c.fillStyle = "#1E4D7B"; c.strokeStyle = "#163a5e"; c.lineWidth = 1; c.beginPath();
+    const s = r * 0.92;
+    if (a.kind === "sq") c.rect(-s * 0.85, -s * 0.85, s * 1.7, s * 1.7);
+    else if (a.kind === "dia") { c.moveTo(0, -s * 1.1); c.lineTo(s * 0.8, 0); c.lineTo(0, s * 1.1); c.lineTo(-s * 0.8, 0); c.closePath(); }
+    else { const n = a.kind === "tri" ? 3 : 5; for (let k = 0; k < n; k++) { const ang = -Math.PI / 2 + (k * 2 * Math.PI) / n; c[k ? "lineTo" : "moveTo"](Math.cos(ang) * s * 1.1, Math.sin(ang) * s * 1.1); } c.closePath(); }
+    c.fill(); c.stroke(); c.globalAlpha = 0.35; c.strokeStyle = "#7FA6C8"; c.beginPath(); c.moveTo(-s * 0.5, -s * 0.55); c.lineTo(s * 0.2, -s * 0.7); c.stroke(); c.restore(); }
+  const [x0, y0] = fr[0]; place(blue, x0, y0, SYM_R); blue.sh.style.opacity = Math.max(0, 1 - (T - 2.6) / 0.6);
+  return [x0, y0];
+}
+function stampAt(x, y, o) { const s = A4.stamp; s.style.opacity = o; s.style.transform = `translate(${(x - 26).toFixed(1)}px, ${(y - 14).toFixed(1)}px) rotate(-9deg)`; }
+function a4Hide() { if (!A4.built) return; A4.ctx.setTransform(1, 0, 0, 1, 0, 0); A4.ctx.clearRect(0, 0, A4.cv.width, A4.cv.height); A4.stamp.style.opacity = 0;
+  A4.rule.setAttribute("opacity", 0); A4.guides.forEach((g) => g.forEach((l) => l.setAttribute("opacity", 0))); A4.ticks.setAttribute("opacity", 0); Object.values(A4.t).forEach((d) => (d.style.opacity = 0)); blue.sh.style.opacity = ""; }
+// Click 15, "Why do we not just use AI?": Act 03's words leave; 04; the axis swallows the evidence
+function act4Open(t) {
+  if (t < 0) { a4Hide(); return; }
+  buildA4(); a4Hide();
+  const E = (a, d) => smooth((t - a) / d), e = A3.els, out = 1 - E(0, 1.6);
+  [e.tag, e.number, e.product, e.claim, e.thesis, ...A3.rows].forEach((d) => (d.style.opacity = out));
+  if (t < 1.6) { A3.labels.forEach((d) => (d.style.opacity = out)); a3Reveal(99); A3.labels.forEach((d) => (d.style.opacity = out)); } else a3Retract(1, t - 3.2);
+  if (t < 3.0) { const o2 = 1 - E(1.6, 1.2); $("act").style.opacity = o2; $("ttl").style.opacity = o2; $("hair").style.opacity = 0.55 * o2; $("rule").style.width = 100 * o2 + "%"; }
+  else chapterColumn(t - 3.0, CHAPTERS[4]);
+  if (t >= 1.8) chapterNumber(t - 1.8, CHAPTERS[4]); else $("one").style.opacity = 0;
+  placeA3(99, 99);
+}
+// Click 16, "I am optimistic about AI… It can scale it.": the bump at the axis, the stamp, the multiplication; the copper rule steps back to watch
+const BUMP = { tc: 1.2, yc: 600 };
+function copperAfter(t) {                                  // copper: leap to the axis, the bump, back to its side; then it watches
+  const C0 = [700, FLOOR - SYM_R], C1 = [955 - SYM_R - 1, BUMP.yc], C2 = [780, FLOOR - SYM_R];
+  if (t < BUMP.tc) { const u = clamp((t - 0.25) / (BUMP.tc - 0.25)); if (t < 0.25) return [C0[0], C0[1] + 3 * smooth(t / 0.25), 1.04, 0.93];
+    return [C0[0] + (C1[0] - C0[0]) * u, C0[1] + (C1[1] - C0[1]) * u - 90 * 4 * u * (1 - u), 0.97, 1.05]; }
+  if (t < BUMP.tc + 0.08) return [C1[0] - 4, C1[1], 0.86, 1.1];
+  const u = clamp((t - BUMP.tc - 0.08) / 0.6); if (u < 1) return [C1[0] + (C2[0] - C1[0]) * u, C1[1] + (C2[1] - C1[1]) * u - 40 * 4 * u * (1 - u), 1, 1];
+  const v = clamp((t - BUMP.tc - 0.68) / 0.14); return [C2[0], C2[1], 1 + 0.06 * Math.sin(Math.PI * v), 1 - 0.07 * Math.sin(Math.PI * v)];
+}
+function blueBump(t) {
+  const B0 = [1210, FLOOR - SYM_R], B1 = [955 + SYM_R + 1, BUMP.yc], B2 = [1120, FLOOR - SYM_R];
+  if (t < BUMP.tc) { const u = clamp((t - 0.3) / (BUMP.tc - 0.3)); if (t < 0.3) return [B0[0], B0[1] + 3 * smooth(t / 0.3), 1.04, 0.93];
+    return [B0[0] + (B1[0] - B0[0]) * u, B0[1] + (B1[1] - B0[1]) * u - 90 * 4 * u * (1 - u), 0.97, 1.05]; }
+  if (t < BUMP.tc + 0.08) return [B1[0] + 4, B1[1], 0.86, 1.1];
+  const u = clamp((t - BUMP.tc - 0.08) / 0.6); if (u < 1) return [B1[0] + (B2[0] - B1[0]) * u, B1[1] + (B2[1] - B1[1]) * u - 40 * 4 * u * (1 - u), 1, 1];
+  const v = clamp((t - BUMP.tc - 0.68) / 0.14); return [B2[0], B2[1], 1 + 0.06 * Math.sin(Math.PI * v), 1 - 0.07 * Math.sin(Math.PI * v)];
+}
+function ruleAt(x, y0, y1, o) { A4.rule.setAttribute("x1", x); A4.rule.setAttribute("x2", x); A4.rule.setAttribute("y1", y0); A4.rule.setAttribute("y2", y1); A4.rule.setAttribute("opacity", o); }
+function act4Bump(t) {
+  if (t < 0) return;
+  a3Retract(1, 99); A3.svg.style.display = "none"; A4.stamp.style.opacity = 0;
+  const c = copperAfter(t); place(copper, c[0], c[1] + SYM_R * (1 - c[3]), SYM_R, c[2], c[3]);
+  if (t < 2.6) { const b = blueBump(t); place(blue, b[0], b[1] + SYM_R * (1 - b[3]), SYM_R, b[2], b[3]); drawSwarm(0); if (t >= BUMP.tc) stampAt(b[0] - 6, b[1] + 2, 1); }
+  else { const p = drawSwarm(t); stampAt(p[0] - 6, p[1] + 2, 1); }
+  if (t >= BUMP.tc && t < BUMP.tc + 0.1) A4.stamp.style.transform += ` scale(${(1.25 - 2.5 * (t - BUMP.tc)).toFixed(3)})`;   // the stamp lands
+  // the copper rule peels off the axis and steps back to watch
+  const E = (a, d) => smooth((t - a) / d), x = 955 - (955 - 700) * E(3.0, 2.4) + 3 * Math.sin(t * 0.9) * E(5.4, 1);
+  ruleAt(x, 560, 700, 0.95 * E(2.2, 0.6));
+}
+// Click 17, "If five people use the word 'batch'…": past counting; mutants surface one by one; the copper rule returns and searches along the axis
+const SEARCH = [[0, 630], [2.5, 630], [4.6, 300], [6.0, 300], [8.0, 520], [9.0, 520], [10.6, 210], [12, 210]];
+function act4Swarm(t) {
+  if (t < 0) return;
+  A3.svg.style.display = "none";
+  const c = copperAfter(99); place(copper, c[0], c[1], SYM_R);
+  const p = drawSwarm(12 + t); stampAt(p[0] - 6, p[1] + 2, 1);
+  const E = (a, d) => smooth((t - a) / d), x = 700 + (955 - 700) * E(0.4, 2.0);
+  let y = SEARCH[0][1]; for (let i = 1; i < SEARCH.length; i++) { const [t0, y0] = SEARCH[i - 1], [t1, y1] = SEARCH[i]; if (t >= t0) y = y0 + (y1 - y0) * smooth((t - t0) / (t1 - t0)); }
+  ruleAt(x, y - 70, y + 70, 0.95);
+}
+// Click 18, "Sometimes AI is the answer…": the copper rule constructs each line; AI, then better data, then better process
+function act4Words(t) {
+  if (t < 0) return;
+  A3.svg.style.display = "none";
+  const c = copperAfter(99); place(copper, c[0], c[1], SYM_R);
+  const p = drawSwarm(24 + t); stampAt(p[0] - 6, p[1] + 2, 1);
+  const E = (a, d) => smooth((t - a) / d), T4 = A4.t;
+  const wipe = (d, a, dur) => { const u = E(a, dur); d.style.opacity = u > 0 ? 1 : 0; d.style.clipPath = `inset(-30% ${(100 * (1 - u)).toFixed(2)}% -30% 0)`; };
+  const guide = (i, y, a, x0 = 110) => { const [g, h] = A4.guides[i], u = E(a, 0.6), fade = 1 - 0.8 * E(a + 1.8, 0.8);   // a construction line runs from the axis to the margin
+    g.setAttribute("x1", 945); g.setAttribute("x2", 945 - (945 - x0) * u); g.setAttribute("y1", y); g.setAttribute("y2", y); g.setAttribute("opacity", u > 0 ? 0.9 * fade : 0);
+    h.setAttribute("x1", 945); h.setAttribute("x2", 945 - (945 - x0) * u); h.setAttribute("y1", y - 92); h.setAttribute("y2", y - 92); h.setAttribute("opacity", u > 0 ? 0.6 * fade : 0); };
+  // the rule's stops along the axis: one per line
+  const stops = [[0, 210], [0.3, 440], [3.6, 440], [4.2, 420], [8.6, 420], [9.2, 450], [16, 450]];
+  let y = stops[0][1]; for (let i = 1; i < stops.length; i++) { const [t0, y0] = stops[i - 1], [t1, y1] = stops[i]; if (t >= t0) y = y0 + (y1 - y0) * smooth((t - t0) / Math.max(0.01, t1 - t0)); }
+  ruleAt(955, y - 70, y + 70, 0.95);
+  // PHASE 1 · AI: confident, monumental
+  guide(0, 440, 0.4); wipe(T4.s1, 0.9, 0.6); wipe(T4.ai, 1.1, 0.9); wipe(T4.ans, 1.9, 0.8);
+  const shrink = E(4.0, 1.4);                                 // PHASE 2 begins: AI loses its dominance and settles into one quiet line
+  [T4.s1, T4.ai, T4.ans].forEach((d) => (d.style.opacity = (d.style.opacity === "1" ? 1 : 0) * (1 - shrink)));
+  T4.ai.style.transform = `translate(0, ${(-60 * shrink).toFixed(1)}px) scale(${(1 - 0.85 * shrink).toFixed(3)})`;
+  T4.l1.style.opacity = E(4.8, 0.8); T4.l1.style.clipPath = "none";
+  // PHASE 2 · better data: constructed on its baseline by the copper system
+  guide(1, 420, 4.6); wipe(T4.s2, 5.2, 0.7); wipe(T4.data, 5.6, 1.5);
+  const settle = E(9.0, 1.3);                                 // PHASE 3 begins: better data settles into the record above
+  [T4.s2, T4.data].forEach((d) => { if (d.style.opacity === "1") d.style.opacity = 1 - settle; });
+  T4.data.style.transform = `translate(0, ${(-40 * settle).toFixed(1)}px) scale(${(1 - 0.7 * settle).toFixed(3)})`;
+  T4.l2.style.opacity = E(9.8, 0.8);
+  // PHASE 3 · better process: measured, sequential, built in steps along its baseline
+  guide(2, 450, 9.6); wipe(T4.s3, 10.2, 0.7);
+  const marks = [0, 0.32, 0.47, 1], st = [11.0, 11.8, 12.5, 13.3];   // "better" · "pro" · "cess": three measured steps
+  let reveal = 0; for (let i = 0; i < 3; i++) reveal = Math.max(reveal, marks[i] + (marks[i + 1] - marks[i]) * E(st[i], 0.45));
+  T4.proc.style.opacity = t >= st[0] ? 1 : 0; T4.proc.style.clipPath = `inset(-30% ${(100 * (1 - reveal)).toFixed(2)}% -30% 0)`;
+  const w = 700; A4.ticks.innerHTML = marks.map((m, i) => (t >= st[Math.min(i, 3)] - 0.2 ? `<line x1="${104 + m * w}" x2="${104 + m * w}" y1="452" y2="466"/>` : "")).join("");
+  A4.ticks.setAttribute("opacity", 0.8 * (1 - 0.6 * E(14.4, 1.0)));
+}
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 4.6, 12: 17.2, 13: 9.0, 14: 3.0, 15: 9.0, 16: 12.0, 17: 12.0, 18: 16.0 };
 window.setState = (c, t) => {
-  click4(-1); click5(-1); click6(-1); click7(-1); click9(-1); clickSym(-1); click10(-1); act3Number(-1);
+  click4(-1); click5(-1); click6(-1); click7(-1); click9(-1); clickSym(-1); click10(-1); act3Number(-1); act4Open(-1);
   if (c >= 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(c === 4 ? t : 99);
-    const steps = [null, null, null, null, null, click5, click6, click7, click8, click9, clickSym, act3Number, act3Delta, act3Talk, act3Thesis];
+    const steps = [null, null, null, null, null, click5, click6, click7, click8, click9, clickSym, act3Number, act3Delta, act3Talk, act3Thesis, act4Open, act4Bump, act4Swarm, act4Words];
     for (let k = 5; k <= c; k++) steps[k](k === c ? t : 99);
     return; }
   if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
