@@ -25,9 +25,9 @@
      CLICK 13 "Where did it come from? Who owns it?..."     the spheres talk across the axis, four questions, four hops; they never touch
      CLICK 14 "You cannot report what you cannot trace."   the line writes in; stillness
      CLICK 15 "Why do we not just use AI?"         Act 03's words leave; 04; the axis swallows the evidence network
-     CLICK 16 "I am optimistic about AI... It can scale it."   the bump at the axis; copper stamps AI on blue; 1-2-4-8-16-32
-     CLICK 17 "If five people use the word 'batch'..."   past counting; mutants surface; the copper rule searches along the axis
-     CLICK 18 "Sometimes AI is the answer..."      the copper rule constructs AI, then better data, then better process -->
+     CLICK 16 "I am optimistic about AI... It can scale it."   the bump at the axis; copper stamps AI on blue; 1-2-4-8-16-32; copper, worried, paces the axis
+     CLICK 17 "If five people use the word 'batch'..."   past counting; mutants surface; copper paces the axis, more nervous
+     CLICK 18 "Sometimes AI is the answer..."      copper stops at each line and constructs it: AI, better data, better process; he calms -->
 <style>
   @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4.ttf") format("truetype");font-weight:200 900}
   @font-face{font-family:"DM Sans";src:url("../fonts/dm-sans-latin-100-normal.woff2") format("woff2");font-weight:100}
@@ -878,7 +878,7 @@ function act3Thesis(t) {
 // ================= CLICKS 15 to 18 · ACT 04: AI scales what is there =================
 // The evidence is swallowed by the axis; the spheres bump at the axis and copper stamps AI on blue; blue multiplies,
 // 1-2-4-8-16-32 and then past counting, each child on its own path; mutants emerge one by one (a square, a triangle,
-// a slow purple the others avoid); the axis is an absolute wall. A copper rule watches, searches along the axis, and
+// a slow purple the others avoid); the axis is an absolute wall. Copper, worried, paces the axis on his side, and
 // constructs the spoken lines: AI, then better data, then better process. All motion is seeded and precomputed.
 function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const A4 = { built: false };
@@ -1005,7 +1005,7 @@ function act4Open(t) {
   if (t >= 1.8) chapterNumber(t - 1.8, CHAPTERS[4]); else $("one").style.opacity = 0;
   placeA3(99, 99);
 }
-// Click 16, "I am optimistic about AI… It can scale it.": the bump at the axis, the stamp, the multiplication; the copper rule steps back to watch
+// Click 16, "I am optimistic about AI… It can scale it.": the bump at the axis, the stamp, the multiplication; copper, worried, goes to the axis
 const BUMP = { tc: 1.2, yc: 600 };
 function copperAfter(t) {                                  // copper: leap to the axis, the bump, back to its side; then it watches
   const C0 = [700, FLOOR - SYM_R], C1 = [955 - SYM_R - 1, BUMP.yc], C2 = [780, FLOOR - SYM_R];
@@ -1023,44 +1023,54 @@ function blueBump(t) {
   const u = clamp((t - BUMP.tc - 0.08) / 0.6); if (u < 1) return [B1[0] + (B2[0] - B1[0]) * u, B1[1] + (B2[1] - B1[1]) * u - 40 * 4 * u * (1 - u), 1, 1];
   const v = clamp((t - BUMP.tc - 0.68) / 0.14); return [B2[0], B2[1], 1 + 0.06 * Math.sin(Math.PI * v), 1 - 0.07 * Math.sin(Math.PI * v)];
 }
+const CX_AXIS = 955 - SYM_R - 4, CY_LOW = 694;            // hugging the axis on his side; never lower than the man's head
+function pace(t, way) {                                    // eased trips between waypoints [t, y], with a nervous tremor
+  let y = way[0][1]; for (let i = 1; i < way.length; i++) { const [t0, y0] = way[i - 1], [t1, y1] = way[i]; if (t >= t0) y = y0 + (y1 - y0) * smooth((t - t0) / Math.max(0.01, t1 - t0)); }
+  return y;
+}
+const WORRY16 = [[3.4, CY_LOW], [4.4, CY_LOW], [5.6, 470], [6.0, 470], [6.5, 520], [7.6, 300], [8.1, 300], [8.5, 360], [9.8, 560], [10.2, 560], [11.2, 410], [12, 410]];
+const WORRY17 = [[0, 410], [0.6, 260], [1.0, 260], [1.4, 330], [2.4, 620], [2.7, 620], [3.0, 560], [4.0, 220], [4.3, 220], [5.4, 650], [5.8, 600], [6.6, 300], [6.9, 300],
+  [7.3, 380], [8.4, 640], [8.7, 640], [9.6, 250], [10.0, 250], [10.6, 470], [12, 440]];
+function copperWorry(t, way, amp) {                        // up and down the axis: quick, stopping, trembling
+  const y = pace(t, way), tr = amp * (Math.sin(t * 23.0) * 0.6 + Math.sin(t * 37.0) * 0.4);
+  let moving = 0; for (let i = 1; i < way.length; i++) { const [t0, y0] = way[i - 1], [t1, y1] = way[i]; if (t >= t0 && t < t1 && Math.abs(y1 - y0) > 1) moving = Math.sin(Math.PI * (t - t0) / (t1 - t0)); }
+  return [CX_AXIS + tr, y, 1 - 0.05 * moving, 1 + 0.06 * moving];    // he stretches as he hurries
+}
 function ruleAt(x, y0, y1, o) { A4.rule.setAttribute("x1", x); A4.rule.setAttribute("x2", x); A4.rule.setAttribute("y1", y0); A4.rule.setAttribute("y2", y1); A4.rule.setAttribute("opacity", o); }
 function act4Bump(t) {
   if (t < 0) return;
   a3Retract(1, 99); A3.svg.style.display = "none"; A4.stamp.style.opacity = 0;
-  const c = copperAfter(t); place(copper, c[0], c[1] + SYM_R * (1 - c[3]), SYM_R, c[2], c[3]);
+  if (t < 2.4) { const c = copperAfter(t); place(copper, c[0], c[1] + SYM_R * (1 - c[3]), SYM_R, c[2], c[3]); }
+  else if (t < 3.4) { const u = smooth((t - 2.4) / 1.0), c = copperAfter(99); place(copper, c[0] + (CX_AXIS - c[0]) * u, c[1] + (CY_LOW - c[1]) * u, SYM_R); }   // he goes to the axis
+  else { const w = copperWorry(t, WORRY16, 1.2); place(copper, w[0], w[1], SYM_R, w[2], w[3]); }
   if (t < 2.6) { const b = blueBump(t); place(blue, b[0], b[1] + SYM_R * (1 - b[3]), SYM_R, b[2], b[3]); drawSwarm(0); if (t >= BUMP.tc) stampAt(b[0] - 6, b[1] + 2, 1); }
   else { const p = drawSwarm(t); stampAt(p[0] - 6, p[1] + 2, 1); }
   if (t >= BUMP.tc && t < BUMP.tc + 0.1) A4.stamp.style.transform += ` scale(${(1.25 - 2.5 * (t - BUMP.tc)).toFixed(3)})`;   // the stamp lands
-  // the copper rule peels off the axis and steps back to watch
-  const E = (a, d) => smooth((t - a) / d), x = 955 - (955 - 700) * E(3.0, 2.4) + 3 * Math.sin(t * 0.9) * E(5.4, 1);
-  ruleAt(x, 560, 700, 0.95 * E(2.2, 0.6));
+  ruleAt(0, 0, 0, 0);
 }
-// Click 17, "If five people use the word 'batch'…": past counting; mutants surface one by one; the copper rule returns and searches along the axis
+// Click 17, "If five people use the word 'batch'…": past counting; mutants surface one by one; copper paces the axis, up and down
 const SEARCH = [[0, 630], [2.5, 630], [4.6, 300], [6.0, 300], [8.0, 520], [9.0, 520], [10.6, 210], [12, 210]];
 function act4Swarm(t) {
   if (t < 0) return;
   A3.svg.style.display = "none";
-  const c = copperAfter(99); place(copper, c[0], c[1], SYM_R);
+  const w = copperWorry(t, WORRY17, 1.8); place(copper, w[0], w[1], SYM_R, w[2], w[3]);
   const p = drawSwarm(12 + t); stampAt(p[0] - 6, p[1] + 2, 1);
-  const E = (a, d) => smooth((t - a) / d), x = 700 + (955 - 700) * E(0.4, 2.0);
-  let y = SEARCH[0][1]; for (let i = 1; i < SEARCH.length; i++) { const [t0, y0] = SEARCH[i - 1], [t1, y1] = SEARCH[i]; if (t >= t0) y = y0 + (y1 - y0) * smooth((t - t0) / (t1 - t0)); }
-  ruleAt(x, y - 70, y + 70, 0.95);
+  ruleAt(0, 0, 0, 0);
 }
-// Click 18, "Sometimes AI is the answer…": the copper rule constructs each line; AI, then better data, then better process
+// Click 18, "Sometimes AI is the answer…": copper stops at each line and constructs it; AI, then better data, then better process
 function act4Words(t) {
   if (t < 0) return;
   A3.svg.style.display = "none";
-  const c = copperAfter(99); place(copper, c[0], c[1], SYM_R);
   const p = drawSwarm(24 + t); stampAt(p[0] - 6, p[1] + 2, 1);
   const E = (a, d) => smooth((t - a) / d), T4 = A4.t;
   const wipe = (d, a, dur) => { const u = E(a, dur); d.style.opacity = u > 0 ? 1 : 0; d.style.clipPath = `inset(-30% ${(100 * (1 - u)).toFixed(2)}% -30% 0)`; };
   const guide = (i, y, a, x0 = 110) => { const [g, h] = A4.guides[i], u = E(a, 0.6), fade = 1 - 0.8 * E(a + 1.8, 0.8);   // a construction line runs from the axis to the margin
-    g.setAttribute("x1", 945); g.setAttribute("x2", 945 - (945 - x0) * u); g.setAttribute("y1", y); g.setAttribute("y2", y); g.setAttribute("opacity", u > 0 ? 0.9 * fade : 0);
-    h.setAttribute("x1", 945); h.setAttribute("x2", 945 - (945 - x0) * u); h.setAttribute("y1", y - 92); h.setAttribute("y2", y - 92); h.setAttribute("opacity", u > 0 ? 0.6 * fade : 0); };
+    g.setAttribute("x1", CX_AXIS - SYM_R - 6); g.setAttribute("x2", CX_AXIS - SYM_R - 6 - (CX_AXIS - SYM_R - 6 - x0) * u); g.setAttribute("y1", y); g.setAttribute("y2", y); g.setAttribute("opacity", u > 0 ? 0.9 * fade : 0);
+    h.setAttribute("x1", CX_AXIS - SYM_R - 6); h.setAttribute("x2", CX_AXIS - SYM_R - 6 - (CX_AXIS - SYM_R - 6 - x0) * u); h.setAttribute("y1", y - 92); h.setAttribute("y2", y - 92); h.setAttribute("opacity", u > 0 ? 0.6 * fade : 0); };
   // the rule's stops along the axis: one per line
-  const stops = [[0, 210], [0.3, 440], [3.6, 440], [4.2, 420], [8.6, 420], [9.2, 450], [16, 450]];
-  let y = stops[0][1]; for (let i = 1; i < stops.length; i++) { const [t0, y0] = stops[i - 1], [t1, y1] = stops[i]; if (t >= t0) y = y0 + (y1 - y0) * smooth((t - t0) / Math.max(0.01, t1 - t0)); }
-  ruleAt(955, y - 70, y + 70, 0.95);
+  const stops = [[0, 440], [0.35, 440], [3.6, 440], [4.3, 420], [8.6, 420], [9.3, 450], [16, 450]];   // one stop per line; the tremor fades as the process settles
+  const cw = copperWorry(t, stops, 1.6 * (1 - E(8.6, 3.0))); place(copper, cw[0], cw[1], SYM_R, cw[2], cw[3]);
+  ruleAt(0, 0, 0, 0);
   // PHASE 1 · AI: confident, monumental
   guide(0, 440, 0.4); wipe(T4.s1, 0.9, 0.6); wipe(T4.ai, 1.1, 0.9); wipe(T4.ans, 1.9, 0.8);
   const shrink = E(4.0, 1.4);                                 // PHASE 2 begins: AI loses its dominance and settles into one quiet line
