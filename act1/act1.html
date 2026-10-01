@@ -1168,6 +1168,14 @@ function buildA5() {
     L("M422 530 L438 530 M420 524 L440 524 M424 518 L436 518", 1.2);                                                                      // flanged top nozzle
     L("M352 900 L340 900 M352 900 L364 900 M504 900 L492 900 M504 900 L516 900", 2);                                                      // feet
     L("M592 798 L608 810 L608 798 L592 810 Z", 1.4);                                                                                     // valve body under the handwheel
+    L("M350 600 Q350 540 430 536 Q510 540 510 600 L510 820 Q510 862 430 866 Q350 862 350 820 Z", 2.6);                                    // heavier outline
+    for (let i = 0; i < 9; i++) L(`M${386 + i * 3.5} ${560 + i * 1.5} L${386 + i * 3.5} ${846 - i * 1.5}`, 0.5, soft);                    // body hatching: it reads as a cylinder
+    for (let i = 0; i < 6; i++) L(`M${466 + i * 7} ${598 + (i > 3 ? 8 : 0)} L${466 + i * 7} ${836 - (i > 3 ? 8 : 0)}`, 0.8, soft);
+    L("M372 566 Q430 548 488 566 M380 556 Q430 541 480 556", 0.6, soft);                                                                   // dome shading
+    L("M318 790 m-22 0 a22 22 0 1 0 44 0 a22 22 0 1 0 -44 0 M318 790 m-14 0 a14 14 0 1 0 28 0 a14 14 0 1 0 -28 0 M340 790 L350 790 M296 784 L290 784 L290 796 L296 796", 1.4);   // side pump
+    L("M300 772 Q318 762 336 772", 0.6, soft);
+    L("M512 736 L548 736 Q556 736 556 744 L556 796 Q556 804 564 804 L596 804 M512 746 L546 746 Q546 746 546 754 L546 806 Q546 814 554 814 L596 814", 1.5);   // second loop, a tube into the main line
+    L("M530 731 L530 751 M536 731 L536 751 M541 778 L561 778 M541 784 L561 784", 1.2);
     const arcs = mk(root, "g", { opacity: 0, fill: "none", stroke: ink, "stroke-width": 1.4, "stroke-linecap": "round" });                 // it hums when it acts
     mk(arcs, "path", { d: "M528 690 Q536 710 528 730 M538 682 Q550 710 538 738 M332 700 Q324 720 332 740" });
     L("M422 512 L438 512 M592 560 L608 560 M592 690 L608 690", 1.4);
@@ -1190,7 +1198,7 @@ function buildA5() {
   // ---------- the axis becomes a tree: each tap shortens it, and what comes out is organic ----------
   const tree = mk(svg, "g", {}); A5.treeG = tree;
   A5.axis = mk(tree, "line", { x1: 955, x2: 955, y1: 60, y2: 732, stroke: "#762F0B", "stroke-width": 2.4, "stroke-linecap": "round", opacity: 0.7 });
-  A5.strands = [mk(tree, "path", { fill: "none", stroke: "#8A4A1E", "stroke-width": 2.2, "stroke-linecap": "round" }), mk(tree, "path", { fill: "none", stroke: "#2E5E8C", "stroke-width": 2.2, "stroke-linecap": "round" })];
+  A5.strands = [0, 1, 2, 3, 4, 5].map((i) => mk(tree, "path", { fill: "none", stroke: i < 3 ? "#8A4A1E" : "#2E5E8C", "stroke-width": i % 3 === 0 ? 2.2 : 1.4, "stroke-linecap": "round" }));
   const rr = rng(505), CROWN = 262, branches = []; A5.crown = branches;
   const okC = (x, y, side) => y > 82 && y < 312 && (side === "c" ? x < 952 && (y < 140 ? x > 560 : x > 792) : x > 958 && x < 1535 && !(x > 1415 && y < 138));   // a broad crown: above the words on copper's side, out toward the column on blue's
   const bz = (P, t) => { const u = 1 - t; return [0, 1].map((k) => u * u * u * P[0][k] + 3 * u * u * t * P[1][k] + 3 * u * t * t * P[2][k] + t * t * t * P[3][k]); };
@@ -1202,7 +1210,7 @@ function buildA5() {
     const e = mk(tree, "path", { d: `M${P[0]} C ${P[1]} ${P[2]} ${P[3]}`, fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round" }), L = e.getTotalLength();
     e.setAttribute("stroke-dasharray", `${L} ${L + 2}`); const dur = 0.5 + len / 220;
     branches.push({ e, L, group, side, t0, dur, kind: "limb" });
-    if (depth === 0) { const c = mk(tree, "circle", { cx: p3[0], cy: p3[1], r: 2.5 + rr() * 2.5, fill: "none", stroke: col, "stroke-width": 1.1 }); branches.push({ e: c, group, side, t0: t0 + dur, kind: "ring" }); return; }
+    if (depth === 0) { const c = mk(tree, "circle", { cx: p3[0], cy: p3[1], r: 4 + rr() * 3.5, fill: "none", stroke: col, "stroke-width": 1.2 }); branches.push({ e: c, group, side, t0: t0 + dur, kind: "ring" }); return; }
     const kids = rr() < 0.5 ? 2 : 3;
     for (let k = 0; k < kids; k++) { const tt = 0.45 + 0.5 * rr(), q = bz(P, tt), aa = ang + (k % 2 ? -1 : 1) * (0.3 + rr() * 0.45);
       if (rr() < 0.35) { const c = mk(tree, "circle", { cx: q[0], cy: q[1], r: 2 + rr() * 2, fill: "none", stroke: col, "stroke-width": 0.9 }); branches.push({ e: c, group, side, t0: t0 + dur * tt, kind: "ring" }); }
@@ -1213,20 +1221,20 @@ function buildA5() {
     const sgn = side === "c" ? -1 : 1, o = from || [955 + sgn * 2, oy], h = o[1] - ey, P = [o, [o[0] + sgn * 8, o[1] - h * 0.55], [ex - sgn * Math.abs(ex - o[0]) * 0.35, ey + h * 0.12], [ex, ey]];
     const col = side === "c" ? "#8A4A1E" : "#2E5E8C", e = mk(tree, "path", { d: `M${P[0]} C ${P[1]} ${P[2]} ${P[3]}`, fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round" }), L = e.getTotalLength();
     e.setAttribute("stroke-dasharray", `${L} ${L + 2}`); const dur = 0.6 + L / 300; branches.push({ e, L, group, side, t0, dur, kind: "limb" });
-    const c = mk(tree, "circle", { cx: ex, cy: ey, r: 3.5 + rr() * 2.5, fill: "none", stroke: col, "stroke-width": 1.2 }); branches.push({ e: c, group, side, t0: t0 + dur, kind: "ring" }); A5.lastP = P;
-    for (let k = 0; k < (from ? 3 : 1); k++) { const tt = 0.5 + 0.15 * k + rr() * 0.08, q = bz(P, tt), q2 = bz(P, tt + 0.02), dir = Math.atan2(q2[1] - q[1], q2[0] - q[0]);
-      if (rr() < 0.5) { const r2 = mk(tree, "circle", { cx: q[0], cy: q[1], r: 2 + rr() * 2, fill: "none", stroke: col, "stroke-width": 0.9 }); branches.push({ e: r2, group, side, t0: t0 + dur * tt, kind: "ring" }); }
-      limb(q, dir + (k % 2 ? -1 : 1) * (0.35 + rr() * 0.4), 40 + rr() * 50, Math.max(0.9, w * 0.55), 1, side, group, t0 + dur * tt); }
+    const c = mk(tree, "circle", { cx: ex, cy: ey, r: 6 + rr() * 4, fill: "none", stroke: col, "stroke-width": 1.5 }); branches.push({ e: c, group, side, t0: t0 + dur, kind: "ring" }); A5.lastP = P;
+    for (let k = 0; k < (from ? 2 : 1); k++) { const tt = 0.55 + 0.2 * k + rr() * 0.08, q = bz(P, tt), q2 = bz(P, tt + 0.02), dir = Math.atan2(q2[1] - q[1], q2[0] - q[0]);
+      if (rr() < 0.6) { const r2 = mk(tree, "circle", { cx: q[0], cy: q[1], r: 3.5 + rr() * 3, fill: "none", stroke: col, "stroke-width": 1.1 }); branches.push({ e: r2, group, side, t0: t0 + dur * tt, kind: "ring" }); }
+      limb(q, dir + (k % 2 ? -1 : 1) * (0.35 + rr() * 0.35), 45 + rr() * 40, Math.max(1, w * 0.6), 0, side, group, t0 + dur * tt); }
   }
   // trunk -> three primary limbs per side -> one branch per tap off them -> twigs: a crown that forks
   const prim = { c: [], b: [] };
-  for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1, A = side === "c" ? 380 : 500;
-    [0, 1, 2].forEach((j) => { const f = side === "c" ? [0.62, 0.78, 0.93][j] : [0.28, 0.55, 0.82][j], ex = 955 + sgn * A * 0.48 * Math.cos(f * Math.PI / 2), ey = CROWN - 120 * Math.sin(f * Math.PI / 2);
+  for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1, A = side === "c" ? 390 : 520;
+    [0, 1, 2].forEach((j) => { const f = side === "c" ? [0.6, 0.76, 0.92][j] : [0.18, 0.45, 0.75][j], ex = 955 + sgn * A * 0.48 * Math.cos(f * Math.PI / 2), ey = CROWN - 120 * Math.sin(f * Math.PI / 2);
       domeLimb(CROWN - j * 8, ex, ey, 2.6, side, 3 * j, side === "b" ? 0.15 : 0); prim[side].push(A5.lastP); }); }
   for (let k = 0; k < 9; k++) {                            // one group per tap: copper's taps grow copper branches, blue's taps blue ones
     const j = Math.floor(k / 3), sub = k % 3;
-    for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1, A = side === "c" ? 380 : 500, P = prim[side][j];
-      const f = side === "c" ? 0.52 + 0.47 * (k / 8) : 0.1 + 0.85 * (k / 8), ex = 955 + sgn * A * Math.cos(f * Math.PI / 2) * (0.9 + 0.1 * rr()), ey = CROWN - 4 - 178 * Math.sin(f * Math.PI / 2);
+    for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1, A = side === "c" ? 390 : 520, P = prim[side][j];
+      const f = side === "c" ? 0.5 + 0.48 * (k / 8) : 0.06 + 0.88 * (k / 8), ex = 955 + sgn * A * Math.cos(f * Math.PI / 2) * (0.9 + 0.1 * rr()), ey = CROWN - 4 - 178 * Math.sin(f * Math.PI / 2);
       domeLimb(0, ex, ey, 1.5, side, k, 0.35 + (side === "b" ? 0.15 : 0), bz(P, 0.55 + sub * 0.2)); } }
   // click 22: copper tendrils reach out from the trunk to where the closing words will stand
   A5.tendrils = [["M955 300 C 900 286 820 232 744 218"], ["M955 380 C 880 380 760 352 646 355"], ["M955 425 C 860 440 700 470 566 466"]].map(([d], i) => {
@@ -1304,9 +1312,11 @@ function sphereTaps(side, T) {                             // hops onto its own 
 }
 function drawTree(T) {                                      // the axis shortens with every tap; strands and limbs come out of it
   let g = 0; TAPG.forEach((q) => (g += smooth((T - q.T) / 0.6))); g /= TAPG.length;
-  const ys = 60 + 370 * g; A5.axis.setAttribute("y1", ys.toFixed(1)); A5.axis.style.opacity = "";
-  const top = 262, twist = Math.max(0, ys - top);
-  A5.strands.forEach((e, k) => { if (twist < 2) { e.setAttribute("d", ""); return; } let d = ""; for (let y = ys; y >= top - 0.1; y -= 4) { const u = (ys - y) / twist, amp = 3 + 6 * u; d += (d ? " L" : "M") + (955 + amp * Math.sin((ys - y) / 26 + k * Math.PI)).toFixed(1) + " " + y.toFixed(1); } e.setAttribute("d", d); });
+  const top = 262, n = g * TAPG.length;                    // the first two taps take the axis down to the crown; every tap after that turns more of it into braid
+  const ys = n < 2 ? 60 + (top - 60) * n / 2 : top + (440 - top) * (n - 2) / (TAPG.length - 2); A5.axis.setAttribute("y1", ys.toFixed(1)); A5.axis.style.opacity = "";
+  const twist = Math.max(0, ys - top);
+  A5.strands.forEach((e, k) => { if (twist < 2) { e.setAttribute("d", ""); return; } let d = ""; const ph = (k < 3 ? 0 : Math.PI) + ((k % 3) - 1) * 0.32;                  // two ropes, copper and blue, each a bundle of three strands, winding round each other
+    for (let y = ys; y >= top - 0.1; y -= 3) { const u = (ys - y) / Math.max(twist, 1), amp = 4 + 7 * u; d += (d ? " L" : "M") + (955 + amp * Math.sin((ys - y) / 34 + ph) + ((k % 3) - 1) * 1.2).toFixed(1) + " " + y.toFixed(1); } e.setAttribute("d", d); });
   const seen = { c: TAPG.filter((q) => q.side === "c"), b: TAPG.filter((q) => q.side === "b") };
   A5.crown.forEach((q) => { const tap = seen[q.side][q.group]; const tt = tap ? T - tap.T - q.t0 : -1;
     if (q.kind === "limb") { const u = clamp(tt / q.dur), e = 1 - Math.pow(1 - u, 2); q.e.setAttribute("stroke-dashoffset", (q.L * (1 - e)).toFixed(1)); q.e.style.opacity = u > 0 ? 1 : 0; }
