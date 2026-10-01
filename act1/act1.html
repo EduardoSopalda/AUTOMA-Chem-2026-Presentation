@@ -1349,11 +1349,17 @@ function frame(now) {
   setState(click, Math.min(t, window.CLICK[click] + 0.01));
   raf = t < window.CLICK[click] ? requestAnimationFrame(frame) : 0;
 }
+const LAST = Math.max(...Object.keys(window.CLICK).map(Number));             // the last click of the deck
+document.fonts.ready.then(() => setTimeout(() => { buildA3(); buildA4(); buildA5(); retreatPlan(); setState(click || 1, click ? window.CLICK[click] + 1 : 0); }, 300));   // prepared before the night needs them: no hitch on a click
 addEventListener("keydown", (e) => {
   if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) {
-    e.preventDefault(); if (e.repeat || click >= 13) return;
+    e.preventDefault(); if (e.repeat || click >= LAST) return;
     if (click > 0) setState(click, window.CLICK[click] + 1);          // an early click completes the current one
     click++; clickStart = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+  } else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) {          // back: the previous click, at rest (no replay)
+    e.preventDefault(); if (e.repeat) return; cancelAnimationFrame(raf);
+    if (click > 1) { click--; setState(click, window.CLICK[click] + 1); }
+    else { click = 0; setState(1, 0); if (parent !== window) parent.postMessage({ deck: "back-to-opening" }, "*"); }
   } else if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
   } else if (e.key === "r" || e.key === "R") { cancelAnimationFrame(raf); click = 0; setState(1, 0); }
 });
