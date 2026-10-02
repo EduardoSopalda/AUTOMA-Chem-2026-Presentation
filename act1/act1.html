@@ -1200,6 +1200,10 @@ function buildA5() {
   // and droops like the plate; it forks twice or three times and ends in a ring. Symmetric dome; it never enters the words or the name.
   const DOME = { cx: 955, cy: 214, rx: 392, ry: 170 }, stop = (x, y) => ((x - DOME.cx) / DOME.rx) ** 2 + ((y - DOME.cy) / DOME.ry) ** 2 > 1 || (Math.abs(x - 955) > 190 && y > 176) || y < 46;
   const bz = (P, t) => { const u = 1 - t; return [0, 1].map((k) => u * u * u * P[0][k] + 3 * u * u * t * P[1][k] + 3 * u * t * t * P[2][k] + t * t * t * P[3][k]); };
+  // small spheres for the tips, lit like the two characters: highlight up-left, core, dark rim
+  const defs = mk(svg, "defs", {});
+  [["gC", "#F3D2B0", "#B8783E", "#6A2A0A"], ["gB", "#E6F0FA", "#3A78BC", "#123A66"]].forEach(([id, a, b2, c]) => { const g = mk(defs, "radialGradient", { id, cx: "35%", cy: "32%", r: "70%" });
+    [[0, a], [0.45, b2], [1, c]].forEach(([o, col]) => mk(g, "stop", { offset: o, "stop-color": col })); });
   function grow(p, hd, len, w, depth, side, group, t0, parent, frac, given) {
     const sgn = side === "c" ? -1 : 1, bend = sgn * (0.004 + 0.004 * (1 - depth) + rr() * 0.004), pts = given || [p]; let [x, y] = p, h = hd, wob = 0;
     if (!given) for (let s2 = 0; s2 < len; s2 += 4) { wob += (rr() - 0.5) * 0.06; wob *= 0.9; h += bend + wob * 0.05; const nx = x + Math.cos(h) * 4, ny = y + Math.sin(h) * 4; if (stop(nx, ny)) break; x = nx; y = ny; pts.push([x, y]); }
@@ -1207,7 +1211,9 @@ function buildA5() {
     const col = side === "c" ? (depth >= 1 ? "#8A4A1E" : "#A5612F") : (depth >= 1 ? "#2E5E8C" : "#4E7DA6");
     const e = mk(tree, "path", { d: "M" + pts.map((q) => q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" L"), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round" }), Lg = e.getTotalLength();
     e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); const dur = 0.45 + Lg / 300, me = { e, L: Lg, group, side, t0, dur, kind: "limb", parent, frac }; branches.push(me);
-    const tip = pts[pts.length - 1], rc = mk(tree, "circle", { cx: tip[0], cy: tip[1], r: depth >= 2 ? 7.5 + rr() * 2 : depth >= 1 ? 5 + rr() * 2 : 3.5 + rr() * 1.5, fill: "none", stroke: col, "stroke-width": depth >= 2 ? 1.5 : 1.1 });
+    const tip = pts[pts.length - 1], ball = depth >= 1 || rr() < 0.4, rc = ball   // main limbs and forks end in spheres; some twigs too, the rest in open rings
+      ? mk(tree, "circle", { cx: tip[0], cy: tip[1], r: depth >= 2 ? 7.5 + rr() * 1.5 : depth >= 1 ? 5 + rr() * 1.5 : 3.2 + rr() * 1.2, fill: `url(#${side === "c" ? "gC" : "gB"})` })
+      : mk(tree, "circle", { cx: tip[0], cy: tip[1], r: 3.5 + rr() * 1.5, fill: "none", stroke: col, "stroke-width": 1.1 });
     branches.push({ e: rc, group, side, t0, dur: 0, kind: "ring", parent: me, frac: 1 });
     if (depth === 0) return;
     const forks = depth >= 2 ? [0.36 + rr() * 0.06, 0.58 + rr() * 0.06, 0.8 + rr() * 0.05] : depth >= 1 ? [0.4 + rr() * 0.15, 0.72 + rr() * 0.1] : [0.45 + rr() * 0.2, ...(rr() < 0.5 ? [0.75] : [])];
