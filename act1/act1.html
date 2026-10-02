@@ -1137,6 +1137,11 @@ function drawRetreat(t) {
   return retreatPose(plan[0], t);
 }
 // ---------- the machines: one drawing, mirrored; copper ink on the left, blueprint ink on the right ----------
+const PEEL = [455, 395, 335];                               // where strand j of each rope peels off into a limb
+function ropeX(k, y, ys) { const j = k % 3, ph = (k < 3 ? 0 : Math.PI) + (j - 1) * 0.5, pin = smooth((y - 300) / 90) * smooth((ys - y) / 50), amp = 1.5 + 12 * pin;
+  return 955 + amp * Math.sin(y / 17 + ph) + (j - 1) * (0.8 + 2.4 * pin); }   // two ropes of three strands, winding round each other; the pattern is fixed in space and grows downward
+function drawRopes(ys) { A5.strands.forEach((e, k) => { const top = PEEL[k % 3]; if (ys - top < 3) { e.setAttribute("d", ""); return; } let d = "";
+  for (let y = ys; y >= top - 0.1; y -= 3) d += (d ? " L" : "M") + ropeX(k, y, ys).toFixed(1) + " " + y.toFixed(1); e.setAttribute("d", d); }); }
 function buildA5() {
   if (A5.built) return; A5.built = true;
   const st = $("stage"), svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080);
@@ -1148,38 +1153,50 @@ function buildA5() {
     const lines = [], L = (d, w = 1.6, col = ink, extra = {}) => { const e = mk(root, "path", { d, fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round", ...extra }); lines.push(e); return e; };
     // the vessel: dome, shell, bands, skirt, legs, manway; drawn outward from the sphere's place (430, 728)
     // the vessel, drawn as a cylinder: curved bands and seams, shading lines that crowd toward the shaded edge, a highlight left open
-    const CX = 430, R = 80, YT = 600, YB = 820, arc = (y, ry = 10) => `M${CX - R} ${y} A${R} ${ry} 0 0 0 ${CX + R} ${y}`;
-    const across = (y0, y1, ph0, ph1, ry = 10) => { let d = ""; for (let y = y0; y <= y1; y += 7) { let s = ""; for (let f = ph0; f <= ph1 + 1e-6; f += 0.05) s += (s ? " L" : "M") + (CX + R * Math.cos(f)).toFixed(1) + " " + (y + ry * Math.sin(f)).toFixed(1); d += s + " "; } return d; };
-    L(`M${CX - R} ${YB} L${CX - R} ${YT} C${CX - R} 552 ${CX - 46} 534 ${CX} 534 C${CX + 46} 534 ${CX + R} 552 ${CX + R} ${YT} L${CX + R} ${YB} C${CX + R} 850 ${CX + 46} 868 ${CX} 868 C${CX - 46} 868 ${CX - R} 850 ${CX - R} ${YB}`, 2.4);   // shell and heads
-    L(arc(YT), 1.4); L(arc(YB), 1.4);                                                                            // head seams
-    for (const y of [640, 790]) { L(arc(y) + " " + arc(y + 6), 1.3);                                              // flanged bands, bolts crowd toward the edges
-      let d = ""; for (let k = 1; k < 12; k++) { const f = Math.PI * k / 12, x = CX + R * Math.cos(f), yy = y + 3 + 10 * Math.sin(f); d += `M${x.toFixed(1)} ${(yy - 1.4).toFixed(1)} L${x.toFixed(1)} ${(yy + 1.4).toFixed(1)} `; } L(d, 1.6); }
-    { let d = ""; for (let k = 0; k <= 13; k++) { const th = 0.36 + k * 0.09, x = CX + R * Math.sin(th); d += `M${x.toFixed(1)} ${(YT + 10 * Math.cos(th) + 6).toFixed(1)} L${x.toFixed(1)} ${(YB + 10 * Math.cos(th) - 4).toFixed(1)} `; } L(d, 0.7, soft); }   // shading: verticals at R·sin(θ)
-    L(across(612, 812, 0, 0.42), 0.6, soft);                                                                     // cross-contour on the dark edge
-    L(`M${CX - 58} 620 L${CX - 58} 800 M${CX - 52} 626 L${CX - 52} 796`, 0.6, soft);                              // the lit side, left open
-    L(`M${CX + 16} 546 C${CX + 50} 552 ${CX + 70} 568 ${CX + 74} 594 M${CX + 30} 541 C${CX + 58} 550 ${CX + 74} 566 ${CX + 77} 590 M${CX + 6} 552 C${CX + 40} 558 ${CX + 60} 572 ${CX + 66} 596`, 0.6, soft);   // dome shading
-    L(`M${CX + 20} 858 C${CX + 50} 852 ${CX + 70} 840 ${CX + 76} 824 M${CX + 8} 852 C${CX + 40} 848 ${CX + 60} 838 ${CX + 68} 826`, 0.6, soft);
-    L("M472 752 m-12 0 a12 16 0 1 0 24 0 a12 16 0 1 0 -24 0 M472 752 m-8 0 a8 11 0 1 0 16 0 a8 11 0 1 0 -16 0", 1.2);   // manway, foreshortened
-    L("M366 858 L360 900 M494 858 L500 900 M398 866 L396 900 M462 866 L464 900", 1.6); L("M362 896 L462 878 M496 896 L398 878", 0.7, soft);   // legs and braces
-    L("M352 900 L340 900 M352 900 L368 900 M502 900 L490 900 M502 900 L514 900", 2);                             // feet
-    L("M330 900 L740 900", 1.2, soft);
-    L("M286 822 L330 822 M286 850 L330 850 M286 822 C274 826 270 846 286 850 M330 818 L330 854 M335 818 L335 854 M335 836 L351 836", 1.5);   // the pump: a small horizontal vessel off the shell
-    L("M296 850 L294 900 M322 850 L324 900", 1.3); L("M290 828 L326 828 M288 834 L328 834 M288 840 L328 840 M290 846 L326 846", 0.5, soft);
-    L("M422 534 L422 520 M438 534 L438 520 M416 520 L444 520 M416 514 L444 514", 1.4);                            // top nozzle
-    L("M470 540 L470 520 L490 520 M462 512 L478 512 M466 506 L474 506", 1.3);                                       // vent and its little valve
-    // pipes as tubes: an ink wall, hollowed by paper; elbows are rounded; the second loop joins the main line
+    const sh = mk(svg.querySelector("defs") || mk(svg, "defs", {}), "linearGradient", { id: "sh" + side, x1: 0, x2: 1, y1: 0, y2: 0 });   // tone: lit left, shadow right
+    [[0, 0.2], [0.18, 0.04], [0.34, 0.0], [0.62, 0.18], [0.86, 0.4], [1, 0.58]].forEach(([o, a]) => mk(sh, "stop", { offset: o, "stop-color": ink, "stop-opacity": a }));
+    // a tall, slim vessel: dome 500, shell 540-822, head to 862, legs to the floor at 900; the words above end at 480
+    const CX = 430, R = 62, YT = 540, YB = 822, SHELL = `M${CX - R} ${YB} L${CX - R} ${YT} C${CX - R} 512 ${CX - 36} 498 ${CX} 498 C${CX + 36} 498 ${CX + R} 512 ${CX + R} ${YT} L${CX + R} ${YB} C${CX + R} 846 ${CX + 36} 862 ${CX} 862 C${CX - 36} 862 ${CX - R} 846 ${CX - R} ${YB}`;
+    const fills = [mk(root, "path", { d: SHELL + " Z", fill: `url(#sh${side})`, stroke: "none", opacity: 0 }),
+      mk(root, "path", { d: "M300 820 L346 820 L346 852 L300 852 C286 848 286 824 300 820 Z", fill: `url(#sh${side})`, stroke: "none", opacity: 0 })];
+    const arc = (y, ry = 8) => `M${CX - R} ${y} A${R} ${ry} 0 0 0 ${CX + R} ${y}`;
+    const across = (y0, y1, f0, f1, ry = 8) => { let d = ""; for (let y = y0; y <= y1; y += 6) { let q = ""; for (let f = f0; f <= f1 + 1e-6; f += 0.05) q += (q ? " L" : "M") + (CX + R * Math.cos(f)).toFixed(1) + " " + (y + ry * Math.sin(f)).toFixed(1); d += q + " "; } return d; };
+    L(SHELL, 2.6);                                                                                                   // shell and heads
+    L(arc(YT) + " " + arc(YB), 1.4);                                                                                 // head seams
+    for (const y of [584, 652, 792]) { L(arc(y) + " " + arc(y + 6), 1.3);                                         // three flanged bands, bolts crowding toward the edges
+      let d = ""; for (let k = 1; k < 10; k++) { const f = Math.PI * k / 10, x = CX + R * Math.cos(f), yy = y + 3 + 8 * Math.sin(f); d += `M${x.toFixed(1)} ${(yy - 1.5).toFixed(1)} L${x.toFixed(1)} ${(yy + 1.5).toFixed(1)} `; } L(d, 1.7); }
+    { let d = ""; for (let k = 0; k <= 15; k++) { const th = 0.3 + k * 0.08, x = CX + R * Math.sin(th); d += `M${x.toFixed(1)} ${(YT + 8 * Math.cos(th) + 4).toFixed(1)} L${x.toFixed(1)} ${(YB + 8 * Math.cos(th) - 2).toFixed(1)} `; } L(d, 0.75, ink, { "stroke-opacity": 0.55 }); }   // hatching at R·sin(θ)
+    L(across(546, 818, 0, 0.5), 0.6, ink, { "stroke-opacity": 0.45 });                                            // cross-contour on the dark edge
+    L(`M${CX - 46} 556 L${CX - 46} 812 M${CX - 40} 560 L${CX - 40} 808`, 0.6, soft);                                // the lit side, left open
+    L(`M${CX + 12} 506 C${CX + 38} 510 ${CX + 54} 522 ${CX + 58} 538 M${CX + 24} 503 C${CX + 46} 510 ${CX + 58} 520 ${CX + 61} 534 M${CX + 2} 512 C${CX + 30} 516 ${CX + 46} 526 ${CX + 52} 540`, 0.7, ink, { "stroke-opacity": 0.5 });   // dome shading
+    L(`M${CX + 16} 856 C${CX + 40} 852 ${CX + 54} 842 ${CX + 59} 828 M${CX + 6} 852 C${CX + 32} 848 ${CX + 48} 840 ${CX + 53} 828`, 0.7, ink, { "stroke-opacity": 0.5 });
+    L("M466 752 m-10 0 a10 15 0 1 0 20 0 a10 15 0 1 0 -20 0 M466 752 m-6 0 a6 10 0 1 0 12 0 a6 10 0 1 0 -12 0", 1.2);   // manway, foreshortened
+    L("M380 600 L380 680 M388 600 L388 680 M376 600 L392 600 M376 680 L392 680", 1.2); L("M381 640 L387 640 L387 679 L381 679 Z", 0.6, soft);   // sight glass
+    L("M398 746 L442 746 L442 762 L398 762 Z M402 751 L432 751 M402 756 L424 756", 0.9);                              // nameplate
+    L("M384 852 L378 900 M476 852 L482 900 M408 860 L406 900 M452 860 L454 900", 1.6); L("M380 896 L452 878 M480 896 L408 878", 0.7, soft);   // legs and braces
+    L("M372 900 L364 900 M372 900 L386 900 M488 900 L476 900 M488 900 L496 900", 2);                                // feet
+    L("M300 900 L740 900", 1.2, soft);
+    L("M300 820 L346 820 M300 852 L346 852 M300 820 C286 824 286 848 300 852 M346 816 L346 856 M351 816 L351 856 M351 836 L368 836", 1.5);   // the pump, a small horizontal vessel
+    L("M308 852 L306 900 M338 852 L340 900", 1.3); L("M304 826 L342 826 M302 832 L344 832 M302 838 L344 838 M302 844 L344 844", 0.5, ink, { "stroke-opacity": 0.4 });
+    L("M296 828 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0", 1.3);                                                       // pump motor cap
+    L("M422 498 L422 486 M438 498 L438 486 M416 486 L444 486 M416 481 L444 481", 1.4);                                // top nozzle
+    L("M404 506 L404 490 M398 490 L410 490 M401 486 L407 486", 1.2);                                                 // vent with its cap
+    // three pipe runs, as tubes: an ink wall hollowed by paper; rounded elbows; flanges wider than the tube
     const tube = (d, w = 11) => { L(d, w); L(d, w - 3.2, "#fff"); };
-    tube("M510 741 L536 741 Q550 741 550 755 L550 795 Q550 809 564 809 L596 809", 9);
-    tube("M430 520 L430 502 Q430 488 444 488 L586 488 Q600 488 600 502 L600 844 Q600 858 614 858 L666 858");
-    L("M421 506 L439 506 M421 510 L439 510 M590 540 L610 540 M590 544 L610 544 M590 690 L610 690 M590 694 L610 694 M640 849 L640 867 M644 849 L644 867 M524 734 L524 748 M528 734 L528 748", 1.3);   // flanges, wider than the tube
+    tube("M494 540 L548 540 Q560 540 560 552 L560 690 Q560 702 548 702 L494 702", 9);                              // an upper loop: out of the shell, down, back in
+    tube("M492 741 L536 741 Q548 741 548 753 L548 797 Q548 809 560 809 L596 809", 9);                                // the second loop into the main line
+    tube("M494 572 L586 572 Q600 572 600 586 L600 844 Q600 858 614 858 L666 858");                                    // the main line, shell to button
+    L("M500 533 L500 547 M504 533 L504 547 M554 640 L566 640 M554 644 L566 644 M500 696 L500 708 M504 696 L504 708 M590 620 L610 620 M590 624 L610 624 M590 700 L610 700 M590 704 L610 704 M640 849 L640 867 M644 849 L644 867 M520 734 L520 748 M524 734 L524 748 M500 565 L500 579 M504 565 L504 579", 1.3);   // flanges
+    L("M552 590 L568 602 L568 590 L552 602 Z M560 590 L560 580 M553 580 L567 580", 1.3);                              // a valve on the upper run
+    L("M600 640 L616 640 M616 632 L616 648 M621 632 L621 648 M626 640 m-6 0 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0", 1.3);  // a pressure ball on the main line
     L("M592 798 L608 810 L608 798 L592 810 Z", 1.4);                                                                 // valve body under the handwheel
     const arcs = mk(root, "g", { opacity: 0, fill: "none", stroke: ink, "stroke-width": 1.4, "stroke-linecap": "round" });                 // it hums when it acts
-    mk(arcs, "path", { d: "M522 690 Q530 710 522 730 M532 682 Q544 710 532 738 M262 826 Q254 838 262 850" });
-    const flow = mk(root, "path", { d: "M430 536 L430 500 Q430 488 442 488 L588 488 Q600 488 600 500 L600 840 Q600 858 618 858 L664 858", fill: "none", stroke: soft, "stroke-width": 3.2, "stroke-dasharray": "10 600", opacity: 0 });
+    mk(arcs, "path", { d: "M506 640 Q514 660 506 680 M516 632 Q528 660 516 688 M354 640 Q346 660 354 680 M344 632 Q332 660 344 688 M276 826 Q268 838 276 850" });
+    const flow = mk(root, "path", { d: "M494 572 L586 572 Q600 572 600 586 L600 844 Q600 858 614 858 L664 858", fill: "none", stroke: soft, "stroke-width": 3.2, "stroke-dasharray": "10 600", opacity: 0 });
     // the valve wheel on the pipe
     const valve = mk(root, "g", {}); mk(valve, "circle", { cx: 0, cy: 0, r: 22, fill: "none", stroke: ink, "stroke-width": 2.2 }); mk(valve, "circle", { cx: 0, cy: 0, r: 17, fill: "none", stroke: soft, "stroke-width": 0.8 }); mk(valve, "path", { d: "M-22 0 L22 0 M0 -22 L0 22 M-15 -15 L15 15", stroke: ink, "stroke-width": 1.6 }); mk(valve, "circle", { cx: 0, cy: 0, r: 3, fill: ink });
     // the lever on the shell
-    const lever = mk(root, "g", {}); mk(lever, "path", { d: "M0 0 L-62 0", stroke: ink, "stroke-width": 3, "stroke-linecap": "round" }); mk(lever, "circle", { cx: -62, cy: 0, r: 6, fill: "none", stroke: ink, "stroke-width": 1.8 }); mk(root, "circle", { cx: 350, cy: 760, r: 4, fill: ink });
+    const lever = mk(root, "g", {}); mk(lever, "path", { d: "M0 0 L-62 0", stroke: ink, "stroke-width": 3, "stroke-linecap": "round" }); mk(lever, "circle", { cx: -62, cy: 0, r: 6, fill: "none", stroke: ink, "stroke-width": 1.8 }); mk(root, "circle", { cx: 368, cy: 760, r: 4, fill: ink });
     // the gauge
     mk(root, "circle", { cx: 430, cy: 712, r: 24, fill: "none", stroke: ink, "stroke-width": 1.8 }); mk(root, "path", { d: "M412 726 A24 24 0 0 1 448 726", fill: "none", stroke: soft, "stroke-width": 1 });
     const needle = mk(root, "g", {}); mk(needle, "path", { d: "M0 0 L0 -18", stroke: ink, "stroke-width": 2, "stroke-linecap": "round" });
@@ -1189,47 +1206,71 @@ function buildA5() {
     L("M664 900 L716 900 L710 888 L670 888 Z", 1.6); L("M684 888 L684 876 M696 888 L696 876", 1.4);
     const cap = mk(root, "g", {}); mk(cap, "path", { d: "M672 876 L708 876 L704 866 L676 866 Z", fill: "none", stroke: ink, "stroke-width": 1.8 });
     lines.forEach((e) => { const Lg = e.getTotalLength(); e.dataset.L = Lg; e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); });
-    A5.m[side] = { root, lines, flow, valve, lever, needle, ghosts, lghosts, cap, arcs, parts: [valve, lever, needle, cap, ...ghosts, ...lghosts] };
+    A5.m[side] = { root, fills, lines, flow, valve, lever, needle, ghosts, lghosts, cap, arcs, parts: [valve, lever, needle, cap, ...ghosts, ...lghosts] };
   }
   // ---------- the axis becomes a tree: each tap shortens it, and what comes out is organic ----------
+  // the ribbon conduit: from under one silo to under the other, copper turning blue in the middle; drawn with the machines
+  const cg = mk(svg.querySelector("defs"), "linearGradient", { id: "cond", gradientUnits: "userSpaceOnUse", x1: 890, x2: 1020, y1: 0, y2: 0 });
+  mk(cg, "stop", { offset: 0, "stop-color": "#8A4A1E" }); mk(cg, "stop", { offset: 1, "stop-color": "#2E5E8C" });
+  [0, 1, 2, 3, 4, 5].forEach((i) => { const y = 930 + i * 2.6, e = mk(svg, "path", { d: `M${416 + i * 3} 900 L${416 + i * 3} ${y - 12} Q${416 + i * 3} ${y} ${430 + i * 3} ${y} L${1480 - i * 3} ${y} Q${1494 - i * 3} ${y} ${1494 - i * 3} ${y - 12} L${1494 - i * 3} 900`, fill: "none", stroke: "url(#cond)", "stroke-width": i === 0 || i === 5 ? 1.5 : 1.1 });
+    const Lg = e.getTotalLength(); e.dataset.L = Lg; e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); A5.m.c.lines.push(e); });
+  [[700, "#8A4A1E"], [1210, "#2E5E8C"]].forEach(([x, col]) => { const e = mk(svg, "path", { d: `M${x} 926 L${x + 14} 926 L${x + 14} 947 L${x} 947 Z`, fill: "none", stroke: col, "stroke-width": 1.3 }); const Lg = e.getTotalLength(); e.dataset.L = Lg; e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); A5.m.c.lines.push(e); });   // straps
+  // faint construction geometry behind the tree, as on a drafted study
+  A5.geo = mk(svg, "g", { fill: "none", stroke: "#8A6A4A", "stroke-width": 0.6, opacity: 0 });
+  [150, 270, 390].forEach((r) => mk(A5.geo, "circle", { cx: 955, cy: 470, r })); mk(A5.geo, "path", { d: "M955 40 L955 470 M620 140 L955 470 L1290 140 M560 470 L1350 470", "stroke-dasharray": "3 5" });
   const tree = mk(svg, "g", {}); A5.treeG = tree;
   A5.axis = mk(tree, "line", { x1: 955, x2: 955, y1: 60, y2: 732, stroke: "#762F0B", "stroke-width": 2.4, "stroke-linecap": "round", opacity: 0.7 });
-  A5.strands = [0, 1, 2, 3, 4, 5].map((i) => mk(tree, "path", { fill: "none", stroke: i < 3 ? "#8A4A1E" : "#2E5E8C", "stroke-width": i % 3 === 1 ? 2.2 : 1.5, "stroke-linecap": "round" }));
-  const rr = rng(505), CROWN = 262, branches = []; A5.crown = branches;
+  A5.strands = [0, 1, 2, 3, 4, 5].map((i) => mk(tree, "path", { fill: "none", stroke: i < 3 ? "#8A4A1E" : "#2E5E8C", "stroke-width": i % 3 === 1 ? 2.8 : 2.0, "stroke-linecap": "round" }));
+  // roots: each rope starts at its own button; the taps feed the tree (copper's from the left, blue's mirrored)
+  A5.roots = ["c", "b"].map((side) => [0, 1, 2].map((j) => { const m = (x) => (side === "c" ? x : 1910 - x);
+    const d = `M${m(712 + j * 4)} ${890 - j * 3} C${m(770)} ${884 - j * 4} ${m(780 + j * 6)} ${728 - j * 4} ${m(866)} ${706 - j * 3} S${m(952)} ${716} ${m(954 + (j - 1) * 2)} 724`;
+    const e = mk(tree, "path", { d, fill: "none", stroke: side === "c" ? "#8A4A1E" : "#2E5E8C", "stroke-width": j === 1 ? 2.4 : 1.7, "stroke-linecap": "round" }), Lg = e.getTotalLength(); e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); return { e, L: Lg, side }; })).flat();
+  const rr = rng(505), CROWN = 318, branches = []; A5.crown = branches;
   // the crown, grown not drawn: each limb walks forward a few pixels at a time and keeps turning outward, so it rises, spreads
   // and droops like the plate; it forks twice or three times and ends in a ring. Symmetric dome; it never enters the words or the name.
-  const DOME = { cx: 955, cy: 214, rx: 392, ry: 170 }, stop = (x, y) => ((x - DOME.cx) / DOME.rx) ** 2 + ((y - DOME.cy) / DOME.ry) ** 2 > 1 || (Math.abs(x - 955) > 190 && y > 176) || y < 46;
-  const bz = (P, t) => { const u = 1 - t; return [0, 1].map((k) => u * u * u * P[0][k] + 3 * u * u * t * P[1][k] + 3 * u * t * t * P[2][k] + t * t * t * P[3][k]); };
+  // the crown grows like a tree: strands peel off the ropes at three heights, each limb sways around its own direction, feels the
+  // edges (the dome, the words, the name, the centre line) and turns away from them, and splits in a Y at its end; four generations,
+  // thinner each time; roughly 30 tips a side
+  // the envelope is a tall tree: a column between the silos, symmetric about the axis, opening into a wide canopy above the words
+  // half-width allowed at each height, traced from the real line ends of the words (and their tendril rings), mirrored for blue
+  const band = (y) => y < 188 ? 600 : y < 252 ? 160 : y < 300 ? 390 : y < 392 ? 262 : y < 442 ? 300 : 330;
+  const ell = (x, y) => ((x - 955) / 560) ** 2 + ((y - 196) / 156) ** 2, inside = (x, y) => y <= 494 && Math.abs(x - 955) <= band(y) && (y >= 188 || ell(x, y) <= 1);
+  const wall = (x, y, side) => !inside(x, y) || (x > 1418 && y < 136) || y < 42 || (side === "c" ? x > (y > 300 ? 976 : 957) : x < (y > 300 ? 934 : 953));
   // small spheres for the tips, lit like the two characters: highlight up-left, core, dark rim
   const defs = mk(svg, "defs", {});
   [["gC", "#F3D2B0", "#B8783E", "#6A2A0A"], ["gB", "#E6F0FA", "#3A78BC", "#123A66"]].forEach(([id, a, b2, c]) => { const g = mk(defs, "radialGradient", { id, cx: "35%", cy: "32%", r: "70%" });
     [[0, a], [0.45, b2], [1, c]].forEach(([o, col]) => mk(g, "stop", { offset: o, "stop-color": col })); });
-  function grow(p, hd, len, w, depth, side, group, t0, parent, frac, given) {
-    const sgn = side === "c" ? -1 : 1, bend = sgn * (0.004 + 0.004 * (1 - depth) + rr() * 0.004), pts = given || [p]; let [x, y] = p, h = hd, wob = 0;
-    if (!given) for (let s2 = 0; s2 < len; s2 += 4) { wob += (rr() - 0.5) * 0.06; wob *= 0.9; h += bend + wob * 0.05; const nx = x + Math.cos(h) * 4, ny = y + Math.sin(h) * 4; if (stop(nx, ny)) break; x = nx; y = ny; pts.push([x, y]); }
-    if (pts.length < 4) return;
-    const col = side === "c" ? (depth >= 1 ? "#8A4A1E" : "#A5612F") : (depth >= 1 ? "#2E5E8C" : "#4E7DA6");
+  function seg(p, h, len, w, level, side, idx, parent) {
+    const sgn = side === "c" ? -1 : 1, pts = [p], ph = rr() * 6.28, wl = 20 + rr() * 14, amp = 0.05 + rr() * 0.04, goal = h; let [x, y] = p;
+    for (let s2 = 0; s2 < len; s2 += 3) {
+      let k = 0.09 * Math.sin(goal + amp * Math.sin(ph + s2 / wl) * 6 - h);       // keeps its direction, swaying around it: an S, not a loop
+      if (y < 200) k += 0.085 * smooth((200 - y) / 80) * Math.sin((side === "c" ? -Math.PI + 0.25 : -0.25) - h);   // in the canopy it spreads outward, an umbrella, not a cap
+      for (const look of [18, 34]) if (wall(x + Math.cos(h) * look, y + Math.sin(h) * look, side)) {               // feels the edge ahead and bends away
+        const l = wall(x + Math.cos(h - 0.5) * look, y + Math.sin(h - 0.5) * look, side), r = wall(x + Math.cos(h + 0.5) * look, y + Math.sin(h + 0.5) * look, side);
+        k += (l && !r ? 1 : !l && r ? -1 : sgn * (y > 300 ? -1 : 1)) * 0.08; break; }
+      h += k; const nx = x + Math.cos(h) * 3, ny = y + Math.sin(h) * 3; if (wall(nx, ny, side) && s2 > 6) break; x = nx; y = ny; pts.push([x, y]); }
+    if (pts.length < 6) return null;
+    const col = side === "c" ? (level < 2 ? "#8A4A1E" : "#A5612F") : (level < 2 ? "#2E5E8C" : "#4E7DA6"), group = level === 0 ? [0, 1, 2, 2][idx] : Math.min(8, 1 + level * 2 + (idx % 2) );
     const e = mk(tree, "path", { d: "M" + pts.map((q) => q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" L"), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round" }), Lg = e.getTotalLength();
-    e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); const dur = 0.45 + Lg / 300, me = { e, L: Lg, group, side, t0, dur, kind: "limb", parent, frac }; branches.push(me);
-    const tip = pts[pts.length - 1], ball = depth >= 1 || rr() < 0.4, rc = ball   // main limbs and forks end in spheres; some twigs too, the rest in open rings
-      ? mk(tree, "circle", { cx: tip[0], cy: tip[1], r: depth >= 2 ? 7.5 + rr() * 1.5 : depth >= 1 ? 5 + rr() * 1.5 : 3.2 + rr() * 1.2, fill: `url(#${side === "c" ? "gC" : "gB"})` })
-      : mk(tree, "circle", { cx: tip[0], cy: tip[1], r: 3.5 + rr() * 1.5, fill: "none", stroke: col, "stroke-width": 1.1 });
-    branches.push({ e: rc, group, side, t0, dur: 0, kind: "ring", parent: me, frac: 1 });
-    if (depth === 0) return;
-    const forks = depth >= 2 ? [0.36 + rr() * 0.06, 0.58 + rr() * 0.06, 0.8 + rr() * 0.05] : depth >= 1 ? [0.4 + rr() * 0.15, 0.72 + rr() * 0.1] : [0.45 + rr() * 0.2, ...(rr() < 0.5 ? [0.75] : [])];
-    forks.forEach((fr, i) => { const q = pts[Math.min(pts.length - 1, Math.floor(fr * pts.length))], q2 = pts[Math.min(pts.length - 1, Math.floor(fr * pts.length) + 1)], dir = Math.atan2(q2[1] - q[1], q2[0] - q[0]);
-      const out = i % 2 === 0 ? 1 : -0.6, g2 = parent ? group : group + Math.min(2, 1 + i) ;
-      if (rr() < 0.45) { const nd = mk(tree, "circle", { cx: q[0], cy: q[1], r: 2.5 + rr() * 2, fill: "none", stroke: col, "stroke-width": 1 }); branches.push({ e: nd, group, side, t0, dur: 0, kind: "ring", parent: me, frac: fr }); }
-      const hd2 = dir + sgn * out * (0.42 + rr() * 0.3), up = Math.atan2(Math.sin(hd2) - 0.45, Math.cos(hd2));   // twigs lift as they leave
-      grow(q, up, (depth >= 2 ? 120 : 55) * (0.8 + rr() * 0.45), Math.max(0.9, w * 0.62), depth - 1, side, g2, parent ? 0 : 0.1, me, fr); });
+    e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); const me = { e, L: Lg, group, side, t0: side === "b" ? 0.1 : 0, dur: 0.35 + Lg / 240, kind: "limb", parent, frac: 1 }; branches.push(me);
+    const ring = (q, r, fr, solid) => branches.push({ e: solid ? mk(tree, "circle", { cx: q[0], cy: q[1], r, fill: `url(#${side === "c" ? "gC" : "gB"})` }) : mk(tree, "circle", { cx: q[0], cy: q[1], r, fill: "none", stroke: col, "stroke-width": 1.1 }), group, side, t0: 0, dur: 0, kind: "ring", parent: me, frac: fr });
+    if (level >= 1 && rr() < 0.3) { const f = 0.4 + rr() * 0.3; ring(pts[Math.floor(f * pts.length)], 2.5 + rr() * 1.5, f, false); }   // a bud along the way
+    const tip = pts[pts.length - 1], he = Math.atan2(tip[1] - pts[pts.length - 4][1], tip[0] - pts[pts.length - 4][0]);
+    let kids = 0;
+    if (level < 3) { const n = level >= 1 && rr() < 0.3 ? 3 : 2, sp = 0.38 + rr() * 0.2;
+      for (let i = 0; i < n; i++) { let ok = null;
+        for (let tr = 0; tr < 4 && !ok; tr++) { const a = he + (n === 2 ? (i ? sp : -sp) : (i - 1) * sp) * (1 + tr * 0.35) * (tr % 2 ? -1 : 1) + (rr() - 0.5) * 0.18;   // if blocked, try a wider angle
+          ok = seg(tip, a, len * (0.74 + rr() * 0.12), Math.max(0.8, w * 0.7), level + 1, side, i, me); }
+        if (ok) kids++; } }
+    if (!kids) ring(tip, rr() < 0.6 ? 4.5 + rr() * 3.5 : 4 + rr() * 2.5, 1, rr() < 0.6);                          // ends in a sphere or an open ring
+    else if (rr() < 0.5) ring(tip, 3 + rr() * 1.5, 1, false);                                                    // a knot at the fork
+    return me;
   }
-  for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1;                 // three main limbs a side, born on taps 1, 4 and 7; their forks on the taps between
-    // main limbs are S-curves: up out of the braid, bowing outward, arriving with a droop at the dome
-    [[120, 66, 0], [250, 92, 3], [352, 150, 6]].forEach(([dx, ey, g]) => { const P = [[955 + sgn * 2, CROWN], [955 + sgn * 6, CROWN - 120], [955 + sgn * dx * 0.55, ey - 46], [955 + sgn * dx, ey]], pts = [];
-      for (let k = 0; k <= 60; k++) pts.push(bz(P, k / 60));
-      grow(pts[0], 0, 0, 2.7, 2, side, g, side === "b" ? 0.1 : 0, null, 0, pts); }); }
-  // click 22: copper tendrils reach out from the trunk to where the closing words will stand
-  A5.tendrils = [["M955 300 C 900 286 820 232 744 218"], ["M955 380 C 880 380 760 352 646 355"], ["M955 425 C 860 440 700 470 566 466"]].map(([d], i) => {
+  // four limbs a side leave the ropes where their strands peel off: low and wide first, the upright pair from the top
+  for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1, k0 = side === "c" ? 0 : 3;
+    [[0, 0.95, 140, 3.4], [1, 0.55, 150, 3.1], [2, 0.26, 150, 2.9], [2, 0.04, 140, 2.7]].forEach(([j, a, len, w], i) => {
+      const y0 = PEEL[j]; seg([ropeX(k0 + j, y0, 722), y0], -Math.PI / 2 + sgn * a, len, w, 0, side, i, null); }); }
+  A5.tendrils = [["M955 352 C 900 330 820 244 744 218"], ["M955 380 C 880 380 760 352 646 355"], ["M955 448 C 860 452 700 472 566 466"]].map(([d], i) => {
     const e = mk(tree, "path", { d, fill: "none", stroke: "#8A4A1E", "stroke-width": 1.4, "stroke-linecap": "round" }), L = e.getTotalLength(); e.setAttribute("stroke-dasharray", `${L} ${L + 2}`);
     const end = d.split(" ").slice(-2).map(Number), c = mk(tree, "circle", { cx: end[0], cy: end[1], r: 3.5, fill: "none", stroke: "#8A4A1E", "stroke-width": 1.2 }); return { e, L, c, t0: 1.0 + i * 0.9 }; });
   // ---------- the words, built along the copper routes ----------
@@ -1250,16 +1291,17 @@ function drawMachine(side, k) {                            // k: 0..1 how much o
   const m = A5.m[side]; A5.svg.style.display = "";
   m.lines.forEach((e, i) => { const L = +e.dataset.L, u = clamp(k * 1.35 - (i / m.lines.length) * 0.35); e.setAttribute("stroke-dashoffset", (L * (1 - u)).toFixed(1)); });
   m.parts.forEach((g) => (g.style.opacity = k > 0.85 ? "" : 0));
+  m.fills.forEach((f) => f.setAttribute("opacity", smooth((k - 0.55) / 0.45))); m.vis = smooth((k - 0.8) / 0.2); if (k < 0.8) m.arcs.setAttribute("opacity", 0);
 }
 function machineState(side, st) {                          // st: { valve, lever, needle, press, flow, ghosts }
   const m = A5.m[side];
   m.valve.setAttribute("transform", `translate(600 760) rotate(${st.valve || 0})`);
-  m.lever.setAttribute("transform", `translate(350 760) rotate(${st.lever || 0})`);
+  m.lever.setAttribute("transform", `translate(368 760) rotate(${st.lever || 0})`);
   m.needle.setAttribute("transform", `translate(430 712) rotate(${-60 + (st.needle || 0)})`);
   m.cap.setAttribute("transform", `translate(0 ${(st.press || 0) * 8})`);
   if (st.flow != null) { m.flow.setAttribute("opacity", st.flow > 0 && st.flow < 1 ? 0.9 : 0); m.flow.setAttribute("stroke-dashoffset", (-st.flow * 720).toFixed(1)); } else m.flow.setAttribute("opacity", 0);
   (m.ghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(430 712) rotate(${-60 + [40, 75, 110][i]})`); });
-  (m.lghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(350 760) rotate(${[-28, 22][i]})`); });
+  (m.lghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(368 760) rotate(${[-28, 22][i]})`); });
 }
 // tap timelines: copper acts, then the twin repeats; [time, valve, lever, needle, flow]
 // Blue imitates Copper's rhythm on its own button: 1 / 1 · 2 / 2 · 1, pause, 2 / the same · 1, pause, 2 / the same
@@ -1286,13 +1328,13 @@ function machineFrom(side, T) {
 function machineState(side, st) {
   const m = A5.m[side];
   m.valve.setAttribute("transform", `translate(600 760) rotate(${st.valve || 0})`);
-  m.lever.setAttribute("transform", `translate(350 760) rotate(${st.lever || 0})`);
+  m.lever.setAttribute("transform", `translate(368 760) rotate(${st.lever || 0})`);
   m.needle.setAttribute("transform", `translate(430 712) rotate(${-60 + (st.needle || 0)})`);
   m.cap.setAttribute("transform", `translate(0 ${(st.press || 0) * 8})`);
-  m.arcs.setAttribute("opacity", 0.8 * (st.arcs || 0));
+  m.arcs.setAttribute("opacity", (m.vis || 0) * (0.25 + 0.65 * (st.arcs || 0)));   // a low hum always, louder when it acts
   if (st.flow != null && st.flow > 0 && st.flow < 1) { m.flow.setAttribute("opacity", 0.9); m.flow.setAttribute("stroke-dashoffset", (-st.flow * 720).toFixed(1)); } else m.flow.setAttribute("opacity", 0);
   (m.ghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(430 712) rotate(${-60 + [40, 75, 110][i]})`); });
-  (m.lghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(350 760) rotate(${[-28, 22][i]})`); });
+  (m.lghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(368 760) rotate(${[-28, 22][i]})`); });
 }
 const BTN = { c: [690, 866 - SYM_R], b: [1910 - 690, 866 - SYM_R] };
 function sphereTaps(side, T) {                             // hops onto its own button for each of its taps
@@ -1304,13 +1346,13 @@ function sphereTaps(side, T) {                             // hops onto its own 
 }
 function drawTree(T) {                                      // the axis shortens with every tap; strands and limbs come out of it
   let g = 0; TAPG.forEach((q) => (g += smooth((T - q.T) / 0.6))); g /= TAPG.length;
-  const top = 262, n = g * TAPG.length;                    // the first two taps take the axis down to the crown; every tap after that turns more of it into braid
-  const ys = n < 2 ? 60 + (top - 60) * n / 2 : top + (440 - top) * (n - 2) / (TAPG.length - 2); A5.axis.setAttribute("y1", ys.toFixed(1)); A5.axis.style.opacity = "";
-  const twist = Math.max(0, ys - top);
-  A5.strands.forEach((e, k) => { if (twist < 2) { e.setAttribute("d", ""); return; } let d = ""; const ph = (k < 3 ? 0 : Math.PI) + ((k % 3) - 1) * 0.32;                  // two ropes, copper and blue, each a bundle of three strands, winding round each other
-    for (let y = ys; y >= top - 0.1; y -= 3) { const u = (ys - y) / Math.max(twist, 1), pin = Math.pow(Math.sin(Math.PI * u), 0.6), amp = 1 + 10 * pin; d += (d ? " L" : "M") + (955 + amp * Math.sin((ys - y) / 19 + ph) + ((k % 3) - 1) * (0.6 + 1.8 * pin)).toFixed(1) + " " + y.toFixed(1); } e.setAttribute("d", d); });
+  const n = g * TAPG.length;                               // the first two taps take the axis down to the crown; every tap after that turns more of it into rope, down to its foot
+  const ys = n < 2 ? 60 + (470 - 60) * n / 2 : 470 + (722 - 470) * (n - 2) / (TAPG.length - 2); A5.axis.setAttribute("y1", ys.toFixed(1)); A5.axis.style.opacity = ys > 720 ? 0 : "";
+  drawRopes(ys);
   const seen = { c: TAPG.filter((q) => q.side === "c"), b: TAPG.filter((q) => q.side === "b") };
   const t0 = (q) => { if (q._T !== undefined) return q._T; const tap = seen[q.side][q.group]; let v = tap ? tap.T + q.t0 : 1e9; if (q.parent) v = Math.max(v, t0(q.parent) + q.parent.dur * q.frac); return (q._T = v); };
+  A5.roots.forEach((q) => { const u = smooth((T - seen[q.side][0].T) / 1.6); q.e.setAttribute("stroke-dashoffset", (q.L * (1 - u)).toFixed(1)); });   // each side's first tap sends its rope from the button to the axis
+  A5.geo.setAttribute("opacity", 0.22 * smooth((T - TAPG[0].T) / 3));
   A5.crown.forEach((q) => { const tt = T - t0(q);
     if (q.kind === "limb") { const u = clamp(tt / q.dur), e = 1 - Math.pow(1 - u, 2); q.e.setAttribute("stroke-dashoffset", (q.L * (1 - e)).toFixed(1)); q.e.style.opacity = u > 0 ? 1 : 0; }
     else q.e.style.opacity = smooth(tt / 0.3); });
@@ -1426,10 +1468,9 @@ function retractA5(u) {                                   // u 0..1: words, tend
   const lim = A5.crown.filter((q) => q.kind === "limb"), T0 = Math.min(...lim.map((q) => q._T || 0)), maxE = Math.max(...lim.map((q) => (q._T || 0) - T0 + q.dur));   // the last grown goes first
   A5.crown.forEach((q) => { const key = q.kind === "ring" ? maxE + 1 : (q._T || 0) - T0 + q.dur, back = 0.15 + (1 - key / (maxE + 1)) * 0.5, v = clamp(1 - (u - back) / 0.18);
     if (q.kind === "limb") { q.e.setAttribute("stroke-dashoffset", (q.L * (1 - v)).toFixed(1)); q.e.style.opacity = v > 0.002 ? 1 : 0; } else q.e.style.opacity = v; });
-  const ys = 440 + (60 - 440) * smooth((u - 0.7) / 0.28); A5.axis.setAttribute("y1", ys.toFixed(1));   // the trunk contracts; the axis is whole
-  const twist = Math.max(0, ys - 262);
-  A5.strands.forEach((e, k) => { if (twist < 2) { e.setAttribute("d", ""); return; } let d = ""; const ph = (k < 3 ? 0 : Math.PI) + ((k % 3) - 1) * 0.32;
-    for (let y = ys; y >= 261.9; y -= 3) { const w = (ys - y) / Math.max(twist, 1), amp = 4 + 7 * w; d += (d ? " L" : "M") + (955 + amp * Math.sin((ys - y) / 34 + ph) + ((k % 3) - 1) * 1.2).toFixed(1) + " " + y.toFixed(1); } e.setAttribute("d", d); });
+  const ys = 722 + (60 - 722) * smooth((u - 0.62) / 0.36); A5.axis.setAttribute("y1", ys.toFixed(1)); A5.axis.style.opacity = "";   // the ropes contract; the axis is whole
+  drawRopes(ys);
+  A5.roots.forEach((q) => q.e.setAttribute("stroke-dashoffset", (q.L * smooth((u - 0.45) / 0.2)).toFixed(1))); A5.geo.setAttribute("opacity", 0.22 * (1 - smooth(u / 0.4)));
   const mk2 = 1 - smooth((u - 0.2) / 0.6); drawMachine("c", mk2); drawMachine("b", mk2);
 }
 // Click 24 (after "…with less waste built in."): the tree goes back into the axis; the sheet is cleared; hold
