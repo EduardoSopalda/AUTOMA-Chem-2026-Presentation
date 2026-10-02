@@ -1453,6 +1453,7 @@ const S_LIP = (500 + 110 * (55 * Math.PI / 180)) / (500 + 110 * Math.PI / 2 + 40
 function polyAt(f, s) { const d = s * f.cum[f.cum.length - 1]; let i = 1; while (i < f.cum.length - 1 && f.cum[i] < d) i++; const k = (d - f.cum[i - 1]) / Math.max(1e-6, f.cum[i] - f.cum[i - 1]);
   return [f.pts[i - 1][0] + (f.pts[i][0] - f.pts[i - 1][0]) * k, f.pts[i - 1][1] + (f.pts[i][1] - f.pts[i - 1][1]) * k]; }
 function floorPt(side, s, u1, u2) {                         // one continuous parametric strip per side: u1 extends it to the margin, u2 bends its end up
+  if (s < 0) { const x = HX - s * 610; return [side === "c" ? x : 1910 - x, YC]; }   // inward of the hinge the floor is flat, toward the man
   let a, b, u; if (u2 > 0) { a = polyAt(FLR.E, s); b = polyAt(FLR.P, s); u = u2; } else { a = polyAt(FLR.O, s); b = polyAt(FLR.E, s); u = u1; }
   const x = a[0] + (b[0] - a[0]) * u, y = a[1] + (b[1] - a[1]) * u; return [side === "c" ? x : 1910 - x, y];
 }
@@ -1527,7 +1528,7 @@ function drawFloor(u1, u2) {                                // the conduit, redr
     e.setAttribute("d", "M" + pts.map((q) => q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" L")); });
 }
 function onFloor(side, s) { const [p, n] = floorFrame(side, s), r = 7.3 + SYM_R; return [p[0] + n[0] * r, p[1] + n[1] * r]; }   // a sphere's centre resting on the strip
-function sAtX(side, x) { let best = 1e9, sb = 0; for (let k = 0; k <= 0.75; k += 0.0015) { const d = Math.abs(onFloor(side, k)[0] - x); if (d < best) { best = d; sb = k; } } return sb; }
+function sAtX(side, x) { let best = 1e9, sb = 0; for (let k = -0.45; k <= 0.75; k += 0.0015) { const d = Math.abs(onFloor(side, k)[0] - x); if (d < best) { best = d; sb = k; } } return sb; }
 function placeSphere(side, p, onPed) { const sp = side === "c" ? copper : blue; place(sp, p[0], p[1], SYM_R); sp.sh.style.opacity = onPed ? "" : 0; sp.im.style.zIndex = onPed ? "" : 3; }   // off its pedestal it rolls in front of the drawing, never into a vessel
 const hopTo = (a, b, u) => { const e = smooth(u); return [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e - 22 * Math.sin(Math.PI * clamp(u))]; };
 // Click 25: the floor begins to extend at once, slowly, to the margins, and bends up. The tree bears four letters: bud, growth, a mature letter
@@ -1553,30 +1554,41 @@ function act6Grow(t) {
     else if (t < RUN25.land) placeSphere(side, hopTo(home, land, (t - RUN25.out) / (RUN25.land - RUN25.out)), 0);
     else placeSphere(side, onFloor(side, sa + (S_LIP - sa) * smooth((t - RUN25.land) / (RUN25.lip - RUN25.land))), 0); }   // the whole floor, past the vessel, up the curve
 }
-// Click 26: action and reaction. Each sphere comes down its ramp and strikes the outer letter, recoils; the letter slides to its partner.
-// It comes again, strikes the pair, recoils; the pair slides in around the man: RI [the man] SK. The sphere goes home. One tap.
-const C26 = { hit1: 2.6, back1: 3.2, go2: 3.6, hit2: 5.0, back2: 5.6, hop: 5.9, home: 6.5, slide1: 1.3, slide2: 2.0 };
-SFX[26] = C26.hit2 + C26.slide2;
+// Click 26: weight, and the rhythm of Act 05. The ball rolls down its ramp and strikes the solid letter once; it rebounds all the way
+// back up the ramp. It comes down and strikes twice (a small rebound between); back up the ramp. Then three times, and it is spent.
+// Each strike only scrapes the heavy letter forward: R to I, then the pair RI home around the man (mirrored: K, SK). One tap.
+const W26 = { start: 0.3, d1: 1.6, up: [1.3, 1.1], back: [0.85, 0.6], micro: 0.2, slide: 0.45, rest: 1.8, hop: 0.6 };
+function plan26() {                                         // the shared timeline: [kind, t0, dur, round, hit index]
+  const ev = []; let t = W26.start; ev.push(["down0", t, W26.d1]); t += W26.d1;
+  for (let k = 0; k < 3; k++) { for (let j = 0; j <= k; j++) { ev.push(["hit", t, 0, k, j]); if (j < k) { ev.push(["micro", t, 2 * W26.micro, k, j]); t += 2 * W26.micro; } }
+    if (k < 2) { ev.push(["up", t, W26.up[k], k]); t += W26.up[k]; ev.push(["down", t, W26.up[k], k]); t += W26.up[k]; } }
+  ev.push(["rest", t, W26.rest]); t += W26.rest; ev.push(["hop", t, W26.hop]); return ev;
+}
+const EV26 = plan26(), LASTHIT26 = EV26.filter((e) => e[0] === "hit").pop()[1];
+SFX[26] = LASTHIT26 + W26.slide;
 function act6Push(t) {
   if (t < 0) return;
   act6Grow(99);
   A6.let.forEach((o, i) => A6.stems[i].setAttribute("opacity", 0));
+  const inn = (a, b, u) => a + (b - a) * u * u, out = (a, b, u) => a + (b - a) * (1 - (1 - u) * (1 - u));   // gravity down the ramp; against it, going up
   for (const side of ["c", "b"]) {
     const dir = side === "c" ? 1 : -1, [O, N] = side === "c" ? [A6.let[0], A6.let[1]] : [A6.let[3], A6.let[2]];
-    const c1 = O.nx - dir * (O.h + SYM_R), c2 = O.x1 - dir * (O.h + SYM_R), sc1 = sAtX(side, c1), sc2 = sAtX(side, c2), sr1 = sAtX(side, c1 - dir * 40), sr2 = sAtX(side, c2 - dir * 32);
-    let p, ped = 0;
-    if (t < C26.hit1) p = onFloor(side, S_LIP + (sc1 - S_LIP) * smooth(t / C26.hit1));                       // down the ramp, gathering speed, along the floor
-    else if (t < C26.back1) p = onFloor(side, sc1 + (sr1 - sc1) * (1 - Math.pow(1 - (t - C26.hit1) / (C26.back1 - C26.hit1), 2)));   // recoil
-    else if (t < C26.go2) p = onFloor(side, sr1);
-    else if (t < C26.hit2) p = onFloor(side, sr1 + (sc2 - sr1) * smooth((t - C26.go2) / (C26.hit2 - C26.go2)));
-    else if (t < C26.back2) p = onFloor(side, sc2 + (sr2 - sc2) * (1 - Math.pow(1 - (t - C26.hit2) / (C26.back2 - C26.hit2), 2)));
-    else if (t < C26.hop) p = onFloor(side, sr2);
-    else if (t < C26.home) p = hopTo(onFloor(side, sr2), BTN[side], (t - C26.hop) / (C26.home - C26.hop));
-    else { p = BTN[side]; ped = 1; }
+    const oPos = [O.nx, O.x1, O.x1 + (O.fx - O.x1) * 0.5, O.fx];          // the outer letter before each round, and after the last
+    const before = (k, j) => oPos[k] + (oPos[k + 1] - oPos[k]) * j / (k + 1);   // where it stands before strike j of round k
+    const sC = (k, j) => sAtX(side, before(k, j) - dir * (O.h + SYM_R)), sH = (k) => { const c = sC(k, k); return c + (S_LIP - c) * W26.back[k]; };
+    let p = null, ped = 0, ox = O.nx;
+    for (const e of EV26) { const [kind, t0, d, k, j] = e; if (kind === "hit" && t >= t0) ox = before(k, j) + (before(k, j + 1) - before(k, j)) * (1 - Math.pow(1 - clamp((t - t0) / W26.slide), 2));   // struck, the heavy letter scrapes forward and stops
+      if (p || t < t0 || t >= t0 + d) continue; const u = (t - t0) / d;
+      if (kind === "down0") p = onFloor(side, inn(S_LIP, sC(0, 0), u));
+      else if (kind === "micro") { const c = sC(k, j), r = sAtX(side, before(k, j) - dir * (O.h + SYM_R + 30)), c2 = sC(k, j + 1); p = onFloor(side, u < 0.5 ? out(c, r, u * 2) : inn(r, c2, u * 2 - 1)); }   // a small rebound, and again
+      else if (kind === "up") p = onFloor(side, out(sC(k, k), sH(k), u));                // all the way back up the ramp
+      else if (kind === "down") p = onFloor(side, inn(sH(k), sC(k + 1, 0), u));
+      else if (kind === "rest") { const c = sC(2, 2), r = sAtX(side, BTN[side][0] - dir * 70); p = onFloor(side, c + (r - c) * smooth(u)); }   // spent: it rolls back and comes to rest
+      else if (kind === "hop") p = hopTo(onFloor(side, sAtX(side, BTN[side][0] - dir * 70)), BTN[side], u); }
+    if (!p) { const first = EV26[0][1]; if (t < first) p = onFloor(side, S_LIP); else { p = BTN[side]; ped = 1; } }
+    const hits = EV26.filter((e) => e[0] === "hit" && t >= e[1]); if (hits.length && !ped) { const e = hits[hits.length - 1]; if (t - e[1] < 0.001) p = onFloor(side, sC(e[3], e[4])); }
     placeSphere(side, p, ped);
-    const k1 = 1 - Math.pow(1 - clamp((t - C26.hit1) / C26.slide1), 2), k2 = 1 - Math.pow(1 - clamp((t - C26.hit2) / C26.slide2), 2);   // struck, they slide and slow
-    const ox = O.nx + (O.x1 - O.nx) * k1 + (O.fx - O.x1) * k2, nx = N.nx + (N.fx - N.nx) * k2;
-    letterAt(O, ox, FLOOR_TOP, CAP); letterAt(N, nx, FLOOR_TOP, CAP);
+    letterAt(O, ox, FLOOR_TOP, CAP); letterAt(N, N.nx + Math.max(0, (ox - O.x1) * dir) * dir, FLOOR_TOP, CAP);   // once R reaches I they move as one
   }
 }
 function act6Still() { act6Push(99); }
@@ -1608,7 +1620,7 @@ function paperTap() {                                       // one dull paper ta
     for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 6);
     const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(); f.type = "lowpass"; f.frequency.value = 700; g.gain.value = 0.5; src.buffer = n; src.connect(f).connect(g).connect(ac.destination); src.start(); } catch (e) {}
 }
-window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 4.6, 12: 17.2, 13: 9.0, 14: 3.0, 15: 9.0, 16: 12.0, 17: 12.0, 18: 16.0, 19: 12.8 + 5.9, 20: 14.5, 21: 16.0, 22: 9.0, 23: 13.0, 24: 4.4, 25: 9.2, 26: 7.4, 27: 3.0, 28: 2.6, 29: 1.2, 30: 1.0 };
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 4.6, 12: 17.2, 13: 9.0, 14: 3.0, 15: 9.0, 16: 12.0, 17: 12.0, 18: 16.0, 19: 12.8 + 5.9, 20: 14.5, 21: 16.0, 22: 9.0, 23: 13.0, 24: 4.4, 25: 9.2, 26: 11.6, 27: 3.0, 28: 2.6, 29: 1.2, 30: 1.0 };
 window.setState = (c, t) => {
   click4(-1); click5(-1); click6(-1); click7(-1); click9(-1); clickSym(-1); click10(-1); act3Number(-1); act4Open(-1); act5Open(-1); act6Open(-1);
   if (c >= 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(c === 4 ? t : 99);
