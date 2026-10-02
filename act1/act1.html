@@ -1239,6 +1239,9 @@ function buildA5() {
   const defs = mk(svg, "defs", {});
   [["gC", "#F3D2B0", "#B8783E", "#6A2A0A"], ["gB", "#E6F0FA", "#3A78BC", "#123A66"]].forEach(([id, a, b2, c]) => { const g = mk(defs, "radialGradient", { id, cx: "35%", cy: "32%", r: "70%" });
     [[0, a], [0.45, b2], [1, c]].forEach(([o, col]) => mk(g, "stop", { offset: o, "stop-color": col })); });
+  // lines may pass behind the words, but no sphere or ring may sit on them: the boxes of the six closing lines, with a margin
+  const TEXT = [[112, 148, 290, 178], [110, 194, 722, 242], [112, 268, 336, 298], [106, 298, 494, 388], [112, 390, 596, 424], [112, 446, 418, 480]];
+  const onText = (x, y, r) => TEXT.some(([x0, y0, x1, y1]) => x > x0 - r - 16 && x < x1 + r + 16 && y > y0 - r - 12 && y < y1 + r + 12);
   function seg(p, h, len, w, level, side, idx, parent) {
     const sgn = side === "c" ? -1 : 1, pts = [p], ph = rr() * 6.28, wl = 20 + rr() * 14, amp = 0.05 + rr() * 0.04, goal = h; let [x, y] = p;
     for (let s2 = 0; s2 < len; s2 += 3) {
@@ -1252,14 +1255,14 @@ function buildA5() {
     const col = side === "c" ? (level < 2 ? "#8A4A1E" : "#A5612F") : (level < 2 ? "#2E5E8C" : "#4E7DA6"), group = level === 0 ? [0, 0, 1, 2, 2][idx] : Math.min(8, level * 2 + (idx % 2));
     const e = mk(tree, "path", { d: "M" + pts.map((q) => q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" L"), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round" }), Lg = e.getTotalLength();
     e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); const me = { e, L: Lg, group, side, t0: side === "b" ? 0.1 : 0, dur: 0.35 + Lg / 240, kind: "limb", parent, frac: 1 }; branches.push(me);
-    const ring = (q, r, fr, solid) => branches.push({ e: solid ? mk(tree, "circle", { cx: q[0], cy: q[1], r, fill: `url(#${side === "c" ? "gC" : "gB"})` }) : mk(tree, "circle", { cx: q[0], cy: q[1], r, fill: "none", stroke: col, "stroke-width": 1.1 }), group, side, t0: 0, dur: 0, kind: "ring", parent: me, frac: fr });
+    const ring = (q, r, fr, solid) => !onText(q[0], q[1], r) && branches.push({ e: solid ? mk(tree, "circle", { cx: q[0], cy: q[1], r, fill: `url(#${side === "c" ? "gC" : "gB"})` }) : mk(tree, "circle", { cx: q[0], cy: q[1], r, fill: "none", stroke: col, "stroke-width": 1.1 }), group, side, t0: 0, dur: 0, kind: "ring", parent: me, frac: fr });
     if (level >= 1 && rr() < 0.3) { const f = 0.4 + rr() * 0.3; ring(pts[Math.floor(f * pts.length)], 2.5 + rr() * 1.5, f, false); }   // a bud along the way
     const tip = pts[pts.length - 1], he = Math.atan2(tip[1] - pts[pts.length - 4][1], tip[0] - pts[pts.length - 4][0]);
     let kids = 0;
     if (level < 4) { const n = level >= 1 && level <= 2 && rr() < 0.35 ? 3 : 2, sp = 0.36 + rr() * 0.2;
       for (let i = 0; i < n; i++) { let ok = null;
         for (let tr = 0; tr < 4 && !ok; tr++) { const a = he + (n === 2 ? (i ? sp : -sp) : (i - 1) * sp) * (1 + tr * 0.35) * (tr % 2 ? -1 : 1) + (rr() - 0.5) * 0.18;   // if blocked, try a wider angle
-          ok = seg(tip, a, len * (level === 0 ? 0.82 : 0.7) * (0.85 + rr() * 0.3), Math.max(0.75, w * 0.72), level + 1, side, i, me); }
+          ok = seg(tip, a, len * (level === 0 ? 0.86 : 0.74) * (0.85 + rr() * 0.3), Math.max(0.75, w * 0.72), level + 1, side, i, me); }
         if (ok) kids++; } }
     if (!kids) ring(tip, rr() < 0.6 ? 4.5 + rr() * 3.5 : 4 + rr() * 2.5, 1, rr() < 0.6);                          // ends in a sphere or an open ring
     else if (rr() < 0.5) ring(tip, 3 + rr() * 1.5, 1, false);                                                    // a knot at the fork
@@ -1267,7 +1270,7 @@ function buildA5() {
   }
   // four limbs a side leave the ropes where their strands peel off: low and wide first, the upright pair from the top
   for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1, k0 = side === "c" ? 0 : 3;
-    [[0, 1.15, 110, 3.6], [0, 0.8, 115, 3.4], [1, 0.5, 120, 3.3], [2, 0.26, 122, 3.1], [2, 0.05, 115, 2.9]].forEach(([j, a, len, w], i) => {
+    [[0, 1.2, 150, 3.8], [0, 0.86, 152, 3.6], [1, 0.54, 150, 3.4], [2, 0.28, 140, 3.2], [2, 0.05, 125, 3.0]].forEach(([j, a, len, w], i) => {
       const y0 = PEEL[j]; seg([ropeX(k0 + j, y0, 722), y0], -Math.PI / 2 + sgn * a, len, w, 0, side, i, null); }); }
   A5.tendrils = [["M955 352 C 900 330 820 244 744 218"], ["M955 380 C 880 380 760 352 646 355"], ["M955 448 C 860 452 700 472 566 466"]].map(([d], i) => {
     const e = mk(tree, "path", { d, fill: "none", stroke: "#8A4A1E", "stroke-width": 1.4, "stroke-linecap": "round" }), L = e.getTotalLength(); e.setAttribute("stroke-dasharray", `${L} ${L + 2}`);
