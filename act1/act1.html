@@ -770,15 +770,15 @@ function buildA3() {
   const st = $("stage"), CU = "#762F0B", BLU = "#1F4C6E", INKC = "#26221E", X0 = 110;
   const T = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;" + css; st.appendChild(d); return d; };
   const E = A3.els;
-  E.tag = T("THE CARBON NUMBER", `left:${X0}px;top:148px;font:500 16px/1 'DM Sans';letter-spacing:.24em;color:#365F7C`);
+  E.tag = T("THE CARBON NUMBER", `left:${X0}px;top:148px;font:500 18px/1 'DM Sans';letter-spacing:.22em;color:#365F7C`);
   E.number = T("11,001.8 kt CO<sub style='font-size:.55em;vertical-align:-.12em'>2</sub>e", `left:${X0 - 4}px;top:176px;font:500 90px/1 'Source Serif 4';color:${CU};letter-spacing:-.01em`);
   E.product = T("It is a data product.", `left:${X0}px;top:286px;font:italic 500 32px/1 'Source Serif 4';color:${CU}`);
   const rows = [["SCOPE 1", "581.7 kt", ""], ["SCOPE 2", "140.0 kt", "market-based"], ["SCOPE 2", "464.3 kt", "location-based"], ["SCOPE 3", "10,280.1 kt", ""]];
-  const ROW0 = 348, RH = 70, rowY = [], rowR = [];
+  const ROW0 = 344, RH = 78, rowY = [], rowR = [];
   rows.forEach(([l, v, n], i) => { const y = ROW0 + i * RH;
-    const d = T(`<span style="font:500 17px/1 'Source Serif 4';letter-spacing:.12em;color:${CU}">${l}</span><br><span style="font:500 34px/1.15 'Source Serif 4';color:${BLU}">${v}</span>${n ? ` <span style="font:italic 400 16px/1 'Source Serif 4';color:${INKC};margin-left:8px">${n}</span>` : ""}`, `left:${X0}px;top:${y}px`);
+    const d = T(`<span style="font:500 21px/1 'Source Serif 4';letter-spacing:.1em;color:${CU}">${l}</span><br><span style="font:500 40px/1.15 'Source Serif 4';color:${BLU}">${v}</span>${n ? ` <span style="font:italic 400 21px/1 'Source Serif 4';color:${INKC};margin-left:8px">${n}</span>` : ""}`, `left:${X0}px;top:${y}px`);
     A3.rows.push(d); rowY.push(y + 34); d.style.opacity = 1; rowR.push(d.getBoundingClientRect().right / (st.getBoundingClientRect().width / 1920) - st.getBoundingClientRect().left / (st.getBoundingClientRect().width / 1920) + 18); d.style.opacity = 0; });
-  E.claim = T("THE NUMBER IS OURS.<br>MUCH OF THE EVIDENCE IS ELSEWHERE.", `left:${X0}px;top:${ROW0 + 4 * RH + 8}px;font:500 18px/1.45 'Source Serif 4';letter-spacing:.08em;color:${CU}`);
+  E.claim = T("THE NUMBER IS OURS.<br>MUCH OF THE EVIDENCE IS ELSEWHERE.", `left:${X0}px;top:${ROW0 + 4 * RH + 6}px;font:500 21px/1.4 'Source Serif 4';letter-spacing:.07em;color:${CU}`);
   E.thesis = T("You cannot report what you cannot trace.", `left:${X0}px;top:842px;font:italic 400 34px/1 'Source Serif 4';color:${INKC}`);
   const svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080);
   svg.style.cssText = "position:absolute;left:0;top:0;z-index:2;mix-blend-mode:multiply"; st.appendChild(svg); A3.svg = svg;
@@ -791,7 +791,7 @@ function buildA3() {
   A3.node = [el("circle", { cx: NODE[0], cy: NODE[1], r: 9, fill: CU }), el("circle", { cx: NODE[0], cy: NODE[1], r: 15, fill: "none", stroke: CU, "stroke-width": 1.2 })];
   let seed = 2610; const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
   const LABELS = [["Supplier declarations", 1290, 168], ["Energy data", 1360, 262], ["Production records", 1318, 360], ["Transport data", 1586, 486], ["Allocation rules", 1572, 578], ["Assumptions", 1520, 664]];
-  const lab = LABELS.map(([t, x, y], i) => T(t, `left:${x}px;top:${y - 13}px;font:500 21px/1 'Source Serif 4';color:${i === 5 ? CU : BLU}`));
+  const lab = LABELS.map(([t, x, y], i) => T(t, `left:${x}px;top:${y - 16}px;font:500 27px/1 'Source Serif 4';color:${i === 5 ? CU : BLU}`));
   A3.labels = lab;
   const k0 = st.getBoundingClientRect(), kk = k0.width / 1920;
   const boxes = lab.map((d) => { d.style.opacity = 1; const r = d.getBoundingClientRect(); d.style.opacity = 0; return [(r.left - k0.left) / kk - 6, (r.top - k0.top) / kk - 4, (r.right - k0.left) / kk + 6, (r.bottom - k0.top) / kk + 4]; });
@@ -1289,9 +1289,39 @@ function buildA5() {
     w5: T("to run the systems they already have,", `left:112px;top:392px;font:400 30px/1 'Source Serif 4';color:${INK}`),
     w6: T("with less waste built in.", `left:112px;top:448px;font:italic 400 30px/1 'Source Serif 4';color:${CU}`),
   };
+  // ---------- what the twin does, written on the drawing (annotations, not a dashboard): the real process feeds it; it tries the
+  // three settings the script names, one at a time, against quality, energy and scrap; one is chosen. No invented numbers.
+  { const g = mk(svg, "g", { opacity: 0, stroke: "#2E5E8C", "stroke-width": 1.1, fill: "none" }), tw = (A5.tw = { g });
+    const N = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;" + css; st.appendChild(d); return d; };
+    const lab = "font:italic 400 22px/1 'Source Serif 4';color:#2E5E8C";
+    tw.data = N("process data &nbsp;→ &nbsp;the twin", `left:1236px;top:952px;font:italic 400 21px/1 'Source Serif 4';color:#26221E`);
+    tw.vars = [["temperature", 1652, 700, "M1646 712 L1508 712"], ["timing", 1652, 772, "M1646 784 L1552 764"], ["material mix", 1146, 596, "M1258 618 L1258 742 L1287 757"]].map(([t, x, y, d]) => ({ d: N(t, `left:${x}px;top:${y}px;${lab}`), l: mk(g, "path", { d }) }));
+    tw.hdr = N("THE TWIN COMPARES", "left:1652px;top:514px;font:500 17px/1 'DM Sans',sans-serif;letter-spacing:.16em;color:#365F7C");
+    tw.state = N("", "left:1652px;top:544px;font:italic 400 20px/1 'Source Serif 4';color:#26221E");
+    tw.rows = ["quality", "energy", "scrap"].map((t, i) => { const y = 584 + i * 34, cy = y + 12;
+      mk(g, "line", { x1: 1764, x2: 1892, y1: cy, y2: cy, "stroke-opacity": 0.5 });
+      return { d: N(t, `left:1652px;top:${y}px;${lab}`), base: mk(g, "line", { y1: cy - 8, y2: cy + 8, "stroke-width": 1.6, stroke: "#26221E" }), bar: mk(g, "line", { y1: cy, y2: cy, x1: 1764, "stroke-width": 7, "stroke-linecap": "butt" }), cy }; }); }
   A5.em = [...A5.t.w2.querySelectorAll(".e")]; A5.em.forEach((e) => (e.style.cssText = "display:inline-block;transform-origin:50% 80%;color:#762F0B;font-weight:400"));
 }
-function a5Hide() { axisPath.style.display = ""; if (!A5.built) return; A5.svg.style.display = "none"; Object.values(A5.t).forEach((d) => (d.style.opacity = 0)); }
+function twinEls() { const w = A5.tw; return [w.data, w.hdr, w.state, ...w.vars.map((v) => v.d), ...w.rows.map((r) => r.d)]; }
+function a5Hide() { axisPath.style.display = ""; if (!A5.built) return; A5.svg.style.display = "none"; Object.values(A5.t).forEach((d) => (d.style.opacity = 0)); twinEls().forEach((d) => (d.style.opacity = 0)); }
+// the twin's notes: [quality, energy, scrap] as a share of the gauge; baseline, then one setting changed per trial; trial 3 is chosen
+const TWIN = { base: [0.70, 0.70, 0.60], trials: [[0.56, 0.58, 0.64], [0.71, 0.63, 0.50], [0.72, 0.50, 0.38]], at: [27.1, 29.6, 32.1], chosen: 35.5, show: 25.4 };
+function twinNotes(T, fade = 1) {
+  const w = A5.tw, E = (a, d) => smooth((T - a) / d) * fade;
+  w.data.style.opacity = E(2.5, 1.0);
+  const v = E(6.0, 1.0); w.vars.forEach((q) => { q.d.style.opacity = v; q.l.setAttribute("opacity", v); });
+  const p = E(TWIN.show, 0.8); w.g.setAttribute("opacity", v); [w.hdr, w.state, ...w.rows.map((r) => r.d)].forEach((d) => (d.style.opacity = p)); w.rows.forEach((r) => { r.bar.style.opacity = p; r.base.style.opacity = p; });
+  let cur = TWIN.base.slice(), k = -1;
+  TWIN.at.forEach((a, i) => { const u = smooth((T - a) / 0.7); if (T >= a) k = i; cur = cur.map((x, j) => x + (TWIN.trials[i][j] - x) * u * (i === 2 || T < TWIN.at[i + 1] ? 1 : 1)); });
+  if (k >= 0 && k < 2 && T >= TWIN.at[k + 1] - 0.01) k = k + 1;
+  const chosen = T >= TWIN.chosen;
+  w.state.textContent = chosen ? "chosen: the material mix" : k < 0 ? "as it runs today" : `trial ${k + 1} of 3: ${["temperature", "timing", "material mix"][k]}`;
+  w.state.style.color = chosen ? "#762F0B" : "#26221E";
+  w.vars.forEach((q, i) => { const on = (k === i && !chosen) || (chosen && i === 2); q.d.style.fontWeight = on ? 600 : 400; q.d.style.color = chosen && on ? "#762F0B" : "#2E5E8C"; q.l.setAttribute("stroke-width", on ? 2 : 1.1); });
+  w.rows.forEach((r, j) => { const x = 1764 + 128 * cur[j]; r.bar.setAttribute("x2", x.toFixed(1)); r.bar.setAttribute("stroke", chosen ? "#762F0B" : "#2E5E8C");
+    const bx = 1764 + 128 * TWIN.base[j]; r.base.setAttribute("x1", bx); r.base.setAttribute("x2", bx); });
+}
 function drawMachine(side, k) {                            // k: 0..1 how much of the drawing exists
   const m = A5.m[side]; A5.svg.style.display = "";
   m.lines.forEach((e, i) => { const L = +e.dataset.L, u = clamp(k * 1.35 - (i / m.lines.length) * 0.35); e.setAttribute("stroke-dashoffset", (L * (1 - u)).toFixed(1)); });
@@ -1366,7 +1396,7 @@ function drawTree(T) {                                      // the axis shortens
 function act5Base(c, t) {                                  // everything that clicks 20-23 share
   A4.ctx.setTransform(1, 0, 0, 1, 0, 0); A4.ctx.clearRect(0, 0, A4.cv.width, A4.cv.height); A4.stamp.style.opacity = 0; A4.ticks.setAttribute("opacity", 0);
   Object.values(A4.t).forEach((d) => (d.style.opacity = 0)); blue.sh.style.opacity = ""; axisPath.style.display = "none"; A5.svg.style.display = "";
-  const T = clock5(c, t); drawTree(T);
+  const T = clock5(c, t); drawTree(T); twinNotes(T);
   const C = machineFrom("c", T), B = machineFrom("b", T);
   if (T > OFF5[21] + 12.6) { const k = T - (OFF5[21] + 12.6); B.ghosts = [0, 1, 2].map((i) => 0.75 * smooth((k - i * 0.9) / 0.6) * (T < OFF5[22] + 4 ? 1 : 1 - smooth((T - OFF5[22] - 4) / 1)));   // after round 4 the twin tries other settings
     B.needle += 18 * Math.sin(k * 1.3) * (1 - smooth((T - OFF5[22] - 3) / 1.5)); }
@@ -1514,7 +1544,7 @@ function act6Hide() {
 function act6Open(t) {
   if (t < 0) { act6Hide(); return; }
   buildA6(); act6Hide();
-  const v = 1 - smooth(t / 1.6); Object.values(A5.t).forEach((d) => (d.style.opacity = v));   // only the words go; the drawing stays
+  const v = 1 - smooth(t / 1.6); Object.values(A5.t).forEach((d) => (d.style.opacity = v)); twinNotes(99, v);   // only the words go; the drawing stays
   const swap = t >= 0.9, o = swap ? smooth((t - 0.9) / 0.7) : 1 - smooth((t - 0.2) / 0.7);
   $("act").textContent = swap ? CHAPTERS[6].label : CHAPTERS[5].label; if ($("ttl").innerHTML !== (swap ? CHAPTERS[6].title : CHAPTERS[5].title)) $("ttl").innerHTML = swap ? CHAPTERS[6].title : CHAPTERS[5].title;
   $("act").style.opacity = o; $("ttl").style.opacity = o; $("hair").style.opacity = 0.55; $("rule").style.width = "100%";
