@@ -32,6 +32,12 @@
     setTimeout(() => { if (inAct1) act0.style.visibility = "hidden"; }, 900);
   }
   addEventListener("message", (e) => { if (e.data && e.data.deck === "opening-done" && presses0 >= 2) handover(); });
+  addEventListener("message", (e) => {                     // Act 06: one dull paper tap, played here where the keyboard lives
+    if (!(e.data && e.data.deck === "tap")) return;
+    try { const ac = (window.__ac = window.__ac || new AudioContext()), n = ac.createBuffer(1, ac.sampleRate * 0.08, ac.sampleRate), d = n.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 6);
+      const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(); f.type = "lowpass"; f.frequency.value = 700; g.gain.value = 0.5; src.buffer = n; src.connect(f).connect(g).connect(ac.destination); src.start(); } catch (err) {}
+  });
   addEventListener("message", (e) => {                     // back from Act 1's first click: the opening's last frame again
     if (!(e.data && e.data.deck === "back-to-opening")) return;
     inAct1 = false; presses0 = 2; act0.style.visibility = ""; act1.classList.remove("on");
