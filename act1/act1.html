@@ -34,8 +34,8 @@
      CLICK 22 "...explore and compare possible outcomes..."   one route is chosen and applied to the real machine
      CLICK 23 "This is one way AI can make sustainability practical..."   the words built along the copper routes
      CLICK 24 (after the line)                     the paragraph thins into the paper; ACT 06 · Close; the giant 06. The tree stays.
-     CLICK 25 "So I want to leave you with one question."   four nodes open: R I S K come out of the system and hang
-     CLICK 26                                      the outer floor peels into ramps; spheres roll out and back; the letters come home: RISK under his feet
+     CLICK 25 "So I want to leave you with one question."   the floor extends to the margins; the tree bears R I S K; they fall; the spheres set off
+     CLICK 26                                      action and reaction: the spheres strike the letters home, RI [the man] SK; one tap
      (the question is spoken into a still frame)
      CLICK 27 "Agents do not own risk."            CLICK 28 "They do not carry accountability."
      CLICK 29 "Humans do."                         CLICK 30 "Always."   then nothing moves -->
@@ -1443,8 +1443,6 @@ function act5Words(t) {
    The tree, the vessels and the human never change in this act. */
 const A6 = { built: false }, SFX = {};
 const HX = 660, YC = 936.5;                                   // where each outer floor section begins to change; the conduit's centre line
-// letter, system, where it drifts to and hangs (x, baseline): two clear columns a side, beside the vessel and beyond it
-const LET = [["R", "c", 250, 560, 790], ["I", "c", 640, 330, 880], ["S", "b", 1270, 330, 1030], ["K", "b", 1660, 560, 1120]];   // + where it waits, wide, clear of the spheres and the man
 // the floor as three states of one strip, each parametrised by arc length from the hinge (s 0) to the outer end (s 1):
 // O as drawn in Act 05 (into the vessel's base), E extended straight to the page margin, P its end bent up in a quarter circle
 const FLR = (() => { const mk = (pts) => { const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])); return { pts, cum }; };
@@ -1464,32 +1462,33 @@ function floorFrame(side, s, u1 = 1, u2 = 1) {              // point and upward 
   let nx = -ty, ny = tx; if (ny > 0 || (Math.abs(ny) < 1e-6 && nx * (side === "c" ? 1 : -1) < 0)) { nx = -nx; ny = -ny; }
   return [p, [nx, ny]];
 }
+const FLOOR_TOP = YC - 6.5 - 0.8, CAP = 80;                 // the strip's top surface; the height of the letters
+// R I S K drawn, not typeset: square, solid, slab-serifed, in the drawing's own language (units: 100 high)
+const GLYPH = {
+  R: [80, "M0 0H50Q74 0 74 24V32Q74 52 56 56L80 86V100H50V86H58L38 58H32V86H40V100H0V86H8V14H0Z M32 14H46Q52 14 52 20V38Q52 44 46 44H32Z"],
+  I: [40, "M0 0H40V14H32V86H40V100H0V86H8V14H0Z"],
+  S: [72, "M14 0H72V30H52V20H28V40H58Q72 40 72 54V86Q72 100 58 100H0V70H20V80H44V60H14Q0 60 0 46V14Q0 0 14 0Z"],
+  K: [86, "M0 0H42V14H32V36L60 14H54V0H86V14H76L48 48L80 86H86V100H52V86H58L34 62L32 64V86H42V100H0V86H8V14H0Z"] };
+// each letter: its system, and the column its node must stand over (a clear fall: not the vessel, the helix or the man)
+const LET = [["R", "c", 555, 640], ["I", "c", 730, 880], ["S", "b", 1030, 1180], ["K", "b", 1270, 1355]];
 function buildA6() {
   if (A6.built) return; A6.built = true;
   const st = $("stage"), svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080);
   svg.style.cssText = "position:absolute;left:0;top:0;z-index:2;mix-blend-mode:multiply;display:none"; st.appendChild(svg); A6.svg = svg;
   const mk = (par, tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); par.appendChild(e); return e; };
   A6.strands = [0, 1, 2, 3, 4, 5].map((i) => mk(svg, "path", { fill: "none", stroke: "url(#cond)", "stroke-width": i === 0 || i === 5 ? 1.5 : 1.1, "stroke-linejoin": "round" }));
-  // the four nodes: existing terminal spheres, two copper low on the left of the crown, two blue mirrored, clear of the helix and the arch
-  // the four nodes: the largest existing sphere nodes of each system, clear of the helix and of where the closing lines will stand (chosen, never cleared)
-  const CLOSE = [[60, 130, 500, 205], [100, 190, 520, 236], [140, 250, 720, 340], [30, 340, 940, 500]], under = (q) => CLOSE.some(([x0, y0, x1, y1]) => q.x > x0 - 12 && q.x < x1 + 12 && q.y > y0 - 12 && q.y < y1 + 12);
-  A6.nodes = ["c", "b"].map((side) => { const cand = A5.crown.filter((q) => q.kind === "ring" && q.solid && q.side === side && q.y > 110 && q.y < 480 && Math.abs(q.x - 955) > 110 && !under(q)).sort((a, b) => b.rad - a.rad);
-    const pick = [cand[0]]; for (const q of cand) if (pick.length < 2 && Math.hypot(q.x - pick[0].x, q.y - pick[0].y) > 80) pick.push(q);
-    pick.sort((a, b) => a.x - b.x); return pick; }).flat();   // ordered R, I, S, K
-  A6.shells = A6.nodes.map((q) => { const f = `url(#${q.side === "c" ? "gC" : "gB"})`, g = mk(svg, "g", { opacity: 0 });
-    return { g, l: mk(g, "path", { d: `M${q.x} ${q.y - q.rad} A${q.rad} ${q.rad} 0 0 0 ${q.x} ${q.y + q.rad} Z`, fill: f }), r: mk(g, "path", { d: `M${q.x} ${q.y - q.rad} A${q.rad} ${q.rad} 0 0 1 ${q.x} ${q.y + q.rad} Z`, fill: f }) }; });
-  // the letters: one size, one baseline, one tracking; measured so RISK is centred under the man
-  const cv = document.createElement("canvas").getContext("2d"); cv.font = "600 92px 'Source Serif 4'";
-  const fm = cv.measureText("R"), base = (92 - (fm.fontBoundingBoxAscent + fm.fontBoundingBoxDescent)) / 2 + fm.fontBoundingBoxAscent, cap = fm.actualBoundingBoxAscent;
-  const ws = LET.map(([ch]) => cv.measureText(ch).width), TR = 0.3 * 92, total = ws.reduce((a, b) => a + b, 0) + 3 * TR; let x = 955 - total / 2;
-  A6.FB = 929 + cap;                                        // the caps' top is his shoe line: he stands on the word
-  A6.let = LET.map(([ch, side, hx, hy, wx], i) => { const d = document.createElement("div"); d.textContent = ch;
-    d.style.cssText = `position:absolute;left:0;top:0;z-index:3;opacity:0;transform-origin:0 0;white-space:nowrap;font:600 92px/1 'Source Serif 4';color:${side === "c" ? "#762F0B" : "#1E4D7B"}`; st.appendChild(d);
-    const o = { d, w: ws[i], fx: x + ws[i] / 2, hx, hy, wx, side }; x += ws[i] + TR; return o; });
-  A6.base = base; A6.cap = cap;
-  // where each sphere lands off its pedestal, and the moment each returning sphere passes its letter
-  A6.sa = {}; for (const side of ["c", "b"]) { let best = 1e9; for (let k = 0; k < 0.6; k += 0.002) { const d = Math.abs(onFloor(side, k)[0] - (side === "c" ? 560 : 1350)); if (d < best) { best = d; A6.sa[side] = k; } } }
-  A6.ret = A6.let.map((o) => { const sgn = o.side === "c" ? 1 : -1; for (let t = RUN.back; t < RUN.hopEnd; t += 0.01) if (sgn * (sphereRun(o.side, t)[0] - o.hx) > 0) return t; return RUN.hopEnd; });
+  // the four nodes: existing sphere nodes of each system, the largest over each letter's clear column (the tree is never changed)
+  A6.nodes = LET.map(([ch, side, x0, x1]) => { let cand = []; for (const w of [0, 40, 80, 140]) { cand = A5.crown.filter((q) => q.kind === "ring" && q.solid && q.side === side && q.x > x0 - (ch === "R" || ch === "S" ? w : 0) && q.x < x1 + (ch === "I" || ch === "K" ? w : 0) && q.y < 470); if (cand.length) break; }
+    return cand.sort((a, b) => b.rad - a.rad || b.y - a.y)[0]; });
+  A6.stems = A6.nodes.map((q, i) => mk(svg, "line", { stroke: LET[i][1] === "c" ? "#8A4A1E" : "#2E5E8C", "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }));
+  A6.let = LET.map(([ch, side], i) => { const [w, d] = GLYPH[ch], el = document.createElement("div");
+    el.innerHTML = `<svg width="${w}" height="100" viewBox="0 0 ${w} 100" style="display:block;overflow:visible"><path d="${d}" fill="${side === "c" ? "#762F0B" : "#1E4D7B"}" fill-rule="evenodd"/></svg>`;
+    el.style.cssText = "position:absolute;left:0;top:0;z-index:3;opacity:0;transform-origin:0 0"; st.appendChild(el);
+    const q = A6.nodes[i]; return { d: el, w, side, ch, nx: q.x, top: q.y + q.rad + 7, h: (w * CAP) / 100 / 2 }; });
+  // the final word stands on the floor around the man: RI [the man] SK
+  const [R, I, S, K] = A6.let; I.fx = 910 - I.h; R.fx = I.fx - I.h - 8 - R.h; S.fx = 1000 + S.h; K.fx = S.fx + S.h + 8 + K.h;
+  for (const [o, n] of [[R, I], [K, S]]) { const dir = o.side === "c" ? 1 : -1; o.x1 = n.nx - dir * (n.h + o.h + 8); }   // where the outer letter stops, against its partner
+  const cv = document.createElement("canvas").getContext("2d");
   // the closing words: the editorial grid first, then the type takes the page
   const T = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;" + css; st.appendChild(d); return d; };
   A6.a = T("<span>Agents</span> <span>do not own</span> <span>risk.</span>", "left:80px;top:118px;font:400 40px/1.1 'Source Serif 4';color:#762F0B");
@@ -1501,44 +1500,25 @@ function buildA6() {
   const abase = (asz - (am.fontBoundingBoxAscent + am.fontBoundingBoxDescent) * asz / 100) / 2 + am.fontBoundingBoxAscent * asz / 100;
   A6.al = T("ALWAYS.", `left:34px;top:${(474 - abase).toFixed(1)}px;font:700 ${asz.toFixed(1)}px/1 'Source Serif 4';color:#762F0B;letter-spacing:0;transform-origin:0 75%`);
 }
-function letterAt(o, cx, baseline, size, op = 1) {          // a letter placed by its centre x and baseline
-  const k = size / 92; o.d.style.opacity = op; o.d.style.transform = `translate(${(cx - (o.w * k) / 2).toFixed(1)}px,${(baseline - A6.base * k).toFixed(1)}px) scale(${k.toFixed(4)})`;
+function letterAt(o, cx, baseline, size, op = 1) {          // a drawn letter placed by its centre x and its baseline
+  const k = size / 100; o.d.style.opacity = op; o.d.style.transform = `translate(${(cx - (o.w * k) / 2).toFixed(1)}px,${(baseline - 100 * k).toFixed(1)}px) scale(${k.toFixed(4)})`;
 }
 function act6Hide() {
   if (!A6.built) return; A6.svg.style.display = "none"; A6.let.forEach((o) => (o.d.style.opacity = 0)); [A6.a, A6.b, A6.h, A6.al].forEach((d) => (d.style.opacity = 0));
-  A5.svg.querySelectorAll("[data-cond]").forEach((e) => (e.style.display = "")); A5.tendrils.forEach((q) => { q.e.style.opacity = ""; q.c.style.opacity = ""; });
+  A6.nodes.forEach((q) => q.e.removeAttribute("transform"));
+  A5.svg.querySelectorAll("[data-cond]").forEach((e) => (e.style.display = ""));
   copper.sh.style.opacity = ""; blue.sh.style.opacity = ""; copper.im.style.zIndex = ""; blue.im.style.zIndex = "";
 }
-const SIZE_H = 44;
-// Click 24 (after "…with less waste built in."): the paragraph thins into the paper; ACT 06 · Close; the giant 06. Nothing else moves.
+// Click 24 (after "…with less waste built in."): the paragraph thins into the paper; ACT 06 · Close; the giant 06 comes and goes, as in every act
 function act6Open(t) {
   if (t < 0) { act6Hide(); return; }
   buildA6(); act6Hide();
-  const v = 1 - smooth(t / 1.6);
-  Object.values(A5.t).forEach((d) => (d.style.opacity = v));   // only the words go; the drawing stays
+  const v = 1 - smooth(t / 1.6); Object.values(A5.t).forEach((d) => (d.style.opacity = v));   // only the words go; the drawing stays
   const swap = t >= 0.9, o = swap ? smooth((t - 0.9) / 0.7) : 1 - smooth((t - 0.2) / 0.7);
   $("act").textContent = swap ? CHAPTERS[6].label : CHAPTERS[5].label; if ($("ttl").innerHTML !== (swap ? CHAPTERS[6].title : CHAPTERS[5].title)) $("ttl").innerHTML = swap ? CHAPTERS[6].title : CHAPTERS[5].title;
   $("act").style.opacity = o; $("ttl").style.opacity = o; $("hair").style.opacity = 0.55; $("rule").style.width = "100%";
-  $("one").textContent = "06"; $("one").style.filter = ""; $("one").style.opacity = smooth((t - 0.6) / ONE_IN);   // the established act number; here it stays
+  chapterNumber(t, CHAPTERS[6]);
 }
-// Click 25: four existing nodes open. Each letter appears at its node and holds, so its origin can be read; then it drifts out, slowly, and hangs
-const OPEN25 = [0.3, 0.45, 0.6, 0.75];
-function act6Nodes(t) {
-  if (t < 0) return;
-  act6Open(99); A6.svg.style.display = "";
-  A6.nodes.forEach((q, i) => { const a = t - OPEN25[i], o = A6.let[i];
-    if (a < 0) { A6.shells[i].g.setAttribute("opacity", 0); o.d.style.opacity = 0; return; }
-    const ant = a < 0.25 ? 1 - 0.12 * smooth(a / 0.25) : a < 0.6 ? 0.88 + 0.82 * smooth((a - 0.25) / 0.35) : 1.7;   // anticipate, swell
-    const open = smooth((a - 0.6) / 0.3), rel = smooth((a - 2.0) / 0.8);   // it splits; once the letter has gone, the pod relaxes
-    podState(i, ant + (1.15 - ant) * rel, 38 * open + (20 - 38) * rel);
-    if (a < 0.6) { o.d.style.opacity = 0; return; }
-    const app = smooth((a - 0.6) / 0.5), dr = smooth((a - 2.0) / 2.6), sx = q.x, sy = q.y + q.rad + 26;   // appears under its node; holds; then the tree lets it go
-    letterAt(o, sx + (o.hx - sx) * dr, sy + (o.hy - sy) * dr, SIZE_H * (0.15 + 0.85 * app));
-  });
-}
-function podState(i, k, rot) { const q = A6.nodes[i], sh = A6.shells[i]; q.e.style.opacity = 0; sh.g.setAttribute("opacity", 1); sh.g.setAttribute("transform", `translate(${q.x} ${q.y}) scale(${k}) translate(${-q.x} ${-q.y})`);
-  sh.l.setAttribute("transform", `translate(${-q.rad * 0.5 * rot / 38} 0) rotate(${-rot} ${q.x} ${q.y + q.rad})`); sh.r.setAttribute("transform", `translate(${q.rad * 0.5 * rot / 38} 0) rotate(${rot} ${q.x} ${q.y + q.rad})`); }
-function nodesOpen() { A6.nodes.forEach((q, i) => podState(i, 1.15, 20)); }   // emptied, the pod stays open, smaller
 function drawFloor(u1, u2) {                                // the conduit, redrawn as one strip: margin to margin, the centre under the man always flat
   A5.svg.querySelectorAll("[data-cond]").forEach((e) => (e.style.display = "none"));
   A6.strands.forEach((e, i) => { const off = (2.5 - i) * 2.6, pts = [];
@@ -1547,39 +1527,59 @@ function drawFloor(u1, u2) {                                // the conduit, redr
     e.setAttribute("d", "M" + pts.map((q) => q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" L")); });
 }
 function onFloor(side, s) { const [p, n] = floorFrame(side, s), r = 7.3 + SYM_R; return [p[0] + n[0] * r, p[1] + n[1] * r]; }   // a sphere's centre resting on the strip
-const RUN = { out: 2.7, land: 3.2, lip: 5.4, back: 6.3, home: 8.7, hopEnd: 9.2 };
-function sphereRun(side, t) {                               // one run out to the edge of the world, a hold, one run back; it never touches the man or the word
-  const home = BTN[side], sa = A6.sa[side];
-  const hop = (a, b, u) => { const e = smooth(u); return [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e - 22 * Math.sin(Math.PI * u)]; };
-  if (t < RUN.out) return [...home, 1];
-  if (t < RUN.land) return [...hop(home, onFloor(side, sa), (t - RUN.out) / (RUN.land - RUN.out)), 0];
-  if (t < RUN.lip) return [...onFloor(side, sa + (S_LIP - sa) * smooth((t - RUN.land) / (RUN.lip - RUN.land))), 0];   // the whole floor, past the vessel, up the curve
-  if (t < RUN.back) return [...onFloor(side, S_LIP), 0];
-  if (t < RUN.home) return [...onFloor(side, S_LIP + (sa - S_LIP) * smooth((t - RUN.back) / (RUN.home - RUN.back))), 0];
-  if (t < RUN.hopEnd) return [...hop(onFloor(side, sa), home, (t - RUN.home) / (RUN.hopEnd - RUN.home)), 0];
-  return [...home, 1];
-}
-const FALL = [2.4, 2.55, 2.7, 2.85], ARRIVE = 10.0, CLOSE0 = 10.35, LOCK = 11.15;
-function letterFloor(i, t) {                                // falls slowly from where it hung; waits; the passing sphere takes it home; RISK closes under his feet
-  const o = A6.let[i], [fp, fn] = floorFrame(o.side, (() => { let best = 1e9, sx = 0; for (let k = 0; k <= 1; k += 0.004) { const d = Math.abs(floorPt(o.side, k, 1, 1)[0] - o.hx); if (d < best) { best = d; sx = k; } } return sx; })()), ly = fp[1] + fn[1] * 7.3;
-  const a = t - FALL[i];
-  if (a < 0) return letterAt(o, o.hx, o.hy, SIZE_H);
-  if (a < 1.4) return letterAt(o, o.hx, o.hy + (ly - o.hy) * smooth(a / 1.4), SIZE_H);   // slow to start, then descending, then a gentle arrival
-  const r0 = A6.ret[i];
-  if (t < r0) return letterAt(o, o.hx, ly, SIZE_H);
-  if (t < ARRIVE) { const g = smooth((t - r0) / (ARRIVE - r0)); return letterAt(o, o.hx + (o.wx - o.hx) * g, ly, SIZE_H + (92 - SIZE_H) * g); }   // carried in along the floor
-  const k = smooth((t - CLOSE0) / (LOCK - CLOSE0));        // R I S K, approaching; then closing; then into the floor, tops at his shoe line
-  letterAt(o, o.wx + (o.fx - o.wx) * k, ly + (A6.FB - ly) * k + 1.2 * Math.sin(Math.PI * clamp((t - LOCK) / 0.18)), 92);
-}
-// Click 26: the floor reaches the margins and bends up; the letters fall; the spheres go to the edge and back and bring the letters home: RISK under his feet
-SFX[26] = LOCK;
-function act6Floor(t) {
+function sAtX(side, x) { let best = 1e9, sb = 0; for (let k = 0; k <= 0.75; k += 0.0015) { const d = Math.abs(onFloor(side, k)[0] - x); if (d < best) { best = d; sb = k; } } return sb; }
+function placeSphere(side, p, onPed) { const sp = side === "c" ? copper : blue; place(sp, p[0], p[1], SYM_R); sp.sh.style.opacity = onPed ? "" : 0; sp.im.style.zIndex = onPed ? "" : 3; }   // off its pedestal it rolls in front of the drawing, never into a vessel
+const hopTo = (a, b, u) => { const e = smooth(u); return [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e - 22 * Math.sin(Math.PI * clamp(u))]; };
+// Click 25: the floor begins to extend at once, slowly, to the margins, and bends up. The tree bears four letters: bud, growth, a mature letter
+// hanging from its node, then it lets go and the letter falls, without stopping. The spheres set off before the first letter lands.
+const BUD = [0.8, 1.2, 1.0, 1.4], DROP = [5.6, 6.1, 5.85, 6.35], G = 640, RUN25 = { out: 5.4, land: 5.9, lip: 8.8 };
+function fallY(o, i, t) { const top = o.top + CAP, a = t - DROP[i]; return Math.min(FLOOR_TOP, top + 0.5 * G * a * a); }   // gravity from the moment it lets go
+function act6Grow(t) {
   if (t < 0) return;
-  act6Nodes(99); nodesOpen(); drawFloor(smooth(t / 1.4), smooth((t - 1.4) / 1.2));
-  for (const side of ["c", "b"]) { const [x, y, onPed] = sphereRun(side, t), sp = side === "c" ? copper : blue; place(sp, x, y, SYM_R); sp.sh.style.opacity = onPed ? "" : 0; sp.im.style.zIndex = onPed ? "" : 3; }   // off its pedestal it rolls in front of the drawing, never into a vessel
-  A6.let.forEach((o, i) => letterFloor(i, t));
+  act6Open(99); A6.svg.style.display = "";
+  drawFloor(smooth(t / 6.0), smooth((t - 5.6) / 1.6));
+  A6.let.forEach((o, i) => { const q = A6.nodes[i], a = t - BUD[i], stem = A6.stems[i];
+    if (a < 0) { o.d.style.opacity = 0; stem.setAttribute("opacity", 0); q.e.removeAttribute("transform"); return; }
+    const bud = 1 + 0.5 * smooth(a / 0.9) * (1 - 0.6 * smooth((a - 2.6) / 1.2));   // the node swells, and gives its size to the letter
+    q.e.setAttribute("transform", `translate(${q.x} ${q.y}) scale(${bud.toFixed(3)}) translate(${-q.x} ${-q.y})`);
+    const grow = smooth((a - 0.5) / 3.2), size = 5 + (CAP - 5) * grow;
+    if (t < DROP[i]) { letterAt(o, q.x, o.top + size, size, a > 0.5 ? 1 : 0);   // it hangs from its node, growing
+      stem.setAttribute("x1", q.x); stem.setAttribute("y1", q.y + q.rad); stem.setAttribute("x2", q.x); stem.setAttribute("y2", o.top); stem.setAttribute("opacity", a > 0.5 ? 1 : 0); return; }
+    const snap = smooth((t - DROP[i]) / 0.3); stem.setAttribute("y2", (o.top - 7 * snap).toFixed(1)); stem.setAttribute("opacity", 1 - snap);   // the stem lets go, back to its node
+    letterAt(o, q.x, fallY(o, i, t), CAP);
+  });
+  for (const side of ["c", "b"]) { const home = BTN[side], land = onFloor(side, sAtX(side, side === "c" ? 600 : 1310)), sa = sAtX(side, side === "c" ? 600 : 1310);
+    if (t < RUN25.out) placeSphere(side, home, 1);
+    else if (t < RUN25.land) placeSphere(side, hopTo(home, land, (t - RUN25.out) / (RUN25.land - RUN25.out)), 0);
+    else placeSphere(side, onFloor(side, sa + (S_LIP - sa) * smooth((t - RUN25.land) / (RUN25.lip - RUN25.land))), 0); }   // the whole floor, past the vessel, up the curve
 }
-function act6Still() { act6Floor(99); }
+// Click 26: action and reaction. Each sphere comes down its ramp and strikes the outer letter, recoils; the letter slides to its partner.
+// It comes again, strikes the pair, recoils; the pair slides in around the man: RI [the man] SK. The sphere goes home. One tap.
+const C26 = { hit1: 2.6, back1: 3.2, go2: 3.6, hit2: 5.0, back2: 5.6, hop: 5.9, home: 6.5, slide1: 1.3, slide2: 2.0 };
+SFX[26] = C26.hit2 + C26.slide2;
+function act6Push(t) {
+  if (t < 0) return;
+  act6Grow(99);
+  A6.let.forEach((o, i) => A6.stems[i].setAttribute("opacity", 0));
+  for (const side of ["c", "b"]) {
+    const dir = side === "c" ? 1 : -1, [O, N] = side === "c" ? [A6.let[0], A6.let[1]] : [A6.let[3], A6.let[2]];
+    const c1 = O.nx - dir * (O.h + SYM_R), c2 = O.x1 - dir * (O.h + SYM_R), sc1 = sAtX(side, c1), sc2 = sAtX(side, c2), sr1 = sAtX(side, c1 - dir * 40), sr2 = sAtX(side, c2 - dir * 32);
+    let p, ped = 0;
+    if (t < C26.hit1) p = onFloor(side, S_LIP + (sc1 - S_LIP) * smooth(t / C26.hit1));                       // down the ramp, gathering speed, along the floor
+    else if (t < C26.back1) p = onFloor(side, sc1 + (sr1 - sc1) * (1 - Math.pow(1 - (t - C26.hit1) / (C26.back1 - C26.hit1), 2)));   // recoil
+    else if (t < C26.go2) p = onFloor(side, sr1);
+    else if (t < C26.hit2) p = onFloor(side, sr1 + (sc2 - sr1) * smooth((t - C26.go2) / (C26.hit2 - C26.go2)));
+    else if (t < C26.back2) p = onFloor(side, sc2 + (sr2 - sc2) * (1 - Math.pow(1 - (t - C26.hit2) / (C26.back2 - C26.hit2), 2)));
+    else if (t < C26.hop) p = onFloor(side, sr2);
+    else if (t < C26.home) p = hopTo(onFloor(side, sr2), BTN[side], (t - C26.hop) / (C26.home - C26.hop));
+    else { p = BTN[side]; ped = 1; }
+    placeSphere(side, p, ped);
+    const k1 = 1 - Math.pow(1 - clamp((t - C26.hit1) / C26.slide1), 2), k2 = 1 - Math.pow(1 - clamp((t - C26.hit2) / C26.slide2), 2);   // struck, they slide and slow
+    const ox = O.nx + (O.x1 - O.nx) * k1 + (O.fx - O.x1) * k2, nx = N.nx + (N.fx - N.nx) * k2;
+    letterAt(O, ox, FLOOR_TOP, CAP); letterAt(N, nx, FLOOR_TOP, CAP);
+  }
+}
+function act6Still() { act6Push(99); }
 // Click 27, after the spoken question: "Agents do not own risk." — still obeying the grid, built in three phrases
 function act6Agents(t) {
   if (t < 0) return;
@@ -1608,11 +1608,11 @@ function paperTap() {                                       // one dull paper ta
     for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 6);
     const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(); f.type = "lowpass"; f.frequency.value = 700; g.gain.value = 0.5; src.buffer = n; src.connect(f).connect(g).connect(ac.destination); src.start(); } catch (e) {}
 }
-window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 4.6, 12: 17.2, 13: 9.0, 14: 3.0, 15: 9.0, 16: 12.0, 17: 12.0, 18: 16.0, 19: 12.8 + 5.9, 20: 14.5, 21: 16.0, 22: 9.0, 23: 13.0, 24: 3.4, 25: 6.0, 26: 11.8, 27: 3.0, 28: 2.6, 29: 1.2, 30: 1.0 };
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 4.6, 12: 17.2, 13: 9.0, 14: 3.0, 15: 9.0, 16: 12.0, 17: 12.0, 18: 16.0, 19: 12.8 + 5.9, 20: 14.5, 21: 16.0, 22: 9.0, 23: 13.0, 24: 4.4, 25: 9.2, 26: 7.4, 27: 3.0, 28: 2.6, 29: 1.2, 30: 1.0 };
 window.setState = (c, t) => {
   click4(-1); click5(-1); click6(-1); click7(-1); click9(-1); clickSym(-1); click10(-1); act3Number(-1); act4Open(-1); act5Open(-1); act6Open(-1);
   if (c >= 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(c === 4 ? t : 99);
-    const steps = [null, null, null, null, null, click5, click6, click7, click8, click9, clickSym, act3Number, act3Delta, act3Talk, act3Thesis, act4Open, act4Bump, act4Swarm, act4Words, act5Open, act5Learn, act5WhatIf, act5Choose, act5Words, act6Open, act6Nodes, act6Floor, act6Agents, act6Carry, act6Humans, act6Always];
+    const steps = [null, null, null, null, null, click5, click6, click7, click8, click9, clickSym, act3Number, act3Delta, act3Talk, act3Thesis, act4Open, act4Bump, act4Swarm, act4Words, act5Open, act5Learn, act5WhatIf, act5Choose, act5Words, act6Open, act6Grow, act6Push, act6Agents, act6Carry, act6Humans, act6Always];
     for (let k = 5; k <= c; k++) steps[k](k === c ? t : 99);
     return; }
   if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
