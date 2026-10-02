@@ -1295,12 +1295,12 @@ function buildA5() {
     const N = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;" + css; st.appendChild(d); return d; };
     const lab = "font:italic 400 22px/1 'Source Serif 4';color:#2E5E8C";
     tw.data = N("process data &nbsp;→ &nbsp;the twin", `left:1236px;top:952px;font:italic 400 21px/1 'Source Serif 4';color:#26221E`);
-    tw.vars = [["temperature", 1652, 700, "M1646 712 L1508 712"], ["timing", 1652, 772, "M1646 784 L1552 764"], ["material mix", 1146, 596, "M1258 618 L1258 742 L1287 757"]].map(([t, x, y, d]) => ({ d: N(t, `left:${x}px;top:${y}px;${lab}`), l: mk(g, "path", { d }) }));
-    tw.hdr = N("THE TWIN COMPARES", "left:1652px;top:514px;font:500 17px/1 'DM Sans',sans-serif;letter-spacing:.16em;color:#365F7C");
-    tw.state = N("", "left:1652px;top:544px;font:italic 400 20px/1 'Source Serif 4';color:#26221E");
-    tw.rows = ["quality", "energy", "scrap"].map((t, i) => { const y = 584 + i * 34, cy = y + 12;
-      mk(g, "line", { x1: 1764, x2: 1892, y1: cy, y2: cy, "stroke-opacity": 0.5 });
-      return { d: N(t, `left:1652px;top:${y}px;${lab}`), base: mk(g, "line", { y1: cy - 8, y2: cy + 8, "stroke-width": 1.6, stroke: "#26221E" }), bar: mk(g, "line", { y1: cy, y2: cy, x1: 1764, "stroke-width": 7, "stroke-linecap": "butt" }), cy }; }); }
+    tw.vars = [["temperature", 1594, 664, "M1588 676 L1530 676 L1499 696"], ["timing", 1594, 698, "M1588 710 L1550 754"], ["material mix", 1146, 596, "M1258 618 L1258 742 L1287 757"]].map(([t, x, y, d]) => ({ d: N(t, `left:${x}px;top:${y}px;${lab}`), l: mk(g, "path", { d }) }));
+    tw.hdr = N("THE TWIN COMPARES", "left:1594px;top:496px;font:500 17px/1 'DM Sans',sans-serif;letter-spacing:.16em;color:#365F7C");
+    tw.state = N("", "left:1594px;top:524px;font:italic 400 20px/1 'Source Serif 4';color:#26221E");
+    tw.rows = ["quality", "energy", "scrap"].map((t, i) => { const y = 562 + i * 34, cy = y + 12;
+      const track = mk(g, "line", { x1: 1764, x2: 1892, y1: cy, y2: cy, "stroke-opacity": 0.5 });
+      return { track, d: N(t, `left:1594px;top:${y}px;${lab}`), base: mk(g, "line", { y1: cy - 8, y2: cy + 8, "stroke-width": 1.6, stroke: "#26221E" }), bar: mk(g, "line", { y1: cy, y2: cy, x1: 1764, "stroke-width": 7, "stroke-linecap": "butt" }), cy }; }); }
   A5.em = [...A5.t.w2.querySelectorAll(".e")]; A5.em.forEach((e) => (e.style.cssText = "display:inline-block;transform-origin:50% 80%;color:#762F0B;font-weight:400"));
 }
 function twinEls() { const w = A5.tw; return [w.data, w.hdr, w.state, ...w.vars.map((v) => v.d), ...w.rows.map((r) => r.d)]; }
@@ -1311,7 +1311,7 @@ function twinNotes(T, fade = 1) {
   const w = A5.tw, E = (a, d) => smooth((T - a) / d) * fade;
   w.data.style.opacity = E(2.5, 1.0);
   const v = E(6.0, 1.0); w.vars.forEach((q) => { q.d.style.opacity = v; q.l.setAttribute("opacity", v); });
-  const p = E(TWIN.show, 0.8); w.g.setAttribute("opacity", v); [w.hdr, w.state, ...w.rows.map((r) => r.d)].forEach((d) => (d.style.opacity = p)); w.rows.forEach((r) => { r.bar.style.opacity = p; r.base.style.opacity = p; });
+  const p = E(TWIN.show, 0.8); w.g.setAttribute("opacity", v); [w.hdr, w.state, ...w.rows.map((r) => r.d)].forEach((d) => (d.style.opacity = p)); w.rows.forEach((r) => { r.bar.style.opacity = p; r.base.style.opacity = p; r.track.style.opacity = p; });
   let cur = TWIN.base.slice(), k = -1;
   TWIN.at.forEach((a, i) => { const u = smooth((T - a) / 0.7); if (T >= a) k = i; cur = cur.map((x, j) => x + (TWIN.trials[i][j] - x) * u * (i === 2 || T < TWIN.at[i + 1] ? 1 : 1)); });
   if (k >= 0 && k < 2 && T >= TWIN.at[k + 1] - 0.01) k = k + 1;
