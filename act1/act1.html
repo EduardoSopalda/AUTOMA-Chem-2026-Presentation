@@ -1196,9 +1196,9 @@ function buildA5() {
     // the valve wheel on the pipe
     const valve = mk(root, "g", {}); mk(valve, "circle", { cx: 0, cy: 0, r: 22, fill: "none", stroke: ink, "stroke-width": 2.2 }); mk(valve, "circle", { cx: 0, cy: 0, r: 17, fill: "none", stroke: soft, "stroke-width": 0.8 }); mk(valve, "path", { d: "M-22 0 L22 0 M0 -22 L0 22 M-15 -15 L15 15", stroke: ink, "stroke-width": 1.6 }); mk(valve, "circle", { cx: 0, cy: 0, r: 3, fill: ink });
     // the lever on the shell
-    const lever = mk(root, "g", {}); mk(lever, "path", { d: "M0 0 L-62 0", stroke: ink, "stroke-width": 3, "stroke-linecap": "round" }); mk(lever, "circle", { cx: -62, cy: 0, r: 6, fill: "none", stroke: ink, "stroke-width": 1.8 }); mk(root, "circle", { cx: 368, cy: 760, r: 4, fill: ink });
+    const lever = mk(root, "g", {}); mk(lever, "path", { d: "M0 0 L-62 0", stroke: ink, "stroke-width": 3, "stroke-linecap": "round" }); mk(lever, "circle", { cx: -62, cy: 0, r: 6, fill: "none", stroke: ink, "stroke-width": 1.8 }); const pivot = mk(root, "circle", { cx: 368, cy: 760, r: 4, fill: ink });
     // the gauge
-    mk(root, "circle", { cx: 430, cy: 712, r: 24, fill: "none", stroke: ink, "stroke-width": 1.8 }); mk(root, "path", { d: "M412 726 A24 24 0 0 1 448 726", fill: "none", stroke: soft, "stroke-width": 1 });
+    const dial = [mk(root, "circle", { cx: 430, cy: 712, r: 24, fill: "none", stroke: ink, "stroke-width": 1.8 }), mk(root, "path", { d: "M412 726 A24 24 0 0 1 448 726", fill: "none", stroke: soft, "stroke-width": 1 })];
     const needle = mk(root, "g", {}); mk(needle, "path", { d: "M0 0 L0 -18", stroke: ink, "stroke-width": 2, "stroke-linecap": "round" });
     const ghosts = side === "b" ? [0, 1, 2].map(() => { const g = mk(root, "g", { opacity: 0 }); mk(g, "path", { d: "M0 0 L0 -18", stroke: ink, "stroke-width": 1.4, "stroke-dasharray": "2 2" }); return g; }) : [];
     const lghosts = side === "b" ? [0, 1].map(() => { const g = mk(root, "g", { opacity: 0 }); mk(g, "path", { d: "M0 0 L-62 0", stroke: ink, "stroke-width": 1.6, "stroke-dasharray": "4 3" }); return g; }) : [];
@@ -1206,7 +1206,7 @@ function buildA5() {
     L("M664 900 L716 900 L710 888 L670 888 Z", 1.6); L("M684 888 L684 876 M696 888 L696 876", 1.4);
     const cap = mk(root, "g", {}); mk(cap, "path", { d: "M672 876 L708 876 L704 866 L676 866 Z", fill: "none", stroke: ink, "stroke-width": 1.8 });
     lines.forEach((e) => { const Lg = e.getTotalLength(); e.dataset.L = Lg; e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); });
-    A5.m[side] = { root, fills, lines, flow, valve, lever, needle, ghosts, lghosts, cap, arcs, parts: [valve, lever, needle, cap, ...ghosts, ...lghosts] };
+    A5.m[side] = { root, fills, lines, flow, valve, lever, needle, ghosts, lghosts, cap, arcs, parts: [valve, lever, needle, cap, pivot, ...dial, ...ghosts, ...lghosts] };   // everything that is not line-drawn leaves with the machine
   }
   // ---------- the axis becomes a tree: each tap shortens it, and what comes out is organic ----------
   // the ribbon conduit: from under one silo to under the other, copper turning blue in the middle; drawn with the machines
