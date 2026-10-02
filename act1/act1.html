@@ -1232,10 +1232,9 @@ function buildA5() {
   // edges (the dome, the words, the name, the centre line) and turns away from them, and splits in a Y at its end; four generations,
   // thinner each time; roughly 30 tips a side
   // the envelope is a tall tree: a column between the silos, symmetric about the axis, opening into a wide canopy above the words
-  // half-width allowed at each height, traced from the real line ends of the words (and their tendril rings), mirrored for blue
-  const band = (y) => y < 188 ? 600 : y < 252 ? 160 : y < 300 ? 370 : y < 392 ? 250 : y < 442 ? 250 : 240;
-  const ell = (x, y) => ((x - 955) / 560) ** 2 + ((y - 196) / 156) ** 2, inside = (x, y) => y <= 494 && Math.abs(x - 955) <= band(y) && (y >= 188 || ell(x, y) <= 1);
-  const wall = (x, y, side) => !inside(x, y) || (x > 1418 && y < 136) || y < 42 || (side === "c" ? x > (y > 300 ? 976 : 957) : x < (y > 300 ? 934 : 953));
+  // a full round dome like the plate; the limbs are only lines, so they grow behind the words (the text sits above them)
+  const ell = (x, y) => ((x - 955) / 540) ** 2 + ((y - 300) / 258) ** 2, inside = (x, y) => y <= 500 && ell(x, y) <= 1;
+  const wall = (x, y, side) => !inside(x, y) || (x > 1410 && y < 140) || (side === "c" ? x > (y > 300 ? 976 : 957) : x < (y > 300 ? 934 : 953));
   // small spheres for the tips, lit like the two characters: highlight up-left, core, dark rim
   const defs = mk(svg, "defs", {});
   [["gC", "#F3D2B0", "#B8783E", "#6A2A0A"], ["gB", "#E6F0FA", "#3A78BC", "#123A66"]].forEach(([id, a, b2, c]) => { const g = mk(defs, "radialGradient", { id, cx: "35%", cy: "32%", r: "70%" });
@@ -1244,10 +1243,10 @@ function buildA5() {
     const sgn = side === "c" ? -1 : 1, pts = [p], ph = rr() * 6.28, wl = 20 + rr() * 14, amp = 0.05 + rr() * 0.04, goal = h; let [x, y] = p;
     for (let s2 = 0; s2 < len; s2 += 3) {
       let k = 0.09 * Math.sin(goal + amp * Math.sin(ph + s2 / wl) * 6 - h);       // keeps its direction, swaying around it: an S, not a loop
-      if (y < 200) k += 0.085 * smooth((200 - y) / 80) * Math.sin((side === "c" ? -Math.PI + 0.25 : -0.25) - h);   // in the canopy it spreads outward, an umbrella, not a cap
-      for (const look of [18, 34]) if (wall(x + Math.cos(h) * look, y + Math.sin(h) * look, side)) {               // feels the edge ahead and bends away
+      if (y < 160) k += 0.04 * smooth((160 - y) / 80) * Math.sin((side === "c" ? -Math.PI + 0.25 : -0.25) - h);   // in the canopy it spreads outward, an umbrella, not a cap
+      for (const look of [30, 60]) if (wall(x + Math.cos(h) * look, y + Math.sin(h) * look, side)) {               // feels the edge ahead and bends away
         const l = wall(x + Math.cos(h - 0.5) * look, y + Math.sin(h - 0.5) * look, side), r = wall(x + Math.cos(h + 0.5) * look, y + Math.sin(h + 0.5) * look, side);
-        k += (l && !r ? 1 : !l && r ? -1 : sgn * (y > 300 ? -1 : 1)) * 0.08; break; }
+        k += (l && !r ? 1 : !l && r ? -1 : sgn * (y > 300 ? -1 : 1)) * (look === 30 ? 0.05 : 0.025); break; }
       h += k; const nx = x + Math.cos(h) * 3, ny = y + Math.sin(h) * 3; if (wall(nx, ny, side) && s2 > 6) break; x = nx; y = ny; pts.push([x, y]); }
     if (pts.length < 6) return null;
     const col = side === "c" ? (level < 2 ? "#8A4A1E" : "#A5612F") : (level < 2 ? "#2E5E8C" : "#4E7DA6"), group = level === 0 ? [0, 0, 1, 2, 2][idx] : Math.min(8, level * 2 + (idx % 2));
@@ -1268,7 +1267,7 @@ function buildA5() {
   }
   // four limbs a side leave the ropes where their strands peel off: low and wide first, the upright pair from the top
   for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1, k0 = side === "c" ? 0 : 3;
-    [[0, 1.0, 96, 3.6], [0, 0.7, 104, 3.4], [1, 0.46, 112, 3.3], [2, 0.24, 118, 3.1], [2, 0.04, 112, 2.9]].forEach(([j, a, len, w], i) => {
+    [[0, 1.15, 110, 3.6], [0, 0.8, 115, 3.4], [1, 0.5, 120, 3.3], [2, 0.26, 122, 3.1], [2, 0.05, 115, 2.9]].forEach(([j, a, len, w], i) => {
       const y0 = PEEL[j]; seg([ropeX(k0 + j, y0, 722), y0], -Math.PI / 2 + sgn * a, len, w, 0, side, i, null); }); }
   A5.tendrils = [["M955 352 C 900 330 820 244 744 218"], ["M955 380 C 880 380 760 352 646 355"], ["M955 448 C 860 452 700 472 566 466"]].map(([d], i) => {
     const e = mk(tree, "path", { d, fill: "none", stroke: "#8A4A1E", "stroke-width": 1.4, "stroke-linecap": "round" }), L = e.getTotalLength(); e.setAttribute("stroke-dasharray", `${L} ${L + 2}`);
