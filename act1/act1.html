@@ -1424,8 +1424,8 @@ function act5Words(t) {
   const build = (d, a, dur) => { const u = E(a, dur); d.style.opacity = u > 0 ? 1 : 0; d.style.clipPath = `inset(-30% ${(100 * (1 - u)).toFixed(2)}% -30% 0)`; };
   build(W.w1, 0.3, 0.8); build(W.w2, 1.0, 1.6); build(W.w3, 5.0, 0.8); build(W.w4, 5.6, 1.4); build(W.w5, 7.4, 1.4); build(W.w6, 10.0, 1.6);
   // the emphasis travels: AI, then sustainability, then practical; then it hands over to better ways; less waste closes, quietly
-  const peaks = [1.3, 2.4, 3.4]; A5.em.forEach((e, i) => { const up = Math.max(0, Math.sin(Math.PI * clamp((t - peaks[i]) / 1.4))); e.style.transform = `scale(${(1 + 0.32 * up).toFixed(3)})`; e.style.fontWeight = up > 0.3 ? 600 : 400;
-    const room = (e.offsetWidth * 0.16 + 6) * up; e.style.margin = `0 ${room.toFixed(1)}px`; });   // the neighbours step aside by what the word gains, so nothing overlaps
+  const peaks = [1.3, 2.4, 3.4]; A5.em.forEach((e, i) => { const up = Math.min(1, 1.35 * Math.max(0, Math.sin(Math.PI * clamp((t - peaks[i]) / 1.6)))); e.style.transform = `scale(${(1 + 0.55 * up).toFixed(3)})`; e.style.fontWeight = up > 0.25 ? 700 : 400;   // loud: big, heavy, a held peak; then it steps back for the next
+    const room = (e.offsetWidth * 0.275 + 8) * up; e.style.margin = `0 ${room.toFixed(1)}px`; });   // the neighbours step aside by what the word gains, so nothing overlaps
   W.w2.style.transform = `translate(0, ${(-4 * E(5.0, 1)).toFixed(1)}px)`;
 }
 // ================= CLICKS 24 to 26 · ACT 06: CLOSE =================
