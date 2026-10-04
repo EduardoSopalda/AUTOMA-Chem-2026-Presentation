@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>From Brasília to the Plant Floor. AUTOMA Chem 2026 · seven clicks</title>
+<!-- SEVEN-CLICK VERSION: press 1 plays the whole opening; presses 2 to 7 each play one act (01 to 06) and wait at its end.
+     A press during an act completes it; Left goes back one act. Everything else as below.
+     The deck: Act 0 (opening/index.html) and Acts 1 to 3 (act1/act1.html) as one talk.
+     Both pages load at the start, stacked, so the handover never waits for a page load.
+     This page owns the keyboard and relays each key to the act on screen (postMessage, so it also works from a double click).
+     Handover: when clip 2 ends, Act 1 dissolves in over 0.8 s (same frame, different paper texture inside the film area).
+     The next press is Act 1's click 1. A press before clip 2 has ended dissolves at once and starts click 1.
+     Keys: Space, Right arrow, Page Down, Enter advance. Left arrow, Page Up, Backspace go one click back (at rest).
+     R resets the whole talk. F is fullscreen. -->
+<style>
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#e9d4ba}
+  iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;background:#e9d4ba}
+  #act1{opacity:0;transition:opacity .8s ease-in-out}
+  #act1.on{opacity:1}
+</style>
+</head>
+<body>
+<iframe id="act1" src="act1/act1.html?acts" tabindex="-1" title="Acts 1 to 3"></iframe>
+<iframe id="act0" src="opening/index.html" tabindex="-1" title="Act 0" style="z-index:1"></iframe>
+<script>
+  const act0 = document.getElementById("act0"), act1 = document.getElementById("act1");
+  const NEXT = [" ", "ArrowRight", "PageDown", "Enter"];
+  let presses0 = 0, inAct1 = false;                        // the opening takes two presses
+  const send = (frame, key) => frame.contentWindow.postMessage({ deckKey: key }, "*");
+  function handover() {                                    // Act 1 dissolves in over the opening's last frame
+    if (inAct1) return;
+    inAct1 = true;
+    act1.classList.add("on");
+    setTimeout(() => { if (inAct1) act0.style.visibility = "hidden"; }, 900);
+  }
+  addEventListener("message", (e) => { if (e.data && e.data.deck === "opening-done" && presses0 >= 2) handover(); });
+  addEventListener("message", (e) => { if (e.data && e.data.deck === "film1-done" && presses0 === 1) { presses0 = 2; send(act0, " "); } });   // the opening plays through on one press
+  addEventListener("message", (e) => {                     // Act 06: one dull paper tap, played here where the keyboard lives
+    if (!(e.data && e.data.deck === "tap")) return;
+    try { const ac = (window.__ac = window.__ac || new AudioContext()), n = ac.createBuffer(1, ac.sampleRate * 0.08, ac.sampleRate), d = n.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 6);
+      const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(); f.type = "lowpass"; f.frequency.value = 700; g.gain.value = 0.5; src.buffer = n; src.connect(f).connect(g).connect(ac.destination); src.start(); } catch (err) {}
+  });
+  addEventListener("message", (e) => {                     // back from Act 1's first click: the opening's last frame again
+    if (!(e.data && e.data.deck === "back-to-opening")) return;
+    inAct1 = false; presses0 = 2; act0.style.visibility = ""; act1.classList.remove("on");
+  });
+  addEventListener("keydown", (e) => {
+    if (NEXT.includes(e.key)) {
+      e.preventDefault(); if (e.repeat) return;
+      if (!inAct1 && presses0 === 0) { presses0 = 1; send(act0, e.key); return; }   // press 1: the whole opening
+      if (!inAct1) { if (presses0 === 1) { presses0 = 2; send(act0, e.key); } return; }   // during the opening a press only hurries it on
+      handover(); send(act1, e.key);
+    } else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) {
+      e.preventDefault(); if (e.repeat) return;
+      if (inAct1) send(act1, e.key);                       // inside Acts 1 to 5: one click back
+    } else if (e.key === "r" || e.key === "R") {
+      send(act0, "r"); send(act1, "r");
+      presses0 = 0; inAct1 = false;
+      act0.style.visibility = ""; act1.style.transition = "none"; act1.classList.remove("on");
+      act1.offsetWidth; act1.style.transition = "";
+    } else if (e.key === "f" || e.key === "F") {
+      document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
+    }
+  });
+  addEventListener("load", () => focus());
+</script>
+</body>
+</html>
