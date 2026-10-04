@@ -1,6 +1,6 @@
 // Vercel build step: publishes the deck (Act 0 + Acts 1 to 3) as the site root.
 // deck.html stacks opening/index.html and act1/act1.html; both keep their own relative paths.
-// for-organisers/ is the page sent to AUTOMA Chem: seven films, hold the last frame.
+// for-organisers/ forwards to the organiser page on eduardosopalda.com/automa-2026 (one PowerPoint, seven clicks).
 import { cp, rm } from 'node:fs/promises';
 import path from 'node:path';
 
