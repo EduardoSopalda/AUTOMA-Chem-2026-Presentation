@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Act 1: The Architect</title>
-<!-- Act 1, three clicks, inside the permanent frame (base-frame.png). window.setState(click, t) draws any moment.
+<!-- Acts 1 to 3 inside the permanent frame (base-frame.png). window.setState(click, t) draws any moment.
      CLICK 1  "01" (above the spheres) glows and fades; only when it is gone do the spheres glide to their places.
      CLICK 2  The plan unfolds slowly behind the speaker, about 45 s:
               the copper axis rises from his feet; verticals draw bottom to top, outward in pairs;
@@ -14,25 +14,47 @@
      Acts 2 and 3 follow the spoken script, not the animation clock:
      CLICK 4  "Let me take you to Brasilia"        the plan retracts; quote 1 (from above / below) appears and stays
      CLICK 5  "...the scale is vast"               copper jumps, the counter locks at 1 : 1000, copper swells
-     CLICK 6  "We build governance..."             the governance words pile up against blue
-     CLICK 7  "...a beautiful RACI"                the RACI lands; hold still for the laugh, "accountable", "reaches the plant"
-     CLICK 8  "I have been the person with the beautiful drawing."   quote 1 dissolves; the confession emerges
-     CLICK 9  "That matters..."                    Act Three begins; Act 2 recedes; the rail's ticks become provenance nodes
-     CLICK 10 pause after "It is a data product."  1 : 1000 becomes 11,002 kt CO2e; the trace starts at blue
-     CLICK 11 "Behind one apparently simple number..."   the six sources
-     CLICK 12 "You cannot report what you cannot trace."  the traces arrive; assumptions stops short -->
+     CLICK 6  "We build governance..."             the rain: 24 governance words (baked rigid-body physics: tools/bake_act2.mjs -> act1-bake.js);
+                                                   Blue dodges; copper puffs up; "Below, every line met a person." under the ground line
+     CLICK 7  "...a beautiful RACI"                the RACI is lowered on a line from above the paper and hangs: hold for the laugh
+     CLICK 8  "Then the framework reaches the plant."  the line snaps; the RACI falls on Blue: squash, hold, release, the pin
+     CLICK 9  "I had built them a plaza..."        the admission under Brasilia
+     CLICK 10 "That matters..."                    the stage clears, copper deflates: two equal spheres; the giant 03; Act 03's column
+     CLICK 11 "A carbon number looks like chemistry. It is a data product."   11,001.8 kt CO2e writes in; the line; hard pause
+     CLICK 12 "Behind one apparently simple number sit..."   scopes, copper lines to the axis node, the root delta to the six sources; the spheres approach
+     CLICK 13 "Where did it come from? Who owns it?..."     the spheres talk across the axis, four questions, four hops; they never touch
+     CLICK 14 "You cannot report what you cannot trace."   the line writes in; stillness
+     CLICK 15 "Why do we not just use AI?"         Act 03's words leave; 04; the axis swallows the evidence network
+     CLICK 16 "I am optimistic about AI... It can scale it."   the bump at the axis; copper stamps AI on blue; 1-2-4-8-16-32; copper, worried, paces the axis
+     CLICK 17 "If five people use the word 'batch'..."   past counting; mutants surface; copper paces the axis, more nervous
+     CLICK 18 "Sometimes AI is the answer..."      copper stops at each line and constructs it: AI, better data, better process; he calms
+     CLICK 19 "And take an AI digital twin."       the swarm returns into the axis, the AI sphere last; the pair again; 05 and Act 05's column
+     CLICK 20 "It learns from the data of a real process..."   two machines drawn out of the spheres; taps 1 and 2: copper acts, the twin repeats
+     CLICK 21 "What if we change the temperature..."   tap 3; the twin tries alternatives; the axis branches into scenarios
+     CLICK 22 "...explore and compare possible outcomes..."   one route is chosen and applied to the real machine
+     CLICK 23 "This is one way AI can make sustainability practical..."   the words built along the copper routes
+     CLICK 24 (after the line)                     the paragraph thins into the paper; ACT 06 · Close; the giant 06. The tree stays.
+     CLICK 25 "So I want to leave you with one question."   the floor extends to the margins; the tree bears R I S K; they fall; the spheres set off
+     CLICK 26                                      action and reaction: the spheres strike the letters home, RI [the man] SK; one tap
+     (the question is spoken into a still frame)
+     CLICK 27 "Agents do not own risk."            CLICK 28 "They do not carry accountability."
+     CLICK 29 "Humans do."                         CLICK 30 "Always."   then nothing moves -->
 <style>
   @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4.ttf") format("truetype");font-weight:200 900}
   @font-face{font-family:"DM Sans";src:url("../fonts/dm-sans-latin-100-normal.woff2") format("woff2");font-weight:100}
   @font-face{font-family:"DM Sans";src:url("../fonts/DMSans-400.woff2") format("woff2");font-weight:400}
   @font-face{font-family:"DM Sans";src:url("../fonts/DMSans-500.woff2") format("woff2");font-weight:500}
+  @font-face{font-family:"IBM Plex Mono";src:url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");font-weight:400}
+  @font-face{font-family:"IBM Plex Mono";src:url("../fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");font-weight:500}
+  @font-face{font-family:"Caveat";src:url("../fonts/caveat-latin-400-normal.woff2") format("woff2");font-weight:400}
+  @font-face{font-family:"Inter";src:url("../fonts/inter-latin-600-normal.woff2") format("woff2");font-weight:600}
   html,body{margin:0;background:#e9d4ba;overflow:hidden}
   .stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden}
   svg,img.s{position:absolute;left:0;top:0}
   img.s{z-index:2}
   .sh{mix-blend-mode:multiply}
   /* 01 sits above the spheres */
-  .one{position:absolute;z-index:5;left:50px;top:40px;font:100 470px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
+  .one{position:absolute;z-index:1;left:50px;top:40px;font:100 470px/0.8 "DM Sans",sans-serif;letter-spacing:-.02em;
        background:linear-gradient(115deg,#8a3a12 0%,#c4733e 30%,#e8ae7c 44%,#b5602c 58%,#762F0B 100%);
        -webkit-background-clip:text;background-clip:text;color:transparent;opacity:0}
   /* The note: an intentional anchor, legible from the back of the room */
@@ -44,11 +66,30 @@
   .title{font:500 46px/1.05 "Source Serif 4",Georgia,serif;color:#0F0F11;letter-spacing:-.01em;opacity:0}
   .copper{height:2px;background:#762F0B;margin:16px 0 26px;width:0}
   .stmt div{font:400 23px/1.4 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0}
+  /* Act 02's copper message: one lockup, anchored at its lower left (x 320, y 330), grown by transform only */
+  .cmsg{position:absolute;z-index:3;left:320px;top:226px;white-space:nowrap;font:italic 600 44px/1.18 "Source Serif 4",Georgia,serif;color:#762F0B;transform-origin:0 100%;opacity:0}
+  .below{position:absolute;z-index:3;left:1016px;top:796px;white-space:nowrap;font:italic 600 46px/1.18 "Source Serif 4",Georgia,serif;color:#762F0B;opacity:0}
   .confess{position:absolute;z-index:3;left:364px;top:282px;font:italic 400 26px/1.35 "Source Serif 4",Georgia,serif;letter-spacing:.04em;color:#0F0F11;opacity:0}
   .gw{position:absolute;z-index:1;left:0;top:0;white-space:nowrap;color:#0F0F11;transform-origin:50% 100%;opacity:0}
-  .gw.serif{font-family:"Source Serif 4",Georgia,serif;font-weight:500}
+  .gw.serif{font-family:"Source Serif 4",Georgia,serif;font-weight:500;color:#365F7C}
+  /* evidence sources: incompatible records, each its own type voice and blue (prototype: stand-in fonts until the WOFF2 files are approved) */
+  .gw{line-height:1}
+  .gw.wp{font-family:"Source Serif 4",Georgia,serif;font-weight:500;color:#1F4C6E}
+  .gw.wc{font-family:"Inter",sans-serif;font-weight:600;color:#33749C}
+  .gw.wm{font-family:"IBM Plex Mono",monospace;font-weight:500;color:#437397}
+  .gw.wo{font-family:"IBM Plex Mono",monospace;font-weight:400;color:#347684;letter-spacing:.02em}
+  /* the rain: governance in every voice at once. Flat ink from electric blue to pastel; Blue the sphere stays the only deep, glossy blue */
+  .gw.v1{font-family:"Source Serif 4",serif;font-weight:900}
+  .gw.v2{font-family:"Source Serif 4",serif;font-weight:200;font-style:italic}
+  .gw.v3{font-family:"DM Sans",sans-serif;font-weight:100;text-transform:uppercase;letter-spacing:.16em}
+  .gw.v4{font-family:"DM Sans",sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:-.01em}
+  .gw.v5{font-family:"Inter",sans-serif;font-weight:600;letter-spacing:-.02em}
+  .gw.v6{font-family:"IBM Plex Mono",monospace;font-weight:400}
+  .gw.v7{font-family:"Caveat",cursive;font-weight:400}
+  .gw.v8{font-family:"IBM Plex Mono",monospace;font-weight:500;text-transform:uppercase}
+  .gw.v9{font-family:"Source Serif 4",serif;font-weight:600;font-variant:small-caps;letter-spacing:.02em}
   .gw.sans{font-family:"DM Sans",sans-serif;font-weight:500;color:#365F7C}
-  .scale{position:absolute;z-index:3;font:500 36px/1 "DM Sans",sans-serif;letter-spacing:.04em;font-variant-numeric:tabular-nums;color:#C58A4B;opacity:0}
+  .scale{position:absolute;z-index:3;font:500 36px/1 "DM Sans",sans-serif;letter-spacing:.04em;font-variant-numeric:tabular-nums;color:#9A5B24;opacity:0}
   .cnum{position:absolute;z-index:3;font:500 44px/1 "Source Serif 4",Georgia,serif;color:#0F0F11;opacity:0;white-space:nowrap}
   .cdesc{position:absolute;z-index:3;font:500 17px/1 "DM Sans",sans-serif;letter-spacing:.04em;color:#365F7C;opacity:0;white-space:nowrap}
   .csrc{position:absolute;z-index:3;font:400 16px/1.3 "DM Sans",sans-serif;color:#48565F;opacity:0;white-space:nowrap}
@@ -57,7 +98,7 @@
 </style>
 </head>
 <body>
-<div class="stage" id="stage"><img src="base-frame.png" width="1920" height="1080" style="position:absolute;left:0;top:0">
+<div class="stage" id="stage"><img src="base-frame.png" width="1920" height="1080" style="position:absolute;left:0;top:0"><img id="pp1" src="paper-patch-col.png" style="position:absolute;left:1450px;top:150px;opacity:0"><img id="pp2" src="paper-patch-tl.png" style="position:absolute;left:280px;top:50px;opacity:0">
 <svg id="s" width="1920" height="1080" style="mix-blend-mode:multiply"><defs>
   <mask id="behind" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect width="1920" height="1080" fill="#fff"/>
     <image href="../opening/man.png" x="743" y="750" width="257" height="184" style="filter:contrast(3) brightness(1.15)"/></mask></defs>
@@ -81,17 +122,18 @@
     <rect id="raciShadow" x="1000" y="120" width="560" height="660" fill="#0F0F11" opacity="0" filter="url(#soft2)"/>
     <defs><filter id="soft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="40"/></filter></defs>
     <g id="modulor" opacity="0"></g><g id="dim" opacity="0" stroke="#b8783e" stroke-width="1.4" style="filter:drop-shadow(0 0 3px rgba(207,145,77,.35))"><line id="dimLine" y1="0" y2="0"/><g id="ticks"></g><g id="cursor"><circle r="4.5" fill="none"/><line x1="-13" y1="0" x2="13" y2="0"/></g></g>
-    <line id="dropLine" x1="1395" x2="1395" stroke="#365F7C" stroke-width="1" stroke-dasharray="6 6" opacity="0"/>
+    <path id="ground" d="M1005 770 L1830 770 L1830 712" fill="none" stroke="#26221E" stroke-width="1.4" opacity="0"/><line id="rope" x1="0" y1="0" x2="0" y2="0" stroke="#5e2d10" stroke-width="1.3" opacity="0"/><line id="dropLine" x1="1395" x2="1395" stroke="#365F7C" stroke-width="1" stroke-dasharray="6 6" opacity="0"/>
   </svg>
   <div class="scale" id="s250">1 : 250</div><div class="scale" id="s500">1 : 500</div><div class="scale" id="s1000">1 : 1000</div>
-  <svg id="raci" width="450" height="312" viewBox="0 0 360 250" style="position:absolute;left:0;top:0;z-index:3;opacity:0;transform-origin:50% 100%"></svg>
+  <svg id="raci" width="236" height="276" viewBox="0 0 360 420" style="position:absolute;left:0;top:0;z-index:3;opacity:0;transform-origin:50% 100%"></svg>
   <svg id="ev" width="1920" height="1080" style="position:absolute;left:0;top:0;z-index:3"></svg>
   <div class="cdesc" id="cdesc">2025 total Scope 1, 2 &amp; 3 emissions</div><div class="cnum" id="cnum">11,002 kt CO₂e</div>
   <div class="csrc" id="csrc">Source: dsm-firmenich<br>Integrated Annual Report 2025</div>
-  <div class="one" id="one">01</div><div class="confess" id="quote1">From above, every line found its place.<br>Below, no one knew where to stand.</div><div class="confess" id="confess">I had built them a plaza<br>nobody wanted to stand in.</div><div class="note" id="note">…not as a metaphor.</div>
-  <div class="col"><div class="act" id="act">ACT ONE</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
-    <div class="stmt"><div>We design from above.</div><div>Not always for the person</div><div>who has to live</div><div>with the result.</div></div></div>
+  <div class="one" id="one">01</div><div class="cmsg" id="cmsg">From above,<br>every line found its place.</div><div class="below" id="below">Below,<br>every line met a person.</div><div class="confess" id="quote1">From above, every line found its place.<br>Below, no one knew where to stand.</div><div class="confess" id="confess">I had built them a plaza<br>nobody wanted to stand in.</div><div class="note" id="note">…not as a metaphor.</div>
+  <div class="col"><div class="act" id="act">ACT 01</div><div class="hair" id="hair"></div><div class="title" id="ttl">The Architect</div><div class="copper" id="rule"></div>
+    <div class="stmt" id="stmt"><div>We design from above.</div><div>Not always for the person</div><div>who has to live</div><div>with the result.</div></div></div>
 </div>
+<script src="act1-bake.js"></script>
 <script>
 const NS = "http://www.w3.org/2000/svg", $ = (id) => document.getElementById(id);
 const K = 0.65, AX = 1006.5, TOP = 60;
@@ -173,9 +215,9 @@ const hReach = (r, X) => r.t0 + HDUR * inv(X < AXX ? (X + OUT) / (r.lenL + TRAIL
 
 // ================= The spheres =================
 const SPH = { copper: { w: 168, h: 193, c: 84.5, r: 44.5 }, blue: { w: 166, h: 191, c: 83.5, r: 44 } };
-// copper grows to 300 px, so it uses the 8x remaster from tools/make_copper.py (same proportions, so place() is unchanged)
-function sprite(n) { const o = SPH[n]; const sh = document.createElement("img"); sh.src = n === "copper" ? "shadow-copper-8x.png" : `shadow-${n}.png`; sh.className = "s sh"; $("stage").appendChild(sh);
-  const im = document.createElement("img"); im.src = n === "copper" ? "sphere-copper-8x.png" : `sphere-${n}.png`; im.className = "s"; $("stage").appendChild(im); return { o, sh, im }; }
+// copper grows to 460 px, so it uses the 16x remaster from tools/make_copper.py (1.5x the pixels it needs even at 4K; same proportions)
+function sprite(n) { const o = SPH[n]; const sh = document.createElement("img"); sh.src = n === "copper" ? "shadow-copper-16x.png" : `shadow-${n}.png`; sh.className = "s sh"; $("stage").appendChild(sh);
+  const im = document.createElement("img"); im.src = n === "copper" ? "sphere-copper-16x.png" : `sphere-${n}.png`; im.className = "s"; $("stage").appendChild(im); return { o, sh, im }; }
 function place(sp, x, y, r, sx = 1, sy = 1) {
   const k = r / sp.o.r, L = x - sp.o.c * k, T = y - sp.o.c * k;
   for (const e of [sp.sh, sp.im]) { e.style.width = sp.o.w * k + "px"; e.style.height = sp.o.h * k + "px"; }
@@ -184,6 +226,7 @@ function place(sp, x, y, r, sx = 1, sy = 1) {
   sp.sh.style.transform = `translate(${L}px,${T + (1 - sy) * r}px) scale(${sx},1)`;
 }
 const copper = sprite("copper"), blue = sprite("blue");
+blue.im.style.filter = "brightness(.74) saturate(1.2) contrast(1.08)";   // deepened toward #1E4D7B: the only saturated blue on screen
 function track(keys, t) {
   if (t <= keys[0][0]) return keys[0].slice(1);
   for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) { const a = keys[i - 1], b = keys[i], u = smooth((t - a[0]) / (b[0] - a[0])); return [1, 2, 3, 4].map((j) => a[j] + (b[j] - a[j]) * u); }
@@ -258,19 +301,39 @@ function click2(t) {
   const c = track(CK, t); place(copper, c[0], c[1], 44 - 6 * smooth((t - cC) / 1.4), c[2], c[3]);
   const b = track(BK, t), tr = 0;   // no continuous vibration: only discrete reactions
   place(blue, b[0] + tr, b[1], 43.5 - 1.5 * smooth((t - hit) / 3), b[2], b[3]);
-  // ACT ONE and The Architect arrive in the column early in the drawing; the copper rule draws under the title
+  // ACT 01 and The Architect arrive in the column early in the drawing; the copper rule draws under the title
+  chapterColumn(t, CHAPTERS[1]);
+}
+
+// ================= CHAPTERS: one component, content only =================
+// The giant number (top left, behind the spheres), the small ACT label, the serif title and the copper rule,
+// with one set of timings for every act. Act 01 reveals it in clicks 1 and 2; Act 02 reuses it at click 4.
+const CHAPTERS = { 1: { number: "01", label: "ACT 01", title: "The Architect" }, 2: { number: "02", label: "ACT 02", title: "Brasília" },
+                   3: { number: "03", label: "ACT 03", title: "When ambition<br>becomes<br>evidence" },
+                   4: { number: "04", label: "ACT 04", title: "AI scales<br>what is there" },
+                   5: { number: "05", label: "ACT 05", title: "AI digital<br>twins and<br>smarter<br>decisions" },
+                   6: { number: "06", label: "ACT 06", title: "Close" } };
+CHAPTERS[1].subtitle = ["We design from above.", "Not always for the person", "who has to live", "with the result."];
+CHAPTERS[2].subtitle = ["I built a plaza", "nobody wanted to stand in."];
+function chapterSubtitle(ch) { const el = $("stmt"), html = ch.subtitle.map((l) => `<div>${l}</div>`).join("");
+  if (el.dataset.ch !== ch.number) { el.innerHTML = html; el.dataset.ch = ch.number; } return [...el.children]; }
+const ONE_IN = 0.6, ONE_HOLD = 2.5, ONE_OUT = 1.0;
+const ONE_GONE = ONE_IN + ONE_HOLD + ONE_OUT;          // the spheres wait for this moment
+function chapterNumber(t, ch) {                         // appears, holds, then sinks into the grain
+  $("one").textContent = ch.number;
+  $("one").style.opacity = smooth(t / ONE_IN) * (1 - smooth((t - ONE_IN - ONE_HOLD) / ONE_OUT));
+  $("one").style.filter = `blur(${2.5 * smooth((t - ONE_IN - ONE_HOLD - 0.2) / (ONE_OUT - 0.2))}px)`;
+}
+function chapterColumn(t, ch) {                         // label, hairline, title, then the copper rule draws under the title
   const e = (a, d) => smooth((t - a) / d);
+  $("act").textContent = ch.label; if ($("ttl").innerHTML !== ch.title) $("ttl").innerHTML = ch.title;
   $("act").style.opacity = e(1.0, 1.2); $("hair").style.opacity = 0.55 * e(1.4, 1.2); $("ttl").style.opacity = e(2.0, 1.4);
   $("rule").style.width = 100 * e(3.2, 2.5) + "%";
 }
 
 // ================= CLICK 1 =================
-const ONE_IN = 0.6, ONE_HOLD = 2.5, ONE_OUT = 1.0;
-const ONE_GONE = ONE_IN + ONE_HOLD + ONE_OUT;          // the spheres wait for this moment
 function click1(t) {
-  const one = smooth(t / ONE_IN) * (1 - smooth((t - ONE_IN - ONE_HOLD) / ONE_OUT));
-  $("one").style.opacity = one;
-  $("one").style.filter = `blur(${2.5 * smooth((t - ONE_IN - ONE_HOLD - 0.2) / (ONE_OUT - 0.2))}px)`;   // sinks into the grain
+  chapterNumber(t, CHAPTERS[1]);   // sinks into the grain
   $("note").style.opacity = smooth((t - ONE_GONE - 0.2) / 1.0);   // after 01 has gone
   place(copper, C0[0], C0[1], 44);                     // the spheres do not move in click 1
   place(blue, B0[0], B0[1], 43.5);
@@ -287,7 +350,7 @@ const lbls = LABELS.map(([x, y, s]) => { const [X, Y] = F(x, y), w = s.startsWit
 function click3(t) {
   $("full").setAttribute("opacity", smooth(t / 1.4));
   lbls.forEach((d) => (d.style.opacity = smooth((t - 0.9) / 0.7)));
-  document.querySelectorAll(".stmt div").forEach((d, i) => (d.style.opacity = smooth((t - 1.2 - i * 0.2) / 0.7)));
+  chapterSubtitle(CHAPTERS[1]).forEach((d, i) => (d.style.opacity = smooth((t - 1.2 - i * 0.2) / 0.7)));
 }
 
 // ================= CLICK 4 · ACT TWO: the disconnection =================
@@ -318,14 +381,19 @@ function click4(t) {
   document.getElementById("stripes").setAttribute("height", 8 + 5 * chalk); $("stripe").setAttribute("height", 2 - chalk);
   $("plan").setAttribute("opacity", on ? 1 - E(6.2, 3.0) : 1);
   axisPath.setAttribute("opacity", on ? 1 - 0.3 * E(6.5, 2.5) : 1);   // the eixo stays: the divide remains
-  if (!on) { $("act").textContent = "ACT ONE"; $("ttl").textContent = "The Architect"; $("confess").style.opacity = 0; $("quote1").style.opacity = 0; return; }
+  if (!on) { $("act").textContent = CHAPTERS[1].label; $("ttl").textContent = CHAPTERS[1].title; $("one").textContent = CHAPTERS[1].number;
+    $("confess").style.opacity = 0; $("quote1").style.opacity = 0; $("cmsg").style.opacity = 0; $("cmsg").style.filter = ""; return; }
   // the page turns to Act Two; Act One's words withdraw
   lbls.forEach((d) => (d.style.opacity = 1 - E(0, 1.2)));
-  document.querySelectorAll(".stmt div").forEach((d) => (d.style.opacity = 1 - E(0, 1.0)));
+  if (t < 1.2) chapterSubtitle(CHAPTERS[1]).forEach((d) => (d.style.opacity = 1 - E(0, 1.0)));
+  else chapterSubtitle(CHAPTERS[2]).forEach((d) => (d.style.opacity = 0));            // Act 02's line stays hidden until the RACI has done its work
   $("note").style.opacity = 1 - E(3, 2);
-  const swap = t >= 1.2; $("act").textContent = swap ? "ACT TWO" : "ACT ONE"; $("ttl").textContent = swap ? "Brasília" : "The Architect";
-  const hd = swap ? E(1.2, 1.2) : 1 - E(0, 1.2); $("act").style.opacity = hd; $("ttl").style.opacity = hd;
-  $("quote1").style.opacity = 0.75 * E(RET, 1.2); $("quote1").style.filter = "";   // the aerial/ground quote lands as the rules reach the spine; it stays through the RACI
+  // Act 02 takes the chapter component: 02 appears and sinks away; Act 01's words and rule withdraw, then Act 02's arrive
+  chapterNumber(t, CHAPTERS[2]);
+  if (t < 1.2) { const out = 1 - E(0, 1.2); $("act").style.opacity = out; $("ttl").style.opacity = out; $("hair").style.opacity = 0.55 * out; $("rule").style.width = 100 * out + "%"; }
+  else chapterColumn(t - 1.2, CHAPTERS[2]);
+  $("quote1").style.opacity = 0;   // "Below, no one knew where to stand." waits for the blue side
+  $("cmsg").style.opacity = E(RET, 1.2); $("cmsg").style.filter = ""; $("cmsg").style.transform = `scale(${MSG0})`;   // the copper message lands as the rules reach the spine
   // the spheres: copper holds, completely still; blue gives one small settle as the structure pulls away from it
   place(copper, HOME_C[0], HOME_C[1], 38);
   const bk = track([[0, 0, 0, 1, 1], [tBlue, 0, 0, 1, 1], [tBlue + 0.25, 0, 7, 1.06, 0.94], [tBlue + 0.9, 0, 5, 1, 1]], t);
@@ -343,63 +411,80 @@ const squash = (t, t0) => {                        // anticipation, landing squa
   if (a < 1.25) { const k = smooth((a - 1.0) / 0.25); return [1.07 - 0.07 * k, 0.93 + 0.07 * k]; }
   return [1, 1];
 };
-// Click 5: copper takes the centre of the left half, then three jumps; it grows only after each landing
-const GROUND_C = 670, CX5 = 530, J = [1.6, 3.7, 6.4], H5 = [35, 50, 65], R5 = [38, 48, 62, 80], R_INF = 150;   // ends about 4 times its first size
-const T_COUNT = J[2] + 1.0, T_INF = T_COUNT + 1.25 + 0.5;   // the counter runs after the last landing; it locks, holds half a second, then the swell
+// Click 5: copper takes its ground in the left half and makes three jumps, growing only after each landing; the scale
+// runs to 1 : 1000; then copper swells past the Modulor and knocks it over. The copper message grows with the sphere.
+const GROUND_C = 670, CX5 = 530, J = [1.6, 3.7, 6.4], H5 = [35, 50, 65], R5 = [38, 48, 62, 80], R_INF = 150;   // R_INF, CX5, GROUND_C: Act 3's copper
+const CU_X = 551, CU_G = 890, CU_MAX = 230;             // Act 2's copper: centre x, ground, final radius (D 460, x 321-781, 14 px short of the man)
+const MSG0 = 0.85, MSG1 = 1.2;                          // the message grows with the sphere, 0.85 -> 1.20 (x 320-900, clear of the axis corridor at 907)
+const msgScale = (r) => MSG0 * Math.pow(r / R5[0], Math.log(MSG1 / MSG0) / Math.log(CU_MAX / R5[0]));
+const T_COUNT = J[2] + 1.0, T_INF = T_COUNT + 1.25 + 0.5, T_SWELL = 0.9, T_FALL = 0.56;   // lock, half a second, the swell, then the fall
 const STEPS = [500, 501, 503, 508, 520, 560, 615, 670, 740, 810, 870, 920, 960, 985, 1000];   // from 1 : 500, where the second landing left it
 const STEP_T = [0, 0.12, 0.23, 0.35, 0.47, 0.57, 0.66, 0.74, 0.8, 0.9, 0.98, 1.05, 1.11, 1.16, 1.25];   // readable, then accelerating, then runaway
-// The Modulor: a human-proportion scale on its own spine, standing on copper's ground. Both series
-// (red 63 ... 1829, blue 78 ... 1397) grow by the golden ratio from the ground; the numbers set the proportions and are never shown.
-// It is built with copper's landings and always stays a little taller than copper: three lobes and 110 px after the first,
-// five lobes and 150 px after the second, all eight and 240 px as the counter runs. Then copper swells past it; it does not follow.
-const MOD_R = [0, 63, 102, 165, 267, 432, 698, 1130, 1829], MOD_B = [78, 126, 204, 330, 534, 863, 1397];
-const SPX = 730;                                          // 50 px clear of copper's final edge; far short of the axis
-function modState(t) {                                    // V: the highest Modulor value built so far; H: its height on screen
-  const r1 = E2(t, J[0] + 1.0, 0.9), s2 = E2(t, J[1] + 1.0, 0.7), c = t - T_COUNT, p = c < 0 ? 0 : clamp(c / 1.25), pe = p * p * (3 - 2 * p);
-  if (s2 <= 0 && pe <= 0) return { V: 165 * r1, H: 110 * r1, pe };
-  const L = Math.log, V = Math.exp(L(165) + s2 * (L(432) - L(165)) + pe * (L(1829) - L(432)));
-  return { V, H: 110 + 40 * s2 + 90 * pe, pe };
+const p3 = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+function copperR(t) {                                   // grows after each landing, then the swell (eased by ratio)
+  let r = R5[0]; J.forEach((j, i) => { r += (R5[i + 1] - R5[i]) * E2(t, j + 1.0, 0.35); });
+  return t < T_INF ? r : r * Math.pow(CU_MAX / R5[3], p3(clamp((t - T_INF) / T_SWELL)));
 }
-function modulor(t, y) {
-  const { V, H } = modState(t);
-  if (V <= 0) { $("modulor").innerHTML = ""; return y; }
-  const f = H / V, Y = (v) => y - Math.min(v, V) * f;
-  let air = 0; J.forEach((j) => { const u = (t - j - 0.25) / 0.6; if (u > 0 && u < 1) air = Math.sin(Math.PI * u); });
-  const breathe = 1 + 0.12 * air;                         // the lobes widen a little while copper is in the air, and settle when it lands
-  let h = `<line x1="${SPX}" x2="${SPX}" y1="${y}" y2="${y - H - 12 * Math.min(1, V / 165)}" stroke="#8a5a30" stroke-width="1.3"/>`;
-  for (let k = 1; k < MOD_R.length && MOD_R[k - 1] < V; k++) {   // lobes grow upward as they are built: gold on copper's side, a faint blue-grey ghost on the other
-    const a = Y(MOD_R[k - 1]), b = Y(MOD_R[k]), w = (a - b) * 0.3 * breathe, m = (a + b) / 2;
-    h += `<path d="M${SPX} ${a} Q ${SPX - 2 * w} ${m} ${SPX} ${b} Z" fill="#C58A4B" fill-opacity="0.3" stroke="#b8783e" stroke-width="0.8" stroke-opacity="0.8"/>`;
-    h += `<path d="M${SPX} ${a} Q ${SPX + 2 * w} ${m} ${SPX} ${b} Z" fill="#6f8594" fill-opacity="0.12" stroke="#6f8594" stroke-width="0.6" stroke-opacity="0.4"/>`;
-    if (MOD_R[k] <= V) h += `<line x1="${SPX - 6 - (k % 2) * 6}" x2="${SPX}" y1="${b}" y2="${b}" stroke="#8a5a30" stroke-width="${k % 2 ? 1.2 : 0.8}"/>`;
+// The Modulor: the human measure, at world scale and never growing. Its 1829 mark stands 232 px above copper's ground.
+// Both series (red 63 ... 1829, blue 78 ... 1397) set the proportions; the numbers are never shown. It stands left of copper;
+// when the swelling sphere reaches it, it tilts exactly as far as the sphere pushes it, then falls to the left and stops dead.
+const MOD_R = [0, 63, 102, 165, 267, 432, 698, 1130, 1829], MOD_B = [78, 126, 204, 330, 534, 863, 1397];
+const MOD_X = 424, MOD_H = 300, MOD_F = MOD_H / 1829, MOD_W = 0.3;   // foot x, height of the 1829 mark, lobe half-width ratio
+const MOD_PTS = (() => { const pts = [[0, -(MOD_H + 12)]];   // its outline, for contact: lobe tips on both sides and the spine top
+  for (let k = 1; k < MOD_R.length; k++) { const a = MOD_R[k - 1] * MOD_F, b = MOD_R[k] * MOD_F, w = (b - a) * MOD_W;
+    for (const u of [0.25, 0.5, 0.75]) { const y = -(a + (b - a) * u), ww = 4 * w * u * (1 - u); pts.push([ww, y], [-ww, y]); } }
+  return pts; })();
+const MOD_LIFT = Math.max(...MOD_PTS.map(([x]) => -x));          // lying on its side, it rests on its widest lobe
+function modPose(angle) {                                 // world points of the outline, turned left by angle (degrees)
+  const q = angle * Math.PI / 180, c = Math.cos(q), s = Math.sin(q), lift = MOD_LIFT * s;
+  return MOD_PTS.map(([x, y]) => [MOD_X + x * c + y * s, CU_G - lift - x * s + y * c]);
+}
+function modContact(r) {                                  // the least tilt that keeps the Modulor outside the sphere
+  const cx = CU_X, cy = CU_G - r;
+  for (let a = 0; a <= 90; a += 0.25) if (modPose(a).every(([x, y]) => Math.hypot(x - cx, y - cy) >= r + 1)) return a;
+  return 90;
+}
+const T_END = T_INF + T_SWELL, A_END = modContact(CU_MAX);
+function modAngle(t) {
+  if (t < T_INF) return 0;
+  if (t < T_END) return modContact(copperR(t));
+  const u = clamp((t - T_END) / T_FALL); return A_END + (90 - A_END) * u * u;      // falling: it accelerates, then stops dead
+}
+function modDraw(reveal) {                                // local drawing, foot at 0,0; strong enough to hold against the paper
+  const V = 1829 * reveal, Y = (v) => -Math.min(v, V) * MOD_F;
+  let h = `<line x1="0" x2="0" y1="0" y2="${-(MOD_H + 12) * reveal}" stroke="#5e2d10" stroke-width="2.2"/>`;
+  for (let k = 1; k < MOD_R.length && MOD_R[k - 1] < V; k++) {
+    const a = Y(MOD_R[k - 1]), b = Y(MOD_R[k]), w = (a - b) * MOD_W, m = (a + b) / 2;
+    h += `<path d="M0 ${a} Q ${-2 * w} ${m} 0 ${b} Z" fill="#C58A4B" fill-opacity="0.55" stroke="#7a3a14" stroke-width="1.3"/>`;
+    h += `<path d="M0 ${a} Q ${2 * w} ${m} 0 ${b} Z" fill="#56748a" fill-opacity="0.28" stroke="#3f5d72" stroke-width="1.1" stroke-opacity="0.85"/>`;
+    if (MOD_R[k] <= V) h += `<line x1="${-8 - (k % 2) * 8}" x2="0" y1="${b}" y2="${b}" stroke="#5e2d10" stroke-width="${k % 2 ? 1.8 : 1.2}"/>`;
   }
-  MOD_B.forEach((v) => { if (v <= V) h += `<line x1="${SPX}" x2="${SPX + 8}" y1="${Y(v)}" y2="${Y(v)}" stroke="#6f8594" stroke-width="0.8" opacity="0.7"/>`; });
-  [[3, -1], [4, 1], [5, -1]].forEach(([k, side]) => {      // three long arcs, alternating sides, once both their ends exist
-    if (MOD_R[k + 2] > V) return;
+  MOD_B.forEach((v) => { if (v <= V) h += `<line x1="0" x2="10" y1="${Y(v)}" y2="${Y(v)}" stroke="#3f5d72" stroke-width="1.2"/>`; });
+  [[3, -1], [4, 1], [5, -1]].forEach(([k, side]) => { if (MOD_R[k + 2] > V) return;
     const a = Y(MOD_R[k]), b = Y(MOD_R[k + 2]);
-    h += `<path d="M${SPX} ${a} Q ${SPX + side * (a - b) * 0.45 * breathe} ${(a + b) / 2} ${SPX} ${b}" fill="none" stroke="${side < 0 ? "#b8783e" : "#6f8594"}" stroke-width="0.8" opacity="0.5"/>`; });
-  $("modulor").innerHTML = h;
-  $("modulor").setAttribute("opacity", 1);
-  return y - H;                                           // the cursor and the label sit at the highest mark built so far
+    h += `<path d="M0 ${a} Q ${side * (a - b) * 0.45} ${(a + b) / 2} 0 ${b}" fill="none" stroke="${side < 0 ? "#7a3a14" : "#3f5d72"}" stroke-width="1.1" opacity="0.75"/>`; });
+  if (reveal >= 1) h += `<g stroke="#7a3a14" stroke-width="1.6" fill="none"><circle cx="0" cy="${-MOD_H}" r="5"/><line x1="-14" x2="14" y1="${-MOD_H}" y2="${-MOD_H}"/></g>`;
+  return h;
 }
 function click5(t) {
   const on = t >= 0;
   ["s250", "s500", "s1000"].forEach((id) => ($(id).style.opacity = 0)); $("dim").setAttribute("opacity", 0); $("modulor").setAttribute("opacity", 0);
   if (!on) return;
-  let r = R5[0]; J.forEach((j, i) => { r += (R5[i + 1] - R5[i]) * E2(t, j + 1.0, 0.35); });
-  r += (R_INF - R5[3]) * (t < T_INF ? 0 : 1 - Math.pow(1 - clamp((t - T_INF) / 0.9), 3));   // the unlabelled inflation beat: the number has stopped, the ambition has not
+  const r = copperR(t);
   const mv = E2(t, 0, 1.1), settle = 2 * Math.sin(Math.PI * clamp((t - 1.1) / 0.3)) * (t < 1.4 ? 1 : 0);
-  const x = HOME_C[0] + (CX5 - HOME_C[0]) * mv;
+  const x = HOME_C[0] + (CU_X - HOME_C[0]) * mv;
   let dy = settle, sq = [1, 1];
   J.forEach((j, i) => { dy += jumpY(t, j, H5[i]); const q = squash(t, j); if (t >= j && t < j + 1.25) sq = q; });
   if (t >= T_INF - 0.25 && t < T_INF) sq = [1.02, 0.97];                                        // it gathers itself
-  place(copper, x, (mv < 1 ? HOME_C[1] + (GROUND_C - R5[0] - HOME_C[1]) * mv : GROUND_C - r) + dy, r, sq[0], sq[1]);
-  // the ground under the spine; the Modulor above it; one label to its right, at the highest mark
-  const y = GROUND_C + 26, show = E2(t, J[0] + 1.0, 0.5);
-  $("dimLine").setAttribute("x1", SPX - 30); $("dimLine").setAttribute("x2", SPX + 30); $("dimLine").setAttribute("y1", y); $("dimLine").setAttribute("y2", y);
-  $("dim").setAttribute("opacity", 0.9 * show);
+  place(copper, x, (mv < 1 ? HOME_C[1] + (CU_G - R5[0] - HOME_C[1]) * mv : CU_G - r) + dy, r, sq[0], sq[1]);
+  $("cmsg").style.transform = `scale(${msgScale(r).toFixed(4)})`;                                  // the message grows with the sphere
+  // the ground; the Modulor on it, left of copper; its label to the left of the top mark
+  const show = E2(t, J[0] + 1.0, 0.5), ang = modAngle(t);
+  $("dimLine").setAttribute("x1", MOD_X - 272); $("dimLine").setAttribute("x2", MOD_X + 40); $("dimLine").setAttribute("y1", CU_G); $("dimLine").setAttribute("y2", CU_G);
+  $("dim").setAttribute("opacity", 0.9 * show); $("cursor").setAttribute("opacity", 0);
   $("ticks").innerHTML = "";
-  const top = modulor(t, y);
+  const m = $("modulor"); m.innerHTML = modDraw(E2(t, J[0] + 1.0, 0.9)); m.setAttribute("opacity", show);
+  m.setAttribute("transform", `translate(${MOD_X} ${(CU_G - MOD_LIFT * Math.sin(ang * Math.PI / 180)).toFixed(2)}) rotate(${(-ang).toFixed(3)})`);
   // the label: 1 : 250 after the first landing, 1 : 500 after the second; from the third it runs away to 1 : 1000, then holds, immaculate
   const c = t - T_COUNT;
   let n = t < J[1] + 1.2 ? 250 : 500; if (c >= 0) STEP_T.forEach((st, k) => { if (c >= st) n = STEPS[k]; });
@@ -407,86 +492,189 @@ function click5(t) {
   lab.style.opacity = E2(t, J[0] + 1.4, 0.5);
   const lock = T_COUNT + 1.25;
   const g = 0.8 + 0.18 * clamp(c / 1.25) + 0.12 * (E2(t, lock, 0.15) - E2(t, lock + 0.4, 0.4)) + 0.1 * (E2(t, T_INF, 0.3) - E2(t, T_INF + 0.9, 0.8));
-  lab.style.textShadow = `0 1px 0 rgba(57,35,22,.28), 0 0 3px rgba(255,214,137,${(0.75 * g).toFixed(3)}), 0 0 9px rgba(196,125,55,${(0.42 * g).toFixed(3)}), 0 0 18px rgba(177,100,35,${(0.2 * g).toFixed(3)})`;
-  lab.style.left = LAB_X + "px"; lab.style.top = top - 19 + "px";
-  // the cursor rides the highest mark, and presses against it until the swell is over
-  const jitter = c > 1.25 && t < T_INF + 0.7 ? 1.4 * Math.sin(t * 47) : 0;
-  $("cursor").setAttribute("transform", `translate(${SPX} ${top + jitter})`); $("cursor").setAttribute("opacity", show);
+  lab.style.textShadow = "none"; void `0 1px 0 rgba(57,35,22,.28), 0 0 3px rgba(255,214,137,${(0.75 * g).toFixed(3)}), 0 0 9px rgba(196,125,55,${(0.42 * g).toFixed(3)}), 0 0 18px rgba(177,100,35,${(0.2 * g).toFixed(3)})`;
+  lab.style.left = LAB_R - lab.offsetWidth + "px"; lab.style.top = LAB_Y + "px";
 }
-const LAB_X = SPX + 24;                                   // the scale label, 24 px right of the spine
+const LAB_R = 250, LAB_Y = 500;                     // the scale label: outside the arc the larger Modulor sweeps as it falls (radius ~350 from its foot) and clear of copper                  // the scale label, up and left of the top mark: clear of the ball and of the arc the Modulor sweeps as it falls
 // Click 6: twelve governance words fall and settle around blue; blue loses ground in two stages
 const FLOOR = 770;
 // [word, voice, size, x, baseline, rotation, start, fall duration, slide on landing, opacity]
 // elegant drizzle, then directional pressure (heavy left, long terms pushing in from the right), then overload
-const WORDS = [
-  ["Policy", "serif", 46, 1050, 758, -3, 0.8, 1.15, 14, 0.82], ["Governance", "sans", 24, 1150, 742, 4, 1.7, 1.1, -10, 0.8], ["Ownership", "sans", 22, 1066, 690, -5, 2.5, 1.05, 8, 0.85],
-  ["Operating Model", "sans", 30, 1350, 770, 2, 3.2, 0.9, -22, 0.95], ["Risk", "serif", 28, 1206, 700, -9, 3.7, 0.85, 6, 0.95], ["Controls", "sans", 38, 1390, 730, -4, 4.1, 0.8, -16, 1],
-  ["Committee", "serif", 40, 1024, 728, 5, 4.5, 0.75, 10, 1], ["Accountability", "serif", 34, 985, 660, -7, 5.0, 0.6, 12, 1], ["Compliance", "sans", 17, 1172, 716, 12, 5.4, 0.55, 4, 1],
-  ["Approval", "serif", 18, 1424, 692, -6, 5.6, 0.5, -6, 1], ["Exception", "sans", 16, 1124, 626, -14, 5.8, 0.5, 5, 1], ["Human Oversight", "sans", 20, 990, 618, -11, 6.2, 0.55, 18, 1]];
-const gws = WORDS.map(([w, f, size]) => { const d = document.createElement("div"); d.className = "gw " + f; d.style.fontSize = size + "px"; d.textContent = w; $("stage").appendChild(d); return d; });
-function wordAt(i, t, push = [0, 0, 0]) {             // falls with its own weight, bounces twice, slides into place; push from the RACI
-  const [, , size, x, y, rot, t0, fall, slide, op] = WORDS[i], d = gws[i], a = t - t0;
-  if (a < 0) { d.style.opacity = 0; return; }
-  const top = -90 - (i % 3) * 40;
-  let Y, X = x - slide;
-  if (a < fall) { const u = a / fall; Y = top + (y - top) * u * u; }
-  else if (a < fall + 0.26) { Y = y - 16 * Math.sin(Math.PI * (a - fall) / 0.26); }
-  else if (a < fall + 0.42) { Y = y - 5 * Math.sin(Math.PI * (a - fall - 0.26) / 0.16); }
-  else Y = y;
-  if (a >= fall) X = x - slide * (1 - smooth((a - fall) / 0.45));
-  const r = a < fall ? rot * 0.3 : rot;
-  d.style.opacity = op;
-  d.style.transform = `translate(${X + push[0]}px, ${Y - size + push[1]}px) rotate(${r + push[2]}deg)`;
+// Click 6: the rain. Governance falls on Blue's half in every voice at once, from above and thrown in from the right edge.
+// The motion is real rigid-body physics (tools: scratchpad phys.js, Box2D-lite), baked to _proto9-bake.js and read back by
+// time: words tumble, hit, tip and pile at the angles they land. Blue, the character, is authored: he keeps edging toward
+// the man and darts away from what is falling at him. Copper puffs up with every word that lands on Blue's side.
+const GROUND = { x0: 1010, x1: 1824, y: FLOOR };
+// [text, voice, size, colour, from, t, x (from above) | y (thrown), vx, spin]
+const RAIN = [                                          // [text, voice, size, ink, H(ero)/h(ail), spawn t, "aim" (falls from above at Blue) | heap x (a gust from beyond the right edge, below the column), vx, angle0°, spin rad/s, mass]
+  ["Governance", "v3", 14, "#6B93B6", "h", 2.4, 1677, 29, 16, 3.76, 0.8],
+  ["compliance", "v2", 22, "#3D7FC0", "h", 2.75, "aim", -42, -23, 2.97, 1.04],
+  ["Accountability", "v6", 40, "#6B93B6", "h", 3.1, 1637, -70, -34, 3.21, 0.84],
+  ["Ownership", "v7", 40, "#4A79A3", "h", 3.4, 1675, -29, -21, 2.46, 1.05],
+  ["Policy", "v1", 56, "#1E4D7B", "H", 3.55, "aim", -24, 10, 0.63, 4.0],
+  ["Exception", "v4", 22, "#7B9DBA", "h", 3.75, "aim", 40, 17, -3.44, 0.76],
+  ["Controls", "v1", 54, "#1F4C8F", "H", 4.05, "aim", -9, -21, -1.18, 4.0],
+  ["AUDIT", "v8", 16, "#2F6FB0", "h", 4.3, 1713, 21, 25, 3.47, 0.69],
+  ["SIGN-OFF", "v5", 30, "#2E5E8C", "h", 4.5, 1668, -64, -34, -2.29, 0.74],
+  ["Committee", "v9", 42, "#24578A", "H", 4.62, "aim", -7, -10, -0.91, 3.0],
+  ["APPROVAL", "v2", 16, "#2E5E8C", "h", 4.85, 1592, 65, 28, 5.99, 0.66],
+  ["human oversight", "v6", 24, "#7B9DBA", "h", 4.95, 1629, -46, -10, 4.38, 0.82],
+  ["RACI draft", "v7", 14, "#2F6FB0", "h", 5.05, 1635, -22, -19, 2.64, 0.51],
+  ["Operating<br>model", "v5", 40, "#2B5F94", "H", 5.12, "aim", 27, 10, -0.97, 3.2],
+  ["KPI", "v3", 28, "#3A6C99", "h", 5.15, 1626, 46, 32, -5.78, 0.77],
+  ["escalation", "v4", 22, "#6B93B6", "h", 5.25, 1587, 23, -33, 2.95, 0.74],
+  ["waiver", "v7", 28, "#6B93B6", "h", 5.33, 1680, -37, 32, -5.6, 0.68],
+  ["attestation", "v2", 32, "#7B9DBA", "h", 5.42, 1702, 23, 11, 2.54, 0.86],
+  ["evidence pack", "v6", 22, "#4F86B8", "h", 5.5, 1663, -29, 16, 4.16, 0.75],
+  ["SOP", "v8", 20, "#2E5E8C", "h", 5.6, 1665, 50, 21, -5.45, 1.04],
+  ["gate review", "v5", 32, "#3D7FC0", "h", 5.68, 1713, -49, 13, -2.56, 1.1],
+  ["steering", "v3", 24, "#8AA4BE", "h", 5.78, 1598, 49, -34, 5.95, 0.45],
+  ["mandate", "v7", 32, "#3D7FC0", "h", 5.88, 1656, -46, 9, -3.26, 0.78],
+  ["stakeholder", "v6", 46, "#4A79A3", "h", 5.98, 1601, 8, -12, 3.3, 0.6]];
+const HERO = new Set(RAIN.filter((q) => q[4] === "H").map((q) => q[0]));
+const WORDS = RAIN;
+const gws = RAIN.map(([w, v, size, col]) => { const d = document.createElement("div"); d.className = "gw " + v; d.style.fontSize = size + "px"; d.style.color = col; d.style.lineHeight = "1";
+  d.innerHTML = `${w}<span class="bl" style="display:inline-block;width:0;height:0;vertical-align:baseline"></span>`; $("stage").appendChild(d); return d; });
+const INK = [];
+document.fonts.ready.then(() => (INK.length = 0));
+function inkBox(i) {                                    // the word's ink box (not its line box), in the div's own coordinates; two-line words are one body
+  if (INK[i]) return INK[i];
+  const d = gws[i], cs = getComputedStyle(d), cx = (inkBox.c = inkBox.c || document.createElement("canvas").getContext("2d"));
+  cx.font = `${cs.fontStyle} ${cs.fontVariant === "small-caps" ? "small-caps " : ""}${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`; cx.letterSpacing = cs.letterSpacing === "normal" ? "0px" : cs.letterSpacing;
+  const lines = RAIN[i][0].split("<br>").map((l) => (cs.textTransform === "uppercase" ? l.toUpperCase() : l)), base = d.querySelector(".bl").offsetTop, lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize);
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+  lines.forEach((l, k) => { const m = cx.measureText(l), b = base - (lines.length - 1 - k) * lh;
+    x0 = Math.min(x0, -m.actualBoundingBoxLeft); x1 = Math.max(x1, m.actualBoundingBoxRight); y0 = Math.min(y0, b - m.actualBoundingBoxAscent); y1 = Math.max(y1, b + m.actualBoundingBoxDescent); });
+  return (INK[i] = { hw: [(x1 - x0) / 2 + 1, (y1 - y0) / 2 + 1], ox: (x0 + x1) / 2, oy: (y0 + y1) / 2 });
 }
-const land = (w) => { const q = WORDS.find((x) => x[0] === w); return q[6] + q[7]; };
+function wordPose(i, p, dy = 0) {                       // p = [x, y, angle] of the ink centre, or null (not yet on the paper)
+  const d = gws[i]; if (!p) { d.style.opacity = 0; return; }
+  const k = inkBox(i); d.style.opacity = 1; d.style.transformOrigin = `${k.ox}px ${k.oy}px`;
+  d.style.transform = `translate(${(p[0] - k.ox).toFixed(2)}px, ${(p[1] - k.oy + dy).toFixed(2)}px) rotate(${p[2].toFixed(4)}rad)`;
+}
+const BAKE = window.BAKE || null;
+const bakeFrame = (S, t) => Math.max(0, Math.min(S.n - 1, Math.round(t * S.fps)));
+const bakeWord = (S, f, i) => { const q = S.words[f * RAIN.length + i]; return q && q[0] !== null ? q : null; };
+// Blue in the rain is baked too: a dodger with a 10-frame lookahead (anticipate 4 frames, dart 6, settle 4), clipped now and then.
+const BLUE6 = [[0, 1442, 591, 1, 1], [0.8, 1442, 591, 1, 1], [2.0, 1330, 728, 1, 1], [2.3, 1330, 731, 1.04, 0.96], [2.6, 1330, 728, 1, 1]];
+function blueAt6(t) { if (!BAKE || t < 2.6) { const k = track(BLUE6, t); return [k[0], k[1], k[2], k[3]]; } return BAKE.A.blue[bakeFrame(BAKE.A, t)]; }
+// Copper: each settled spoken word adds 3% to his height, in place, over 8 frames; the piano's release adds 8% once. Hail adds nothing.
+function copperSmug(t, release = -1) {
+  let s = 0; if (BAKE) BAKE.A.heroLand.forEach((tl) => { s += 0.015 * (1 - Math.pow(1 - clamp((t - tl) / (8 / 60)), 3)); });
+  if (release >= 0) s += 0.05 * (1 - Math.pow(1 - clamp(release / (10 / 60)), 3));
+  const puff = 1 + s; place(copper, CU_X, CU_G - CU_MAX * puff, CU_MAX, 1, puff); return puff;
+}
 function click6(t) {
   const on = t >= 0;
-  if (!on) { gws.forEach((d) => (d.style.opacity = 0)); return; }
-  WORDS.forEach((_, i) => wordAt(i, t));
-  // blue: small, believable adjustments at the impacts that matter; less and less ground
-  const P = land("Policy"), O = land("Operating Model"), Cn = land("Controls"), Cm = land("Committee"), A = land("Accountability"), H = land("Human Oversight");
-  const k = track([[0, 1442, 591, 1, 1], [0.4, 1442, 591, 1, 1], [1.4, 1430, 610, 1, 1],
-    [P, 1430, 610, 1, 1], [P + 0.25, 1418, 612, 1.02, 0.98], [P + 0.7, 1410, 626, 1, 1],            // Policy lands nearby: a sidestep
-    [O, 1400, 640, 1, 1], [O + 0.35, 1330, 668, 1, 1],                                                // Operating Model across the floor: it moves around it
-    [Cn, 1326, 676, 1, 1], [Cn + 0.3, 1312, 694, 1.02, 0.98],                                        // Controls behind it: the space closes
-    [Cm, 1310, 702, 1, 1], [Cm + 0.35, 1304, 716, 1, 1],                                              // Committee in front: lower
-    [A, 1304, 718, 1, 1], [A + 0.12, 1304, 721, 1.05, 0.95], [A + 0.4, 1300, 724, 1, 1],             // Accountability close: a compression
-    [H + 0.2, 1300, 726, 1, 1], [H + 0.45, 1300, 728, 1.02, 0.98], [H + 0.8, 1300, 726, 1, 1]], t);
-  place(blue, k[0], k[1], 42, k[2], k[3]);
+  $("ground").setAttribute("d", "M1005 770 L1830 770 L1830 712"); $("ground").setAttribute("opacity", on ? 0.55 * E2(t, 0.1, 0.9) : 0);
+  if (!on) { gws.forEach((d) => (d.style.opacity = 0)); $("below").style.opacity = 0; return; }
+  $("below").style.opacity = E2(t, 0.2, 1.0);             // "But at street level…": the narrator's other half, under the ground line
+  const f = BAKE ? bakeFrame(BAKE.A, t) : 0;
+  RAIN.forEach((_, i) => wordPose(i, BAKE ? bakeWord(BAKE.A, f, i) : null));
+  const k = blueAt6(t); place(blue, k[0], k[1], 42, k[2], k[3]);
+  copperSmug(t);
 }
-// Click 7: a beautiful RACI
-(function buildRaci() {
-  const g = $("raci"), W = 360, H = 250, rows = 7, hy = 34, cw = [136, 56, 56, 56, 56];
-  let h = `<rect x="1" y="1" width="${W - 2}" height="${H - 2}" fill="#f4e6cf" stroke="#0F0F11" stroke-width="2.4"/>`;
-  let x = 0; cw.forEach((w, i) => { x += w; if (i < 4) h += `<line x1="${x}" y1="1" x2="${x}" y2="${H - 1}" stroke="#0F0F11" stroke-width="1.2"/>`; });
-  for (let r = 0; r <= rows; r++) { const y = hy + r * ((H - hy) / rows); h += `<line x1="1" y1="${y}" x2="${W - 1}" y2="${y}" stroke="#0F0F11" stroke-width="${r ? 0.8 : 1.6}"/>`; }
-  ["R", "A", "C", "I"].forEach((c, i) => { h += `<text x="${136 + 56 * i + 28}" y="25" text-anchor="middle" font-family="DM Sans" font-weight="600" font-size="20" fill="#0F0F11">${c}</text>`; });
-  for (let r = 0; r < rows; r++) { const y = hy + r * ((H - hy) / rows) + 13; h += `<rect x="10" y="${y}" width="${60 + (r * 37) % 60}" height="5" fill="#48565F" opacity="0.5"/>`;
-    for (let c = 0; c < 4; c++) if ((r * 3 + c * 5) % 4 !== 0) h += `<text x="${136 + 56 * c + 28}" y="${y + 9}" text-anchor="middle" font-family="DM Sans" font-size="14" fill="#365F7C">${"RACI"[(r + c) % 4]}</text>`; }
+// Click 7: a beautiful RACI. A RACI of the RACI: its rows are Responsible, Accountable, Consulted, Informed; the letters
+// sit over the wrong columns; copper circles and blue triangles (the two characters) fill it; nobody is in Approval.
+const RACI_W = 236, RACI_H = 276;                        // hovering, it ends 24 px short of the right column; at rest its corner sits below the Brasília rule
+(function buildRaci() {                                  // drafting notation: ink marks only, no card, no cell fills (alpha 0 between marks)
+  const g = $("raci"), W = 360, H = 420, hy = 50, lw = 84, cw = (W - lw) / 7, rh = (H - hy) / 8;
+  const rows = [["RESPONSIBLE", "---T-c-"], ["ACCOUNTABLE", "cct-t-c"], ["CONSULTED", "cctct-T"], ["INFORMED", "c-ttc-c"],
+    ["STRATEGY", "---tc--"], ["EXECUTION", "T--tc--"], ["REVIEW", "-ctct-t"], ["APPROVAL", "-------"]];
+  const CU = "#8E4F22", BL = "#1E4D7B", GR = "#26221E", cx = (c) => lw + cw * (c + 0.5);
+  let h = `<defs><radialGradient id="rC" cx=".35" cy=".35" r=".75"><stop offset="0" stop-color="#d8955c"/><stop offset=".55" stop-color="#a8652f"/><stop offset="1" stop-color="#6e3c1a"/></radialGradient>
+    <linearGradient id="rT" x1="0" x2="1"><stop offset="0" stop-color="#3f6f99"/><stop offset="1" stop-color="#1a4270"/></linearGradient>
+    <mask id="hdrKnock" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${hy + 2}"><rect x="0" y="0" width="${W}" height="${hy + 2}" fill="#fff"/>`;
+  [["R", lw / 2], ["A", cx(2)], ["C", cx(3)], ["I", cx(6)]].forEach(([l, x]) => {
+    h += `<text x="${x}" y="${hy / 2 + 9}" text-anchor="middle" font-family="DM Sans" font-weight="600" font-size="26" fill="#000">${l}</text>`; });
+  h += `</mask></defs><rect x="1" y="1" width="${W - 2}" height="${hy}" fill="#164888" opacity=".84" mask="url(#hdrKnock)"/>`;   // blue ink band; the paper forms the letters
+  h += `<g stroke="${CU}" opacity=".82" fill="none">`;
+  for (let c = 0; c < 7; c++) { const x = c === 0 ? lw : lw + cw * c; h += `<line x1="${x}" y1="${hy}" x2="${x}" y2="${H - 1}" stroke-width="1.2"/>`; }
+  for (let r = 1; r < 8; r++) h += `<line x1="1" y1="${hy + rh * r}" x2="${W - 1}" y2="${hy + rh * r}" stroke-width="1.2"/>`;
+  h += `<line x1="1" y1="${hy}" x2="${W - 1}" y2="${hy}" stroke-width="2"/><rect x="1" y="1" width="${W - 2}" height="${H - 2}" stroke-width="2.2"/></g><g fill="${GR}" opacity=".88">`;
+  rows.forEach(([label], r) => { h += `<text x="${lw / 2}" y="${hy + rh * (r + 0.5) + 3}" text-anchor="middle" font-family="DM Sans" font-weight="500" font-size="9.5" letter-spacing=".03em">${label}</text>`; });
+  h += `</g>`;
+  rows.forEach(([, cells], r) => { const y = hy + rh * (r + 0.5);
+    [...cells].forEach((k, c) => { const x = cx(c);
+      if (k === "c") h += `<circle cx="${x}" cy="${y}" r="10" fill="url(#rC)"/>`;
+      else if (k === "T") h += `<path d="M${x} ${y - 10} L${x + 11} ${y + 8} L${x - 11} ${y + 8} Z" fill="url(#rT)"/>`;
+      else if (k === "t") h += `<path d="M${x} ${y - 10} L${x + 11} ${y + 8} L${x - 11} ${y + 8} Z" fill="none" stroke="${BL}" stroke-width="1.5" stroke-linejoin="round"/>`; }); });
   g.innerHTML = h;
 })();
-const RACI_X = 1230, RACI_REST = 770 - 312, T_DROP = 2.7, T_HIT = 3.05;   // lands on the right half of the pile and buries it
-const BLUE_END = [1110, 562];                            // where blue ends up: squeezed out, on top of the pile; Act 3 starts from here
-function click7(t) {
-  const on = t >= 0, rc = $("raci");
-  if (!on) { rc.style.opacity = 0; $("raciShadow").setAttribute("opacity", 0); $("dropLine").setAttribute("opacity", 0); return; }
-  $("raciShadow").setAttribute("opacity", 0.09 * E2(t, 0.7, 0.9) * (1 - E2(t, T_HIT, 0.5)));
-  let y;
-  if (t < 1.5) y = -320; else if (t < T_DROP) y = -320 + (140 + 320) * (1 - Math.pow(1 - clamp((t - 1.5) / 0.8), 3));
-  else if (t < T_HIT) { const u = (t - T_DROP) / (T_HIT - T_DROP); y = 140 + (RACI_REST - 140) * u * u; } else y = RACI_REST;
-  const tilt = t < T_HIT ? 0 : -4 * smooth((t - T_HIT) / 0.12) + 1.2 * Math.sin(Math.PI * clamp((t - T_HIT - 0.12) / 0.3)) * (t < T_HIT + 0.42 ? 1 : 0);
-  rc.style.opacity = t < 1.5 ? 0 : 1;
-  rc.style.transform = `translate(${RACI_X}px, ${y}px) rotate(${tilt}deg)`;
-  $("dropLine").setAttribute("y1", 140 + 312); $("dropLine").setAttribute("y2", 770); $("dropLine").setAttribute("opacity", 0.6 * E2(t, 2.3, 0.3) * (1 - E2(t, T_HIT, 0.2)));
-  // impact: the words it lands on are shoved right and buried; the ones to its left are squeezed toward the axis, never across it
-  const imp = E2(t, T_HIT, 0.35);
-  WORDS.forEach(([, , , x], i) => { const under = x > RACI_X - 60; wordAt(i, 99, under ? [30 * imp, 4 * imp, 5 * imp] : [-Math.min(14, x - 968) * imp, -2 * imp, -3 * imp]); });
-  // blue: a small anticipation, then one startled jump into the remaining clear space
-  const k = track([[0, 1300, 726, 1, 1], [1.1, 1300, 726, 1, 1], [1.4, 1300, 728, 1.03, 0.97], [1.8, 1300, 726, 1, 1], [T_HIT, 1300, 726, 1, 1],
-    [T_HIT + 0.07, 1300, 731, 1.08, 0.92], [T_HIT + 0.45, 1190, 560, 0.97, 1.03], [T_HIT + 0.8, BLUE_END[0] + 2, BLUE_END[1] + 4, 1.07, 0.93], [T_HIT + 1.05, BLUE_END[0], BLUE_END[1] - 1, 0.99, 1.01], [T_HIT + 1.3, BLUE_END[0], BLUE_END[1], 1, 1]], t);
-  place(blue, k[0], k[1], 42, k[2], k[3]);
+// Click 7, "a beautiful RACI": it appears where it hangs, complete, and holds. Nothing moves through "For about ten
+// minutes" and "Then the framework reaches the plant." Click 8: it falls once, like a piano, onto Blue. Blue stores the
+// blow, is fired along the pile into the axis (high above the man), rebounds, rolls back for one soft second contact,
+// twitches and rests against the axis, still squashed. Each pass shoves the words, less each time. Click 9: the admission.
+const RACI_X = 1270, RACI_HOLD = 130;                  // it hangs on a line from above the paper; x 1240-1540, clear of the name and the column
+const B_R = 42, BL0 = [1370, 728], B_FLOOR = BL0[1] + B_R;
+const ROPE_X = RACI_X + RACI_W / 2;
+function raciPose(x, y, a) { const rc = $("raci"); rc.style.transformOrigin = "50% 50%"; rc.style.transform = `translate(${(x - RACI_W / 2).toFixed(2)}px, ${(y - RACI_H / 2).toFixed(2)}px) rotate(${a.toFixed(4)}rad)`; }
+// Click 7, "a beautiful RACI": lowered in on a line from above the paper, presented; the line stretches once and it holds.
+function click7(t) {                                      // lowered on a line from off-screen over 66 frames, 22 px overshoot, settles in 10
+  const on = t >= 0, rc = $("raci"), RX = BAKE ? BAKE.raciX : ROPE_X;
+  if (!on) { rc.style.opacity = 0; $("rope").setAttribute("opacity", 0); return; }
+  const T1 = 66 / 60, u = clamp(t / T1), top0 = -RACI_H - 40, a = t - T1;
+  const pay = u < 0.85 ? (u / 0.85) * (u / 0.85) * (3 - 2 * (u / 0.85)) : 1;                 // the line pays out
+  let top = top0 + (RACI_HOLD + 22 - top0) * pay;                                               // to 22 px past the hang
+  if (u >= 0.85) top = RACI_HOLD + 22 * Math.cos(Math.PI / 2 * clamp((t - 0.85 * T1) / (0.15 * T1 + 10 / 60))) ;
+  rc.style.opacity = 1; raciPose(RX, top + RACI_H / 2, 0);
+  $("rope").setAttribute("x1", RX); $("rope").setAttribute("x2", RX); $("rope").setAttribute("y1", -10); $("rope").setAttribute("y2", top); $("rope").setAttribute("opacity", 0.9);
+  if (BAKE) { const f = BAKE.A.n - 1; RAIN.forEach((_, i) => wordPose(i, bakeWord(BAKE.A, f, i))); const b = BAKE.A.blue[f]; place(blue, b[0], b[1], B_R, b[2], b[3]); }
+  copperSmug(99);
+}
+const BLUE_END = window.BAKE ? window.BAKE.end.blue : [1060, 728];             // Act 3 starts where Blue ended up
+// Click 8: the line snaps. The RACI falls like a piano onto Blue; Blue's squash is a real elastic contact, so the stored
+// energy fires him out and he ricochets around his half until he is spent. Words are shoved by whatever hits them.
+function click8(t) {
+  if (t < 0) return;
+  const rope = $("rope"), s2 = clamp(t / (2 / 60));                // the line breaks in 2 frames
+  rope.setAttribute("y2", RACI_HOLD * (1 - s2)); rope.setAttribute("opacity", 0.9 * (1 - s2));
+  if (!BAKE) return;
+  const S = BAKE.B, f = bakeFrame(S, t), r = S.raci[f]; $("raci").style.opacity = 1; raciPose(r[0], r[1], r[2]);
+  RAIN.forEach((_, i) => wordPose(i, bakeWord(S, f, i)));
+  const b = S.blue[f]; place(blue, b[0], b[1], B_R, b[2], b[3]);
+  copperSmug(99, t - S.releaseT);
+}
+function click9(t) {                                     // the admission: the line under Brasília, one block of ink; the copper phrase gives way
+  if (t < 0) { chapterSubtitle(CHAPTERS[2]).forEach((d) => (d.style.opacity = 0)); return; }
+  chapterSubtitle(CHAPTERS[2]).forEach((d) => (d.style.opacity = E2(t, 0.1, 0.35)));
 }
 
+// Click 10, "That matters…": the struggle is cleared away. The RACI and every word fade out completely, together; as the
+// weight lifts Blue rounds out; the ground line retracts to the axis; copper deflates like a balloon losing air, shrinking
+// about its centre and sinking onto the same horizon. Two spheres, the same size, mirrored across the axis: symmetry again.
+const SYM_R = 42;
+function clickSym(t) {                                   // ~14.5 s, unhurried: each thing leaves in its own time, then Act 03 enters a clean stage
+  if (t < 0) { $("modulor").style.opacity = ""; $("dim").style.opacity = ""; return; }   // a step back gives click 5 its instrument again
+  if (!BAKE) return;
+  const E = (a, d) => smooth((t - a) / d), S = BAKE.B, n = S.n - 1, b = S.blue[n], r = S.raci[n];
+  // 0-2.5 the RACI and every word fade out; the RACI lets go of him as it goes, and he rounds out
+  const fade = 1 - E(0, 2.5);
+  $("raci").style.opacity = fade; raciPose(r[0], r[1] - 12 * E(0.6, 1.6), r[2]);
+  RAIN.forEach((_, i) => { wordPose(i, bakeWord(S, n, i)); gws[i].style.opacity = fade; });
+  const u = E(1.0, 1.0), sy = b[3] + (1 - b[3]) * u;
+  place(blue, b[0], FLOOR - B_R * sy, B_R, 1 / Math.sqrt(sy) * (1 - u) + u, sy);
+  // 1.0-3.5 the ground retracts to the axis
+  const xr = 1830 - (1830 - 1005) * E(1.0, 2.5);
+  $("ground").setAttribute("d", `M1005 770 L${xr.toFixed(1)} 770 L${xr.toFixed(1)} 712`); $("ground").setAttribute("opacity", 0.55 * (1 - E(3.3, 0.4)));
+  // 0.5-7.5 copper deflates, slowly, the whole time; in the last two seconds it sinks onto the shared horizon
+  const puff0 = 1 + 0.015 * BAKE.A.heroLand.length + 0.05, k = E(0.5, 7.0);
+  const rr = CU_MAX + (SYM_R - CU_MAX) * k, puff = puff0 + (1 - puff0) * k, x0 = CU_X, y0 = CU_G - CU_MAX * puff0;
+  const x1 = 955 - (b[0] - 955), bottom = CU_G + (FLOOR - CU_G) * E(4.5, 3.0);                     // grounded while its ground is visible, then onto the shared horizon
+  const cx = x0 + (x1 - x0) * E(1.5, 6.0), cy = bottom - rr * puff;
+  place(copper, cx, cy, rr, 1, puff); $("cmsg").style.transform = `scale(${msgScale(rr).toFixed(4)})`;
+  // 2.5-5.0 the plan's scale leaves with its ambition: the Modulor, its ground and 1 : 1000
+  const sc = 1 - E(2.5, 2.5); $("modulor").style.opacity = sc; $("dim").style.opacity = sc; $("s1000").style.opacity = Math.min(parseFloat($("s1000").style.opacity) || 1, sc);
+  // 4.0-6.5 the two halves of the sentence leave together
+  const ph = 1 - E(4.0, 2.5); $("cmsg").style.opacity = ph; $("below").style.opacity = ph;
+  // 6.5-7.7 Act 02's column and the plaza line withdraw; 7.8 the stage is clean: the giant 03, then Act 03's column
+  const T3 = 7.8;
+  if (t < 7.7) { const out = 1 - E(6.5, 1.2); $("act").textContent = CHAPTERS[2].label; $("ttl").innerHTML = CHAPTERS[2].title;
+    $("act").style.opacity = out; $("ttl").style.opacity = out; $("hair").style.opacity = 0.55 * out; $("rule").style.width = 100 * out + "%";
+    chapterSubtitle(CHAPTERS[2]).forEach((d) => (d.style.opacity = out)); }
+  else { chapterSubtitle(CHAPTERS[2]).forEach((d) => (d.style.opacity = 0)); if (t >= T3 + 1.2) chapterColumn(t - T3 - 1.2, CHAPTERS[3]); else { $("act").style.opacity = 0; $("ttl").style.opacity = 0; $("hair").style.opacity = 0; $("rule").style.width = "0%"; } }
+  if (t >= T3) chapterNumber(t - T3, CHAPTERS[3]); else $("one").style.opacity = 0;
+}
 // ================= CLICKS 9 to 12 · ACT THREE: when ambition becomes evidence =================
 // Data is born on the plant floor; evidence has to travel, visibly, across the divide to the report.
 const EVY = GROUND_C + 26;                              // the old scale rule becomes the evidence line
@@ -511,17 +699,8 @@ const provNodes = [0.3, 0.55, 0.8].map((k) => evEl("circle", { cx: AXX - (AXX - 
 const bLen = blueTrace.getTotalLength(), rLen = report.getTotalLength();
 const drawTo = (el, len, frac) => el.setAttribute("stroke-dasharray", `${Math.max(0, len * frac)} ${len + 10}`);
 const GAP = 36;                                         // the assumptions trace stops this far short
-// Click 8, on "I have been the person with the beautiful drawing.": quote 1 becomes a paper ghost, the confession emerges in its place.
-// It is still before "They were not being difficult", so the line lands on a quote already there.
-function click8(t) {
-  $("confess").style.opacity = 0;
-  if (t < 0) return;
-  const E = (a, d) => smooth((t - a) / d);
-  $("quote1").style.opacity = 0.75 * (1 - E(0, 1.6)); $("quote1").style.filter = `blur(${(0.8 * E(0, 1.6)).toFixed(2)}px)`;   // gone completely; 0.9 s overlap with the confession
-  $("confess").style.opacity = 0.75 * E(0.7, 1.4);
-}
 // Click 9, on "That matters…": Act Three begins. Act 2 recedes, the rail's ticks become provenance nodes; 1 : 1000 stays for now.
-function click9(t) {
+function click10(t) {
   const on = t >= 0;
   ev.style.display = on ? "" : "none";
   for (const id of ["cnum", "csrc", "cdesc"]) $(id).style.opacity = 0;
@@ -529,26 +708,32 @@ function click9(t) {
   if (!on) { for (const id of ["ticks", "cursor", "modulor"]) $(id).style.opacity = ""; return; }   // a reset replays click 5 with its instrument
   const E = (a, d) => smooth((t - a) / d);
   const rec = 1 - 0.93 * E(0.4, 1.8);                    // the RACI and the words recede to paper ghosts
-  gws.forEach((d) => (d.style.opacity = rec * WORDS[gws.indexOf(d)][9])); $("raci").style.opacity = rec;
+  gws.forEach((d) => { if (d.style.opacity !== "0") d.style.opacity = rec; }); $("raci").style.opacity = rec; $("below").style.opacity = rec;
   $("s250").style.opacity = $("s500").style.opacity = 0;
   const st = E(0.8, 1.2);                                  // the ground under the spine stretches into the evidence line; nodes appear on it
-  $("dimLine").setAttribute("x1", SPX - 30 + (REPORT_END - SPX + 30) * st); $("dimLine").setAttribute("x2", SPX + 30 + (AXX - 3 - SPX - 30) * st);
+  // the ground under the Modulor lifts into the evidence line; copper deflates back to its size before the swell:
+  // when ambition has to become evidence, it is cut back down
+  $("dimLine").setAttribute("x1", MOD_X - 272 + (REPORT_END - MOD_X + 272) * st); $("dimLine").setAttribute("x2", MOD_X + 40 + (AXX - 3 - MOD_X - 40) * st);
+  $("dimLine").setAttribute("y1", CU_G + (EVY - CU_G) * st); $("dimLine").setAttribute("y2", CU_G + (EVY - CU_G) * st);
+  const dfl = E(0.4, 1.8), cr = CU_MAX + (R_INF - CU_MAX) * dfl;
+  place(copper, CU_X + (CX5 - CU_X) * dfl, (CU_G - CU_MAX) + ((GROUND_C - R_INF) - (CU_G - CU_MAX)) * dfl, cr);
   $("ticks").style.opacity = 1 - E(1.2, 0.8); $("cursor").style.opacity = 1 - E(1.2, 0.8); $("modulor").style.opacity = 1 - E(0.6, 1.2);
   provNodes.forEach((n, i) => n.setAttribute("opacity", E(1.8 + i * 0.2, 0.5)));
   drawTo(blueTrace, bLen, 0); convNode.setAttribute("opacity", 0);
   srcs.forEach((q) => { drawTo(q.path, q.len, 0); q.node.setAttribute("opacity", 0); });
   drawTo(report, rLen, 0);
-  const swap = t >= 0.8; $("act").textContent = swap ? "ACT THREE" : "ACT TWO"; $("ttl").textContent = swap ? "Evidence" : "Brasília";
+  const swap = t >= 0.8; $("act").textContent = swap ? CHAPTERS[3].label : CHAPTERS[2].label; $("ttl").textContent = swap ? CHAPTERS[3].title : CHAPTERS[2].title;
   const hd = swap ? E(0.8, 1.0) : 1 - E(0, 0.8); $("act").style.opacity = hd; $("ttl").style.opacity = hd;
+  chapterSubtitle(CHAPTERS[2]).forEach((d) => (d.style.opacity = swap ? 0 : 1 - E(0, 0.8)));   // Act 02's line leaves with its title
 }
 // Click 10, on the pause after "It is a data product.": the descriptor, then the scale gives way to the number in place, then the source
-function click10(t) {
+function click11(t) {
   if (t < 0) return;
   const E = (a, d) => smooth((t - a) / d);
   const nx = CX5 + 90;                                     // the evidence field: off copper's centre, on the evidence line, clear of the axis
   // the locked 1 : 1000 slides down from the spine into the evidence field and becomes the figure there: one number, seen moving
-  const fromY = EVY - 240 - 19, toY = EVY + 44;             // down first, clear of copper; then left, once below it
-  $("s1000").style.left = LAB_X + (nx - LAB_X) * E(0.7, 0.6) + "px"; $("s1000").style.top = fromY + (toY - fromY) * E(0.2, 0.7) + "px";
+  const fromX = LAB_R - $("s1000").offsetWidth, fromY = LAB_Y, toY = EVY + 44;   // down first, under copper; then right, into the field
+  $("s1000").style.left = fromX + (nx - fromX) * E(0.7, 0.6) + "px"; $("s1000").style.top = fromY + (toY - fromY) * E(0.2, 0.7) + "px";
   $("s1000").style.opacity = 1 - E(1.0, 0.5);
   $("cnum").style.left = nx + "px"; $("cnum").style.top = toY + "px"; $("cnum").style.opacity = E(1.0, 0.8);
   $("cdesc").style.left = nx + "px"; $("cdesc").style.top = EVY + 18 + "px"; $("cdesc").style.opacity = E(1.3, 0.8);
@@ -556,13 +741,13 @@ function click10(t) {
   drawTo(blueTrace, bLen, E(1.1, 1.6));                   // the trace begins at blue
   convNode.setAttribute("opacity", E(2.3, 0.4));
 }
-function click11(t) {                                    // the six sources appear and their traces set off, unevenly
+function click12(t) {                                    // the six sources appear and their traces set off, unevenly
   if (t < 0) return;
   const E = (a, d) => smooth((t - a) / d);
   srcs.forEach((q, i) => { const a = 0.3 + i * 0.45; q.node.setAttribute("opacity", E(a, 0.4)); q.l.style.opacity = E(a + 0.1, 0.6);
     drawTo(q.path, q.len, 0.7 * ease((t - a - 0.6) / (SOURCES[i][5] - 0.6))); });
 }
-function click12(t) {                                    // five traces arrive; assumptions stops one gap short; the report never closes
+function click13(t) {                                    // five traces arrive; assumptions stops one gap short; the report never closes
   if (t < 0) return;
   srcs.forEach((q, i) => {
     const target = SOURCES[i][0] === "Assumptions" ? (q.len - GAP) / q.len : 1;
@@ -574,18 +759,906 @@ function click12(t) {                                    // five traces arrive; 
 }
 
 const CLICK2 = Math.max(hit + 3.4, ...rows.map((r) => r.t0 + HDUR), ...verts.map((v) => v.t0 + VDUR)) + 0.8;
-window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.0, 7: T_HIT + 1.3 + 6, 8: 2.3, 9: 3.3, 10: 3.2, 11: 5.2, 12: 3.8 + 6 };
+// ================= CLICKS 11 to 14 · ACT 03: the carbon number; copper hands its evidence to blue =================
+// Approved still (1 Oct): the declared number and its scopes on copper's side; each scope's copper line meets the axis in one
+// ink node (the analysis); from it a blueprint root delta grows on blue's side to the six sources, in spoken order;
+// Assumptions stops short. The two spheres approach in turns and talk across the axis; they never touch.
+// The delta is drawn once from a fixed seed (identical every run); time only reveals it.
+const A3 = { built: false, els: {}, ink: [], marks: [], rows: [], lines: [], labels: [] };
+function buildA3() {
+  if (A3.built) return; A3.built = true;
+  const st = $("stage"), CU = "#762F0B", BLU = "#1F4C6E", INKC = "#26221E", X0 = 110;
+  const T = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;" + css; st.appendChild(d); return d; };
+  const E = A3.els;
+  E.tag = T("THE CARBON NUMBER", `left:${X0}px;top:148px;font:500 18px/1 'DM Sans';letter-spacing:.22em;color:#365F7C`);
+  E.number = T("11,001.8 kt CO<sub style='font-size:.55em;vertical-align:-.12em'>2</sub>e", `left:${X0 - 4}px;top:176px;font:500 90px/1 'Source Serif 4';color:${CU};letter-spacing:-.01em`);
+  E.product = T("It is a data product.", `left:${X0}px;top:286px;font:italic 500 32px/1 'Source Serif 4';color:${CU}`);
+  const rows = [["SCOPE 1", "581.7 kt", ""], ["SCOPE 2", "140.0 kt", "market-based"], ["SCOPE 2", "464.3 kt", "location-based"], ["SCOPE 3", "10,280.1 kt", ""]];
+  const ROW0 = 344, RH = 78, rowY = [], rowR = [];
+  rows.forEach(([l, v, n], i) => { const y = ROW0 + i * RH;
+    const d = T(`<span style="font:500 21px/1 'Source Serif 4';letter-spacing:.1em;color:${CU}">${l}</span><br><span style="font:500 40px/1.15 'Source Serif 4';color:${BLU}">${v}</span>${n ? ` <span style="font:italic 400 21px/1 'Source Serif 4';color:${INKC};margin-left:8px">${n}</span>` : ""}`, `left:${X0}px;top:${y}px`);
+    A3.rows.push(d); rowY.push(y + 34); d.style.opacity = 1; rowR.push(d.getBoundingClientRect().right / (st.getBoundingClientRect().width / 1920) - st.getBoundingClientRect().left / (st.getBoundingClientRect().width / 1920) + 18); d.style.opacity = 0; });
+  E.claim = T("THE NUMBER IS OURS.<br>MUCH OF THE EVIDENCE IS ELSEWHERE.", `left:${X0}px;top:${ROW0 + 4 * RH + 6}px;font:500 21px/1.4 'Source Serif 4';letter-spacing:.07em;color:${CU}`);
+  E.thesis = T("You cannot report what you cannot trace.", `left:${X0}px;top:842px;font:italic 400 34px/1 'Source Serif 4';color:${INKC}`);
+  const svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080);
+  svg.style.cssText = "position:absolute;left:0;top:0;z-index:2;mix-blend-mode:multiply"; st.appendChild(svg); A3.svg = svg;
+  const el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  const NODE = [955, 476]; A3.NODE = NODE;
+  rowY.forEach((y, i) => { const x1 = rowR[i], xm = 720;
+    const pth = el("path", { d: `M${x1} ${y} L${xm} ${y} C ${xm + 140} ${y} ${NODE[0] - 120} ${NODE[1]} ${NODE[0] - 6} ${NODE[1]}`, fill: "none", stroke: CU, "stroke-width": 1.6, opacity: 0.9 });
+    const dot = el("circle", { cx: xm, cy: y, r: 3.2, fill: CU });
+    const L = pth.getTotalLength(); A3.lines.push({ pth, dot, L, at: (xm - x1) / L }); });
+  A3.node = [el("circle", { cx: NODE[0], cy: NODE[1], r: 9, fill: CU }), el("circle", { cx: NODE[0], cy: NODE[1], r: 15, fill: "none", stroke: CU, "stroke-width": 1.2 })];
+  let seed = 2610; const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const LABELS = [["Supplier declarations", 1290, 168], ["Energy data", 1360, 262], ["Production records", 1318, 360], ["Transport data", 1586, 486], ["Allocation rules", 1572, 578], ["Assumptions", 1520, 664]];
+  const lab = LABELS.map(([t, x, y], i) => T(t, `left:${x}px;top:${y - 16}px;font:500 27px/1 'Source Serif 4';color:${i === 5 ? CU : BLU}`));
+  A3.labels = lab;
+  const k0 = st.getBoundingClientRect(), kk = k0.width / 1920;
+  const boxes = lab.map((d) => { d.style.opacity = 1; const r = d.getBoundingClientRect(); d.style.opacity = 0; return [(r.left - k0.left) / kk - 6, (r.top - k0.top) / kk - 4, (r.right - k0.left) / kk + 6, (r.bottom - k0.top) / kk + 4]; });
+  const FORBID = [[1557, 0, 1920, 440], [1420, 0, 1920, 132], [930, 640, 1500, 1080], ...boxes];
+  const okPt = (x, y) => x > 968 && x < 1830 && y > 128 && y < 700 && !FORBID.some((f) => x > f[0] && x < f[2] && y > f[1] && y < f[3]);
+  const bez = (P, t) => { const u = 1 - t; return [0, 1].map((k) => u * u * u * P[0][k] + 3 * u * u * t * P[1][k] + 3 * u * t * t * P[2][k] + t * t * t * P[3][k]); };
+  const curveOK = (P) => { for (let t = 0.04; t <= 1; t += 0.04) { const [x, y] = bez(P, t); if (!okPt(x, y)) return false; } return true; };
+  const ring = (x, y, r, w, c, t0) => { const e = el("circle", { cx: x, cy: y, r, fill: "none", stroke: c || "#365F7C", "stroke-width": w || 1 }); A3.marks.push({ e, t0 }); return e; };
+  const dotm = (x, y, r, c, t0) => { const e = el("circle", { cx: x, cy: y, r, fill: c }); A3.marks.push({ e, t0 }); return e; };
+  const ink = (P, attrs, t0, dur) => { const e = el("path", { d: `M${P[0]} C ${P[1]} ${P[2]} ${P[3]}`, fill: "none", "stroke-linecap": "round", ...attrs }); const L = e.getTotalLength(); A3.ink.push({ e, L, t0, dur, dashed: !!attrs["stroke-dasharray"] }); return e; };
+  function branch(p0, ang, len, width, depth, color, op, t0) {
+    const p3 = [p0[0] + Math.cos(ang) * len, p0[1] + Math.sin(ang) * len], bend = (rnd() - 0.5) * 0.5;
+    const P = [p0, [p0[0] + Math.cos(ang - bend) * len * 0.35, p0[1] + Math.sin(ang - bend) * len * 0.35], [p0[0] + Math.cos(ang + bend) * len * 0.7, p0[1] + Math.sin(ang + bend) * len * 0.7], p3];
+    if (!curveOK(P)) return;
+    const dur = 0.5 + len / 260;
+    ink(P, { stroke: color, "stroke-width": width, opacity: op, ...(width < 0.9 && rnd() < 0.3 ? { "stroke-dasharray": "2 3.5" } : {}) }, t0, dur);
+    if (depth === 0) { if (rnd() < 0.8) ring(p3[0], p3[1], 2.2 + rnd() * 2.6, 1, null, t0 + dur); else dotm(p3[0], p3[1], 1.8, "#2B5F94", t0 + dur); return; }
+    const kids = rnd() < 0.55 ? 1 : 2;
+    for (let k = 0; k < kids; k++) { const t = 0.4 + 0.5 * rnd(), q = bez(P, t), a = ang + (rnd() < 0.5 ? -1 : 1) * (0.26 + rnd() * 0.3);
+      if (rnd() < 0.25) ring(q[0], q[1], 1.8 + rnd() * 1.6, 0.8, null, t0 + dur * t);
+      branch(q, a, len * (0.45 + rnd() * 0.2), Math.max(0.75, width * 0.6), depth - 1, "#5F92B8", 0.75, t0 + dur * t); }
+    if (depth > 1) branch(p3, ang + (rnd() - 0.5) * 0.35, len * 0.55, Math.max(0.75, width * 0.7), depth - 1, "#5F92B8", 0.8, t0 + dur);
+  }
+  // spoken order: supplier declarations, energy data, production records, transport data, allocation rules, assumptions
+  const S = A3.S = [5.6, 7.0, 8.4, 9.8, 11.2, 12.6], TR = 1.8;
+  LABELS.forEach(([t, x, y], i) => { const tx = x - 14, ty = y, gap = i === 5 ? 110 : 0, ex = tx - gap;
+    const P = [NODE, [NODE[0] + 120, NODE[1] + (ty - NODE[1]) * 0.15], [ex - 180, ty], [ex, ty]];
+    ink(P, { stroke: "#365F7C", "stroke-width": 2.2 }, S[i], TR);
+    if (i === 5) ring(ex, ty, 6, 1.6, CU, S[i] + TR); else ring(tx, ty, 4.5, 1.4, null, S[i] + TR);
+    for (let k = 0; k < 6; k++) { const tt = 0.18 + k * 0.12 + rnd() * 0.05, q = bez(P, tt), dir = Math.atan2(bez(P, tt + 0.01)[1] - q[1], bez(P, tt + 0.01)[0] - q[0]);
+      ring(q[0], q[1], 1.8 + rnd() * 2, 0.9, null, S[i] + TR * tt);
+      branch(q, dir + (k % 2 ? -1 : 1) * (0.3 + rnd() * 0.3), 60 + rnd() * 60, 1.1, 2, "#365F7C", 0.9, S[i] + TR * tt); } });
+  const angOf = LABELS.map(([t, x, y]) => Math.atan2(y - NODE[1], x - 14 - NODE[0]));
+  for (let k = 0; k < 34; k++) { const a = -1.0 + (k / 33) * 1.75 + (rnd() - 0.5) * 0.06; let j = 0; angOf.forEach((q, i) => { if (Math.abs(q - a) < Math.abs(angOf[j] - a)) j = i; });
+    branch(NODE, a, 170 + rnd() * 230, 0.9, k % 3 ? 2 : 3, "#5F92B8", 0.8, S[j] - 0.5 + (k % 3) * 0.15); }
+  A3.ink.forEach((q) => { if (!q.dashed) q.e.setAttribute("stroke-dasharray", `${q.L} ${q.L + 2}`); });
+}
+function a3Hide() { if (!A3.built) return; Object.values(A3.els).forEach((d) => (d.style.opacity = 0)); A3.rows.forEach((d) => (d.style.opacity = 0)); A3.labels.forEach((d) => (d.style.opacity = 0)); A3.svg.style.display = "none"; }
+function a3Reveal(t12) {                                   // the drawing at time t12 of click 12 (99 = complete)
+  A3.svg.style.display = "";
+  const E = (a, d) => smooth((t12 - a) / d);
+  A3.rows.forEach((d, i) => (d.style.opacity = E(0.4 + i * 1.3, 0.7)));
+  A3.lines.forEach((q, i) => { const u = clamp((t12 - (0.8 + i * 1.3)) / 1.6), e = u * u * (3 - 2 * u);
+    q.pth.setAttribute("stroke-dasharray", `${q.L} ${q.L + 2}`); q.pth.setAttribute("stroke-dashoffset", q.L * (1 - e)); q.dot.setAttribute("opacity", e >= q.at ? 1 : 0); });
+  const nd = E(2.4, 0.4); A3.node.forEach((c) => c.setAttribute("opacity", nd));
+  A3.ink.forEach((q) => { const u = clamp((t12 - q.t0) / q.dur), e = 1 - Math.pow(1 - u, 2);
+    if (q.dashed) q.e.style.opacity = e; else { q.e.style.opacity = u > 0 ? 1 : 0; q.e.setAttribute("stroke-dashoffset", q.L * (1 - e)); } });
+  A3.marks.forEach((m) => (m.e.style.opacity = E(m.t0, 0.25)));
+  A3.labels.forEach((d, i) => (d.style.opacity = E(A3.S[i] + 1.5, 0.6)));
+  A3.els.claim.style.opacity = E(15.5, 1.2);
+}
+// the two spheres: a hop = 0.1 s crouch, an arc, a landing squash; they move closer in turns, then talk in place, never touching
+const A3_C0 = 517, A3_B0 = 1393, A3_STEP = 61;
+const HOPS12 = [[4.0, "c", 1, 46], [5.4, "b", 1, 46], [7.6, "c", 1, 46], [9.0, "b", 1, 46], [11.4, "c", 1, 46], [12.8, "b", 1, 46]];
+const HOPS13 = [[1.2, "c", 0, 34], [3.2, "b", 0, 34], [5.6, "c", 0, 30], [8.0, "b", 0, 30]];
+function sphereHops(who, x0, dir, hops, t) {
+  let x = x0, y = 0, sx = 1, sy = 1; const D = 0.55;
+  for (const [ts, w, steps, h] of hops) { if (w !== who) continue; const a = t - ts, dx = dir * steps * A3_STEP;
+    if (a >= D + 0.12) { x += dx; continue; }
+    if (a < -0.1) break;
+    if (a < 0) { sy = 0.92; sx = 1.04; }                                                   // he gathers himself
+    else if (a < D) { const u = a / D; x += dx * (u * u * (3 - 2 * u)); y = h * 4 * u * (1 - u); sy = 1.05; sx = 0.975; }
+    else { const u = (a - D) / 0.12; x += dx; sy = 0.9 + 0.1 * u; sx = 1 / Math.sqrt(sy); }   // lands
+    break; }
+  return [x, FLOOR - SYM_R * sy - y, sx, sy];
+}
+function placeA3(c12, c13) {
+  const xc = A3_C0 + 3 * A3_STEP, xb = A3_B0 - 3 * A3_STEP;
+  let C = sphereHops("c", A3_C0, 1, HOPS12, c12), B = sphereHops("b", A3_B0, -1, HOPS12, c12);
+  if (c13 >= 0) { C = sphereHops("c", xc, 1, HOPS13, c13); B = sphereHops("b", xb, -1, HOPS13, c13); }
+  place(copper, C[0], C[1], SYM_R, C[2], C[3]); place(blue, B[0], B[1], SYM_R, B[2], B[3]);
+}
+// Click 11, "A carbon number looks like chemistry. It is a data product.": the number writes in; the line lands; hard pause
+function act3Number(t) {
+  if (t < 0) { a3Hide(); return; }
+  buildA3(); a3Hide(); const E = (a, d) => smooth((t - a) / d), e = A3.els;
+  e.tag.style.opacity = E(0.3, 0.8);
+  e.number.style.opacity = E(0.6, 0.3); e.number.style.clipPath = `inset(-20% ${(100 * (1 - E(0.6, 1.8))).toFixed(2)}% -20% 0)`;
+  e.product.style.opacity = E(3.2, 1.0);
+  placeA3(0, -1);
+}
+// Click 12, "Behind one apparently simple number sit…": scopes, copper lines to the axis, the node, the roots in spoken order; the approach
+function act3Delta(t) {
+  if (t < 0) return;
+  const e = A3.els; e.tag.style.opacity = 1; e.number.style.opacity = 1; e.number.style.clipPath = "none"; e.product.style.opacity = 1;
+  a3Reveal(t); placeA3(t, -1);
+}
+// Click 13, "Where did it come from? Who owns it?…": four questions, four alternating hops in place; they stay apart
+function act3Talk(t) { if (t < 0) return; a3Reveal(99); placeA3(99, t); }
+// Click 14, "You cannot report what you cannot trace.": the line writes in; then nothing moves
+function act3Thesis(t) {
+  if (t < 0) return;
+  a3Reveal(99); placeA3(99, 99);
+  const e = A3.els.thesis, E = (a, d) => smooth((t - a) / d);
+  e.style.opacity = E(0.4, 0.3); e.style.clipPath = `inset(-20% ${(100 * (1 - E(0.4, 2.2))).toFixed(2)}% -20% 0)`;
+}
+// ================= CLICKS 15 to 18 · ACT 04: AI scales what is there =================
+// The evidence is swallowed by the axis; the spheres bump at the axis and copper stamps AI on blue; blue multiplies,
+// 1-2-4-8-16-32 and then past counting, each child on its own path; mutants emerge one by one (a square, a triangle,
+// a slow purple the others avoid); the axis is an absolute wall. Copper, worried, paces the axis on his side, and
+// constructs the spoken lines: AI, then better data, then better process. All motion is seeded and precomputed.
+function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const A4 = { built: false };
+function a3Retract(u, tw) {                                // the evidence runs backwards into the axis: tips first, then the trunks, the copper lines, the node
+  buildA3(); A3.svg.style.display = "";
+  const maxE = Math.max(...A3.ink.map((q) => q.t0 + q.dur)), k = 3.6 / maxE;
+  A3.ink.forEach((q) => { const back = (maxE - (q.t0 + q.dur)) * k, v = 1 - clamp((tw - back) / Math.max(0.35, q.dur * k * 1.6)), e = v * v * (3 - 2 * v);
+    if (q.dashed) q.e.style.opacity = e; else { q.e.style.opacity = e > 0.002 ? 1 : 0; q.e.setAttribute("stroke-dashoffset", q.L * (1 - e)); } });
+  A3.marks.forEach((m) => { const back = (maxE - m.t0) * k; m.e.style.opacity = 1 - clamp((tw - back) / 0.2); });
+  A3.lines.forEach((q, i) => { const v = 1 - clamp((tw - 3.0 - i * 0.15) / 1.0), e = v * v * (3 - 2 * v);   // the copper lines run into the node
+    q.pth.setAttribute("stroke-dasharray", `0 ${(q.L * (1 - e)).toFixed(1)} ${(q.L * e).toFixed(1)} ${q.L * 2}`); q.pth.setAttribute("stroke-dashoffset", 0);
+    q.dot.setAttribute("opacity", e > 1 - q.at ? 1 : 0); });
+  const n = 1 - clamp((tw - 4.4) / 0.6); A3.node[0].setAttribute("r", (9 * n).toFixed(2)); A3.node[1].setAttribute("r", (15 * n).toFixed(2));   // the axis swallows the node
+  A3.node.forEach((c) => c.setAttribute("opacity", n > 0.01 ? 1 : 0)); A3.labels.forEach((d) => (d.style.opacity = 0));
+}
+function buildA4() {
+  if (A4.built) return; A4.built = true;
+  const st = $("stage");
+  // the swarm canvas
+  const cv = document.createElement("canvas"); cv.width = 1920 * 2; cv.height = 1080 * 2; cv.style.cssText = "position:absolute;left:0;top:0;width:1920px;height:1080px;z-index:2;pointer-events:none";
+  st.appendChild(cv); A4.cv = cv; A4.ctx = cv.getContext("2d");
+  // the stamp
+  const sp = document.createElement("div"); sp.textContent = "AI";
+  sp.style.cssText = "position:absolute;left:0;top:0;z-index:3;font:600 19px/1 'DM Sans',sans-serif;letter-spacing:.08em;color:#E7C39B;border:1.6px solid #E7C39B;padding:3px 5px 2px 6px;opacity:0;transform-origin:50% 50%";
+  st.appendChild(sp); A4.stamp = sp;
+  // the copper rule and its construction lines
+  const svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080); svg.style.cssText = "position:absolute;left:0;top:0;z-index:2;mix-blend-mode:multiply"; st.appendChild(svg);
+  const mk = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  A4.rule = mk("line", { stroke: "#762F0B", "stroke-width": 2.6, "stroke-linecap": "round", opacity: 0 });
+  A4.guides = [0, 1, 2].map(() => [mk("line", { stroke: "#9A5B24", "stroke-width": 1, opacity: 0 }), mk("line", { stroke: "#9A5B24", "stroke-width": 0.8, "stroke-dasharray": "3 4", opacity: 0 })]);
+  A4.ticks = mk("g", { stroke: "#762F0B", "stroke-width": 1.4, opacity: 0 });
+  // the typography (Source Serif 4 and DM Sans only)
+  const T = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;transform-origin:0 100%;" + css; st.appendChild(d); return d; };
+  const CU = "#762F0B", INK = "#26221E";
+  A4.t = {
+    s1: T("Sometimes", `left:112px;top:196px;font:italic 400 34px/1 'Source Serif 4';color:${INK}`),
+    ai: T("AI", `left:104px;top:240px;font:600 250px/0.8 'Source Serif 4';color:${CU};letter-spacing:-.02em`),
+    ans: T("is the answer.", `left:440px;top:402px;font:400 42px/1 'Source Serif 4';color:${INK}`),
+    l1: T("Sometimes <b style='font-weight:600;color:#762F0B'>AI</b> is the answer.", `left:112px;top:150px;font:italic 400 28px/1 'Source Serif 4';color:${INK}`),
+    s2: T("Sometimes the answer is", `left:112px;top:252px;font:italic 400 34px/1 'Source Serif 4';color:${INK}`),
+    data: T("better data", `left:104px;top:300px;font:600 128px/1 'Source Serif 4';color:${CU};letter-spacing:-.01em`),
+    l2: T("Sometimes the answer is <b style='font-weight:600;color:#762F0B;font-size:1.25em'>better data</b>.", `left:112px;top:204px;font:italic 400 28px/1 'Source Serif 4';color:${INK}`),
+    s3: T("Sometimes it is a", `left:112px;top:304px;font:italic 400 34px/1 'Source Serif 4';color:${INK}`),
+    proc: T("better process", `left:104px;top:352px;font:600 108px/1 'Source Serif 4';color:${CU};letter-spacing:-.01em`),
+  };
+  // ---- the swarm: precomputed once from a fixed seed (30 fps, 40 s) ----
+  const rnd = rng(1026), FPS = 30, TMAX = 40, dt = 1 / FPS, ag = [], frames = [];
+  const births = [];                                        // [time, count]: exact doubling first, then past counting
+  [[2.6, 1], [3.8, 2], [4.8, 4], [5.7, 8], [6.4, 16]].forEach(([t, n]) => { for (let i = 0; i < n; i++) births.push(t + (n > 1 ? (i / n) * 0.45 : 0)); });
+  for (let t = 7.0, g = 0.5; t < TMAX - 6 && births.length < 128; t += g, g = Math.max(0.06, g * 0.9)) births.push(t);
+  const MUT = { 30: "sq", 37: "tri", 44: "purple", 53: "dia", 62: "sq", 71: "pent", 83: "tri", 96: "sq", 110: "dia", 124: "tri", 139: "pent" };
+  const spawn = (x, y, r, kind, born) => { const a = { x, y, vx: 0, vy: 0, r, kind, born, th: rnd() * Math.PI * 2, sp: 60 + rnd() * 170, f1: 0.3 + rnd() * 1.1, f2: 1.1 + rnd() * 2.3, p1: rnd() * 6.3, p2: rnd() * 6.3, a1: 0.8 + rnd() * 1.6, a2: 0.5 + rnd() * 1.4, rot: rnd() * 6.3, wr: (rnd() - 0.5) * 2.4 }; ag.push(a); return a; };
+  spawn(1120, FLOOR - SYM_R, SYM_R, "blue", 0).sp = 90;     // the stamped one
+  const inside = (a) => { const r = a.r; let x = Math.max(957 + r, Math.min(1828 - r, a.x)), y = Math.max(150 + r, Math.min(930 - r, a.y));
+    if (x + r > 1545 && y - r < 452) { if (1545 - r - x > 452 + r - y) x = 1545 - r; else y = 452 + r; }      // the chapter column and the name
+    if (x + r > 1545 && y + r > 935) y = 935 - r;                                                       // the logo
+    if (x - r < 1060 && y + r > 700) { if (1060 + r - x < y + r - 700) x = 1060 + r; else y = 700 - r; }  // the man keeps his space
+    a.x = x; a.y = y; };
+  let bi = 0, birthN = 0;
+  for (let f = 0; f <= TMAX * FPS; f++) {
+    const T = f * dt;
+    while (bi < births.length && births[bi] <= T) { bi++; birthN++;
+      const cands = ag.filter((q) => q.kind !== "purple"), par = cands[Math.floor(rnd() * cands.length)], dir = rnd() * Math.PI * 2;
+      const r = Math.max(12, Math.min(34, (par.kind === "blue" && par === ag[0] ? 30 : par.r) * (0.8 + rnd() * 0.14))), kind = MUT[birthN] || "sphere";
+      const c = spawn(par.x + Math.cos(dir) * (par.r + r + 1), par.y + Math.sin(dir) * (par.r + r + 1), kind === "purple" ? 30 : r, kind, T);
+      c.vx = Math.cos(dir) * 120; c.vy = Math.sin(dir) * 120; par.vx -= Math.cos(dir) * 60; par.vy -= Math.sin(dir) * 60; if (kind === "purple") { c.sp = 34; c.a1 = 0.25; c.a2 = 0.1; } inside(c); }
+    const purple = ag.find((q) => q.kind === "purple");
+    for (const a of ag) {
+      if (a === ag[0] && T < 2.6) continue;                  // the stamped one rests until it starts to divide
+      a.th += (Math.sin(T * a.f1 + a.p1) * a.a1 + Math.sin(T * a.f2 + a.p2) * a.a2) * dt;
+      // walls steer, they do not bounce: near a boundary the heading turns back inside
+      const near = [[a.x - a.r - 957, 0], [1828 - a.r - a.x, Math.PI], [a.y - a.r - 210, Math.PI / 2], [930 - a.r - a.y, -Math.PI / 2]];
+      const zones = [[a.x + a.r - 1545, a.y - a.r - 452, Math.PI * 0.75], [1060 - (a.x - a.r), (a.y + a.r) - 700, -Math.PI / 4]];   // the column corner and the man's corner push the heading away
+      for (const [d, inward] of near) if (d < 90) { let df = inward - a.th; df = Math.atan2(Math.sin(df), Math.cos(df)); a.th += df * (1 - d / 90) * 7 * dt; }
+      for (const [ex, ey, inward] of zones) if (ex > -70 && ey < 70) { let df = inward - a.th; df = Math.atan2(Math.sin(df), Math.cos(df)); a.th += df * 5 * dt; }
+      if (purple && a !== purple) { const dx = a.x - purple.x, dy = a.y - purple.y, d = Math.hypot(dx, dy); if (d < 150) { const away = Math.atan2(dy, dx); let df = away - a.th; df = Math.atan2(Math.sin(df), Math.cos(df)); a.th += df * (1 - d / 150) * 4 * dt; } }
+      const tv = [Math.cos(a.th) * a.sp, Math.sin(a.th) * a.sp]; a.vx += (tv[0] - a.vx) * 2.2 * dt; a.vy += (tv[1] - a.vy) * 2.2 * dt;
+      a.x += a.vx * dt; a.y += a.vy * dt; a.rot += a.wr * dt; inside(a);
+    }
+    // collisions: they bump, push apart, and trade a little momentum
+    const G = new Map(), key = (x, y) => Math.floor(x / 70) * 1000 + Math.floor(y / 70); ag.forEach((a) => { a.cx = 0; a.cy = 0; a.cn = 0; });
+    ag.forEach((a, i) => { const k = key(a.x, a.y); if (!G.has(k)) G.set(k, []); G.get(k).push(i); });
+    ag.forEach((a, i) => { const cx = Math.floor(a.x / 70), cy = Math.floor(a.y / 70);
+      for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) for (const j of G.get((cx + ox) * 1000 + cy + oy) || []) { if (j <= i) continue; const b = ag[j];
+        const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 0.01, ov = a.r + b.r - d;
+        if (d < 1.9 * (a.r + b.r)) { a.cx += dx; a.cy += dy; a.cn++; b.cx -= dx; b.cy -= dy; b.cn++; }
+        if (ov <= 0) continue;
+        const nx = dx / d, ny = dy / d, wa = b.r * b.r / (a.r * a.r + b.r * b.r), wb = 1 - wa;
+        a.x -= nx * ov * wa; a.y -= ny * ov * wa; b.x += nx * ov * wb; b.y += ny * ov * wb;
+        const rv = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny; if (rv < 0) { const imp = -1.5 * rv; a.vx -= nx * imp * wa; a.vy -= ny * imp * wa; b.vx += nx * imp * wb; b.vy += ny * imp * wb; }
+        a.th = Math.atan2(a.vy, a.vx); b.th = Math.atan2(b.vy, b.vx); inside(a); inside(b); } });
+    ag.forEach((a) => { if (a.cn > 1 && a.kind !== "purple") { const away = Math.atan2(-a.cy, -a.cx); let df = away - a.th; df = Math.atan2(Math.sin(df), Math.cos(df)); a.th += df * Math.min(1, a.cn / 6) * 6 * dt; } });   // personal space: no packing
+    frames.push(ag.map((a) => [a.x, a.y, a.rot]));
+  }
+  A4.ag = ag.map((a) => ({ r: a.r, kind: a.kind, born: a.born })); A4.frames = frames; A4.FPS = FPS; A4.TMAX = TMAX;
+}
+function drawSwarm(T) {                                    // T: swarm time (s) from the start of click 16
+  const c = A4.ctx; c.setTransform(2, 0, 0, 2, 0, 0); c.clearRect(0, 0, 1920, 1080);
+  if (T < 2.6) return;
+  const f = Math.min(A4.frames.length - 1, Math.max(0, Math.round(T * A4.FPS))), fr = A4.frames[f], im = blue.im, o = blue.o;
+  for (let i = 1; i < fr.length; i++) { const a = A4.ag[i]; if (a.born > T) continue; const [x, y, rot] = fr[i], age = T - a.born, pop = Math.min(1, age / 0.18), r = a.r * (0.6 + 0.4 * pop);
+    if (a.kind === "sphere" || a.kind === "purple") { const k = r / o.r; c.save(); if (a.kind === "purple") c.filter = "hue-rotate(48deg) saturate(.75) brightness(.92)"; c.drawImage(im, x - o.c * k, y - o.c * k, o.w * k, o.h * k); c.restore(); continue; }
+    c.save(); c.translate(x, y); c.rotate(rot); c.fillStyle = "#1E4D7B"; c.strokeStyle = "#163a5e"; c.lineWidth = 1; c.beginPath();
+    const s = r * 0.92;
+    if (a.kind === "sq") c.rect(-s * 0.85, -s * 0.85, s * 1.7, s * 1.7);
+    else if (a.kind === "dia") { c.moveTo(0, -s * 1.1); c.lineTo(s * 0.8, 0); c.lineTo(0, s * 1.1); c.lineTo(-s * 0.8, 0); c.closePath(); }
+    else { const n = a.kind === "tri" ? 3 : 5; for (let k = 0; k < n; k++) { const ang = -Math.PI / 2 + (k * 2 * Math.PI) / n; c[k ? "lineTo" : "moveTo"](Math.cos(ang) * s * 1.1, Math.sin(ang) * s * 1.1); } c.closePath(); }
+    c.fill(); c.stroke(); c.globalAlpha = 0.35; c.strokeStyle = "#7FA6C8"; c.beginPath(); c.moveTo(-s * 0.5, -s * 0.55); c.lineTo(s * 0.2, -s * 0.7); c.stroke(); c.restore(); }
+  const [x0, y0] = fr[0]; place(blue, x0, y0, SYM_R); blue.sh.style.opacity = Math.max(0, 1 - (T - 2.6) / 0.6);
+  return [x0, y0];
+}
+function stampAt(x, y, o) { const s = A4.stamp; s.style.opacity = o; s.style.transform = `translate(${(x - 26).toFixed(1)}px, ${(y - 14).toFixed(1)}px) rotate(-9deg)`; }
+function a4Hide() { if (!A4.built) return; A4.ctx.setTransform(1, 0, 0, 1, 0, 0); A4.ctx.clearRect(0, 0, A4.cv.width, A4.cv.height); A4.stamp.style.opacity = 0;
+  A4.rule.setAttribute("opacity", 0); A4.guides.forEach((g) => g.forEach((l) => l.setAttribute("opacity", 0))); A4.ticks.setAttribute("opacity", 0); Object.values(A4.t).forEach((d) => (d.style.opacity = 0)); blue.sh.style.opacity = ""; }
+// Click 15, "Why do we not just use AI?": Act 03's words leave; 04; the axis swallows the evidence
+function act4Open(t) {
+  if (t < 0) { a4Hide(); return; }
+  buildA4(); a4Hide();
+  const E = (a, d) => smooth((t - a) / d), e = A3.els, out = 1 - E(0, 1.6);
+  [e.tag, e.number, e.product, e.claim, e.thesis, ...A3.rows].forEach((d) => (d.style.opacity = out));
+  if (t < 1.6) { A3.labels.forEach((d) => (d.style.opacity = out)); a3Reveal(99); A3.labels.forEach((d) => (d.style.opacity = out)); } else a3Retract(1, t - 3.2);
+  if (t < 3.0) { const o2 = 1 - E(1.6, 1.2); $("act").style.opacity = o2; $("ttl").style.opacity = o2; $("hair").style.opacity = 0.55 * o2; $("rule").style.width = 100 * o2 + "%"; }
+  else chapterColumn(t - 3.0, CHAPTERS[4]);
+  if (t >= 1.8) chapterNumber(t - 1.8, CHAPTERS[4]); else $("one").style.opacity = 0;
+  placeA3(99, 99);
+}
+// Click 16, "I am optimistic about AI… It can scale it.": the bump at the axis, the stamp, the multiplication; copper, worried, goes to the axis
+const BUMP = { tc: 1.2, yc: 600 };
+function copperAfter(t) {                                  // copper: leap to the axis, the bump, back to its side; then it watches
+  const C0 = [700, FLOOR - SYM_R], C1 = [955 - SYM_R - 1, BUMP.yc], C2 = [780, FLOOR - SYM_R];
+  if (t < BUMP.tc) { const u = clamp((t - 0.25) / (BUMP.tc - 0.25)); if (t < 0.25) return [C0[0], C0[1] + 3 * smooth(t / 0.25), 1.04, 0.93];
+    return [C0[0] + (C1[0] - C0[0]) * u, C0[1] + (C1[1] - C0[1]) * u - 90 * 4 * u * (1 - u), 0.97, 1.05]; }
+  if (t < BUMP.tc + 0.08) return [C1[0] - 4, C1[1], 0.86, 1.1];
+  const u = clamp((t - BUMP.tc - 0.08) / 0.6); if (u < 1) return [C1[0] + (C2[0] - C1[0]) * u, C1[1] + (C2[1] - C1[1]) * u - 40 * 4 * u * (1 - u), 1, 1];
+  const v = clamp((t - BUMP.tc - 0.68) / 0.14); return [C2[0], C2[1], 1 + 0.06 * Math.sin(Math.PI * v), 1 - 0.07 * Math.sin(Math.PI * v)];
+}
+function blueBump(t) {
+  const B0 = [1210, FLOOR - SYM_R], B1 = [955 + SYM_R + 1, BUMP.yc], B2 = [1120, FLOOR - SYM_R];
+  if (t < BUMP.tc) { const u = clamp((t - 0.3) / (BUMP.tc - 0.3)); if (t < 0.3) return [B0[0], B0[1] + 3 * smooth(t / 0.3), 1.04, 0.93];
+    return [B0[0] + (B1[0] - B0[0]) * u, B0[1] + (B1[1] - B0[1]) * u - 90 * 4 * u * (1 - u), 0.97, 1.05]; }
+  if (t < BUMP.tc + 0.08) return [B1[0] + 4, B1[1], 0.86, 1.1];
+  const u = clamp((t - BUMP.tc - 0.08) / 0.6); if (u < 1) return [B1[0] + (B2[0] - B1[0]) * u, B1[1] + (B2[1] - B1[1]) * u - 40 * 4 * u * (1 - u), 1, 1];
+  const v = clamp((t - BUMP.tc - 0.68) / 0.14); return [B2[0], B2[1], 1 + 0.06 * Math.sin(Math.PI * v), 1 - 0.07 * Math.sin(Math.PI * v)];
+}
+const CX_AXIS = 955 - SYM_R - 4, CY_LOW = 694;            // hugging the axis on his side; never lower than the man's head
+function pace(t, way) {                                    // eased trips between waypoints [t, y], with a nervous tremor
+  let y = way[0][1]; for (let i = 1; i < way.length; i++) { const [t0, y0] = way[i - 1], [t1, y1] = way[i]; if (t >= t0) y = y0 + (y1 - y0) * smooth((t - t0) / Math.max(0.01, t1 - t0)); }
+  return y;
+}
+const WORRY16 = [[3.4, CY_LOW], [4.4, CY_LOW], [5.6, 470], [6.0, 470], [6.5, 520], [7.6, 300], [8.1, 300], [8.5, 360], [9.8, 560], [10.2, 560], [11.2, 410], [12, 410]];
+const WORRY17 = [[0, 410], [0.6, 260], [1.0, 260], [1.4, 330], [2.4, 620], [2.7, 620], [3.0, 560], [4.0, 220], [4.3, 220], [5.4, 650], [5.8, 600], [6.6, 300], [6.9, 300],
+  [7.3, 380], [8.4, 640], [8.7, 640], [9.6, 250], [10.0, 250], [10.6, 470], [12, 440]];
+function copperWorry(t, way, amp) {                        // up and down the axis: quick, stopping, trembling
+  const y = pace(t, way), tr = amp * (Math.sin(t * 23.0) * 0.6 + Math.sin(t * 37.0) * 0.4);
+  let moving = 0; for (let i = 1; i < way.length; i++) { const [t0, y0] = way[i - 1], [t1, y1] = way[i]; if (t >= t0 && t < t1 && Math.abs(y1 - y0) > 1) moving = Math.sin(Math.PI * (t - t0) / (t1 - t0)); }
+  return [CX_AXIS + tr, y, 1 - 0.05 * moving, 1 + 0.06 * moving];    // he stretches as he hurries
+}
+function ruleAt(x, y0, y1, o) { A4.rule.setAttribute("x1", x); A4.rule.setAttribute("x2", x); A4.rule.setAttribute("y1", y0); A4.rule.setAttribute("y2", y1); A4.rule.setAttribute("opacity", o); }
+function act4Bump(t) {
+  if (t < 0) return;
+  a3Retract(1, 99); A3.svg.style.display = "none"; A4.stamp.style.opacity = 0;
+  if (t < 2.4) { const c = copperAfter(t); place(copper, c[0], c[1] + SYM_R * (1 - c[3]), SYM_R, c[2], c[3]); }
+  else if (t < 3.4) { const u = smooth((t - 2.4) / 1.0), c = copperAfter(99); place(copper, c[0] + (CX_AXIS - c[0]) * u, c[1] + (CY_LOW - c[1]) * u, SYM_R); }   // he goes to the axis
+  else { const w = copperWorry(t, WORRY16, 1.2); place(copper, w[0], w[1], SYM_R, w[2], w[3]); }
+  if (t < 2.6) { const b = blueBump(t); place(blue, b[0], b[1] + SYM_R * (1 - b[3]), SYM_R, b[2], b[3]); drawSwarm(0); if (t >= BUMP.tc) stampAt(b[0] - 6, b[1] + 2, 1); }
+  else { const p = drawSwarm(t); stampAt(p[0] - 6, p[1] + 2, 1); }
+  if (t >= BUMP.tc && t < BUMP.tc + 0.1) A4.stamp.style.transform += ` scale(${(1.25 - 2.5 * (t - BUMP.tc)).toFixed(3)})`;   // the stamp lands
+  ruleAt(0, 0, 0, 0);
+}
+// Click 17, "If five people use the word 'batch'…": past counting; mutants surface one by one; copper paces the axis, up and down
+const SEARCH = [[0, 630], [2.5, 630], [4.6, 300], [6.0, 300], [8.0, 520], [9.0, 520], [10.6, 210], [12, 210]];
+function act4Swarm(t) {
+  if (t < 0) return;
+  A3.svg.style.display = "none";
+  const w = copperWorry(t, WORRY17, 1.8); place(copper, w[0], w[1], SYM_R, w[2], w[3]);
+  const p = drawSwarm(12 + t); stampAt(p[0] - 6, p[1] + 2, 1);
+  ruleAt(0, 0, 0, 0);
+}
+// Click 18, "Sometimes AI is the answer…": copper stops at each line and constructs it; AI, then better data, then better process
+function act4Words(t) {
+  if (t < 0) return;
+  A3.svg.style.display = "none";
+  const p = drawSwarm(24 + t); stampAt(p[0] - 6, p[1] + 2, 1);
+  const E = (a, d) => smooth((t - a) / d), T4 = A4.t;
+  const wipe = (d, a, dur) => { const u = E(a, dur); d.style.opacity = u > 0 ? 1 : 0; d.style.clipPath = `inset(-30% ${(100 * (1 - u)).toFixed(2)}% -30% 0)`; };
+  const guide = (i, y, a, x0 = 110) => { const [g, h] = A4.guides[i], u = E(a, 0.6), fade = 1 - 0.8 * E(a + 1.8, 0.8);   // a construction line runs from the axis to the margin
+    g.setAttribute("x1", CX_AXIS - SYM_R - 6); g.setAttribute("x2", CX_AXIS - SYM_R - 6 - (CX_AXIS - SYM_R - 6 - x0) * u); g.setAttribute("y1", y); g.setAttribute("y2", y); g.setAttribute("opacity", u > 0 ? 0.9 * fade : 0);
+    h.setAttribute("x1", CX_AXIS - SYM_R - 6); h.setAttribute("x2", CX_AXIS - SYM_R - 6 - (CX_AXIS - SYM_R - 6 - x0) * u); h.setAttribute("y1", y - 92); h.setAttribute("y2", y - 92); h.setAttribute("opacity", u > 0 ? 0.6 * fade : 0); };
+  // the rule's stops along the axis: one per line
+  const stops = [[0, 440], [0.35, 440], [3.6, 440], [4.3, 420], [8.6, 420], [9.3, 450], [16, 450]];   // one stop per line; the tremor fades as the process settles
+  const cw = copperWorry(t, stops, 1.6 * (1 - E(8.6, 3.0))); place(copper, cw[0], cw[1], SYM_R, cw[2], cw[3]);
+  ruleAt(0, 0, 0, 0);
+  // PHASE 1 · AI: confident, monumental
+  guide(0, 440, 0.4); wipe(T4.s1, 0.9, 0.6); wipe(T4.ai, 1.1, 0.9); wipe(T4.ans, 1.9, 0.8);
+  const shrink = E(4.0, 1.4);                                 // PHASE 2 begins: AI loses its dominance and settles into one quiet line
+  [T4.s1, T4.ai, T4.ans].forEach((d) => (d.style.opacity = (d.style.opacity === "1" ? 1 : 0) * (1 - shrink)));
+  T4.ai.style.transform = `translate(0, ${(-60 * shrink).toFixed(1)}px) scale(${(1 - 0.85 * shrink).toFixed(3)})`;
+  T4.l1.style.opacity = E(4.8, 0.8); T4.l1.style.clipPath = "none";
+  // PHASE 2 · better data: constructed on its baseline by the copper system
+  guide(1, 420, 4.6); wipe(T4.s2, 5.2, 0.7); wipe(T4.data, 5.6, 1.5);
+  const settle = E(9.0, 1.3);                                 // PHASE 3 begins: better data settles into the record above
+  [T4.s2, T4.data].forEach((d) => { if (d.style.opacity === "1") d.style.opacity = 1 - settle; });
+  T4.data.style.transform = `translate(0, ${(-40 * settle).toFixed(1)}px) scale(${(1 - 0.7 * settle).toFixed(3)})`;
+  T4.l2.style.opacity = E(9.8, 0.8);
+  // PHASE 3 · better process: measured, sequential, built in steps along its baseline
+  guide(2, 450, 9.6); wipe(T4.s3, 10.2, 0.7);
+  const marks = [0, 0.32, 0.47, 1], st = [11.0, 11.8, 12.5, 13.3];   // "better" · "pro" · "cess": three measured steps
+  let reveal = 0; for (let i = 0; i < 3; i++) reveal = Math.max(reveal, marks[i] + (marks[i + 1] - marks[i]) * E(st[i], 0.45));
+  T4.proc.style.opacity = t >= st[0] ? 1 : 0; T4.proc.style.clipPath = `inset(-30% ${(100 * (1 - reveal)).toFixed(2)}% -30% 0)`;
+  const w = 700; A4.ticks.innerHTML = marks.map((m, i) => (t >= st[Math.min(i, 3)] - 0.2 ? `<line x1="${104 + m * w}" x2="${104 + m * w}" y1="452" y2="466"/>` : "")).join("");
+  A4.ticks.setAttribute("opacity", 0.8 * (1 - 0.6 * E(14.4, 1.0)));
+}
+// ================= CLICKS 19 to 23 · ACT 05: AI digital twins and smarter decisions =================
+// The swarm returns to the axis (nearest first, each on its own path; the AI sphere last) and the axis gives Blue back,
+// untagged: the pair again. Then two machines are drawn out of the two spheres: copper, the real process; blue, the twin.
+// Copper taps its button; the copper machine acts; the blue machine repeats it. On the third tap the twin starts to try
+// alternatives, and the axis itself branches into scenarios. The words are built along the copper branches.
+const A5 = { built: false };
+function retreatPlan() {                                   // seeded: who goes when, along which curve
+  if (A5.plan) return A5.plan;
+  const r = rng(2026), fr = A4.frames[A4.frames.length - 1], plan = [];
+  fr.forEach(([x, y], i) => { const a = A4.ag[i], dist = x - 955;
+    const s0 = i === 0 ? 7.4 : 1.0 + (dist / 870) * 4.6 + r() * 0.9, d = i === 0 ? 2.2 : 0.9 + r() * 1.3;
+    plan.push({ x, y, r: a.r, kind: a.kind, s0, d, ty: Math.max(170, Math.min(690, y + (r() - 0.5) * 160)), bend: (r() - 0.5) * 140 }); });
+  return (A5.plan = plan);
+}
+function retreatPose(q, t) {                               // [x, y, sx, sy, alive]
+  const u = (t - q.s0) / q.d;
+  if (u <= 0) return [q.x, q.y, 1, 1, 1];
+  const tx = 957 + q.r;
+  if (u < 1) { const e = u * u * (3 - 2 * u) * (0.6 + 0.4 * u), x = q.x + (tx - q.x) * e, y = q.y + (q.ty - q.y) * e + q.bend * Math.sin(Math.PI * e) * (1 - e);
+    return [x, y, 1 - 0.12 * e, 1 + 0.08 * e, 1]; }
+  const v = clamp((t - q.s0 - q.d) / 0.28); if (v >= 1) return [0, 0, 0, 0, 0];   // pressed flat against the axis, then gone into it
+  const sx = 0.88 * (1 - v); return [957 + q.r * sx, q.ty, sx, 1 + 0.25 * v, 1];
+}
+function drawRetreat(t) {
+  const c = A4.ctx; c.setTransform(2, 0, 0, 2, 0, 0); c.clearRect(0, 0, 1920, 1080);
+  const plan = retreatPlan(), im = blue.im, o = blue.o;
+  for (let i = 1; i < plan.length; i++) { const q = plan[i], [x, y, sx, sy, alive] = retreatPose(q, t); if (!alive) continue;
+    if (q.kind === "sphere" || q.kind === "purple") { const k = q.r / o.r; c.save(); if (q.kind === "purple") c.filter = "hue-rotate(48deg) saturate(.75) brightness(.92)";
+      c.translate(x, y); c.scale(sx, sy); c.drawImage(im, -o.c * k, -o.c * k, o.w * k, o.h * k); c.restore(); continue; }
+    c.save(); c.translate(x, y); c.scale(sx, sy); c.fillStyle = "#1E4D7B"; c.strokeStyle = "#163a5e"; c.beginPath(); const s2 = q.r * 0.92;
+    if (q.kind === "sq") c.rect(-s2 * 0.85, -s2 * 0.85, s2 * 1.7, s2 * 1.7); else if (q.kind === "dia") { c.moveTo(0, -s2 * 1.1); c.lineTo(s2 * 0.8, 0); c.lineTo(0, s2 * 1.1); c.lineTo(-s2 * 0.8, 0); c.closePath(); }
+    else { const n = q.kind === "tri" ? 3 : 5; for (let k = 0; k < n; k++) { const ang = -Math.PI / 2 + (k * 2 * Math.PI) / n; c[k ? "lineTo" : "moveTo"](Math.cos(ang) * s2 * 1.1, Math.sin(ang) * s2 * 1.1); } c.closePath(); }
+    c.fill(); c.stroke(); c.restore(); }
+  return retreatPose(plan[0], t);
+}
+// ---------- the machines: one drawing, mirrored; copper ink on the left, blueprint ink on the right ----------
+const PEEL = [455, 395, 335];                               // where strand j of each rope peels off into a limb
+function ropeX(k, y, ys) { const j = k % 3, ph = (k < 3 ? 0 : Math.PI) + (j - 1) * 0.5, pin = smooth((y - 300) / 90) * smooth((ys - y) / 50), amp = 1.5 + 12 * pin;
+  return 955 + amp * Math.sin(y / 17 + ph) + (j - 1) * (0.8 + 2.4 * pin); }   // two ropes of three strands, winding round each other; the pattern is fixed in space and grows downward
+function drawRopes(ys) { A5.strands.forEach((e, k) => { const top = PEEL[k % 3]; if (ys - top < 3) { e.setAttribute("d", ""); return; } let d = "";
+  for (let y = ys; y >= top - 0.1; y -= 3) d += (d ? " L" : "M") + ropeX(k, y, ys).toFixed(1) + " " + y.toFixed(1); e.setAttribute("d", d); }); }
+function buildA5() {
+  if (A5.built) return; A5.built = true;
+  const st = $("stage"), svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080);
+  svg.style.cssText = "position:absolute;left:0;top:0;z-index:2;mix-blend-mode:multiply;display:none"; st.appendChild(svg); A5.svg = svg;
+  const mk = (par, tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); par.appendChild(e); return e; };
+  A5.m = {};
+  for (const side of ["c", "b"]) {
+    const ink = side === "c" ? "#8A4A1E" : "#2E5E8C", soft = side === "c" ? "#B8783E" : "#6F9CBD", root = mk(svg, "g", side === "b" ? { transform: "translate(1910 0) scale(-1 1)" } : {});
+    const lines = [], L = (d, w = 1.6, col = ink, extra = {}) => { const e = mk(root, "path", { d, fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round", ...extra }); lines.push(e); return e; };
+    // the vessel: dome, shell, bands, skirt, legs, manway; drawn outward from the sphere's place (430, 728)
+    // the vessel, drawn as a cylinder: curved bands and seams, shading lines that crowd toward the shaded edge, a highlight left open
+    const sh = mk(svg.querySelector("defs") || mk(svg, "defs", {}), "linearGradient", { id: "sh" + side, x1: 0, x2: 1, y1: 0, y2: 0 });   // tone: lit left, shadow right
+    [[0, 0.2], [0.18, 0.04], [0.34, 0.0], [0.62, 0.18], [0.86, 0.4], [1, 0.58]].forEach(([o, a]) => mk(sh, "stop", { offset: o, "stop-color": ink, "stop-opacity": a }));
+    // a tall, slim vessel: dome 500, shell 540-822, head to 862, legs to the floor at 900; the words above end at 480
+    const CX = 430, R = 62, YT = 540, YB = 822, SHELL = `M${CX - R} ${YB} L${CX - R} ${YT} C${CX - R} 512 ${CX - 36} 498 ${CX} 498 C${CX + 36} 498 ${CX + R} 512 ${CX + R} ${YT} L${CX + R} ${YB} C${CX + R} 846 ${CX + 36} 862 ${CX} 862 C${CX - 36} 862 ${CX - R} 846 ${CX - R} ${YB}`;
+    const fills = [mk(root, "path", { d: SHELL + " Z", fill: `url(#sh${side})`, stroke: "none", opacity: 0 }),
+      mk(root, "path", { d: "M300 820 L346 820 L346 852 L300 852 C286 848 286 824 300 820 Z", fill: `url(#sh${side})`, stroke: "none", opacity: 0 })];
+    const arc = (y, ry = 8) => `M${CX - R} ${y} A${R} ${ry} 0 0 0 ${CX + R} ${y}`;
+    const across = (y0, y1, f0, f1, ry = 8) => { let d = ""; for (let y = y0; y <= y1; y += 6) { let q = ""; for (let f = f0; f <= f1 + 1e-6; f += 0.05) q += (q ? " L" : "M") + (CX + R * Math.cos(f)).toFixed(1) + " " + (y + ry * Math.sin(f)).toFixed(1); d += q + " "; } return d; };
+    L(SHELL, 2.6);                                                                                                   // shell and heads
+    L(arc(YT) + " " + arc(YB), 1.4);                                                                                 // head seams
+    for (const y of [584, 652, 792]) { L(arc(y) + " " + arc(y + 6), 1.3);                                         // three flanged bands, bolts crowding toward the edges
+      let d = ""; for (let k = 1; k < 10; k++) { const f = Math.PI * k / 10, x = CX + R * Math.cos(f), yy = y + 3 + 8 * Math.sin(f); d += `M${x.toFixed(1)} ${(yy - 1.5).toFixed(1)} L${x.toFixed(1)} ${(yy + 1.5).toFixed(1)} `; } L(d, 1.7); }
+    { let d = ""; for (let k = 0; k <= 15; k++) { const th = 0.3 + k * 0.08, x = CX + R * Math.sin(th); d += `M${x.toFixed(1)} ${(YT + 8 * Math.cos(th) + 4).toFixed(1)} L${x.toFixed(1)} ${(YB + 8 * Math.cos(th) - 2).toFixed(1)} `; } L(d, 0.75, ink, { "stroke-opacity": 0.55 }); }   // hatching at R·sin(θ)
+    L(across(546, 818, 0, 0.5), 0.6, ink, { "stroke-opacity": 0.45 });                                            // cross-contour on the dark edge
+    L(`M${CX - 46} 556 L${CX - 46} 812 M${CX - 40} 560 L${CX - 40} 808`, 0.6, soft);                                // the lit side, left open
+    L(`M${CX + 12} 506 C${CX + 38} 510 ${CX + 54} 522 ${CX + 58} 538 M${CX + 24} 503 C${CX + 46} 510 ${CX + 58} 520 ${CX + 61} 534 M${CX + 2} 512 C${CX + 30} 516 ${CX + 46} 526 ${CX + 52} 540`, 0.7, ink, { "stroke-opacity": 0.5 });   // dome shading
+    L(`M${CX + 16} 856 C${CX + 40} 852 ${CX + 54} 842 ${CX + 59} 828 M${CX + 6} 852 C${CX + 32} 848 ${CX + 48} 840 ${CX + 53} 828`, 0.7, ink, { "stroke-opacity": 0.5 });
+    L("M466 752 m-10 0 a10 15 0 1 0 20 0 a10 15 0 1 0 -20 0 M466 752 m-6 0 a6 10 0 1 0 12 0 a6 10 0 1 0 -12 0", 1.2);   // manway, foreshortened
+    L("M380 600 L380 680 M388 600 L388 680 M376 600 L392 600 M376 680 L392 680", 1.2); L("M381 640 L387 640 L387 679 L381 679 Z", 0.6, soft);   // sight glass
+    L("M398 746 L442 746 L442 762 L398 762 Z M402 751 L432 751 M402 756 L424 756", 0.9);                              // nameplate
+    L("M384 852 L378 900 M476 852 L482 900 M408 860 L406 900 M452 860 L454 900", 1.6); L("M380 896 L452 878 M480 896 L408 878", 0.7, soft);   // legs and braces
+    L("M372 900 L364 900 M372 900 L386 900 M488 900 L476 900 M488 900 L496 900", 2);                                // feet
+    L("M300 900 L740 900", 1.2, soft);
+    L("M300 820 L346 820 M300 852 L346 852 M300 820 C286 824 286 848 300 852 M346 816 L346 856 M351 816 L351 856 M351 836 L368 836", 1.5);   // the pump, a small horizontal vessel
+    L("M308 852 L306 900 M338 852 L340 900", 1.3); L("M304 826 L342 826 M302 832 L344 832 M302 838 L344 838 M302 844 L344 844", 0.5, ink, { "stroke-opacity": 0.4 });
+    L("M296 828 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0", 1.3);                                                       // pump motor cap
+    L("M422 498 L422 486 M438 498 L438 486 M416 486 L444 486 M416 481 L444 481", 1.4);                                // top nozzle
+    L("M404 506 L404 490 M398 490 L410 490 M401 486 L407 486", 1.2);                                                 // vent with its cap
+    // three pipe runs, as tubes: an ink wall hollowed by paper; rounded elbows; flanges wider than the tube
+    const tube = (d, w = 11) => { L(d, w); L(d, w - 3.2, "#fff"); };
+    tube("M494 540 L548 540 Q560 540 560 552 L560 690 Q560 702 548 702 L494 702", 9);                              // an upper loop: out of the shell, down, back in
+    tube("M492 741 L536 741 Q548 741 548 753 L548 797 Q548 809 560 809 L596 809", 9);                                // the second loop into the main line
+    tube("M494 572 L586 572 Q600 572 600 586 L600 844 Q600 858 614 858 L666 858");                                    // the main line, shell to button
+    L("M500 533 L500 547 M504 533 L504 547 M554 640 L566 640 M554 644 L566 644 M500 696 L500 708 M504 696 L504 708 M590 620 L610 620 M590 624 L610 624 M590 700 L610 700 M590 704 L610 704 M640 849 L640 867 M644 849 L644 867 M520 734 L520 748 M524 734 L524 748 M500 565 L500 579 M504 565 L504 579", 1.3);   // flanges
+    L("M552 590 L568 602 L568 590 L552 602 Z M560 590 L560 580 M553 580 L567 580", 1.3);                              // a valve on the upper run
+    L("M600 640 L616 640 M616 632 L616 648 M621 632 L621 648 M626 640 m-6 0 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0", 1.3);  // a pressure ball on the main line
+    L("M592 798 L608 810 L608 798 L592 810 Z", 1.4);                                                                 // valve body under the handwheel
+    const arcs = mk(root, "g", { opacity: 0, fill: "none", stroke: ink, "stroke-width": 1.4, "stroke-linecap": "round" });                 // it hums when it acts
+    mk(arcs, "path", { d: "M506 640 Q514 660 506 680 M516 632 Q528 660 516 688 M354 640 Q346 660 354 680 M344 632 Q332 660 344 688 M276 826 Q268 838 276 850" });
+    const flow = mk(root, "path", { d: "M494 572 L586 572 Q600 572 600 586 L600 844 Q600 858 614 858 L664 858", fill: "none", stroke: soft, "stroke-width": 3.2, "stroke-dasharray": "10 600", opacity: 0 });
+    // the valve wheel on the pipe
+    const valve = mk(root, "g", {}); mk(valve, "circle", { cx: 0, cy: 0, r: 22, fill: "none", stroke: ink, "stroke-width": 2.2 }); mk(valve, "circle", { cx: 0, cy: 0, r: 17, fill: "none", stroke: soft, "stroke-width": 0.8 }); mk(valve, "path", { d: "M-22 0 L22 0 M0 -22 L0 22 M-15 -15 L15 15", stroke: ink, "stroke-width": 1.6 }); mk(valve, "circle", { cx: 0, cy: 0, r: 3, fill: ink });
+    // the lever on the shell
+    const lever = mk(root, "g", {}); mk(lever, "path", { d: "M0 0 L-62 0", stroke: ink, "stroke-width": 3, "stroke-linecap": "round" }); mk(lever, "circle", { cx: -62, cy: 0, r: 6, fill: "none", stroke: ink, "stroke-width": 1.8 }); const pivot = mk(root, "circle", { cx: 368, cy: 760, r: 4, fill: ink });
+    // the gauge
+    const dial = [mk(root, "circle", { cx: 430, cy: 712, r: 24, fill: "none", stroke: ink, "stroke-width": 1.8 }), mk(root, "path", { d: "M412 726 A24 24 0 0 1 448 726", fill: "none", stroke: soft, "stroke-width": 1 })];
+    const needle = mk(root, "g", {}); mk(needle, "path", { d: "M0 0 L0 -18", stroke: ink, "stroke-width": 2, "stroke-linecap": "round" });
+    const ghosts = side === "b" ? [0, 1, 2].map(() => { const g = mk(root, "g", { opacity: 0 }); mk(g, "path", { d: "M0 0 L0 -18", stroke: ink, "stroke-width": 1.4, "stroke-dasharray": "2 2" }); return g; }) : [];
+    const lghosts = side === "b" ? [0, 1].map(() => { const g = mk(root, "g", { opacity: 0 }); mk(g, "path", { d: "M0 0 L-62 0", stroke: ink, "stroke-width": 1.6, "stroke-dasharray": "4 3" }); return g; }) : [];
+    // the button: base, stem, cap (physical)
+    L("M664 900 L716 900 L710 888 L670 888 Z", 1.6); L("M684 888 L684 876 M696 888 L696 876", 1.4);
+    const cap = mk(root, "g", {}); mk(cap, "path", { d: "M672 876 L708 876 L704 866 L676 866 Z", fill: "none", stroke: ink, "stroke-width": 1.8 });
+    lines.forEach((e) => { const Lg = e.getTotalLength(); e.dataset.L = Lg; e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); });
+    A5.m[side] = { root, fills, lines, flow, valve, lever, needle, ghosts, lghosts, cap, arcs, parts: [valve, lever, needle, cap, pivot, ...dial, ...ghosts, ...lghosts] };   // everything that is not line-drawn leaves with the machine
+  }
+  // ---------- the axis becomes a tree: each tap shortens it, and what comes out is organic ----------
+  // the ribbon conduit: from under one silo to under the other, copper turning blue in the middle; drawn with the machines
+  const cg = mk(svg.querySelector("defs"), "linearGradient", { id: "cond", gradientUnits: "userSpaceOnUse", x1: 890, x2: 1020, y1: 0, y2: 0 });
+  mk(cg, "stop", { offset: 0, "stop-color": "#8A4A1E" }); mk(cg, "stop", { offset: 1, "stop-color": "#2E5E8C" });
+  [0, 1, 2, 3, 4, 5].forEach((i) => { const y = 930 + i * 2.6, e = mk(svg, "path", { d: `M${416 + i * 3} 900 L${416 + i * 3} ${y - 12} Q${416 + i * 3} ${y} ${430 + i * 3} ${y} L${1480 - i * 3} ${y} Q${1494 - i * 3} ${y} ${1494 - i * 3} ${y - 12} L${1494 - i * 3} 900`, fill: "none", stroke: "url(#cond)", "stroke-width": i === 0 || i === 5 ? 1.5 : 1.1 });
+    const Lg = e.getTotalLength(); e.dataset.L = Lg; e.dataset.cond = "1"; e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); A5.m.c.lines.push(e); });
+  [[700, "#8A4A1E"], [1210, "#2E5E8C"]].forEach(([x, col]) => { const e = mk(svg, "path", { d: `M${x} 926 L${x + 14} 926 L${x + 14} 947 L${x} 947 Z`, fill: "none", stroke: col, "stroke-width": 1.3 }); const Lg = e.getTotalLength(); e.dataset.L = Lg; e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); A5.m.c.lines.push(e); });   // straps
+  // faint construction geometry behind the tree, as on a drafted study
+  A5.geo = mk(svg, "g", { fill: "none", stroke: "#8A6A4A", "stroke-width": 0.6, opacity: 0 });
+  [150, 270, 390].forEach((r) => mk(A5.geo, "circle", { cx: 955, cy: 470, r })); mk(A5.geo, "path", { d: "M955 40 L955 470 M620 140 L955 470 L1290 140 M560 470 L1350 470", "stroke-dasharray": "3 5" });
+  const tree = mk(svg, "g", {}); A5.treeG = tree;
+  A5.axis = mk(tree, "line", { x1: 955, x2: 955, y1: 60, y2: 732, stroke: "#762F0B", "stroke-width": 2.4, "stroke-linecap": "round", opacity: 0.7 });
+  A5.strands = [0, 1, 2, 3, 4, 5].map((i) => mk(tree, "path", { fill: "none", stroke: i < 3 ? "#8A4A1E" : "#2E5E8C", "stroke-width": i % 3 === 1 ? 2.8 : 2.0, "stroke-linecap": "round" }));
+  // roots: each rope starts at its own button; the taps feed the tree (copper's from the left, blue's mirrored)
+  A5.roots = ["c", "b"].map((side) => [0, 1, 2].map((j) => { const m = (x) => (side === "c" ? x : 1910 - x);
+    const d = `M${m(712 + j * 4)} ${890 - j * 3} C${m(770)} ${884 - j * 4} ${m(780 + j * 6)} ${728 - j * 4} ${m(866)} ${706 - j * 3} S${m(952)} ${716} ${m(954 + (j - 1) * 2)} 724`;
+    const e = mk(tree, "path", { d, fill: "none", stroke: side === "c" ? "#8A4A1E" : "#2E5E8C", "stroke-width": j === 1 ? 2.4 : 1.7, "stroke-linecap": "round" }), Lg = e.getTotalLength(); e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); e.setAttribute("stroke-dashoffset", Lg); return { e, L: Lg, side }; })).flat();
+  const rr = rng(505), CROWN = 318, branches = []; A5.crown = branches;
+  // the crown, grown not drawn: each limb walks forward a few pixels at a time and keeps turning outward, so it rises, spreads
+  // and droops like the plate; it forks twice or three times and ends in a ring. Symmetric dome; it never enters the words or the name.
+  // the crown grows like a tree: strands peel off the ropes at three heights, each limb sways around its own direction, feels the
+  // edges (the dome, the words, the name, the centre line) and turns away from them, and splits in a Y at its end; four generations,
+  // thinner each time; roughly 30 tips a side
+  // the envelope is a tall tree: a column between the silos, symmetric about the axis, opening into a wide canopy above the words
+  // a full round dome like the plate; the limbs are only lines, so they grow behind the words (the text sits above them)
+  const ell = (x, y) => ((x - 955) / 540) ** 2 + ((y - 300) / 258) ** 2, inside = (x, y) => y <= 500 && ell(x, y) <= 1;
+  const wall = (x, y, side) => !inside(x, y) || (x > 1410 && y < 140) || (side === "c" ? x > (y > 300 ? 976 : 957) : x < (y > 300 ? 934 : 953));
+  // small spheres for the tips, lit like the two characters: highlight up-left, core, dark rim
+  const defs = mk(svg, "defs", {});
+  [["gC", "#F3D2B0", "#B8783E", "#6A2A0A"], ["gB", "#E6F0FA", "#3A78BC", "#123A66"]].forEach(([id, a, b2, c]) => { const g = mk(defs, "radialGradient", { id, cx: "35%", cy: "32%", r: "70%" });
+    [[0, a], [0.45, b2], [1, c]].forEach(([o, col]) => mk(g, "stop", { offset: o, "stop-color": col })); });
+  // lines may pass behind the words, but no sphere or ring may sit on them: the boxes of the six closing lines, with a margin
+  const TEXT = [[112, 148, 290, 178], [80, 194, 722, 242], [112, 268, 336, 298], [106, 298, 494, 388], [112, 390, 596, 424], [112, 446, 418, 480]];
+  const onText = (x, y, r) => TEXT.some(([x0, y0, x1, y1]) => x > x0 - r - 16 && x < x1 + r + 16 && y > y0 - r - 12 && y < y1 + r + 12);
+  function seg(p, h, len, w, level, side, idx, parent) {
+    const sgn = side === "c" ? -1 : 1, pts = [p], ph = rr() * 6.28, wl = 20 + rr() * 14, amp = 0.05 + rr() * 0.04, goal = h; let [x, y] = p;
+    for (let s2 = 0; s2 < len; s2 += 3) {
+      let k = 0.09 * Math.sin(goal + amp * Math.sin(ph + s2 / wl) * 6 - h);       // keeps its direction, swaying around it: an S, not a loop
+      if (y < 160) k += 0.04 * smooth((160 - y) / 80) * Math.sin((side === "c" ? -Math.PI + 0.25 : -0.25) - h);   // in the canopy it spreads outward, an umbrella, not a cap
+      for (const look of [30, 60]) if (wall(x + Math.cos(h) * look, y + Math.sin(h) * look, side)) {               // feels the edge ahead and bends away
+        const l = wall(x + Math.cos(h - 0.5) * look, y + Math.sin(h - 0.5) * look, side), r = wall(x + Math.cos(h + 0.5) * look, y + Math.sin(h + 0.5) * look, side);
+        k += (l && !r ? 1 : !l && r ? -1 : sgn * (y > 300 ? -1 : 1)) * (look === 30 ? 0.05 : 0.025); break; }
+      h += k; const nx = x + Math.cos(h) * 3, ny = y + Math.sin(h) * 3; if (wall(nx, ny, side) && s2 > 6) break; x = nx; y = ny; pts.push([x, y]); }
+    if (pts.length < 6) return null;
+    const col = side === "c" ? (level < 2 ? "#8A4A1E" : "#A5612F") : (level < 2 ? "#2E5E8C" : "#4E7DA6"), group = level === 0 ? [0, 0, 1, 2, 2][idx] : Math.min(8, level * 2 + (idx % 2));
+    const e = mk(tree, "path", { d: "M" + pts.map((q) => q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" L"), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round" }), Lg = e.getTotalLength();
+    e.setAttribute("stroke-dasharray", `${Lg} ${Lg + 2}`); const me = { e, L: Lg, group, side, t0: side === "b" ? 0.1 : 0, dur: 0.35 + Lg / 240, kind: "limb", parent, frac: 1 }; branches.push(me);
+    const ring = (q, r, fr, solid) => !onText(q[0], q[1], r) && branches.push({ e: solid ? mk(tree, "circle", { cx: q[0], cy: q[1], r, fill: `url(#${side === "c" ? "gC" : "gB"})` }) : mk(tree, "circle", { cx: q[0], cy: q[1], r, fill: "none", stroke: col, "stroke-width": 1.1 }), group, side, t0: 0, dur: 0, kind: "ring", parent: me, frac: fr, solid, x: q[0], y: q[1], rad: r });
+    if (level >= 1 && rr() < 0.3) { const f = 0.4 + rr() * 0.3; ring(pts[Math.floor(f * pts.length)], 2.5 + rr() * 1.5, f, false); }   // a bud along the way
+    const tip = pts[pts.length - 1], he = Math.atan2(tip[1] - pts[pts.length - 4][1], tip[0] - pts[pts.length - 4][0]);
+    let kids = 0;
+    if (level < 4) { const n = level >= 1 && level <= 2 && rr() < 0.35 ? 3 : 2, sp = 0.36 + rr() * 0.2;
+      for (let i = 0; i < n; i++) { let ok = null;
+        for (let tr = 0; tr < 4 && !ok; tr++) { const a = he + (n === 2 ? (i ? sp : -sp) : (i - 1) * sp) * (1 + tr * 0.35) * (tr % 2 ? -1 : 1) + (rr() - 0.5) * 0.18;   // if blocked, try a wider angle
+          ok = seg(tip, a, len * (level === 0 ? 0.86 : 0.74) * (0.85 + rr() * 0.3), Math.max(0.75, w * 0.72), level + 1, side, i, me); }
+        if (ok) kids++; } }
+    if (!kids) ring(tip, rr() < 0.6 ? 4.5 + rr() * 3.5 : 4 + rr() * 2.5, 1, rr() < 0.6);                          // ends in a sphere or an open ring
+    else if (rr() < 0.5) ring(tip, 3 + rr() * 1.5, 1, false);                                                    // a knot at the fork
+    return me;
+  }
+  // four limbs a side leave the ropes where their strands peel off: low and wide first, the upright pair from the top
+  for (const side of ["c", "b"]) { const sgn = side === "c" ? -1 : 1, k0 = side === "c" ? 0 : 3;
+    [[0, 1.2, 150, 3.8], [0, 0.86, 152, 3.6], [1, 0.54, 150, 3.4], [2, 0.28, 140, 3.2], [2, 0.05, 125, 3.0]].forEach(([j, a, len, w], i) => {
+      const y0 = PEEL[j]; seg([ropeX(k0 + j, y0, 722), y0], -Math.PI / 2 + sgn * a, len, w, 0, side, i, null); }); }
+  A5.tendrils = [["M955 352 C 900 330 820 244 744 218"], ["M955 380 C 880 380 760 352 646 355"], ["M955 448 C 860 452 700 472 566 466"]].map(([d], i) => {
+    const e = mk(tree, "path", { d, fill: "none", stroke: "#8A4A1E", "stroke-width": 1.4, "stroke-linecap": "round" }), L = e.getTotalLength(); e.setAttribute("stroke-dasharray", `${L} ${L + 2}`);
+    const end = d.split(" ").slice(-2).map(Number), c = mk(tree, "circle", { cx: end[0], cy: end[1], r: 3.5, fill: "none", stroke: "#8A4A1E", "stroke-width": 1.2 }); return { e, L, c, t0: 1.0 + i * 0.9 }; });
+  // ---------- the words, built along the copper routes ----------
+  const T = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;transform-origin:0 100%;" + css; st.appendChild(d); return d; };
+  const CU = "#762F0B", INK = "#26221E";
+  A5.t = {
+    w1: T("This is one way", `left:112px;top:150px;font:italic 400 26px/1 'Source Serif 4';color:${INK}`),
+    w2: T("<span class='e'>AI</span> can make <span class='e'>sustainability</span> <span class='e'>practical</span>", `left:80px;top:196px;font:400 40px/1.1 'Source Serif 4';color:${INK}`),
+    w3: T("helping people find", `left:112px;top:270px;font:italic 400 26px/1 'Source Serif 4';color:${INK}`),
+    w4: T("better ways", `left:106px;top:300px;font:600 84px/1 'Source Serif 4';color:${CU};letter-spacing:-.01em`),
+    w5: T("to run the systems they already have,", `left:112px;top:392px;font:400 30px/1 'Source Serif 4';color:${INK}`),
+    w6: T("with less waste built in.", `left:112px;top:448px;font:italic 400 30px/1 'Source Serif 4';color:${CU}`),
+  };
+  // ---------- what the twin does, written on the drawing (annotations, not a dashboard): the real process feeds it; it tries the
+  // three settings the script names, one at a time, against quality, energy and scrap; one is chosen. No invented numbers.
+  { const g = mk(svg, "g", { opacity: 0, stroke: "#2E5E8C", "stroke-width": 1.1, fill: "none" }), tw = (A5.tw = { g });
+    const N = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;" + css; st.appendChild(d); return d; };
+    const lab = "font:italic 400 22px/1 'Source Serif 4';color:#2E5E8C";
+    tw.data = N("process data &nbsp;→ &nbsp;the twin", `left:1236px;top:952px;font:italic 400 21px/1 'Source Serif 4';color:#26221E`);
+    tw.vars = [["temperature", 1594, 664, "M1588 676 L1530 676 L1499 696"], ["timing", 1594, 698, "M1588 710 L1550 754"], ["material mix", 1146, 596, "M1258 618 L1258 742 L1287 757"]].map(([t, x, y, d]) => ({ d: N(t, `left:${x}px;top:${y}px;${lab}`), l: mk(g, "path", { d }) }));
+    tw.hdr = N("THE TWIN COMPARES", "left:1594px;top:496px;font:500 17px/1 'DM Sans',sans-serif;letter-spacing:.16em;color:#365F7C");
+    tw.state = N("", "left:1594px;top:524px;font:italic 400 20px/1 'Source Serif 4';color:#26221E");
+    tw.rows = ["quality", "energy", "scrap"].map((t, i) => { const y = 562 + i * 34, cy = y + 12;
+      const track = mk(g, "line", { x1: 1764, x2: 1892, y1: cy, y2: cy, "stroke-opacity": 0.5 });
+      return { track, d: N(t, `left:1594px;top:${y}px;${lab}`), base: mk(g, "line", { y1: cy - 8, y2: cy + 8, "stroke-width": 1.6, stroke: "#26221E" }), bar: mk(g, "line", { y1: cy, y2: cy, x1: 1764, "stroke-width": 7, "stroke-linecap": "butt" }), cy }; }); }
+  A5.em = [...A5.t.w2.querySelectorAll(".e")]; A5.em.forEach((e) => (e.style.cssText = "display:inline-block;transform-origin:50% 80%;color:#762F0B;font-weight:400"));
+}
+function twinEls() { const w = A5.tw; return [w.data, w.hdr, w.state, ...w.vars.map((v) => v.d), ...w.rows.map((r) => r.d)]; }
+function a5Hide() { axisPath.style.display = ""; if (!A5.built) return; A5.svg.style.display = "none"; Object.values(A5.t).forEach((d) => (d.style.opacity = 0)); twinEls().forEach((d) => (d.style.opacity = 0)); }
+// the twin's notes: [quality, energy, scrap] as a share of the gauge; baseline, then one setting changed per trial; trial 3 is chosen
+const TWIN = { base: [0.70, 0.70, 0.60], trials: [[0.56, 0.58, 0.64], [0.71, 0.63, 0.50], [0.72, 0.50, 0.38]], at: [27.1, 29.6, 32.1], chosen: 35.5, show: 25.4 };
+function twinNotes(T, fade = 1) {
+  const w = A5.tw, E = (a, d) => smooth((T - a) / d) * fade;
+  w.data.style.opacity = E(2.5, 1.0);
+  const v = E(6.0, 1.0); w.vars.forEach((q) => { q.d.style.opacity = v; q.l.setAttribute("opacity", v); });
+  const p = E(TWIN.show, 0.8); w.g.setAttribute("opacity", v); [w.hdr, w.state, ...w.rows.map((r) => r.d)].forEach((d) => (d.style.opacity = p)); w.rows.forEach((r) => { r.bar.style.opacity = p; r.base.style.opacity = p; r.track.style.opacity = p; });
+  let cur = TWIN.base.slice(), k = -1;
+  TWIN.at.forEach((a, i) => { const u = smooth((T - a) / 0.7); if (T >= a) k = i; cur = cur.map((x, j) => x + (TWIN.trials[i][j] - x) * u * (i === 2 || T < TWIN.at[i + 1] ? 1 : 1)); });
+  if (k >= 0 && k < 2 && T >= TWIN.at[k + 1] - 0.01) k = k + 1;
+  const chosen = T >= TWIN.chosen;
+  w.state.textContent = chosen ? "chosen: the material mix" : k < 0 ? "as it runs today" : `trial ${k + 1} of 3: ${["temperature", "timing", "material mix"][k]}`;
+  w.state.style.color = chosen ? "#762F0B" : "#26221E";
+  w.vars.forEach((q, i) => { const on = (k === i && !chosen) || (chosen && i === 2); q.d.style.fontWeight = on ? 600 : 400; q.d.style.color = chosen && on ? "#762F0B" : "#2E5E8C"; q.l.setAttribute("stroke-width", on ? 2 : 1.1); });
+  w.rows.forEach((r, j) => { const x = 1764 + 128 * cur[j]; r.bar.setAttribute("x2", x.toFixed(1)); r.bar.setAttribute("stroke", chosen ? "#762F0B" : "#2E5E8C");
+    const bx = 1764 + 128 * TWIN.base[j]; r.base.setAttribute("x1", bx); r.base.setAttribute("x2", bx); });
+}
+function drawMachine(side, k) {                            // k: 0..1 how much of the drawing exists
+  const m = A5.m[side]; A5.svg.style.display = "";
+  m.lines.forEach((e, i) => { const L = +e.dataset.L, u = clamp(k * 1.35 - (i / m.lines.length) * 0.35); e.setAttribute("stroke-dashoffset", (L * (1 - u)).toFixed(1)); });
+  m.parts.forEach((g) => (g.style.opacity = k > 0.85 ? "" : 0));
+  m.fills.forEach((f) => f.setAttribute("opacity", smooth((k - 0.55) / 0.45))); m.vis = smooth((k - 0.8) / 0.2); if (k < 0.8) m.arcs.setAttribute("opacity", 0);
+}
+function machineState(side, st) {                          // st: { valve, lever, needle, press, flow, ghosts }
+  const m = A5.m[side];
+  m.valve.setAttribute("transform", `translate(600 760) rotate(${st.valve || 0})`);
+  m.lever.setAttribute("transform", `translate(368 760) rotate(${st.lever || 0})`);
+  m.needle.setAttribute("transform", `translate(430 712) rotate(${-60 + (st.needle || 0)})`);
+  m.cap.setAttribute("transform", `translate(0 ${(st.press || 0) * 8})`);
+  if (st.flow != null) { m.flow.setAttribute("opacity", st.flow > 0 && st.flow < 1 ? 0.9 : 0); m.flow.setAttribute("stroke-dashoffset", (-st.flow * 720).toFixed(1)); } else m.flow.setAttribute("opacity", 0);
+  (m.ghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(430 712) rotate(${-60 + [40, 75, 110][i]})`); });
+  (m.lghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(368 760) rotate(${[-28, 22][i]})`); });
+}
+// tap timelines: copper acts, then the twin repeats; [time, valve, lever, needle, flow]
+// Blue imitates Copper's rhythm on its own button: 1 / 1 · 2 / 2 · 1, pause, 2 / the same · 1, pause, 2 / the same
+const TAPS5 = [[20, 7.0, "c"], [20, 8.4, "b"], [20, 10.0, "c"], [20, 10.45, "c"], [20, 11.7, "b"], [20, 12.15, "b"],
+  [21, 1.0, "c"], [21, 2.2, "c"], [21, 2.65, "c"], [21, 4.0, "b"], [21, 5.2, "b"], [21, 5.65, "b"],
+  [21, 7.4, "c"], [21, 8.6, "c"], [21, 9.05, "c"], [21, 10.4, "b"], [21, 11.6, "b"], [21, 12.05, "b"]];
+const OFF5 = { 20: 0, 21: 14.5, 22: 30.5, 23: 39.5 };
+const clock5 = (c, t) => OFF5[c] + t;                     // one clock across clicks 20-23
+const TAPG = TAPS5.map(([c, t, side], i) => ({ T: OFF5[c] + t, side, n: TAPS5.slice(0, i).filter((q) => q[2] === side).length }));
+const ACTIONS = ["valve", "lever", "gauge", "flow", "valve", "lever", "gauge", "flow", "valve"];   // the n-th tap does the same thing on either machine
+function machineFrom(side, T) {
+  const st = { valve: 0, lever: 0, needle: 0, press: 0, flow: null, arcs: 0 };
+  let lv = 0;
+  for (const q of TAPG) { if (q.side !== side) continue; const a = T - q.T; if (a < 0) continue;
+    const e = smooth(a / 0.6), kind = ACTIONS[q.n % ACTIONS.length];
+    if (kind === "valve") st.valve += 90 * e;
+    if (kind === "lever") { lv = lv === 0 ? -32 : 0; st.lever = st.lever + ((lv === -32 ? -32 : 32)) * e; }
+    if (kind === "gauge") st.needle += (q.n < 4 ? 30 : 25) * e;
+    if (kind === "flow" && a < 1.3) st.flow = a / 1.2;
+    st.press = Math.max(st.press, Math.sin(Math.PI * clamp(a / 0.25)));
+    st.arcs = Math.max(st.arcs, a < 0.6 ? Math.sin(Math.PI * a / 0.6) : 0); }
+  return st;
+}
+function machineState(side, st) {
+  const m = A5.m[side];
+  m.valve.setAttribute("transform", `translate(600 760) rotate(${st.valve || 0})`);
+  m.lever.setAttribute("transform", `translate(368 760) rotate(${st.lever || 0})`);
+  m.needle.setAttribute("transform", `translate(430 712) rotate(${-60 + (st.needle || 0)})`);
+  m.cap.setAttribute("transform", `translate(0 ${(st.press || 0) * 8})`);
+  m.arcs.setAttribute("opacity", (m.vis || 0) * (0.25 + 0.65 * (st.arcs || 0)));   // a low hum always, louder when it acts
+  if (st.flow != null && st.flow > 0 && st.flow < 1) { m.flow.setAttribute("opacity", 0.9); m.flow.setAttribute("stroke-dashoffset", (-st.flow * 720).toFixed(1)); } else m.flow.setAttribute("opacity", 0);
+  (m.ghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(430 712) rotate(${-60 + [40, 75, 110][i]})`); });
+  (m.lghosts || []).forEach((g, i) => { const o = st.ghosts ? st.ghosts[i] : 0; g.setAttribute("opacity", o); g.setAttribute("transform", `translate(368 760) rotate(${[-28, 22][i]})`); });
+}
+const BTN = { c: [690, 866 - SYM_R], b: [1910 - 690, 866 - SYM_R] };
+function sphereTaps(side, T) {                             // hops onto its own button for each of its taps
+  const [x, y0] = BTN[side]; let y = y0, sx = 1, sy = 1;
+  for (const q of TAPG) { if (q.side !== side) continue; const a = T - q.T;
+    if (a > -0.36 && a < 0) y = y0 - 64 * Math.sin(Math.PI * (a + 0.36) / 0.36);
+    else if (a >= 0 && a < 0.22) { const k = Math.sin(Math.PI * a / 0.22); y = y0 + 8 * k; sy = 1 - 0.1 * k; sx = 1 / Math.sqrt(sy); } }
+  return [x, y + SYM_R * (1 - sy), sx, sy];
+}
+function drawTree(T) {                                      // the axis shortens with every tap; strands and limbs come out of it
+  let g = 0; TAPG.forEach((q) => (g += smooth((T - q.T) / 0.6))); g /= TAPG.length;
+  const n = g * TAPG.length;                               // the first two taps take the axis down to the crown; every tap after that turns more of it into rope, down to its foot
+  const ys = n < 2 ? 60 + (470 - 60) * n / 2 : 470 + (722 - 470) * (n - 2) / (TAPG.length - 2); A5.axis.setAttribute("y1", ys.toFixed(1)); A5.axis.style.opacity = ys > 720 ? 0 : "";
+  drawRopes(ys);
+  const seen = { c: TAPG.filter((q) => q.side === "c"), b: TAPG.filter((q) => q.side === "b") };
+  const t0 = (q) => { if (q._T !== undefined) return q._T; const tap = seen[q.side][q.group]; let v = tap ? tap.T + q.t0 : 1e9; if (q.parent) v = Math.max(v, t0(q.parent) + q.parent.dur * q.frac); return (q._T = v); };
+  A5.roots.forEach((q) => { const u = smooth((T - seen[q.side][0].T) / 1.6); q.e.setAttribute("stroke-dashoffset", (q.L * (1 - u)).toFixed(1)); });   // each side's first tap sends its rope from the button to the axis
+  A5.geo.setAttribute("opacity", 0.22 * smooth((T - TAPG[0].T) / 3));
+  A5.crown.forEach((q) => { const tt = T - t0(q);
+    if (q.kind === "limb") { const u = clamp(tt / q.dur), e = 1 - Math.pow(1 - u, 2); q.e.setAttribute("stroke-dashoffset", (q.L * (1 - e)).toFixed(1)); q.e.style.opacity = u > 0 ? 1 : 0; }
+    else q.e.style.opacity = smooth(tt / 0.3); });
+  return g;
+}
+function act5Base(c, t) {                                  // everything that clicks 20-23 share
+  A4.ctx.setTransform(1, 0, 0, 1, 0, 0); A4.ctx.clearRect(0, 0, A4.cv.width, A4.cv.height); A4.stamp.style.opacity = 0; A4.ticks.setAttribute("opacity", 0);
+  Object.values(A4.t).forEach((d) => (d.style.opacity = 0)); blue.sh.style.opacity = ""; axisPath.style.display = "none"; A5.svg.style.display = "";
+  const T = clock5(c, t); drawTree(T); twinNotes(T);
+  const C = machineFrom("c", T), B = machineFrom("b", T);
+  if (T > OFF5[21] + 12.6) { const k = T - (OFF5[21] + 12.6); B.ghosts = [0, 1, 2].map((i) => 0.75 * smooth((k - i * 0.9) / 0.6) * (T < OFF5[22] + 4 ? 1 : 1 - smooth((T - OFF5[22] - 4) / 1)));   // after round 4 the twin tries other settings
+    B.needle += 18 * Math.sin(k * 1.3) * (1 - smooth((T - OFF5[22] - 3) / 1.5)); }
+  if (T > OFF5[22] + 5) { const k = smooth((T - OFF5[22] - 5) / 1.4); C.needle += 15 * k; B.needle += 15 * k; }   // the better setting reaches the real machine
+  machineState("c", C); machineState("b", B);
+  return T;
+}
+function act5Learn(t) {                                    // click 20, "It learns from the data of a real process…": machines drawn out of the spheres; rounds 1 and 2
+  if (t < 0) return;
+  const T = act5Base(20, t), E = (a, d) => smooth((t - a) / d), k = E(1.2, 3.8);
+  drawMachine("c", k); drawMachine("b", k);
+  const m1 = E(0, 1.2), hop = E(5.0, 0.9);
+  const at = (side, home, mach) => { if (t < 5.0) return [home + (mach - home) * m1, FLOOR - SYM_R, 1, 1];
+    const [bx, by] = BTN[side]; return [mach + (bx - mach) * hop, FLOOR - SYM_R + (by - (FLOOR - SYM_R)) * hop - 90 * Math.sin(Math.PI * hop), 1, 1]; };
+  let C = at("c", 517, 430), B = at("b", 1393, 1480);
+  if (t > 5.9) { C = sphereTaps("c", T); B = sphereTaps("b", T); }
+  place(copper, C[0], C[1], SYM_R, C[2], C[3]); place(blue, B[0], B[1], SYM_R, B[2], B[3]);
+  A5.tendrils.forEach((q) => { q.e.setAttribute("stroke-dashoffset", q.L); q.c.setAttribute("opacity", 0); });
+}
+function act5WhatIf(t) {                                   // click 21, "What if…": rounds 3 and 4; the twin starts to try alternatives
+  if (t < 0) return;
+  const T = act5Base(21, t); drawMachine("c", 1); drawMachine("b", 1);
+  const C = sphereTaps("c", T), B = sphereTaps("b", T); place(copper, C[0], C[1], SYM_R, C[2], C[3]); place(blue, B[0], B[1], SYM_R, B[2], B[3]);
+  A5.tendrils.forEach((q) => { q.e.setAttribute("stroke-dashoffset", q.L); q.c.setAttribute("opacity", 0); });
+}
+function act5Choose(t) {                                   // click 22, "…explore and compare… before acting on the real process": the better setting reaches the real machine; copper tendrils reach out
+  if (t < 0) return;
+  act5Base(22, t); drawMachine("c", 1); drawMachine("b", 1);
+  place(copper, BTN.c[0], BTN.c[1], SYM_R); place(blue, BTN.b[0], BTN.b[1], SYM_R);
+  A5.tendrils.forEach((q) => { const u = clamp((t - q.t0 - 3.5) / 1.4), e = 1 - Math.pow(1 - u, 2); q.e.setAttribute("stroke-dashoffset", (q.L * (1 - e)).toFixed(1)); q.c.setAttribute("opacity", smooth((t - q.t0 - 4.8) / 0.3)); });
+}
+function act5Open(t) {
+  if (t < 0) { a5Hide(); return; }
+  buildA5(); a5Hide();
+  const E = (a, d) => smooth((t - a) / d), T4 = A4.t, un = 1 - E(0.6, 1.6);
+  Object.values(T4).forEach((d) => { if (parseFloat(d.style.opacity) > 0) d.style.clipPath = `inset(-30% ${(100 * (1 - un)).toFixed(2)}% -30% 0)`; if (un <= 0) d.style.opacity = 0; });
+  A4.guides.forEach((g) => g.forEach((l) => l.setAttribute("opacity", 0))); A4.ticks.setAttribute("opacity", 0.8 * un * 0.4);
+  // the swarm returns to the axis; the AI sphere last
+  const b0 = drawRetreat(t);
+  if (t < 9.9) { if (b0[4]) { place(blue, b0[0], b0[1], SYM_R, b0[2], b0[3]); blue.sh.style.opacity = 0; stampAt(b0[0] - 6, b0[1] + 2, Math.min(1, b0[2] * 1.1)); } else { place(blue, -500, -500, SYM_R); A4.stamp.style.opacity = 0; } }
+  else { A4.stamp.style.opacity = 0; const u = clamp((t - 10.1) / 0.5), v = smooth((t - 10.4) / 1.6);   // the axis gives Blue back, untagged
+    const y0 = retreatPlan()[0].ty, x = 957 + SYM_R * Math.max(0.05, u) + (1393 - 957 - SYM_R) * v, y = y0 + (FLOOR - SYM_R - y0) * v;
+    place(blue, x, y, SYM_R, Math.max(0.05, u) * (1 - 0) || 0.05, 1); blue.sh.style.opacity = v; }
+  // copper leaves the axis and goes home
+  const cw = copperWorry(99, [[0, 450], [1, 450]], 0), v2 = smooth((t - 10.4) / 1.6);
+  place(copper, cw[0] + (517 - cw[0]) * v2, cw[1] + (FLOOR - SYM_R - cw[1]) * v2, SYM_R);
+  // the act changes on a quiet stage
+  const T5 = 12.8;
+  if (t < T5) { if (t > 11.6) { const o = 1 - E(11.6, 1.2); $("act").style.opacity = o; $("ttl").style.opacity = o; $("hair").style.opacity = 0.55 * o; $("rule").style.width = 100 * o + "%"; } }
+  else chapterColumn(t - T5, CHAPTERS[5]);
+  if (t >= T5 - 0.6) chapterNumber(t - T5 + 0.6, CHAPTERS[5]); else $("one").style.opacity = 0;
+}
+// Click 20, "It learns from the data of a real process…": the machines are drawn out of the spheres; taps 1 and 2
+function act5Words(t) {
+  if (t < 0) return;
+  act5Choose(99);
+  const E = (a, d) => smooth((t - a) / d), W = A5.t;
+  const build = (d, a, dur) => { const u = E(a, dur); d.style.opacity = u > 0 ? 1 : 0; d.style.clipPath = `inset(-30% ${(100 * (1 - u)).toFixed(2)}% -30% 0)`; };
+  build(W.w1, 0.3, 0.8); build(W.w2, 1.0, 1.6); build(W.w3, 5.0, 0.8); build(W.w4, 5.6, 1.4); build(W.w5, 7.4, 1.4); build(W.w6, 10.0, 1.6);
+  // the emphasis travels: AI, then sustainability, then practical; then it hands over to better ways; less waste closes, quietly
+  const peaks = [1.3, 2.4, 3.4]; A5.em.forEach((e, i) => { const up = Math.min(1, 1.35 * Math.max(0, Math.sin(Math.PI * clamp((t - peaks[i]) / 1.6)))); e.style.transform = `scale(${(1 + 0.55 * up).toFixed(3)})`; e.style.fontWeight = up > 0.25 ? 700 : 400;   // loud: big, heavy, a held peak; then it steps back for the next
+    const room = (e.offsetWidth * 0.275 + 8) * up; e.style.margin = `0 ${room.toFixed(1)}px`; });   // the neighbours step aside by what the word gains, so nothing overlaps
+  W.w2.style.transform = `translate(0, ${(-4 * E(5.0, 1)).toFixed(1)}px)`;
+}
+// ================= CLICKS 24 to 30 · ACT 06: CLOSE =================
+/* MEASURED on the Act 05 final frame (stage px, 1920 x 1080):
+   human      centre x 955; shoes y 918-928; body x 925-985; head top 756. Never moves.
+   spheres    copper (690, 824) r 42 on its button (cap 672-708 x 866-876, base 664-716 x 888-900); blue mirrored about x 955 (1220, 824)
+   floor      the conduit: six strands y 930-943, flat x 431-1479, risers x 416-446 / 1464-1494 up to the floor line 900; straps at 700 / 1210
+   vessels    left shell 368-492 x 498-862, legs to 900, pump 286-368 x 816-900; main pipe x 594-606 (572-858), to the button 600-666 at 852-864; right mirrored
+   helix      x 935-975 x 335-722          arch (roots)   left 712-955 x 700-892, right mirrored
+   crown      dome cx 955 cy 300 rx 540 ry 258, y <= 500
+   columns    left editorial x 80-722 x 148-480; chapter x 1594-1894 x 212-480; giant number DM Sans 100 470px at (50, 40), z 1, x 50-600 x 40-420
+   The tree, the vessels and the human never change in this act. */
+const A6 = { built: false }, SFX = {};
+const HX = 660, YC = 936.5;                                   // where each outer floor section begins to change; the conduit's centre line
+// the floor as three states of one strip, each parametrised by arc length from the hinge (s 0) to the outer end (s 1):
+// O as drawn in Act 05 (into the vessel's base), E extended straight to the page margin, P its end bent up in a quarter circle
+const FLR = (() => { const mk = (pts) => { const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])); return { pts, cum }; };
+  const O = [[HX, YC], [446, YC]]; for (let k = 1; k <= 12; k++) { const a = (k / 12) * Math.PI / 2; O.push([446 - 15 * Math.sin(a), YC - 15 + 15 * Math.cos(a)]); } O.push([431, 900]);
+  const P = [[HX, YC], [160, YC]]; for (let k = 1; k <= 30; k++) { const a = (k / 30) * Math.PI / 2; P.push([160 - 110 * Math.sin(a), YC - 110 + 110 * Math.cos(a)]); } P.push([50, 786]);
+  return { O: mk(O), E: mk([[HX, YC], [50, YC]]), P: mk(P) }; })();
+const S_LIP = (500 + 110 * (55 * Math.PI / 180)) / (500 + 110 * Math.PI / 2 + 40.5);   // a sphere stops 55 degrees up the curve
+function polyAt(f, s) { const d = s * f.cum[f.cum.length - 1]; let i = 1; while (i < f.cum.length - 1 && f.cum[i] < d) i++; const k = (d - f.cum[i - 1]) / Math.max(1e-6, f.cum[i] - f.cum[i - 1]);
+  return [f.pts[i - 1][0] + (f.pts[i][0] - f.pts[i - 1][0]) * k, f.pts[i - 1][1] + (f.pts[i][1] - f.pts[i - 1][1]) * k]; }
+function floorPt(side, s, u1, u2) {                         // one continuous parametric strip per side: u1 extends it to the margin, u2 bends its end up
+  if (s < 0) { const x = HX - s * 610; return [side === "c" ? x : 1910 - x, YC]; }   // inward of the hinge the floor is flat, toward the man
+  let a, b, u; if (u2 > 0) { a = polyAt(FLR.E, s); b = polyAt(FLR.P, s); u = u2; } else { a = polyAt(FLR.O, s); b = polyAt(FLR.E, s); u = u1; }
+  const x = a[0] + (b[0] - a[0]) * u, y = a[1] + (b[1] - a[1]) * u; return [side === "c" ? x : 1910 - x, y];
+}
+function floorFrame(side, s, u1 = 1, u2 = 1) {              // point and upward (concave-side) normal on the strip
+  const a = floorPt(side, Math.max(0, s - 0.004), u1, u2), b = floorPt(side, Math.min(1, s + 0.004), u1, u2), p = floorPt(side, s, u1, u2);
+  let tx = b[0] - a[0], ty = b[1] - a[1]; const l = Math.hypot(tx, ty) || 1; tx /= l; ty /= l;
+  let nx = -ty, ny = tx; if (ny > 0 || (Math.abs(ny) < 1e-6 && nx * (side === "c" ? 1 : -1) < 0)) { nx = -nx; ny = -ny; }
+  return [p, [nx, ny]];
+}
+const FLOOR_TOP = YC - 6.5 - 0.8, CAP = 80;                 // the strip's top surface; the height of the letters
+// R I S K drawn, not typeset: square, solid, slab-serifed, in the drawing's own language (units: 100 high)
+const GLYPH = {
+  R: [80, "M0 0H50Q74 0 74 24V32Q74 52 56 56L80 86V100H50V86H58L38 58H32V86H40V100H0V86H8V14H0Z M32 14H46Q52 14 52 20V38Q52 44 46 44H32Z"],
+  I: [40, "M0 0H40V14H32V86H40V100H0V86H8V14H0Z"],
+  S: [72, "M14 0H72V30H52V20H28V40H58Q72 40 72 54V86Q72 100 58 100H0V70H20V80H44V60H14Q0 60 0 46V14Q0 0 14 0Z"],
+  K: [86, "M0 0H42V14H32V36L60 14H54V0H86V14H76L48 48L80 86H86V100H52V86H58L34 62L32 64V86H42V100H0V86H8V14H0Z"] };
+// each letter: its system, and the column its node must stand over (a clear fall: not the vessel, the helix or the man)
+const LET = [["R", "c", 555, 640], ["I", "c", 730, 880], ["S", "b", 1030, 1180], ["K", "b", 1270, 1355]];
+function buildA6() {
+  if (A6.built) return; A6.built = true;
+  const st = $("stage"), svg = document.createElementNS(NS, "svg"); svg.setAttribute("width", 1920); svg.setAttribute("height", 1080);
+  svg.style.cssText = "position:absolute;left:0;top:0;z-index:2;mix-blend-mode:multiply;display:none"; st.appendChild(svg); A6.svg = svg;
+  const mk = (par, tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); par.appendChild(e); return e; };
+  A6.strands = [0, 1, 2, 3, 4, 5].map((i) => mk(svg, "path", { fill: "none", stroke: "url(#cond)", "stroke-width": i === 0 || i === 5 ? 1.5 : 1.1, "stroke-linejoin": "round" }));
+  // the four nodes: existing sphere nodes of each system, the largest over each letter's clear column (the tree is never changed)
+  A6.nodes = LET.map(([ch, side, x0, x1]) => { let cand = []; for (const w of [0, 40, 80, 140]) { cand = A5.crown.filter((q) => q.kind === "ring" && q.solid && q.side === side && q.x > x0 - (ch === "R" || ch === "S" ? w : 0) && q.x < x1 + (ch === "I" || ch === "K" ? w : 0) && q.y < 470); if (cand.length) break; }
+    return cand.sort((a, b) => b.rad - a.rad || b.y - a.y)[0]; });
+  A6.stems = A6.nodes.map((q, i) => mk(svg, "line", { stroke: LET[i][1] === "c" ? "#8A4A1E" : "#2E5E8C", "stroke-width": 1.6, "stroke-linecap": "round", opacity: 0 }));
+  A6.let = LET.map(([ch, side], i) => { const [w, d] = GLYPH[ch], el = document.createElement("div");
+    el.innerHTML = `<svg width="${w}" height="100" viewBox="0 0 ${w} 100" style="display:block;overflow:visible"><path d="${d}" fill="${side === "c" ? "#762F0B" : "#1E4D7B"}" fill-rule="evenodd"/></svg>`;
+    el.style.cssText = "position:absolute;left:0;top:0;z-index:3;opacity:0;transform-origin:0 0"; st.appendChild(el);
+    const q = A6.nodes[i]; return { d: el, w, side, ch, nx: q.x, top: q.y + q.rad + 7, h: (w * CAP) / 100 / 2 }; });
+  // the final word stands on the floor around the man: RI [the man] SK
+  const [R, I, S, K] = A6.let; I.fx = 910 - I.h; R.fx = I.fx - I.h - 8 - R.h; S.fx = 1000 + S.h; K.fx = S.fx + S.h + 8 + K.h;
+  for (const [o, n] of [[R, I], [K, S]]) { const dir = o.side === "c" ? 1 : -1; o.x1 = n.nx - dir * (n.h + o.h + 8); }   // where the outer letter stops, against its partner
+  const cv = document.createElement("canvas").getContext("2d");
+  // the closing words: the editorial grid first, then the type takes the page
+  const T = (html, css) => { const d = document.createElement("div"); d.innerHTML = html; d.style.cssText = "position:absolute;z-index:3;white-space:nowrap;opacity:0;" + css; st.appendChild(d); return d; };
+  // a paper knock-out round the closing type: it sits cleanly on the drawing, and the tree beneath stays whole
+  const KO = (r) => `-webkit-text-stroke:${(r * 1.6).toFixed(1)}px #e9d1ad;paint-order:stroke fill;text-shadow:0 0 ${r}px #e9d1ad`;
+  A6.a = T("<span>Agents</span> <span>do not own</span> <span>risk.</span>", KO(4) + ";left:80px;top:118px;font:400 40px/1.1 'Source Serif 4';color:#762F0B");
+  A6.a.lastChild.style.cssText = "font-weight:600;color:#5A2208;letter-spacing:-.01em";
+  A6.b = T("They do not <span style='display:inline-block'>carry</span> accountability.", KO(4) + ";left:112px;top:174px;font:italic 400 26px/1 'Source Serif 4';color:#26221E");
+  A6.h = T("HUMANS DO.", "left:150px;top:206px;font:700 96px/1 'Source Serif 4';color:#762F0B;" + KO(7) + ";letter-spacing:-.005em;transform-origin:0 70%");
+  // ALWAYS. refuses the grid: it starts outside the margin, crosses the 06, and its period lands against the trunk like the last node
+  cv.font = "700 100px 'Source Serif 4'"; const aw = cv.measureText("ALWAYS.").width, asz = (912 - 34) / aw * 100, am = cv.measureText("A");
+  const abase = (asz - (am.fontBoundingBoxAscent + am.fontBoundingBoxDescent) * asz / 100) / 2 + am.fontBoundingBoxAscent * asz / 100;
+  A6.al = T("ALWAYS.", `left:34px;top:${(474 - abase).toFixed(1)}px;font:700 ${asz.toFixed(1)}px/1 'Source Serif 4';color:#762F0B;${KO(9)};letter-spacing:0;transform-origin:0 75%`);
+}
+function letterAt(o, cx, baseline, size, op = 1) {          // a drawn letter placed by its centre x and its baseline
+  const k = size / 100; o.d.style.opacity = op; o.d.style.transform = `translate(${(cx - (o.w * k) / 2).toFixed(1)}px,${(baseline - 100 * k).toFixed(1)}px) scale(${k.toFixed(4)})`;
+}
+function act6Hide() {
+  if (!A6.built) return; A6.svg.style.display = "none"; A6.let.forEach((o) => (o.d.style.opacity = 0)); [A6.a, A6.b, A6.h, A6.al].forEach((d) => (d.style.opacity = 0));
+  A6.nodes.forEach((q) => q.e.removeAttribute("transform"));
+  A5.svg.querySelectorAll("[data-cond]").forEach((e) => (e.style.display = ""));
+  copper.sh.style.opacity = ""; blue.sh.style.opacity = ""; copper.im.style.zIndex = ""; blue.im.style.zIndex = "";
+}
+// Click 24 (after "…with less waste built in."): the paragraph thins into the paper; ACT 06 · Close; the giant 06 comes and goes, as in every act
+function act6Open(t) {
+  if (t < 0) { act6Hide(); return; }
+  buildA6(); act6Hide();
+  const v = 1 - smooth(t / 1.6); Object.values(A5.t).forEach((d) => (d.style.opacity = v)); twinNotes(99, v);   // only the words go; the drawing stays
+  const swap = t >= 0.9, o = swap ? smooth((t - 0.9) / 0.7) : 1 - smooth((t - 0.2) / 0.7);
+  $("act").textContent = swap ? CHAPTERS[6].label : CHAPTERS[5].label; if ($("ttl").innerHTML !== (swap ? CHAPTERS[6].title : CHAPTERS[5].title)) $("ttl").innerHTML = swap ? CHAPTERS[6].title : CHAPTERS[5].title;
+  $("act").style.opacity = o; $("ttl").style.opacity = o; $("hair").style.opacity = 0.55; $("rule").style.width = "100%";
+  chapterNumber(t, CHAPTERS[6]);
+}
+function drawFloor(u1, u2) {                                // the conduit, redrawn as one strip: margin to margin, the centre under the man always flat
+  A5.svg.querySelectorAll("[data-cond]").forEach((e) => (e.style.display = "none"));
+  A6.strands.forEach((e, i) => { const off = (2.5 - i) * 2.6, pts = [];
+    for (let k = 80; k >= 0; k--) { const [p, n] = floorFrame("c", k / 80, u1, u2); pts.push([p[0] + n[0] * off, p[1] + n[1] * off]); }
+    for (let k = 0; k <= 80; k++) { const [p, n] = floorFrame("b", k / 80, u1, u2); pts.push([p[0] + n[0] * off, p[1] + n[1] * off]); }
+    e.setAttribute("d", "M" + pts.map((q) => q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" L")); });
+}
+function onFloor(side, s) { const [p, n] = floorFrame(side, s), r = 7.3 + SYM_R; return [p[0] + n[0] * r, p[1] + n[1] * r]; }   // a sphere's centre resting on the strip
+function sAtX(side, x) { let best = 1e9, sb = 0; for (let k = -0.45; k <= 0.75; k += 0.0015) { const d = Math.abs(onFloor(side, k)[0] - x); if (d < best) { best = d; sb = k; } } return sb; }
+function placeSphere(side, p, onPed) { const sp = side === "c" ? copper : blue; place(sp, p[0], p[1], SYM_R); sp.sh.style.opacity = onPed ? "" : 0; sp.im.style.zIndex = onPed ? "" : 3; }   // off its pedestal it rolls in front of the drawing, never into a vessel
+const hopTo = (a, b, u) => { const e = smooth(u); return [a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e - 22 * Math.sin(Math.PI * clamp(u))]; };
+// Click 25: the floor begins to extend at once, slowly, to the margins, and bends up. The tree bears four letters: bud, growth, a mature letter
+// hanging from its node, then it lets go and the letter falls, without stopping. The spheres set off before the first letter lands.
+const BUD = [0.8, 1.2, 1.0, 1.4], DROP = [5.6, 6.1, 5.85, 6.35], G = 640, RUN25 = { out: 5.4, land: 5.9, lip: 8.8 };
+function fallY(o, i, t) { const top = o.top + CAP, a = t - DROP[i]; return Math.min(FLOOR_TOP, top + 0.5 * G * a * a); }   // gravity from the moment it lets go
+function act6Grow(t) {
+  if (t < 0) return;
+  act6Open(99); A6.svg.style.display = "";
+  drawFloor(smooth(t / 6.0), smooth((t - 5.6) / 1.6));
+  A6.let.forEach((o, i) => { const q = A6.nodes[i], a = t - BUD[i], stem = A6.stems[i];
+    if (a < 0) { o.d.style.opacity = 0; stem.setAttribute("opacity", 0); q.e.removeAttribute("transform"); return; }
+    const bud = 1 + 0.5 * smooth(a / 0.9) * (1 - 0.6 * smooth((a - 2.6) / 1.2));   // the node swells, and gives its size to the letter
+    q.e.setAttribute("transform", `translate(${q.x} ${q.y}) scale(${bud.toFixed(3)}) translate(${-q.x} ${-q.y})`);
+    const grow = smooth((a - 0.5) / 3.2), size = 5 + (CAP - 5) * grow;
+    if (t < DROP[i]) { letterAt(o, q.x, o.top + size, size, a > 0.5 ? 1 : 0);   // it hangs from its node, growing
+      stem.setAttribute("x1", q.x); stem.setAttribute("y1", q.y + q.rad); stem.setAttribute("x2", q.x); stem.setAttribute("y2", o.top); stem.setAttribute("opacity", a > 0.5 ? 1 : 0); return; }
+    const snap = smooth((t - DROP[i]) / 0.3); stem.setAttribute("y2", (o.top - 7 * snap).toFixed(1)); stem.setAttribute("opacity", 1 - snap);   // the stem lets go, back to its node
+    letterAt(o, q.x, fallY(o, i, t), CAP);
+  });
+  for (const side of ["c", "b"]) { const home = BTN[side], land = onFloor(side, sAtX(side, side === "c" ? 600 : 1310)), sa = sAtX(side, side === "c" ? 600 : 1310);
+    if (t < RUN25.out) placeSphere(side, home, 1);
+    else if (t < RUN25.land) placeSphere(side, hopTo(home, land, (t - RUN25.out) / (RUN25.land - RUN25.out)), 0);
+    else placeSphere(side, onFloor(side, sa + (S_LIP - sa) * smooth((t - RUN25.land) / (RUN25.lip - RUN25.land))), 0); }   // the whole floor, past the vessel, up the curve
+}
+// Click 26: weight, and the rhythm of Act 05. The ball rolls down its ramp and strikes the solid letter once; it rebounds all the way
+// back up the ramp. It comes down and strikes twice (a small rebound between); back up the ramp. Then three times, and it is spent.
+// Each strike only scrapes the heavy letter forward: R to I, then the pair RI home around the man (mirrored: K, SK). One tap.
+const W26 = { start: 0.3, d1: 1.6, up: [1.3, 1.1], back: [0.85, 0.6], micro: 0.2, slide: 0.45, rest: 1.8, hop: 0.6 };
+function plan26() {                                         // the shared timeline: [kind, t0, dur, round, hit index]
+  const ev = []; let t = W26.start; ev.push(["down0", t, W26.d1]); t += W26.d1;
+  for (let k = 0; k < 3; k++) { for (let j = 0; j <= k; j++) { ev.push(["hit", t, 0, k, j]); if (j < k) { ev.push(["micro", t, 2 * W26.micro, k, j]); t += 2 * W26.micro; } }
+    if (k < 2) { ev.push(["up", t, W26.up[k], k]); t += W26.up[k]; ev.push(["down", t, W26.up[k], k]); t += W26.up[k]; } }
+  ev.push(["rest", t, W26.rest]); t += W26.rest; ev.push(["hop", t, W26.hop]); return ev;
+}
+const EV26 = plan26(), LASTHIT26 = EV26.filter((e) => e[0] === "hit").pop()[1];
+SFX[26] = LASTHIT26 + W26.slide;
+function act6Push(t) {
+  if (t < 0) return;
+  act6Grow(99);
+  A6.let.forEach((o, i) => A6.stems[i].setAttribute("opacity", 0));
+  const inn = (a, b, u) => a + (b - a) * u * u, out = (a, b, u) => a + (b - a) * (1 - (1 - u) * (1 - u));   // gravity down the ramp; against it, going up
+  for (const side of ["c", "b"]) {
+    const dir = side === "c" ? 1 : -1, [O, N] = side === "c" ? [A6.let[0], A6.let[1]] : [A6.let[3], A6.let[2]];
+    const oPos = [O.nx, O.x1, O.x1 + (O.fx - O.x1) * 0.5, O.fx];          // the outer letter before each round, and after the last
+    const before = (k, j) => oPos[k] + (oPos[k + 1] - oPos[k]) * j / (k + 1);   // where it stands before strike j of round k
+    const sC = (k, j) => sAtX(side, before(k, j) - dir * (O.h + SYM_R)), sH = (k) => { const c = sC(k, k); return c + (S_LIP - c) * W26.back[k]; };
+    let p = null, ped = 0, ox = O.nx;
+    for (const e of EV26) { const [kind, t0, d, k, j] = e; if (kind === "hit" && t >= t0) ox = before(k, j) + (before(k, j + 1) - before(k, j)) * (1 - Math.pow(1 - clamp((t - t0) / W26.slide), 2));   // struck, the heavy letter scrapes forward and stops
+      if (p || t < t0 || t >= t0 + d) continue; const u = (t - t0) / d;
+      if (kind === "down0") p = onFloor(side, inn(S_LIP, sC(0, 0), u));
+      else if (kind === "micro") { const c = sC(k, j), r = sAtX(side, before(k, j) - dir * (O.h + SYM_R + 30)), c2 = sC(k, j + 1); p = onFloor(side, u < 0.5 ? out(c, r, u * 2) : inn(r, c2, u * 2 - 1)); }   // a small rebound, and again
+      else if (kind === "up") p = onFloor(side, out(sC(k, k), sH(k), u));                // all the way back up the ramp
+      else if (kind === "down") p = onFloor(side, inn(sH(k), sC(k + 1, 0), u));
+      else if (kind === "rest") { const c = sC(2, 2), r = sAtX(side, BTN[side][0] - dir * 70); p = onFloor(side, c + (r - c) * smooth(u)); }   // spent: it rolls back and comes to rest
+      else if (kind === "hop") p = hopTo(onFloor(side, sAtX(side, BTN[side][0] - dir * 70)), BTN[side], u); }
+    if (!p) { const first = EV26[0][1]; if (t < first) p = onFloor(side, S_LIP); else { p = BTN[side]; ped = 1; } }
+    const hits = EV26.filter((e) => e[0] === "hit" && t >= e[1]); if (hits.length && !ped) { const e = hits[hits.length - 1]; if (t - e[1] < 0.001) p = onFloor(side, sC(e[3], e[4])); }
+    placeSphere(side, p, ped);
+    letterAt(O, ox, FLOOR_TOP, CAP); letterAt(N, N.nx + Math.max(0, (ox - O.x1) * dir) * dir, FLOOR_TOP, CAP);   // once R reaches I they move as one
+  }
+}
+function act6Still() { act6Push(99); }
+// Click 27, after the spoken question: "Agents do not own risk." — still obeying the grid, built in three phrases
+function act6Agents(t) {
+  if (t < 0) return;
+  act6Still();
+  A6.a.style.opacity = 1; [0.2, 0.9, 1.7].forEach((a, i) => { const e = A6.a.children[i], u = smooth((t - a) / 0.7); e.style.opacity = u; e.style.display = "inline-block"; e.style.transform = `translateY(${(4 * (1 - u)).toFixed(1)}px)`; });
+}
+// Click 28: "They do not carry accountability." — the word carry is picked up, then set down
+function act6Carry(t) {
+  if (t < 0) return;
+  act6Agents(99); const u = smooth(t / 0.8); A6.b.style.opacity = u;
+  const c = A6.b.querySelector("span"), lift = 10 * smooth((t - 0.5) / 0.45) * (1 - smooth((t - 1.2) / 0.8)); c.style.transform = `translateY(${(-lift).toFixed(1)}px)`;
+}
+// Click 29: HUMANS DO. — the type breaks the grid
+function act6Humans(t) {
+  if (t < 0) return;
+  act6Carry(99); const u = smooth(t / 0.45); A6.h.style.opacity = u; A6.h.style.transform = `translate(${(14 * (1 - u)).toFixed(1)}px,0) scale(${(1.06 - 0.06 * u).toFixed(4)})`;
+}
+// Click 30: ALWAYS. — the period lands; everything stops
+function act6Always(t) {
+  if (t < 0) return;
+  act6Humans(99); const u = smooth(t / 0.4); A6.al.style.opacity = u; A6.al.style.transform = `translate(${(18 * (1 - u)).toFixed(1)}px,0) scale(${(1.1 - 0.1 * u).toFixed(4)})`;
+}
+function paperTap() {                                       // one dull paper tap; no music, no boom
+  if (parent !== window) { parent.postMessage({ deck: "tap" }, "*"); return; }
+  try { const ac = (window.__ac = window.__ac || new AudioContext()), n = ac.createBuffer(1, ac.sampleRate * 0.08, ac.sampleRate), d = n.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 6);
+    const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(); f.type = "lowpass"; f.frequency.value = 700; g.gain.value = 0.5; src.buffer = n; src.connect(f).connect(g).connect(ac.destination); src.start(); } catch (e) {}
+}
+window.CLICK = { 1: ONE_GONE + 1.3, 2: CLICK2, 3: 2.6, 4: HOLD_FROM + HOLD, 5: T_INF + 1.9, 6: 8.2, 7: 1.4, 8: (window.BAKE ? window.BAKE.B.dur : 4) + 0.5, 9: 1.8, 10: 7.8 + 1.2 + 5.7 + 0.2, 11: 4.6, 12: 17.2, 13: 9.0, 14: 3.0, 15: 9.0, 16: 12.0, 17: 12.0, 18: 16.0, 19: 12.8 + 5.9, 20: 14.5, 21: 16.0, 22: 9.0, 23: 13.0, 24: 4.4, 25: 9.2, 26: 11.6, 27: 3.0, 28: 2.6, 29: 1.2, 30: 1.0 };
 window.setState = (c, t) => {
-  click4(-1); click5(-1); click6(-1); click7(-1); click8(-1); click9(-1);
+  { const o = c < 4 ? 0 : c === 4 ? smooth(t / 2) : 1; $("pp1").style.opacity = o; $("pp2").style.opacity = o; }   // after Act 01, the decorative marks under the column lift from the paper
+  click4(-1); click5(-1); click6(-1); click7(-1); click9(-1); clickSym(-1); click10(-1); act3Number(-1); act4Open(-1); act5Open(-1); act6Open(-1);
   if (c >= 4) { click1(99); click2(999); $("one").style.opacity = 0; click3(99); click4(c === 4 ? t : 99);
-    if (c >= 5) click5(c === 5 ? t : 99);
-    if (c >= 6) click6(c === 6 ? t : 99);
-    if (c >= 7) click7(c === 7 ? t : 99);
-    if (c >= 8) click8(c === 8 ? t : 99);
-    if (c >= 9) click9(c === 9 ? t : 99);
-    if (c >= 10) click10(c === 10 ? t : 99);
-    if (c >= 11) click11(c === 11 ? t : 99);
-    if (c >= 12) click12(t);
+    const steps = [null, null, null, null, null, click5, click6, click7, click8, click9, clickSym, act3Number, act3Delta, act3Talk, act3Thesis, act4Open, act4Bump, act4Swarm, act4Words, act5Open, act5Learn, act5WhatIf, act5Choose, act5Words, act6Open, act6Grow, act6Push, act6Agents, act6Carry, act6Humans, act6Always];
+    for (let k = 5; k <= c; k++) steps[k](k === c ? t : 99);
     return; }
   if (c === 1) { click2(-1); $("act").style.opacity = 0; $("hair").style.opacity = 0; $("ttl").style.opacity = 0; $("rule").style.width = 0; click1(t); click3(-1); return; }
   click1(99); click2(c === 2 ? t : 999);
@@ -599,19 +1672,53 @@ const fit = () => { const k = Math.min(innerWidth / 1920, innerHeight / 1080), s
 addEventListener("resize", fit); fit();
 // Live playback: Space, Right arrow or Page Down starts the next click; R resets. Each click plays once and holds.
 let click = 0, clickStart = 0, raf = 0;
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;   // reduced motion: every click shows its final state at once
 function frame(now) {
-  const t = (now - clickStart) / 1000;
+  const t = REDUCED ? window.CLICK[click] + 0.01 : (now - clickStart) / 1000;
   setState(click, Math.min(t, window.CLICK[click] + 0.01));
+  if (SFX[click] !== undefined && !frame.tapped && t >= SFX[click]) { frame.tapped = true; paperTap(); }
   raf = t < window.CLICK[click] ? requestAnimationFrame(frame) : 0;
 }
+const LAST = Math.max(...Object.keys(window.CLICK).map(Number));             // the last click of the deck
+document.fonts.ready.then(() => setTimeout(() => { buildA3(); buildA4(); buildA5(); buildA6(); retreatPlan(); setState(click || 1, click ? window.CLICK[click] + 1 : 0); }, 300));   // prepared before the night needs them: no hitch on a click
 addEventListener("keydown", (e) => {
   if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) {
-    e.preventDefault(); if (e.repeat || click >= 12) return;
+    e.preventDefault(); if (e.repeat || click >= LAST) return;
     if (click > 0) setState(click, window.CLICK[click] + 1);          // an early click completes the current one
-    click++; clickStart = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+    click++; frame.tapped = false; clickStart = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+  } else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) {          // back: the previous click, at rest (no replay)
+    e.preventDefault(); if (e.repeat) return; cancelAnimationFrame(raf);
+    if (click > 1) { click--; setState(click, window.CLICK[click] + 1); }
+    else { click = 0; setState(1, 0); if (parent !== window) parent.postMessage({ deck: "back-to-opening" }, "*"); }
   } else if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
   } else if (e.key === "r" || e.key === "R") { cancelAnimationFrame(raf); click = 0; setState(1, 0); }
 });
+// ---------- Act-by-act mode (deck-acts.html, act1.html?acts): one press plays a whole act and waits at its end ----------
+// The same timing as the film: the clicks of an act follow each other; the rain settles; a 10 s rest only on frames measured still.
+const ACTS = [[1, 2, 3], [4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18], [19, 20, 21, 22, 23], [24, 25, 26, 27, 28, 29, 30]];
+const REST = { 4: 10, 8: 10, 11: 10, 19: 10, 26: 10 }, SETTLE = { 6: 1.0 };
+const ACTS_MODE = /[?&]acts\b/.test(location.search);
+let act = -1, actStart = 0, actRaf = 0, actTapped = false;
+function actPlan(a) { let t0 = 0; return ACTS[a].map((c) => { const run = window.CLICK[c] + (SETTLE[c] || 0), e = { c, t0, run }; t0 += run + (REST[c] || 0); return e; }); }
+function actAt(a, e) {                                     // the frame of act a, e seconds in
+  const plan = actPlan(a); let k = plan.length - 1; for (let i = 0; i < plan.length; i++) if (e < plan[i].t0 + plan[i].run + (REST[plan[i].c] || 0)) { k = i; break; }
+  const q = plan[k]; setState(q.c, Math.min(Math.max(0, e - q.t0), q.run));
+  if (q.c === 26 && !actTapped && e - q.t0 >= SFX[26]) { actTapped = true; paperTap(); }
+  const end = plan[plan.length - 1]; return e < end.t0 + end.run;
+}
+function actFrame(now) { const e = (now - actStart) / 1000; actRaf = actAt(act, e) ? requestAnimationFrame(actFrame) : 0; }
+function actEnd(a) { const L = ACTS[a][ACTS[a].length - 1]; setState(L, window.CLICK[L] + (SETTLE[L] || 0) + 1); }
+if (ACTS_MODE) addEventListener("keydown", (e) => {
+  e.stopImmediatePropagation();
+  if ([" ", "ArrowRight", "PageDown", "Enter"].includes(e.key)) { e.preventDefault(); if (e.repeat) return;
+    if (actRaf) { cancelAnimationFrame(actRaf); actRaf = 0; actEnd(act); return; }   // a press during an act completes it
+    if (act >= ACTS.length - 1) return;
+    act++; actTapped = false; actStart = performance.now(); actRaf = requestAnimationFrame(actFrame);
+  } else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); if (e.repeat) return; cancelAnimationFrame(actRaf); actRaf = 0;
+    if (act > 0) { act--; actEnd(act); } else { act = -1; setState(1, 0); if (parent !== window) parent.postMessage({ deck: "back-to-opening" }, "*"); }
+  } else if (e.key === "r" || e.key === "R") { cancelAnimationFrame(actRaf); actRaf = 0; act = -1; setState(1, 0); }
+  else if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {}); }
+}, true);
   // When this page runs inside deck.html, the deck owns the keyboard and relays keys here.
   addEventListener("message", (e) => { const k = e.data && e.data.deckKey; if (k) dispatchEvent(new KeyboardEvent("keydown", { key: k, cancelable: true })); });
 

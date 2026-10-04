@@ -3,13 +3,14 @@ Same canvas proportions (168 x 193 -> 1344 x 1544), same centre (84.5) and radiu
 Colour: the original, sampled smoothly (bicubic, then a half-pixel blur to remove the enlargement staircase),
 with the lookup pulled slightly inward near the edge so the old matte and fringe are never sampled.
 Edge: an analytic anti-aliased circle, no rim, no matte. No shadow: shadow-copper.png stays separate.
-Usage: python make_copper.py act1/sphere-copper.png act1/sphere-copper-8x.png act1/shadow-copper.png act1/shadow-copper-8x.png"""
+Usage: python make_copper.py act1/sphere-copper.png act1/sphere-copper-16x.png act1/shadow-copper.png act1/shadow-copper-16x.png 16"""
 import sys
 import numpy as np
 from PIL import Image, ImageFilter
 
 src, dst = sys.argv[1], sys.argv[2]
-K, C0, R0, EDGE = 8, 84.5, 44.5, 44.5   # EDGE: the edge of the original (alpha above half), so the shadow's contact crescent stays covered
+K = int(sys.argv[5]) if len(sys.argv) > 5 else 8   # scale factor: 16 for Act 2 (460 px sphere, sharp at 4K)
+C0, R0, EDGE = 84.5, 44.5, 44.5   # EDGE: the edge of the original (alpha above half), so the shadow's contact crescent stays covered
 im = Image.open(src).convert("RGBA")
 W, H = im.size[0] * K, im.size[1] * K
 C, R = C0 * K, R0 * K
